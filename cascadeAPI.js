@@ -1,4 +1,4 @@
-class CascadeAPI {
+export default class CascadeAPI {
   constructor(config = { apiKey, url }) {
     this.apiKey = config.apiKey;
     this.url = config.url;
