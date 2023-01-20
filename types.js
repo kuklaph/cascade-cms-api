@@ -1373,138 +1373,138 @@
 // ─── Create Request ──────────────────────────────────────────────────────────
 //#region
 /**
-* @typedef {Object} createResponse
-* @property {CreateResponse_Asset} asset - REQUIRED: Asset object container
+* @typedef {Object} createRequest
+* @property {CreateRequest_Asset} asset - REQUIRED: Asset object container
 * - Asset is an aggregate type that includes all possible Cascade Server assets bundled with workflow configuration. When a user does not have the privileges to bypass workflow, this configuration is used to configure the step assignments of the workflow
 
 */
 /**
-* @typedef {Object} CreateResponse_Asset
-* @property {CreateResponseAsset_WorkflowConfiguration} [workflowConfiguration] - NOT REQUIRED: For configuring workflow
-* @property {CreateResponseAsset_FeedBlock} [feedBlock] - One is REQUIRED
-* @property {CreateResponseAsset_IndexBlock} [indexBlock] - One is REQUIRED
-* @property {CreateResponseAsset_TextBlock} [textBlock] - One is REQUIRED
-* @property {CreateResponseAsset_XhtmlDataDefinitionBlock} [xhtmlDataDefinitionBlock] - One is REQUIRED
-* @property {CreateResponseAsset_XmlBlock} [xmlBlock] - One is REQUIRED
-* @property {CreateResponseAsset_File} [file] - One is REQUIRED
-* @property {CreateResponseAsset_Folder} [folder] - One is REQUIRED
-* @property {CreateResponseAsset_Page} [page] - ONE IS REQUIRED
-* @property {CreateResponseAsset_Reference} [reference] - One is REQUIRED
-* @property {CreateResponseAsset_XsltFormat} [xsltFormat] - One is REQUIRED
-* @property {CreateResponseAsset_ScriptFormat} [scriptFormat] - One is REQUIRED
-* @property {CreateResponseAsset_Symlink} [symlink] - One is REQUIRED
-* @property {CreateResponseAsset_Template} [template] - One is REQUIRED
-* @property {CreateResponseAsset_User} [user] - One is REQUIRED
+* @typedef {Object} CreateRequest_Asset
+* @property {CreateRequestAsset_WorkflowConfiguration} [workflowConfiguration] - NOT REQUIRED: For configuring workflow
+* @property {CreateRequestAsset_FeedBlock} [feedBlock] - One is REQUIRED
+* @property {CreateRequestAsset_IndexBlock} [indexBlock] - One is REQUIRED
+* @property {CreateRequestAsset_TextBlock} [textBlock] - One is REQUIRED
+* @property {CreateRequestAsset_XhtmlDataDefinitionBlock} [xhtmlDataDefinitionBlock] - One is REQUIRED
+* @property {CreateRequestAsset_XmlBlock} [xmlBlock] - One is REQUIRED
+* @property {CreateRequestAsset_File} [file] - One is REQUIRED
+* @property {CreateRequestAsset_Folder} [folder] - One is REQUIRED
+* @property {CreateRequestAsset_Page} [page] - ONE IS REQUIRED
+* @property {CreateRequestAsset_Reference} [reference] - One is REQUIRED
+* @property {CreateRequestAsset_XsltFormat} [xsltFormat] - One is REQUIRED
+* @property {CreateRequestAsset_ScriptFormat} [scriptFormat] - One is REQUIRED
+* @property {CreateRequestAsset_Symlink} [symlink] - One is REQUIRED
+* @property {CreateRequestAsset_Template} [template] - One is REQUIRED
+* @property {CreateRequestAsset_User} [user] - One is REQUIRED
 * - Admin area assets (must be manager or higher to access, no workflowConfiguration needed
 
-* @property {CreateResponseAsset_Group} [group] - One is REQUIRED
+* @property {CreateRequestAsset_Group} [group] - One is REQUIRED
 * - Admin area assets (must be manager or higher to access, no workflowConfiguration needed
 
-* @property {CreateResponseAsset_Role} [role] - One is REQUIRED
+* @property {CreateRequestAsset_Role} [role] - One is REQUIRED
 * - Admin area assets (must be manager or higher to access, no workflowConfiguration needed
 
-* @property {CreateResponseAsset_AssetFactory} [assetFactory] - One is REQUIRED
+* @property {CreateRequestAsset_AssetFactory} [assetFactory] - One is REQUIRED
 * - Admin area assets (must be manager or higher to access, no workflowConfiguration needed
 
-* @property {CreateResponseAsset_AssetFactoryContainer} [assetFactoryContainer] - One is REQUIRED
+* @property {CreateRequestAsset_AssetFactoryContainer} [assetFactoryContainer] - One is REQUIRED
 * - Admin area assets (must be manager or higher to access, no workflowConfiguration needed
 
-* @property {CreateResponseAsset_ContentType} [contentType] - One is REQUIRED
+* @property {CreateRequestAsset_ContentType} [contentType] - One is REQUIRED
 * - Admin area assets (must be manager or higher to access, no workflowConfiguration needed
 
-* @property {CreateResponseAsset_ContentTypeContainer} [contentTypeContainer] - One is REQUIRED
+* @property {CreateRequestAsset_ContentTypeContainer} [contentTypeContainer] - One is REQUIRED
 * - Admin area assets (must be manager or higher to access, no workflowConfiguration needed
 
-* @property {CreateResponseAsset_ConnectorContainer} [connectorContainer] - One is REQUIRED
+* @property {CreateRequestAsset_ConnectorContainer} [connectorContainer] - One is REQUIRED
 * - Admin area assets (must be manager or higher to access, no workflowConfiguration needed
 
-* @property {CreateResponseAsset_FacebookConnector} [facebookConnector] - One is REQUIRED
+* @property {CreateRequestAsset_FacebookConnector} [facebookConnector] - One is REQUIRED
 * - Admin area assets (must be manager or higher to access, no workflowConfiguration needed
 
-* @property {CreateResponseAsset_WordPressConnector} [wordPressConnector] - One is REQUIRED
+* @property {CreateRequestAsset_WordPressConnector} [wordPressConnector] - One is REQUIRED
 * - Admin area assets (must be manager or higher to access, no workflowConfiguration needed
 
-* @property {CreateResponseAsset_GoogleAnalyticsConnector} [googleAnalyticsConnector] - One is REQUIRED
+* @property {CreateRequestAsset_GoogleAnalyticsConnector} [googleAnalyticsConnector] - One is REQUIRED
 * - Admin area assets (must be manager or higher to access, no workflowConfiguration needed
 
-* @property {CreateResponseAsset_PageConfigurationSet} [pageConfigurationSet] - One is REQUIRED
+* @property {CreateRequestAsset_PageConfigurationSet} [pageConfigurationSet] - One is REQUIRED
 * - Admin area assets (must be manager or higher to access, no workflowConfiguration needed
 
-* @property {CreateResponseAsset_PageConfigurationSetContainer} [pageConfigurationSetContainer] - One is REQUIRED
+* @property {CreateRequestAsset_PageConfigurationSetContainer} [pageConfigurationSetContainer] - One is REQUIRED
 * - Admin area assets (must be manager or higher to access, no workflowConfiguration needed
 
-* @property {CreateResponseAsset_DataDefinition} [dataDefinition] - One is REQUIRED
+* @property {CreateRequestAsset_DataDefinition} [dataDefinition] - One is REQUIRED
 * - Admin area assets (must be manager or higher to access, no workflowConfiguration needed
 
-* @property {CreateResponseAsset_DataDefinitionContainer} [dataDefinitionContainer] - One is REQUIRED
+* @property {CreateRequestAsset_DataDefinitionContainer} [dataDefinitionContainer] - One is REQUIRED
 * - Admin area assets (must be manager or higher to access, no workflowConfiguration needed
 
-* @property {CreateResponseAsset_SharedField} [sharedField] - One is REQUIRED
+* @property {CreateRequestAsset_SharedField} [sharedField] - One is REQUIRED
 * - Admin area assets (must be manager or higher to access, no workflowConfiguration needed
 
-* @property {CreateResponseAsset_SharedFieldContainer} [sharedFieldContainer] - One is REQUIRED
+* @property {CreateRequestAsset_SharedFieldContainer} [sharedFieldContainer] - One is REQUIRED
 * - Admin area assets (must be manager or higher to access, no workflowConfiguration needed
 
-* @property {CreateResponseAsset_MetadataSet} [metadataSet] - One is REQUIRED
+* @property {CreateRequestAsset_MetadataSet} [metadataSet] - One is REQUIRED
 * - Admin area assets (must be manager or higher to access, no workflowConfiguration needed
 
-* @property {CreateResponseAsset_MetadataSetContainer} [metadataSetContainer] - One is REQUIRED
+* @property {CreateRequestAsset_MetadataSetContainer} [metadataSetContainer] - One is REQUIRED
 * - Admin area assets (must be manager or higher to access, no workflowConfiguration needed
 
-* @property {CreateResponseAsset_PublishSet} [publishSet] - One is REQUIRED
+* @property {CreateRequestAsset_PublishSet} [publishSet] - One is REQUIRED
 * - Admin area assets (must be manager or higher to access, no workflowConfiguration needed
 
-* @property {CreateResponseAsset_PublishSetContainer} [publishSetContainer] - One is REQUIRED
+* @property {CreateRequestAsset_PublishSetContainer} [publishSetContainer] - One is REQUIRED
 * - Admin area assets (must be manager or higher to access, no workflowConfiguration needed
 
-* @property {CreateResponseAsset_Target} [target] - One is REQUIRED
+* @property {CreateRequestAsset_Target} [target] - One is REQUIRED
 * - Admin area assets (must be manager or higher to access, no workflowConfiguration needed
 
-* @property {CreateResponseAsset_SiteDestinationContainer} [siteDestinationContainer] - One is REQUIRED
+* @property {CreateRequestAsset_SiteDestinationContainer} [siteDestinationContainer] - One is REQUIRED
 * - Admin area assets (must be manager or higher to access, no workflowConfiguration needed
 
-* @property {CreateResponseAsset_Destination} [destination] - One is REQUIRED
+* @property {CreateRequestAsset_Destination} [destination] - One is REQUIRED
 * - Admin area assets (must be manager or higher to access, no workflowConfiguration needed
 
-* @property {CreateResponseAsset_FileSystemTransport} [fileSystemTransport] - One is REQUIRED
+* @property {CreateRequestAsset_FileSystemTransport} [fileSystemTransport] - One is REQUIRED
 * - Admin area assets (must be manager or higher to access, no workflowConfiguration needed
 
-* @property {CreateResponseAsset_FtpTransport} [ftpTransport] - One is REQUIRED
+* @property {CreateRequestAsset_FtpTransport} [ftpTransport] - One is REQUIRED
 * - Admin area assets (must be manager or higher to access, no workflowConfiguration needed
 
-* @property {CreateResponseAsset_DatabaseTransport} [databaseTransport] - One is REQUIRED
+* @property {CreateRequestAsset_DatabaseTransport} [databaseTransport] - One is REQUIRED
 * - Admin area assets (must be manager or higher to access, no workflowConfiguration needed
 
-* @property {CreateResponseAsset_CloudTransport} [cloudTransport] - One is REQUIRED
+* @property {CreateRequestAsset_CloudTransport} [cloudTransport] - One is REQUIRED
 * - Admin area assets (must be manager or higher to access, no workflowConfiguration needed
 
-* @property {CreateResponseAsset_TransportContainer} [transportContainer] - One is REQUIRED
+* @property {CreateRequestAsset_TransportContainer} [transportContainer] - One is REQUIRED
 * - Admin area assets (must be manager or higher to access, no workflowConfiguration needed
 
-* @property {CreateResponseAsset_WorkflowDefinition} [workflowDefinition] - One is REQUIRED
+* @property {CreateRequestAsset_WorkflowDefinition} [workflowDefinition] - One is REQUIRED
 * - Admin area assets (must be manager or higher to access, no workflowConfiguration needed
 
-* @property {CreateResponseAsset_WorkflowDefinitionContainer} [workflowDefinitionContainer] - One is REQUIRED
+* @property {CreateRequestAsset_WorkflowDefinitionContainer} [workflowDefinitionContainer] - One is REQUIRED
 * - Admin area assets (must be manager or higher to access, no workflowConfiguration needed
 
-* @property {CreateResponseAsset_WorkflowEmail} [workflowEmail] - One is REQUIRED
+* @property {CreateRequestAsset_WorkflowEmail} [workflowEmail] - One is REQUIRED
 * - Admin area assets (must be manager or higher to access, no workflowConfiguration needed
 
-* @property {CreateResponseAsset_WorkflowEmailContainer} [workflowEmailContainer] - One is REQUIRED
+* @property {CreateRequestAsset_WorkflowEmailContainer} [workflowEmailContainer] - One is REQUIRED
 * - Admin area assets (must be manager or higher to access, no workflowConfiguration needed
 
-* @property {CreateResponseAsset_TwitterFeedBlock} [twitterFeedBlock] - One is REQUIRED
+* @property {CreateRequestAsset_TwitterFeedBlock} [twitterFeedBlock] - One is REQUIRED
 * - Admin area assets (must be manager or higher to access, no workflowConfiguration needed
 
-* @property {CreateResponseAsset_Site} [site] - One is REQUIRED
+* @property {CreateRequestAsset_Site} [site] - One is REQUIRED
 * - Admin area assets (must be manager or higher to access, no workflowConfiguration needed
 
-* @property {CreateResponseAsset_EditorConfiguration} [editorConfiguration] - One is REQUIRED
+* @property {CreateRequestAsset_EditorConfiguration} [editorConfiguration] - One is REQUIRED
 * - Admin area assets (must be manager or higher to access, no workflowConfiguration needed
 
 */
 /**
-* @typedef {Object} CreateResponseAsset_WorkflowConfiguration
+* @typedef {Object} CreateRequestAsset_WorkflowConfiguration
 * @property {string} workflowName - REQUIRED: When the workflow is instantiated, this will be its name
 * @property {string} [workflowDefinitionId] - One is REQUIRED
 * - Priority: workflowDefinitionId > workflowDefinitionPath
@@ -1515,18 +1515,18 @@
 * - Which workflow definition to use
 
 * @property {string} workflowComments - REQUIRED: The comments for this operation which will be recorded with the workflow
-* @property {CreateResponseAssetWorkflowConfiguration_WorkflowStepConfigurations[]} [workflowStepConfigurations] - NOT REQUIRED default: the defaults as defined in the workflow definition
+* @property {CreateRequestAssetWorkflowConfiguration_WorkflowStepConfigurations[]} [workflowStepConfigurations] - NOT REQUIRED default: the defaults as defined in the workflow definition
 * - The optional step configurations for each assignable step in the workflow
 
 * @property {string} [endDate] - NOT REQUIRED
 */
 /**
- * @typedef {Object} CreateResponseAssetWorkflowConfiguration_WorkflowStepConfigurations
+ * @typedef {Object} CreateRequestAssetWorkflowConfiguration_WorkflowStepConfigurations
  * @property {string} stepIdentifier - REQUIRED: The step's unique text identifier/name
  * @property {string} stepAssignment - REQUIRED: The step's assignment (user or group name)
  */
 /**
-* @typedef {Object} CreateResponseAsset_FeedBlock
+* @typedef {Object} CreateRequestAsset_FeedBlock
 * @property {string} id
 * @property {string} name - REQUIRED
 * - The name of this page region, for example, 'DEFAULT', or 'JAVASCRIPT-INCLUDE'. This MUST correspond to the name of a region defined in the template.
@@ -1550,8 +1550,8 @@
 * @property {string} siteName - One is REQUIRED: siteId | siteName
 * - The Site in which the asset is located
 
-* @property {CreateResponseAssetFeedBlock_Tags} tags
-* @property {CreateResponseAssetFeedBlock_Metadata} metadata
+* @property {CreateRequestAssetFeedBlock_Tags} tags
+* @property {CreateRequestAssetFeedBlock_Metadata} metadata
 * @property {string} metadataSetId
 * @property {string} metadataSetPath
 * @property {boolean} reviewOnSchedule
@@ -1562,17 +1562,17 @@
 * @property {string} feedURL
 */
 /**
- * @typedef {Object} CreateResponseAssetFeedBlock_Tags
- * @property {CreateResponseAssetFeedBlockTags_Tag} tag
+ * @typedef {Object} CreateRequestAssetFeedBlock_Tags
+ * @property {CreateRequestAssetFeedBlockTags_Tag} tag
  */
 /**
-* @typedef {Object} CreateResponseAssetFeedBlockTags_Tag
+* @typedef {Object} CreateRequestAssetFeedBlockTags_Tag
 * @property {string} name - REQUIRED
 * - The name of this page region, for example, 'DEFAULT', or 'JAVASCRIPT-INCLUDE'. This MUST correspond to the name of a region defined in the template.
 
 */
 /**
- * @typedef {Object} CreateResponseAssetFeedBlock_Metadata
+ * @typedef {Object} CreateRequestAssetFeedBlock_Metadata
  * @property {string} author
  * @property {string} displayName
  * @property {string} endDate
@@ -1583,29 +1583,29 @@
  * @property {string} summary
  * @property {string} teaser
  * @property {string} title
- * @property {CreateResponseAssetFeedBlockMetadata_DynamicFields} dynamicFields
+ * @property {CreateRequestAssetFeedBlockMetadata_DynamicFields} dynamicFields
  */
 /**
- * @typedef {Object} CreateResponseAssetFeedBlockMetadata_DynamicFields
- * @property {CreateResponseAssetFeedBlockMetadataDynamicFields_DynamicField} dynamicField
+ * @typedef {Object} CreateRequestAssetFeedBlockMetadata_DynamicFields
+ * @property {CreateRequestAssetFeedBlockMetadataDynamicFields_DynamicField} dynamicField
  */
 /**
-* @typedef {Object} CreateResponseAssetFeedBlockMetadataDynamicFields_DynamicField
+* @typedef {Object} CreateRequestAssetFeedBlockMetadataDynamicFields_DynamicField
 * @property {string} name - REQUIRED
 * - The name of this page region, for example, 'DEFAULT', or 'JAVASCRIPT-INCLUDE'. This MUST correspond to the name of a region defined in the template.
 
-* @property {CreateResponseAssetFeedBlockMetadataDynamicFieldsDynamicField_FieldValues} fieldValues
+* @property {CreateRequestAssetFeedBlockMetadataDynamicFieldsDynamicField_FieldValues} fieldValues
 */
 /**
- * @typedef {Object} CreateResponseAssetFeedBlockMetadataDynamicFieldsDynamicField_FieldValues
- * @property {CreateResponseAssetFeedBlockMetadataDynamicFieldsDynamicFieldFieldValues_FieldValue} fieldValue
+ * @typedef {Object} CreateRequestAssetFeedBlockMetadataDynamicFieldsDynamicField_FieldValues
+ * @property {CreateRequestAssetFeedBlockMetadataDynamicFieldsDynamicFieldFieldValues_FieldValue} fieldValue
  */
 /**
- * @typedef {Object} CreateResponseAssetFeedBlockMetadataDynamicFieldsDynamicFieldFieldValues_FieldValue
+ * @typedef {Object} CreateRequestAssetFeedBlockMetadataDynamicFieldsDynamicFieldFieldValues_FieldValue
  * @property {string} value
  */
 /**
-* @typedef {Object} CreateResponseAsset_IndexBlock
+* @typedef {Object} CreateRequestAsset_IndexBlock
 * @property {string} id
 * @property {string} name - REQUIRED
 * - The name of this page region, for example, 'DEFAULT', or 'JAVASCRIPT-INCLUDE'. This MUST correspond to the name of a region defined in the template.
@@ -1629,8 +1629,8 @@
 * @property {string} siteName - One is REQUIRED: siteId | siteName
 * - The Site in which the asset is located
 
-* @property {CreateResponseAssetIndexBlock_Tags} tags
-* @property {CreateResponseAssetIndexBlock_Metadata} metadata
+* @property {CreateRequestAssetIndexBlock_Tags} tags
+* @property {CreateRequestAssetIndexBlock_Metadata} metadata
 * @property {string} metadataSetId
 * @property {string} metadataSetPath
 * @property {boolean} reviewOnSchedule
@@ -1664,17 +1664,17 @@
 * @property {string} pageXML
 */
 /**
- * @typedef {Object} CreateResponseAssetIndexBlock_Tags
- * @property {CreateResponseAssetIndexBlockTags_Tag} tag
+ * @typedef {Object} CreateRequestAssetIndexBlock_Tags
+ * @property {CreateRequestAssetIndexBlockTags_Tag} tag
  */
 /**
-* @typedef {Object} CreateResponseAssetIndexBlockTags_Tag
+* @typedef {Object} CreateRequestAssetIndexBlockTags_Tag
 * @property {string} name - REQUIRED
 * - The name of this page region, for example, 'DEFAULT', or 'JAVASCRIPT-INCLUDE'. This MUST correspond to the name of a region defined in the template.
 
 */
 /**
- * @typedef {Object} CreateResponseAssetIndexBlock_Metadata
+ * @typedef {Object} CreateRequestAssetIndexBlock_Metadata
  * @property {string} author
  * @property {string} displayName
  * @property {string} endDate
@@ -1685,29 +1685,29 @@
  * @property {string} summary
  * @property {string} teaser
  * @property {string} title
- * @property {CreateResponseAssetIndexBlockMetadata_DynamicFields} dynamicFields
+ * @property {CreateRequestAssetIndexBlockMetadata_DynamicFields} dynamicFields
  */
 /**
- * @typedef {Object} CreateResponseAssetIndexBlockMetadata_DynamicFields
- * @property {CreateResponseAssetIndexBlockMetadataDynamicFields_DynamicField} dynamicField
+ * @typedef {Object} CreateRequestAssetIndexBlockMetadata_DynamicFields
+ * @property {CreateRequestAssetIndexBlockMetadataDynamicFields_DynamicField} dynamicField
  */
 /**
-* @typedef {Object} CreateResponseAssetIndexBlockMetadataDynamicFields_DynamicField
+* @typedef {Object} CreateRequestAssetIndexBlockMetadataDynamicFields_DynamicField
 * @property {string} name - REQUIRED
 * - The name of this page region, for example, 'DEFAULT', or 'JAVASCRIPT-INCLUDE'. This MUST correspond to the name of a region defined in the template.
 
-* @property {CreateResponseAssetIndexBlockMetadataDynamicFieldsDynamicField_FieldValues} fieldValues
+* @property {CreateRequestAssetIndexBlockMetadataDynamicFieldsDynamicField_FieldValues} fieldValues
 */
 /**
- * @typedef {Object} CreateResponseAssetIndexBlockMetadataDynamicFieldsDynamicField_FieldValues
- * @property {CreateResponseAssetIndexBlockMetadataDynamicFieldsDynamicFieldFieldValues_FieldValue} fieldValue
+ * @typedef {Object} CreateRequestAssetIndexBlockMetadataDynamicFieldsDynamicField_FieldValues
+ * @property {CreateRequestAssetIndexBlockMetadataDynamicFieldsDynamicFieldFieldValues_FieldValue} fieldValue
  */
 /**
- * @typedef {Object} CreateResponseAssetIndexBlockMetadataDynamicFieldsDynamicFieldFieldValues_FieldValue
+ * @typedef {Object} CreateRequestAssetIndexBlockMetadataDynamicFieldsDynamicFieldFieldValues_FieldValue
  * @property {string} value
  */
 /**
-* @typedef {Object} CreateResponseAsset_TextBlock
+* @typedef {Object} CreateRequestAsset_TextBlock
 * @property {string} id
 * @property {string} name - REQUIRED
 * - The name of this page region, for example, 'DEFAULT', or 'JAVASCRIPT-INCLUDE'. This MUST correspond to the name of a region defined in the template.
@@ -1731,8 +1731,8 @@
 * @property {string} siteName - One is REQUIRED: siteId | siteName
 * - The Site in which the asset is located
 
-* @property {CreateResponseAssetTextBlock_Tags} tags
-* @property {CreateResponseAssetTextBlock_Metadata} metadata
+* @property {CreateRequestAssetTextBlock_Tags} tags
+* @property {CreateRequestAssetTextBlock_Metadata} metadata
 * @property {string} metadataSetId
 * @property {string} metadataSetPath
 * @property {boolean} reviewOnSchedule
@@ -1743,17 +1743,17 @@
 * @property {string} text
 */
 /**
- * @typedef {Object} CreateResponseAssetTextBlock_Tags
- * @property {CreateResponseAssetTextBlockTags_Tag} tag
+ * @typedef {Object} CreateRequestAssetTextBlock_Tags
+ * @property {CreateRequestAssetTextBlockTags_Tag} tag
  */
 /**
-* @typedef {Object} CreateResponseAssetTextBlockTags_Tag
+* @typedef {Object} CreateRequestAssetTextBlockTags_Tag
 * @property {string} name - REQUIRED
 * - The name of this page region, for example, 'DEFAULT', or 'JAVASCRIPT-INCLUDE'. This MUST correspond to the name of a region defined in the template.
 
 */
 /**
- * @typedef {Object} CreateResponseAssetTextBlock_Metadata
+ * @typedef {Object} CreateRequestAssetTextBlock_Metadata
  * @property {string} author
  * @property {string} displayName
  * @property {string} endDate
@@ -1764,29 +1764,29 @@
  * @property {string} summary
  * @property {string} teaser
  * @property {string} title
- * @property {CreateResponseAssetTextBlockMetadata_DynamicFields} dynamicFields
+ * @property {CreateRequestAssetTextBlockMetadata_DynamicFields} dynamicFields
  */
 /**
- * @typedef {Object} CreateResponseAssetTextBlockMetadata_DynamicFields
- * @property {CreateResponseAssetTextBlockMetadataDynamicFields_DynamicField} dynamicField
+ * @typedef {Object} CreateRequestAssetTextBlockMetadata_DynamicFields
+ * @property {CreateRequestAssetTextBlockMetadataDynamicFields_DynamicField} dynamicField
  */
 /**
-* @typedef {Object} CreateResponseAssetTextBlockMetadataDynamicFields_DynamicField
+* @typedef {Object} CreateRequestAssetTextBlockMetadataDynamicFields_DynamicField
 * @property {string} name - REQUIRED
 * - The name of this page region, for example, 'DEFAULT', or 'JAVASCRIPT-INCLUDE'. This MUST correspond to the name of a region defined in the template.
 
-* @property {CreateResponseAssetTextBlockMetadataDynamicFieldsDynamicField_FieldValues} fieldValues
+* @property {CreateRequestAssetTextBlockMetadataDynamicFieldsDynamicField_FieldValues} fieldValues
 */
 /**
- * @typedef {Object} CreateResponseAssetTextBlockMetadataDynamicFieldsDynamicField_FieldValues
- * @property {CreateResponseAssetTextBlockMetadataDynamicFieldsDynamicFieldFieldValues_FieldValue} fieldValue
+ * @typedef {Object} CreateRequestAssetTextBlockMetadataDynamicFieldsDynamicField_FieldValues
+ * @property {CreateRequestAssetTextBlockMetadataDynamicFieldsDynamicFieldFieldValues_FieldValue} fieldValue
  */
 /**
- * @typedef {Object} CreateResponseAssetTextBlockMetadataDynamicFieldsDynamicFieldFieldValues_FieldValue
+ * @typedef {Object} CreateRequestAssetTextBlockMetadataDynamicFieldsDynamicFieldFieldValues_FieldValue
  * @property {string} value
  */
 /**
-* @typedef {Object} CreateResponseAsset_XhtmlDataDefinitionBlock
+* @typedef {Object} CreateRequestAsset_XhtmlDataDefinitionBlock
 * @property {string} id
 * @property {string} name - REQUIRED
 * - The name of this page region, for example, 'DEFAULT', or 'JAVASCRIPT-INCLUDE'. This MUST correspond to the name of a region defined in the template.
@@ -1810,8 +1810,8 @@
 * @property {string} siteName - One is REQUIRED: siteId | siteName
 * - The Site in which the asset is located
 
-* @property {CreateResponseAssetXhtmlDataDefinitionBlock_Tags} tags
-* @property {CreateResponseAssetXhtmlDataDefinitionBlock_Metadata} metadata
+* @property {CreateRequestAssetXhtmlDataDefinitionBlock_Tags} tags
+* @property {CreateRequestAssetXhtmlDataDefinitionBlock_Metadata} metadata
 * @property {string} metadataSetId
 * @property {string} metadataSetPath
 * @property {boolean} reviewOnSchedule
@@ -1819,7 +1819,7 @@
 * @property {string} expirationFolderId
 * @property {string} expirationFolderPath
 * @property {boolean} expirationFolderRecycled
-* @property {CreateResponseAssetXhtmlDataDefinitionBlock_StructuredData} structuredData - One is REQUIRED: structuredData | xhtml
+* @property {CreateRequestAssetXhtmlDataDefinitionBlock_StructuredData} structuredData - One is REQUIRED: structuredData | xhtml
 * - Priority: xhtml > structuredData
 * - A page either contains XHTML content (plain WYSIWYG page) or structured data content
 * - Page structured data information
@@ -1830,17 +1830,17 @@
 
 */
 /**
- * @typedef {Object} CreateResponseAssetXhtmlDataDefinitionBlock_Tags
- * @property {CreateResponseAssetXhtmlDataDefinitionBlockTags_Tag} tag
+ * @typedef {Object} CreateRequestAssetXhtmlDataDefinitionBlock_Tags
+ * @property {CreateRequestAssetXhtmlDataDefinitionBlockTags_Tag} tag
  */
 /**
-* @typedef {Object} CreateResponseAssetXhtmlDataDefinitionBlockTags_Tag
+* @typedef {Object} CreateRequestAssetXhtmlDataDefinitionBlockTags_Tag
 * @property {string} name - REQUIRED
 * - The name of this page region, for example, 'DEFAULT', or 'JAVASCRIPT-INCLUDE'. This MUST correspond to the name of a region defined in the template.
 
 */
 /**
- * @typedef {Object} CreateResponseAssetXhtmlDataDefinitionBlock_Metadata
+ * @typedef {Object} CreateRequestAssetXhtmlDataDefinitionBlock_Metadata
  * @property {string} author
  * @property {string} displayName
  * @property {string} endDate
@@ -1851,39 +1851,39 @@
  * @property {string} summary
  * @property {string} teaser
  * @property {string} title
- * @property {CreateResponseAssetXhtmlDataDefinitionBlockMetadata_DynamicFields} dynamicFields
+ * @property {CreateRequestAssetXhtmlDataDefinitionBlockMetadata_DynamicFields} dynamicFields
  */
 /**
- * @typedef {Object} CreateResponseAssetXhtmlDataDefinitionBlockMetadata_DynamicFields
- * @property {CreateResponseAssetXhtmlDataDefinitionBlockMetadataDynamicFields_DynamicField} dynamicField
+ * @typedef {Object} CreateRequestAssetXhtmlDataDefinitionBlockMetadata_DynamicFields
+ * @property {CreateRequestAssetXhtmlDataDefinitionBlockMetadataDynamicFields_DynamicField} dynamicField
  */
 /**
-* @typedef {Object} CreateResponseAssetXhtmlDataDefinitionBlockMetadataDynamicFields_DynamicField
+* @typedef {Object} CreateRequestAssetXhtmlDataDefinitionBlockMetadataDynamicFields_DynamicField
 * @property {string} name - REQUIRED
 * - The name of this page region, for example, 'DEFAULT', or 'JAVASCRIPT-INCLUDE'. This MUST correspond to the name of a region defined in the template.
 
-* @property {CreateResponseAssetXhtmlDataDefinitionBlockMetadataDynamicFieldsDynamicField_FieldValues} fieldValues
+* @property {CreateRequestAssetXhtmlDataDefinitionBlockMetadataDynamicFieldsDynamicField_FieldValues} fieldValues
 */
 /**
- * @typedef {Object} CreateResponseAssetXhtmlDataDefinitionBlockMetadataDynamicFieldsDynamicField_FieldValues
- * @property {CreateResponseAssetXhtmlDataDefinitionBlockMetadataDynamicFieldsDynamicFieldFieldValues_FieldValue} fieldValue
+ * @typedef {Object} CreateRequestAssetXhtmlDataDefinitionBlockMetadataDynamicFieldsDynamicField_FieldValues
+ * @property {CreateRequestAssetXhtmlDataDefinitionBlockMetadataDynamicFieldsDynamicFieldFieldValues_FieldValue} fieldValue
  */
 /**
- * @typedef {Object} CreateResponseAssetXhtmlDataDefinitionBlockMetadataDynamicFieldsDynamicFieldFieldValues_FieldValue
+ * @typedef {Object} CreateRequestAssetXhtmlDataDefinitionBlockMetadataDynamicFieldsDynamicFieldFieldValues_FieldValue
  * @property {string} value
  */
 /**
- * @typedef {Object} CreateResponseAssetXhtmlDataDefinitionBlock_StructuredData
+ * @typedef {Object} CreateRequestAssetXhtmlDataDefinitionBlock_StructuredData
  * @property {string} definitionId
  * @property {string} definitionPath
- * @property {CreateResponseAssetXhtmlDataDefinitionBlockStructuredData_StructuredDataNodes} structuredDataNodes
+ * @property {CreateRequestAssetXhtmlDataDefinitionBlockStructuredData_StructuredDataNodes} structuredDataNodes
  */
 /**
- * @typedef {Object} CreateResponseAssetXhtmlDataDefinitionBlockStructuredData_StructuredDataNodes
- * @property {CreateResponseAssetXhtmlDataDefinitionBlockStructuredDataStructuredDataNodes_StructuredDataNode} structuredDataNode
+ * @typedef {Object} CreateRequestAssetXhtmlDataDefinitionBlockStructuredData_StructuredDataNodes
+ * @property {CreateRequestAssetXhtmlDataDefinitionBlockStructuredDataStructuredDataNodes_StructuredDataNode} structuredDataNode
  */
 /**
-* @typedef {Object} CreateResponseAssetXhtmlDataDefinitionBlockStructuredDataStructuredDataNodes_StructuredDataNode
+* @typedef {Object} CreateRequestAssetXhtmlDataDefinitionBlockStructuredDataStructuredDataNodes_StructuredDataNode
 * @property {string} type - REQUIRED: Each node has a type
 * @property {string} identifier - REQUIRED
 * - The text identifier of the node coming from corresponding field in Data Definition. If this node is preserved on the asset but corresponding field no longer exists in Data Definition, the identifier's value will be '<legacy>'.
@@ -1902,7 +1902,7 @@
 * @property {boolean} recycled
 */
 /**
-* @typedef {Object} CreateResponseAsset_XmlBlock
+* @typedef {Object} CreateRequestAsset_XmlBlock
 * @property {string} id
 * @property {string} name - REQUIRED
 * - The name of this page region, for example, 'DEFAULT', or 'JAVASCRIPT-INCLUDE'. This MUST correspond to the name of a region defined in the template.
@@ -1918,7 +1918,7 @@
 * @property {string} path
 * @property {string} lastModifiedDate
 * @property {string} lastModifiedBy
-* @property {CreateResponseAssetXmlBlock_Metadata} metadata
+* @property {CreateRequestAssetXmlBlock_Metadata} metadata
 * @property {string} metadataSetId
 * @property {string} metadataSetPath
 * @property {boolean} reviewOnSchedule
@@ -1929,7 +1929,7 @@
 * @property {string} xml
 */
 /**
- * @typedef {Object} CreateResponseAssetXmlBlock_Metadata
+ * @typedef {Object} CreateRequestAssetXmlBlock_Metadata
  * @property {string} author
  * @property {string} displayName
  * @property {string} endDate
@@ -1937,7 +1937,7 @@
  * @property {string} metaDescription
  */
 /**
-* @typedef {Object} CreateResponseAsset_File
+* @typedef {Object} CreateRequestAsset_File
 * @property {string} id
 * @property {string} name - REQUIRED
 * - The name of this page region, for example, 'DEFAULT', or 'JAVASCRIPT-INCLUDE'. This MUST correspond to the name of a region defined in the template.
@@ -1953,7 +1953,7 @@
 * @property {string} path
 * @property {string} lastModifiedDate
 * @property {string} lastModifiedBy
-* @property {CreateResponseAssetFile_Metadata} metadata
+* @property {CreateRequestAssetFile_Metadata} metadata
 * @property {string} metadataSetId
 * @property {string} metadataSetPath
 * @property {boolean} reviewOnSchedule
@@ -1971,7 +1971,7 @@
 * @property {string} linkRewriting
 */
 /**
- * @typedef {Object} CreateResponseAssetFile_Metadata
+ * @typedef {Object} CreateRequestAssetFile_Metadata
  * @property {string} author
  * @property {string} displayName
  * @property {string} endDate
@@ -1979,7 +1979,7 @@
  * @property {string} metaDescription
  */
 /**
-* @typedef {Object} CreateResponseAsset_Folder
+* @typedef {Object} CreateRequestAsset_Folder
 * @property {string} id
 * @property {string} name - REQUIRED
 * - The name of this page region, for example, 'DEFAULT', or 'JAVASCRIPT-INCLUDE'. This MUST correspond to the name of a region defined in the template.
@@ -1995,7 +1995,7 @@
 * @property {string} path
 * @property {string} lastModifiedDate
 * @property {string} lastModifiedBy
-* @property {CreateResponseAssetFolder_Metadata} metadata
+* @property {CreateRequestAssetFolder_Metadata} metadata
 * @property {string} metadataSetId
 * @property {string} metadataSetPath
 * @property {boolean} reviewOnSchedule
@@ -2007,11 +2007,11 @@
 * @property {boolean} shouldBeIndexed
 * @property {string} lastPublishedDate
 * @property {string} lastPublishedBy
-* @property {CreateResponseAssetFolder_Children} children
+* @property {CreateRequestAssetFolder_Children} children
 * @property {boolean} includeInStaleContent
 */
 /**
- * @typedef {Object} CreateResponseAssetFolder_Metadata
+ * @typedef {Object} CreateRequestAssetFolder_Metadata
  * @property {string} author
  * @property {string} displayName
  * @property {string} endDate
@@ -2019,18 +2019,18 @@
  * @property {string} metaDescription
  */
 /**
- * @typedef {Object} CreateResponseAssetFolder_Children
- * @property {CreateResponseAssetFolderChildren_Child} child
+ * @typedef {Object} CreateRequestAssetFolder_Children
+ * @property {CreateRequestAssetFolderChildren_Child} child
  */
 /**
- * @typedef {Object} CreateResponseAssetFolderChildren_Child
+ * @typedef {Object} CreateRequestAssetFolderChildren_Child
  * @property {string} id
- * @property {CreateResponseAssetFolderChildrenChild_Path} path
+ * @property {CreateRequestAssetFolderChildrenChild_Path} path
  * @property {string} type - REQUIRED: Each node has a type
  * @property {boolean} recycled
  */
 /**
-* @typedef {Object} CreateResponseAssetFolderChildrenChild_Path
+* @typedef {Object} CreateRequestAssetFolderChildrenChild_Path
 * @property {string} path
 * @property {string} siteId - One is REQUIRED: siteId | siteName
 * - The Site in which the asset is located
@@ -2040,7 +2040,7 @@
 
 */
 /**
-* @typedef {Object} CreateResponseAsset_Page
+* @typedef {Object} CreateRequestAsset_Page
 * @property {string} [id] - The id of the asset. When creating, this should not be present as an asset does not have an id until it is created. When editing, specify this to uniquely identify an asset.
 * @property {string} name - REQUIRED
 * - The name of this page region, for example, 'DEFAULT', or 'JAVASCRIPT-INCLUDE'. This MUST correspond to the name of a region defined in the template.
@@ -2068,7 +2068,7 @@
 * - The Site in which the asset is located
 
 * @property {string} [tags] - NOT REQUIRED: Content Tags assigned to the asset
-* @property {CreateResponseAssetPage_Metadata} [metadata] - NOT REQUIRED default: all empty
+* @property {CreateRequestAssetPage_Metadata} [metadata] - NOT REQUIRED default: all empty
 * - The individual wired metadata fields
 * - The content of the wired metadata fields. None of the fields are required and the defaults are empty
 
@@ -2112,18 +2112,18 @@
 * - Priority: xhtml > structuredData
 * - A page either contains XHTML content (plain WYSIWYG page) or structured data content
 
-* @property {CreateResponseAssetPage_StructuredData} structuredData - One is REQUIRED: structuredData | xhtml
+* @property {CreateRequestAssetPage_StructuredData} structuredData - One is REQUIRED: structuredData | xhtml
 * - Priority: xhtml > structuredData
 * - A page either contains XHTML content (plain WYSIWYG page) or structured data content
 * - Page structured data information
 
-* @property {CreateResponseAssetPage_PageConfigurations[]} [pageConfigurations] - NOT REQUIRED when creating a page, but you must submit assignment information when editing if you want to maintain the region assignments
+* @property {CreateRequestAssetPage_PageConfigurations[]} [pageConfigurations] - NOT REQUIRED when creating a page, but you must submit assignment information when editing if you want to maintain the region assignments
 * - The page configurations containing page-level region block/format assignments
 
 * @property {"inherit" | "absolute" | "relative" | "site-relative"} [linkRewriting] - NOT REQUIRED: default: inherit
 */
 /**
- * @typedef {Object} CreateResponseAssetPage_Metadata
+ * @typedef {Object} CreateRequestAssetPage_Metadata
  * @property {string} [author] - NOT REQUIRED
  * @property {string} [displayName] - NOT REQUIRED
  * @property {string} [endDate] - NOT REQUIRED
@@ -2134,19 +2134,19 @@
  * @property {string} [summary] - NOT REQUIRED
  * @property {string} [teaser] - NOT REQUIRED
  * @property {string} [title] - NOT REQUIRED
- * @property {CreateResponseAssetPageMetadata_DynamicFields[]} [dynamicFields] - NOT REQUIRED: Array
+ * @property {CreateRequestAssetPageMetadata_DynamicFields[]} [dynamicFields] - NOT REQUIRED: Array
  */
 /**
- * @typedef {Object} CreateResponseAssetPageMetadata_DynamicFields
+ * @typedef {Object} CreateRequestAssetPageMetadata_DynamicFields
  * @property {string} [name] - NOT REQUIRED
- * @property {CreateResponseAssetPageMetadataDynamicFields_FieldValues[]} [fieldValues] - NOT REQUIRED: Array
+ * @property {CreateRequestAssetPageMetadataDynamicFields_FieldValues[]} [fieldValues] - NOT REQUIRED: Array
  */
 /**
- * @typedef {Object} CreateResponseAssetPageMetadataDynamicFields_FieldValues
+ * @typedef {Object} CreateRequestAssetPageMetadataDynamicFields_FieldValues
  * @property {string} [value] - NOT REQUIRED
  */
 /**
-* @typedef {Object} CreateResponseAssetPage_StructuredData
+* @typedef {Object} CreateRequestAssetPage_StructuredData
 * @property {string} [definitionId] - NOT REQUIRED
 * - Priority: definitionId > definitionPath
 * - For defining an asset's Data Definition relationship
@@ -2155,15 +2155,15 @@
 * - Priority: definitionId > definitionPath
 * - For defining an asset's Data Definition relationship
 
-* @property {CreateResponseAssetPageStructuredData_StructuredDataNodes[]} [structuredDataNodes] - NOT REQUIRED: An array of structured data nodes
+* @property {CreateRequestAssetPageStructuredData_StructuredDataNodes[]} [structuredDataNodes] - NOT REQUIRED: An array of structured data nodes
 */
 /**
-* @typedef {Object} CreateResponseAssetPageStructuredData_StructuredDataNodes
+* @typedef {Object} CreateRequestAssetPageStructuredData_StructuredDataNodes
 * @property {string} type - REQUIRED: Each node has a type
 * @property {string} identifier - REQUIRED
 * - The text identifier of the node coming from corresponding field in Data Definition. If this node is preserved on the asset but corresponding field no longer exists in Data Definition, the identifier's value will be '<legacy>'.
 
-* @property {CreateResponseAssetPageStructuredData_StructuredDataNodes[]} [structuredDataNodes] - NOT REQUIRED: An array of structured data nodes
+* @property {any[]} [structuredDataNodes] - NOT REQUIRED: An array of structured data nodes
 * @property {string} [text] - REQUIRED if type is 'text'
 * @property {string} [assetType] - REQUIRED if type is 'asset'
 * @property {string} [blockId] - NOT REQUIRED
@@ -2217,7 +2217,7 @@
 
 */
 /**
-* @typedef {Object} CreateResponseAssetPage_PageConfigurations
+* @typedef {Object} CreateRequestAssetPage_PageConfigurations
 * @property {string} name - REQUIRED
 * - The name of this page region, for example, 'DEFAULT', or 'JAVASCRIPT-INCLUDE'. This MUST correspond to the name of a region defined in the template.
 
@@ -2244,7 +2244,7 @@
 * - The format assigned at this page region, can be either xslt or script
 
 * @property {boolean} [formatRecycled] - NOT REQUIRED: For reading purposes only. Ignored when editing, copying etc.
-* @property {CreateResponseAssetPagePageConfigurations_PageRegions[]} [pageRegions] - NOT REQUIRED: The individual page region assignments for this configuration
+* @property {CreateRequestAssetPagePageConfigurations_PageRegions[]} [pageRegions] - NOT REQUIRED: The individual page region assignments for this configuration
 * @property {string} [outputExtension] - Only required when in a site
 * - The output file extension, for example '.html'
 
@@ -2258,7 +2258,7 @@
 * @property {string} [id] - The id of the asset. When creating, this should not be present as an asset does not have an id until it is created. When editing, specify this to uniquely identify an asset.
 */
 /**
-* @typedef {Object} CreateResponseAssetPagePageConfigurations_PageRegions
+* @typedef {Object} CreateRequestAssetPagePageConfigurations_PageRegions
 * @property {string} name - REQUIRED
 * - The name of this page region, for example, 'DEFAULT', or 'JAVASCRIPT-INCLUDE'. This MUST correspond to the name of a region defined in the template.
 
@@ -2295,7 +2295,7 @@
 * @property {string} [id] - The id of the asset. When creating, this should not be present as an asset does not have an id until it is created. When editing, specify this to uniquely identify an asset.
 */
 /**
-* @typedef {Object} CreateResponseAsset_Reference
+* @typedef {Object} CreateRequestAsset_Reference
 * @property {string} id
 * @property {string} name - REQUIRED
 * - The name of this page region, for example, 'DEFAULT', or 'JAVASCRIPT-INCLUDE'. This MUST correspond to the name of a region defined in the template.
@@ -2316,7 +2316,7 @@
 * @property {string} referencedAssetType
 */
 /**
-* @typedef {Object} CreateResponseAsset_XsltFormat
+* @typedef {Object} CreateRequestAsset_XsltFormat
 * @property {string} id
 * @property {string} name - REQUIRED
 * - The name of this page region, for example, 'DEFAULT', or 'JAVASCRIPT-INCLUDE'. This MUST correspond to the name of a region defined in the template.
@@ -2335,7 +2335,7 @@
 * @property {string} xml
 */
 /**
-* @typedef {Object} CreateResponseAsset_ScriptFormat
+* @typedef {Object} CreateRequestAsset_ScriptFormat
 * @property {string} id
 * @property {string} name - REQUIRED
 * - The name of this page region, for example, 'DEFAULT', or 'JAVASCRIPT-INCLUDE'. This MUST correspond to the name of a region defined in the template.
@@ -2354,7 +2354,7 @@
 * @property {string} script
 */
 /**
-* @typedef {Object} CreateResponseAsset_Symlink
+* @typedef {Object} CreateRequestAsset_Symlink
 * @property {string} id
 * @property {string} name - REQUIRED
 * - The name of this page region, for example, 'DEFAULT', or 'JAVASCRIPT-INCLUDE'. This MUST correspond to the name of a region defined in the template.
@@ -2370,7 +2370,7 @@
 * @property {string} path
 * @property {string} lastModifiedDate
 * @property {string} lastModifiedBy
-* @property {CreateResponseAssetSymlink_Metadata} metadata
+* @property {CreateRequestAssetSymlink_Metadata} metadata
 * @property {string} metadataSetId
 * @property {string} metadataSetPath
 * @property {boolean} reviewOnSchedule
@@ -2381,7 +2381,7 @@
 * @property {string} linkURL
 */
 /**
- * @typedef {Object} CreateResponseAssetSymlink_Metadata
+ * @typedef {Object} CreateRequestAssetSymlink_Metadata
  * @property {string} author
  * @property {string} displayName
  * @property {string} endDate
@@ -2389,7 +2389,7 @@
  * @property {string} metaDescription
  */
 /**
-* @typedef {Object} CreateResponseAsset_Template
+* @typedef {Object} CreateRequestAsset_Template
 * @property {string} id
 * @property {string} name - REQUIRED
 * - The name of this page region, for example, 'DEFAULT', or 'JAVASCRIPT-INCLUDE'. This MUST correspond to the name of a region defined in the template.
@@ -2412,7 +2412,7 @@
 * @property {boolean} formatRecycled
 */
 /**
- * @typedef {Object} CreateResponseAsset_User
+ * @typedef {Object} CreateRequestAsset_User
  * @property {string} username
  * @property {string} fullName
  * @property {string} email
@@ -2420,23 +2420,23 @@
  * @property {string} password
  */
 /**
- * @typedef {Object} CreateResponseAsset_Group
+ * @typedef {Object} CreateRequestAsset_Group
  * @property {string} groupName
  * @property {string} users
  * @property {string} role
  */
 /**
-* @typedef {Object} CreateResponseAsset_Role
+* @typedef {Object} CreateRequestAsset_Role
 * @property {string} id
 * @property {string} name - REQUIRED
 * - The name of this page region, for example, 'DEFAULT', or 'JAVASCRIPT-INCLUDE'. This MUST correspond to the name of a region defined in the template.
 
 * @property {string} roleType
-* @property {CreateResponseAssetRole_GlobalAbilities} globalAbilities
-* @property {CreateResponseAssetRole_SiteAbilities} siteAbilities
+* @property {CreateRequestAssetRole_GlobalAbilities} globalAbilities
+* @property {CreateRequestAssetRole_SiteAbilities} siteAbilities
 */
 /**
- * @typedef {Object} CreateResponseAssetRole_GlobalAbilities
+ * @typedef {Object} CreateRequestAssetRole_GlobalAbilities
  * @property {boolean} bypassAllPermissionsChecks
  * @property {boolean} accessSiteManagement
  * @property {boolean} createSites
@@ -2444,7 +2444,7 @@
  * @property {boolean} accessAudits
  */
 /**
- * @typedef {Object} CreateResponseAssetRole_SiteAbilities
+ * @typedef {Object} CreateRequestAssetRole_SiteAbilities
  * @property {boolean} bypassAllPermissionsChecks
  * @property {boolean} uploadImagesFromWysiwyg
  * @property {boolean} multiSelectCopy
@@ -2452,7 +2452,7 @@
  * @property {boolean} multiSelectMove
  */
 /**
-* @typedef {Object} CreateResponseAsset_AssetFactory
+* @typedef {Object} CreateRequestAsset_AssetFactory
 * @property {string} id
 * @property {string} name - REQUIRED
 * - The name of this page region, for example, 'DEFAULT', or 'JAVASCRIPT-INCLUDE'. This MUST correspond to the name of a region defined in the template.
@@ -2473,7 +2473,7 @@
 * @property {boolean} baseAssetRecycled
 */
 /**
-* @typedef {Object} CreateResponseAsset_AssetFactoryContainer
+* @typedef {Object} CreateRequestAsset_AssetFactoryContainer
 * @property {string} id
 * @property {string} name - REQUIRED
 * - The name of this page region, for example, 'DEFAULT', or 'JAVASCRIPT-INCLUDE'. This MUST correspond to the name of a region defined in the template.
@@ -2489,21 +2489,21 @@
 
 * @property {string} applicableGroups
 * @property {string} description
-* @property {CreateResponseAssetAssetFactoryContainer_Children} children
+* @property {CreateRequestAssetAssetFactoryContainer_Children} children
 */
 /**
- * @typedef {Object} CreateResponseAssetAssetFactoryContainer_Children
- * @property {CreateResponseAssetAssetFactoryContainerChildren_Child} child
+ * @typedef {Object} CreateRequestAssetAssetFactoryContainer_Children
+ * @property {CreateRequestAssetAssetFactoryContainerChildren_Child} child
  */
 /**
- * @typedef {Object} CreateResponseAssetAssetFactoryContainerChildren_Child
+ * @typedef {Object} CreateRequestAssetAssetFactoryContainerChildren_Child
  * @property {string} id
- * @property {CreateResponseAssetAssetFactoryContainerChildrenChild_Path} path
+ * @property {CreateRequestAssetAssetFactoryContainerChildrenChild_Path} path
  * @property {string} type - REQUIRED: Each node has a type
  * @property {boolean} recycled
  */
 /**
-* @typedef {Object} CreateResponseAssetAssetFactoryContainerChildrenChild_Path
+* @typedef {Object} CreateRequestAssetAssetFactoryContainerChildrenChild_Path
 * @property {string} path
 * @property {string} siteId - One is REQUIRED: siteId | siteName
 * - The Site in which the asset is located
@@ -2513,7 +2513,7 @@
 
 */
 /**
-* @typedef {Object} CreateResponseAsset_ContentType
+* @typedef {Object} CreateRequestAsset_ContentType
 * @property {string} id
 * @property {string} name - REQUIRED
 * - The name of this page region, for example, 'DEFAULT', or 'JAVASCRIPT-INCLUDE'. This MUST correspond to the name of a region defined in the template.
@@ -2534,7 +2534,7 @@
 * @property {string} dataDefinitionId
 */
 /**
-* @typedef {Object} CreateResponseAsset_ContentTypeContainer
+* @typedef {Object} CreateRequestAsset_ContentTypeContainer
 * @property {string} id
 * @property {string} name - REQUIRED
 * - The name of this page region, for example, 'DEFAULT', or 'JAVASCRIPT-INCLUDE'. This MUST correspond to the name of a region defined in the template.
@@ -2548,21 +2548,21 @@
 * @property {string} siteName - One is REQUIRED: siteId | siteName
 * - The Site in which the asset is located
 
-* @property {CreateResponseAssetContentTypeContainer_Children} children
+* @property {CreateRequestAssetContentTypeContainer_Children} children
 */
 /**
- * @typedef {Object} CreateResponseAssetContentTypeContainer_Children
- * @property {CreateResponseAssetContentTypeContainerChildren_Child} child
+ * @typedef {Object} CreateRequestAssetContentTypeContainer_Children
+ * @property {CreateRequestAssetContentTypeContainerChildren_Child} child
  */
 /**
- * @typedef {Object} CreateResponseAssetContentTypeContainerChildren_Child
+ * @typedef {Object} CreateRequestAssetContentTypeContainerChildren_Child
  * @property {string} id
- * @property {CreateResponseAssetContentTypeContainerChildrenChild_Path} path
+ * @property {CreateRequestAssetContentTypeContainerChildrenChild_Path} path
  * @property {string} type - REQUIRED: Each node has a type
  * @property {boolean} recycled
  */
 /**
-* @typedef {Object} CreateResponseAssetContentTypeContainerChildrenChild_Path
+* @typedef {Object} CreateRequestAssetContentTypeContainerChildrenChild_Path
 * @property {string} path
 * @property {string} siteId - One is REQUIRED: siteId | siteName
 * - The Site in which the asset is located
@@ -2572,7 +2572,7 @@
 
 */
 /**
-* @typedef {Object} CreateResponseAsset_ConnectorContainer
+* @typedef {Object} CreateRequestAsset_ConnectorContainer
 * @property {string} id
 * @property {string} name - REQUIRED
 * - The name of this page region, for example, 'DEFAULT', or 'JAVASCRIPT-INCLUDE'. This MUST correspond to the name of a region defined in the template.
@@ -2586,21 +2586,21 @@
 * @property {string} siteName - One is REQUIRED: siteId | siteName
 * - The Site in which the asset is located
 
-* @property {CreateResponseAssetConnectorContainer_Children} children
+* @property {CreateRequestAssetConnectorContainer_Children} children
 */
 /**
- * @typedef {Object} CreateResponseAssetConnectorContainer_Children
- * @property {CreateResponseAssetConnectorContainerChildren_Child} child
+ * @typedef {Object} CreateRequestAssetConnectorContainer_Children
+ * @property {CreateRequestAssetConnectorContainerChildren_Child} child
  */
 /**
- * @typedef {Object} CreateResponseAssetConnectorContainerChildren_Child
+ * @typedef {Object} CreateRequestAssetConnectorContainerChildren_Child
  * @property {string} id
- * @property {CreateResponseAssetConnectorContainerChildrenChild_Path} path
+ * @property {CreateRequestAssetConnectorContainerChildrenChild_Path} path
  * @property {string} type - REQUIRED: Each node has a type
  * @property {boolean} recycled
  */
 /**
-* @typedef {Object} CreateResponseAssetConnectorContainerChildrenChild_Path
+* @typedef {Object} CreateRequestAssetConnectorContainerChildrenChild_Path
 * @property {string} path
 * @property {string} siteId - One is REQUIRED: siteId | siteName
 * - The Site in which the asset is located
@@ -2610,7 +2610,7 @@
 
 */
 /**
-* @typedef {Object} CreateResponseAsset_FacebookConnector
+* @typedef {Object} CreateRequestAsset_FacebookConnector
 * @property {string} id
 * @property {string} name - REQUIRED
 * - The name of this page region, for example, 'DEFAULT', or 'JAVASCRIPT-INCLUDE'. This MUST correspond to the name of a region defined in the template.
@@ -2633,7 +2633,7 @@
 * @property {string} destinationPath
 */
 /**
-* @typedef {Object} CreateResponseAsset_WordPressConnector
+* @typedef {Object} CreateRequestAsset_WordPressConnector
 * @property {string} id
 * @property {string} name - REQUIRED
 * - The name of this page region, for example, 'DEFAULT', or 'JAVASCRIPT-INCLUDE'. This MUST correspond to the name of a region defined in the template.
@@ -2654,7 +2654,7 @@
 * @property {string} verifiedDate
 */
 /**
-* @typedef {Object} CreateResponseAsset_GoogleAnalyticsConnector
+* @typedef {Object} CreateRequestAsset_GoogleAnalyticsConnector
 * @property {string} id
 * @property {string} name - REQUIRED
 * - The name of this page region, for example, 'DEFAULT', or 'JAVASCRIPT-INCLUDE'. This MUST correspond to the name of a region defined in the template.
@@ -2675,7 +2675,7 @@
 * @property {string} verifiedDate
 */
 /**
-* @typedef {Object} CreateResponseAsset_PageConfigurationSet
+* @typedef {Object} CreateRequestAsset_PageConfigurationSet
 * @property {string} id
 * @property {string} name - REQUIRED
 * - The name of this page region, for example, 'DEFAULT', or 'JAVASCRIPT-INCLUDE'. This MUST correspond to the name of a region defined in the template.
@@ -2689,14 +2689,14 @@
 * @property {string} siteName - One is REQUIRED: siteId | siteName
 * - The Site in which the asset is located
 
-* @property {CreateResponseAssetPageConfigurationSet_PageConfigurations} pageConfigurations
+* @property {CreateRequestAssetPageConfigurationSet_PageConfigurations} pageConfigurations
 */
 /**
- * @typedef {Object} CreateResponseAssetPageConfigurationSet_PageConfigurations
- * @property {CreateResponseAssetPageConfigurationSetPageConfigurations_PageConfiguration} pageConfiguration
+ * @typedef {Object} CreateRequestAssetPageConfigurationSet_PageConfigurations
+ * @property {CreateRequestAssetPageConfigurationSetPageConfigurations_PageConfiguration} pageConfiguration
  */
 /**
-* @typedef {Object} CreateResponseAssetPageConfigurationSetPageConfigurations_PageConfiguration
+* @typedef {Object} CreateRequestAssetPageConfigurationSetPageConfigurations_PageConfiguration
 * @property {string} id
 * @property {string} name - REQUIRED
 * - The name of this page region, for example, 'DEFAULT', or 'JAVASCRIPT-INCLUDE'. This MUST correspond to the name of a region defined in the template.
@@ -2707,7 +2707,7 @@
 * @property {string} formatId
 */
 /**
-* @typedef {Object} CreateResponseAsset_PageConfigurationSetContainer
+* @typedef {Object} CreateRequestAsset_PageConfigurationSetContainer
 * @property {string} id
 * @property {string} name - REQUIRED
 * - The name of this page region, for example, 'DEFAULT', or 'JAVASCRIPT-INCLUDE'. This MUST correspond to the name of a region defined in the template.
@@ -2721,21 +2721,21 @@
 * @property {string} siteName - One is REQUIRED: siteId | siteName
 * - The Site in which the asset is located
 
-* @property {CreateResponseAssetPageConfigurationSetContainer_Children} children
+* @property {CreateRequestAssetPageConfigurationSetContainer_Children} children
 */
 /**
- * @typedef {Object} CreateResponseAssetPageConfigurationSetContainer_Children
- * @property {CreateResponseAssetPageConfigurationSetContainerChildren_Child} child
+ * @typedef {Object} CreateRequestAssetPageConfigurationSetContainer_Children
+ * @property {CreateRequestAssetPageConfigurationSetContainerChildren_Child} child
  */
 /**
- * @typedef {Object} CreateResponseAssetPageConfigurationSetContainerChildren_Child
+ * @typedef {Object} CreateRequestAssetPageConfigurationSetContainerChildren_Child
  * @property {string} id
- * @property {CreateResponseAssetPageConfigurationSetContainerChildrenChild_Path} path
+ * @property {CreateRequestAssetPageConfigurationSetContainerChildrenChild_Path} path
  * @property {string} type - REQUIRED: Each node has a type
  * @property {boolean} recycled
  */
 /**
-* @typedef {Object} CreateResponseAssetPageConfigurationSetContainerChildrenChild_Path
+* @typedef {Object} CreateRequestAssetPageConfigurationSetContainerChildrenChild_Path
 * @property {string} path
 * @property {string} siteId - One is REQUIRED: siteId | siteName
 * - The Site in which the asset is located
@@ -2745,7 +2745,7 @@
 
 */
 /**
-* @typedef {Object} CreateResponseAsset_DataDefinition
+* @typedef {Object} CreateRequestAsset_DataDefinition
 * @property {string} id
 * @property {string} name - REQUIRED
 * - The name of this page region, for example, 'DEFAULT', or 'JAVASCRIPT-INCLUDE'. This MUST correspond to the name of a region defined in the template.
@@ -2762,7 +2762,7 @@
 * @property {string} xml
 */
 /**
-* @typedef {Object} CreateResponseAsset_DataDefinitionContainer
+* @typedef {Object} CreateRequestAsset_DataDefinitionContainer
 * @property {string} id
 * @property {string} name - REQUIRED
 * - The name of this page region, for example, 'DEFAULT', or 'JAVASCRIPT-INCLUDE'. This MUST correspond to the name of a region defined in the template.
@@ -2776,21 +2776,21 @@
 * @property {string} siteName - One is REQUIRED: siteId | siteName
 * - The Site in which the asset is located
 
-* @property {CreateResponseAssetDataDefinitionContainer_Children} children
+* @property {CreateRequestAssetDataDefinitionContainer_Children} children
 */
 /**
- * @typedef {Object} CreateResponseAssetDataDefinitionContainer_Children
- * @property {CreateResponseAssetDataDefinitionContainerChildren_Child} child
+ * @typedef {Object} CreateRequestAssetDataDefinitionContainer_Children
+ * @property {CreateRequestAssetDataDefinitionContainerChildren_Child} child
  */
 /**
- * @typedef {Object} CreateResponseAssetDataDefinitionContainerChildren_Child
+ * @typedef {Object} CreateRequestAssetDataDefinitionContainerChildren_Child
  * @property {string} id
- * @property {CreateResponseAssetDataDefinitionContainerChildrenChild_Path} path
+ * @property {CreateRequestAssetDataDefinitionContainerChildrenChild_Path} path
  * @property {string} type - REQUIRED: Each node has a type
  * @property {boolean} recycled
  */
 /**
-* @typedef {Object} CreateResponseAssetDataDefinitionContainerChildrenChild_Path
+* @typedef {Object} CreateRequestAssetDataDefinitionContainerChildrenChild_Path
 * @property {string} path
 * @property {string} siteId - One is REQUIRED: siteId | siteName
 * - The Site in which the asset is located
@@ -2800,7 +2800,7 @@
 
 */
 /**
-* @typedef {Object} CreateResponseAsset_SharedField
+* @typedef {Object} CreateRequestAsset_SharedField
 * @property {string} id
 * @property {string} name - REQUIRED
 * - The name of this page region, for example, 'DEFAULT', or 'JAVASCRIPT-INCLUDE'. This MUST correspond to the name of a region defined in the template.
@@ -2817,7 +2817,7 @@
 * @property {string} xml
 */
 /**
-* @typedef {Object} CreateResponseAsset_SharedFieldContainer
+* @typedef {Object} CreateRequestAsset_SharedFieldContainer
 * @property {string} id
 * @property {string} name - REQUIRED
 * - The name of this page region, for example, 'DEFAULT', or 'JAVASCRIPT-INCLUDE'. This MUST correspond to the name of a region defined in the template.
@@ -2831,21 +2831,21 @@
 * @property {string} siteName - One is REQUIRED: siteId | siteName
 * - The Site in which the asset is located
 
-* @property {CreateResponseAssetSharedFieldContainer_Children} children
+* @property {CreateRequestAssetSharedFieldContainer_Children} children
 */
 /**
- * @typedef {Object} CreateResponseAssetSharedFieldContainer_Children
- * @property {CreateResponseAssetSharedFieldContainerChildren_Child} child
+ * @typedef {Object} CreateRequestAssetSharedFieldContainer_Children
+ * @property {CreateRequestAssetSharedFieldContainerChildren_Child} child
  */
 /**
- * @typedef {Object} CreateResponseAssetSharedFieldContainerChildren_Child
+ * @typedef {Object} CreateRequestAssetSharedFieldContainerChildren_Child
  * @property {string} id
- * @property {CreateResponseAssetSharedFieldContainerChildrenChild_Path} path
+ * @property {CreateRequestAssetSharedFieldContainerChildrenChild_Path} path
  * @property {string} type - REQUIRED: Each node has a type
  * @property {boolean} recycled
  */
 /**
-* @typedef {Object} CreateResponseAssetSharedFieldContainerChildrenChild_Path
+* @typedef {Object} CreateRequestAssetSharedFieldContainerChildrenChild_Path
 * @property {string} path
 * @property {string} siteId - One is REQUIRED: siteId | siteName
 * - The Site in which the asset is located
@@ -2855,7 +2855,7 @@
 
 */
 /**
-* @typedef {Object} CreateResponseAsset_MetadataSet
+* @typedef {Object} CreateRequestAsset_MetadataSet
 * @property {string} id
 * @property {string} name - REQUIRED
 * - The name of this page region, for example, 'DEFAULT', or 'JAVASCRIPT-INCLUDE'. This MUST correspond to the name of a region defined in the template.
@@ -2876,7 +2876,7 @@
 * @property {string} descriptionFieldVisibility
 */
 /**
-* @typedef {Object} CreateResponseAsset_MetadataSetContainer
+* @typedef {Object} CreateRequestAsset_MetadataSetContainer
 * @property {string} id
 * @property {string} name - REQUIRED
 * - The name of this page region, for example, 'DEFAULT', or 'JAVASCRIPT-INCLUDE'. This MUST correspond to the name of a region defined in the template.
@@ -2890,21 +2890,21 @@
 * @property {string} siteName - One is REQUIRED: siteId | siteName
 * - The Site in which the asset is located
 
-* @property {CreateResponseAssetMetadataSetContainer_Children} children
+* @property {CreateRequestAssetMetadataSetContainer_Children} children
 */
 /**
- * @typedef {Object} CreateResponseAssetMetadataSetContainer_Children
- * @property {CreateResponseAssetMetadataSetContainerChildren_Child} child
+ * @typedef {Object} CreateRequestAssetMetadataSetContainer_Children
+ * @property {CreateRequestAssetMetadataSetContainerChildren_Child} child
  */
 /**
- * @typedef {Object} CreateResponseAssetMetadataSetContainerChildren_Child
+ * @typedef {Object} CreateRequestAssetMetadataSetContainerChildren_Child
  * @property {string} id
- * @property {CreateResponseAssetMetadataSetContainerChildrenChild_Path} path
+ * @property {CreateRequestAssetMetadataSetContainerChildrenChild_Path} path
  * @property {string} type - REQUIRED: Each node has a type
  * @property {boolean} recycled
  */
 /**
-* @typedef {Object} CreateResponseAssetMetadataSetContainerChildrenChild_Path
+* @typedef {Object} CreateRequestAssetMetadataSetContainerChildrenChild_Path
 * @property {string} path
 * @property {string} siteId - One is REQUIRED: siteId | siteName
 * - The Site in which the asset is located
@@ -2914,7 +2914,7 @@
 
 */
 /**
-* @typedef {Object} CreateResponseAsset_PublishSet
+* @typedef {Object} CreateRequestAsset_PublishSet
 * @property {string} id
 * @property {string} name - REQUIRED
 * - The name of this page region, for example, 'DEFAULT', or 'JAVASCRIPT-INCLUDE'. This MUST correspond to the name of a region defined in the template.
@@ -2928,25 +2928,25 @@
 * @property {string} siteName - One is REQUIRED: siteId | siteName
 * - The Site in which the asset is located
 
-* @property {CreateResponseAssetPublishSet_Files} files
-* @property {CreateResponseAssetPublishSet_Folders} folders
-* @property {CreateResponseAssetPublishSet_Pages} pages
+* @property {CreateRequestAssetPublishSet_Files} files
+* @property {CreateRequestAssetPublishSet_Folders} folders
+* @property {CreateRequestAssetPublishSet_Pages} pages
 * @property {boolean} usesScheduledPublishing
 * @property {string} scheduledPublishDestinationMode
 */
 /**
- * @typedef {Object} CreateResponseAssetPublishSet_Files
- * @property {CreateResponseAssetPublishSetFiles_PublishableAssetIdentifier} publishableAssetIdentifier
+ * @typedef {Object} CreateRequestAssetPublishSet_Files
+ * @property {CreateRequestAssetPublishSetFiles_PublishableAssetIdentifier} publishableAssetIdentifier
  */
 /**
- * @typedef {Object} CreateResponseAssetPublishSetFiles_PublishableAssetIdentifier
+ * @typedef {Object} CreateRequestAssetPublishSetFiles_PublishableAssetIdentifier
  * @property {string} id
- * @property {CreateResponseAssetPublishSetFilesPublishableAssetIdentifier_Path} path
+ * @property {CreateRequestAssetPublishSetFilesPublishableAssetIdentifier_Path} path
  * @property {string} type - REQUIRED: Each node has a type
  * @property {boolean} recycled
  */
 /**
-* @typedef {Object} CreateResponseAssetPublishSetFilesPublishableAssetIdentifier_Path
+* @typedef {Object} CreateRequestAssetPublishSetFilesPublishableAssetIdentifier_Path
 * @property {string} path
 * @property {string} siteId - One is REQUIRED: siteId | siteName
 * - The Site in which the asset is located
@@ -2956,18 +2956,18 @@
 
 */
 /**
- * @typedef {Object} CreateResponseAssetPublishSet_Folders
- * @property {CreateResponseAssetPublishSetFolders_PublishableAssetIdentifier} publishableAssetIdentifier
+ * @typedef {Object} CreateRequestAssetPublishSet_Folders
+ * @property {CreateRequestAssetPublishSetFolders_PublishableAssetIdentifier} publishableAssetIdentifier
  */
 /**
- * @typedef {Object} CreateResponseAssetPublishSetFolders_PublishableAssetIdentifier
+ * @typedef {Object} CreateRequestAssetPublishSetFolders_PublishableAssetIdentifier
  * @property {string} id
- * @property {CreateResponseAssetPublishSetFoldersPublishableAssetIdentifier_Path} path
+ * @property {CreateRequestAssetPublishSetFoldersPublishableAssetIdentifier_Path} path
  * @property {string} type - REQUIRED: Each node has a type
  * @property {boolean} recycled
  */
 /**
-* @typedef {Object} CreateResponseAssetPublishSetFoldersPublishableAssetIdentifier_Path
+* @typedef {Object} CreateRequestAssetPublishSetFoldersPublishableAssetIdentifier_Path
 * @property {string} path
 * @property {string} siteId - One is REQUIRED: siteId | siteName
 * - The Site in which the asset is located
@@ -2977,18 +2977,18 @@
 
 */
 /**
- * @typedef {Object} CreateResponseAssetPublishSet_Pages
- * @property {CreateResponseAssetPublishSetPages_PublishableAssetIdentifier} publishableAssetIdentifier
+ * @typedef {Object} CreateRequestAssetPublishSet_Pages
+ * @property {CreateRequestAssetPublishSetPages_PublishableAssetIdentifier} publishableAssetIdentifier
  */
 /**
- * @typedef {Object} CreateResponseAssetPublishSetPages_PublishableAssetIdentifier
+ * @typedef {Object} CreateRequestAssetPublishSetPages_PublishableAssetIdentifier
  * @property {string} id
- * @property {CreateResponseAssetPublishSetPagesPublishableAssetIdentifier_Path} path
+ * @property {CreateRequestAssetPublishSetPagesPublishableAssetIdentifier_Path} path
  * @property {string} type - REQUIRED: Each node has a type
  * @property {boolean} recycled
  */
 /**
-* @typedef {Object} CreateResponseAssetPublishSetPagesPublishableAssetIdentifier_Path
+* @typedef {Object} CreateRequestAssetPublishSetPagesPublishableAssetIdentifier_Path
 * @property {string} path
 * @property {string} siteId - One is REQUIRED: siteId | siteName
 * - The Site in which the asset is located
@@ -2998,7 +2998,7 @@
 
 */
 /**
-* @typedef {Object} CreateResponseAsset_PublishSetContainer
+* @typedef {Object} CreateRequestAsset_PublishSetContainer
 * @property {string} id
 * @property {string} name - REQUIRED
 * - The name of this page region, for example, 'DEFAULT', or 'JAVASCRIPT-INCLUDE'. This MUST correspond to the name of a region defined in the template.
@@ -3012,21 +3012,21 @@
 * @property {string} siteName - One is REQUIRED: siteId | siteName
 * - The Site in which the asset is located
 
-* @property {CreateResponseAssetPublishSetContainer_Children} children
+* @property {CreateRequestAssetPublishSetContainer_Children} children
 */
 /**
- * @typedef {Object} CreateResponseAssetPublishSetContainer_Children
- * @property {CreateResponseAssetPublishSetContainerChildren_Child} child
+ * @typedef {Object} CreateRequestAssetPublishSetContainer_Children
+ * @property {CreateRequestAssetPublishSetContainerChildren_Child} child
  */
 /**
- * @typedef {Object} CreateResponseAssetPublishSetContainerChildren_Child
+ * @typedef {Object} CreateRequestAssetPublishSetContainerChildren_Child
  * @property {string} id
- * @property {CreateResponseAssetPublishSetContainerChildrenChild_Path} path
+ * @property {CreateRequestAssetPublishSetContainerChildrenChild_Path} path
  * @property {string} type - REQUIRED: Each node has a type
  * @property {boolean} recycled
  */
 /**
-* @typedef {Object} CreateResponseAssetPublishSetContainerChildrenChild_Path
+* @typedef {Object} CreateRequestAssetPublishSetContainerChildrenChild_Path
 * @property {string} path
 * @property {string} siteId - One is REQUIRED: siteId | siteName
 * - The Site in which the asset is located
@@ -3036,7 +3036,7 @@
 
 */
 /**
-* @typedef {Object} CreateResponseAsset_Target
+* @typedef {Object} CreateRequestAsset_Target
 * @property {string} id
 * @property {string} name - REQUIRED
 * - The name of this page region, for example, 'DEFAULT', or 'JAVASCRIPT-INCLUDE'. This MUST correspond to the name of a region defined in the template.
@@ -3048,7 +3048,7 @@
 * @property {string} baseFolderPath
 */
 /**
-* @typedef {Object} CreateResponseAsset_SiteDestinationContainer
+* @typedef {Object} CreateRequestAsset_SiteDestinationContainer
 * @property {string} id
 * @property {string} name - REQUIRED
 * - The name of this page region, for example, 'DEFAULT', or 'JAVASCRIPT-INCLUDE'. This MUST correspond to the name of a region defined in the template.
@@ -3062,21 +3062,21 @@
 * @property {string} siteName - One is REQUIRED: siteId | siteName
 * - The Site in which the asset is located
 
-* @property {CreateResponseAssetSiteDestinationContainer_Children} children
+* @property {CreateRequestAssetSiteDestinationContainer_Children} children
 */
 /**
- * @typedef {Object} CreateResponseAssetSiteDestinationContainer_Children
- * @property {CreateResponseAssetSiteDestinationContainerChildren_Child} child
+ * @typedef {Object} CreateRequestAssetSiteDestinationContainer_Children
+ * @property {CreateRequestAssetSiteDestinationContainerChildren_Child} child
  */
 /**
- * @typedef {Object} CreateResponseAssetSiteDestinationContainerChildren_Child
+ * @typedef {Object} CreateRequestAssetSiteDestinationContainerChildren_Child
  * @property {string} id
- * @property {CreateResponseAssetSiteDestinationContainerChildrenChild_Path} path
+ * @property {CreateRequestAssetSiteDestinationContainerChildrenChild_Path} path
  * @property {string} type - REQUIRED: Each node has a type
  * @property {boolean} recycled
  */
 /**
-* @typedef {Object} CreateResponseAssetSiteDestinationContainerChildrenChild_Path
+* @typedef {Object} CreateRequestAssetSiteDestinationContainerChildrenChild_Path
 * @property {string} path
 * @property {string} siteId - One is REQUIRED: siteId | siteName
 * - The Site in which the asset is located
@@ -3086,7 +3086,7 @@
 
 */
 /**
-* @typedef {Object} CreateResponseAsset_Destination
+* @typedef {Object} CreateRequestAsset_Destination
 * @property {string} id
 * @property {string} name - REQUIRED
 * - The name of this page region, for example, 'DEFAULT', or 'JAVASCRIPT-INCLUDE'. This MUST correspond to the name of a region defined in the template.
@@ -3098,7 +3098,7 @@
 * @property {string} applicableGroups
 */
 /**
-* @typedef {Object} CreateResponseAsset_FileSystemTransport
+* @typedef {Object} CreateRequestAsset_FileSystemTransport
 * @property {string} id
 * @property {string} name - REQUIRED
 * - The name of this page region, for example, 'DEFAULT', or 'JAVASCRIPT-INCLUDE'. This MUST correspond to the name of a region defined in the template.
@@ -3115,7 +3115,7 @@
 * @property {string} directory
 */
 /**
-* @typedef {Object} CreateResponseAsset_FtpTransport
+* @typedef {Object} CreateRequestAsset_FtpTransport
 * @property {string} id
 * @property {string} name - REQUIRED
 * - The name of this page region, for example, 'DEFAULT', or 'JAVASCRIPT-INCLUDE'. This MUST correspond to the name of a region defined in the template.
@@ -3136,7 +3136,7 @@
 * @property {string} authMode
 */
 /**
-* @typedef {Object} CreateResponseAsset_DatabaseTransport
+* @typedef {Object} CreateRequestAsset_DatabaseTransport
 * @property {string} id
 * @property {string} name - REQUIRED
 * - The name of this page region, for example, 'DEFAULT', or 'JAVASCRIPT-INCLUDE'. This MUST correspond to the name of a region defined in the template.
@@ -3157,7 +3157,7 @@
 * @property {string} username
 */
 /**
-* @typedef {Object} CreateResponseAsset_CloudTransport
+* @typedef {Object} CreateRequestAsset_CloudTransport
 * @property {string} id
 * @property {string} name - REQUIRED
 * - The name of this page region, for example, 'DEFAULT', or 'JAVASCRIPT-INCLUDE'. This MUST correspond to the name of a region defined in the template.
@@ -3177,7 +3177,7 @@
 * @property {string} basePath
 */
 /**
-* @typedef {Object} CreateResponseAsset_TransportContainer
+* @typedef {Object} CreateRequestAsset_TransportContainer
 * @property {string} id
 * @property {string} name - REQUIRED
 * - The name of this page region, for example, 'DEFAULT', or 'JAVASCRIPT-INCLUDE'. This MUST correspond to the name of a region defined in the template.
@@ -3191,21 +3191,21 @@
 * @property {string} siteName - One is REQUIRED: siteId | siteName
 * - The Site in which the asset is located
 
-* @property {CreateResponseAssetTransportContainer_Children} children
+* @property {CreateRequestAssetTransportContainer_Children} children
 */
 /**
- * @typedef {Object} CreateResponseAssetTransportContainer_Children
- * @property {CreateResponseAssetTransportContainerChildren_Child} child
+ * @typedef {Object} CreateRequestAssetTransportContainer_Children
+ * @property {CreateRequestAssetTransportContainerChildren_Child} child
  */
 /**
- * @typedef {Object} CreateResponseAssetTransportContainerChildren_Child
+ * @typedef {Object} CreateRequestAssetTransportContainerChildren_Child
  * @property {string} id
- * @property {CreateResponseAssetTransportContainerChildrenChild_Path} path
+ * @property {CreateRequestAssetTransportContainerChildrenChild_Path} path
  * @property {string} type - REQUIRED: Each node has a type
  * @property {boolean} recycled
  */
 /**
-* @typedef {Object} CreateResponseAssetTransportContainerChildrenChild_Path
+* @typedef {Object} CreateRequestAssetTransportContainerChildrenChild_Path
 * @property {string} path
 * @property {string} siteId - One is REQUIRED: siteId | siteName
 * - The Site in which the asset is located
@@ -3215,7 +3215,7 @@
 
 */
 /**
-* @typedef {Object} CreateResponseAsset_WorkflowDefinition
+* @typedef {Object} CreateRequestAsset_WorkflowDefinition
 * @property {string} id
 * @property {string} name - REQUIRED
 * - The name of this page region, for example, 'DEFAULT', or 'JAVASCRIPT-INCLUDE'. This MUST correspond to the name of a region defined in the template.
@@ -3236,7 +3236,7 @@
 * @property {boolean} edit
 */
 /**
-* @typedef {Object} CreateResponseAsset_WorkflowDefinitionContainer
+* @typedef {Object} CreateRequestAsset_WorkflowDefinitionContainer
 * @property {string} id
 * @property {string} name - REQUIRED
 * - The name of this page region, for example, 'DEFAULT', or 'JAVASCRIPT-INCLUDE'. This MUST correspond to the name of a region defined in the template.
@@ -3250,21 +3250,21 @@
 * @property {string} siteName - One is REQUIRED: siteId | siteName
 * - The Site in which the asset is located
 
-* @property {CreateResponseAssetWorkflowDefinitionContainer_Children} children
+* @property {CreateRequestAssetWorkflowDefinitionContainer_Children} children
 */
 /**
- * @typedef {Object} CreateResponseAssetWorkflowDefinitionContainer_Children
- * @property {CreateResponseAssetWorkflowDefinitionContainerChildren_Child} child
+ * @typedef {Object} CreateRequestAssetWorkflowDefinitionContainer_Children
+ * @property {CreateRequestAssetWorkflowDefinitionContainerChildren_Child} child
  */
 /**
- * @typedef {Object} CreateResponseAssetWorkflowDefinitionContainerChildren_Child
+ * @typedef {Object} CreateRequestAssetWorkflowDefinitionContainerChildren_Child
  * @property {string} id
- * @property {CreateResponseAssetWorkflowDefinitionContainerChildrenChild_Path} path
+ * @property {CreateRequestAssetWorkflowDefinitionContainerChildrenChild_Path} path
  * @property {string} type - REQUIRED: Each node has a type
  * @property {boolean} recycled
  */
 /**
-* @typedef {Object} CreateResponseAssetWorkflowDefinitionContainerChildrenChild_Path
+* @typedef {Object} CreateRequestAssetWorkflowDefinitionContainerChildrenChild_Path
 * @property {string} path
 * @property {string} siteId - One is REQUIRED: siteId | siteName
 * - The Site in which the asset is located
@@ -3274,7 +3274,7 @@
 
 */
 /**
-* @typedef {Object} CreateResponseAsset_WorkflowEmail
+* @typedef {Object} CreateRequestAsset_WorkflowEmail
 * @property {string} id
 * @property {string} name - REQUIRED
 * - The name of this page region, for example, 'DEFAULT', or 'JAVASCRIPT-INCLUDE'. This MUST correspond to the name of a region defined in the template.
@@ -3292,7 +3292,7 @@
 * @property {string} body
 */
 /**
-* @typedef {Object} CreateResponseAsset_WorkflowEmailContainer
+* @typedef {Object} CreateRequestAsset_WorkflowEmailContainer
 * @property {string} id
 * @property {string} name - REQUIRED
 * - The name of this page region, for example, 'DEFAULT', or 'JAVASCRIPT-INCLUDE'. This MUST correspond to the name of a region defined in the template.
@@ -3306,21 +3306,21 @@
 * @property {string} siteName - One is REQUIRED: siteId | siteName
 * - The Site in which the asset is located
 
-* @property {CreateResponseAssetWorkflowEmailContainer_Children} children
+* @property {CreateRequestAssetWorkflowEmailContainer_Children} children
 */
 /**
- * @typedef {Object} CreateResponseAssetWorkflowEmailContainer_Children
- * @property {CreateResponseAssetWorkflowEmailContainerChildren_Child} child
+ * @typedef {Object} CreateRequestAssetWorkflowEmailContainer_Children
+ * @property {CreateRequestAssetWorkflowEmailContainerChildren_Child} child
  */
 /**
- * @typedef {Object} CreateResponseAssetWorkflowEmailContainerChildren_Child
+ * @typedef {Object} CreateRequestAssetWorkflowEmailContainerChildren_Child
  * @property {string} id
- * @property {CreateResponseAssetWorkflowEmailContainerChildrenChild_Path} path
+ * @property {CreateRequestAssetWorkflowEmailContainerChildrenChild_Path} path
  * @property {string} type - REQUIRED: Each node has a type
  * @property {boolean} recycled
  */
 /**
-* @typedef {Object} CreateResponseAssetWorkflowEmailContainerChildrenChild_Path
+* @typedef {Object} CreateRequestAssetWorkflowEmailContainerChildrenChild_Path
 * @property {string} path
 * @property {string} siteId - One is REQUIRED: siteId | siteName
 * - The Site in which the asset is located
@@ -3330,7 +3330,7 @@
 
 */
 /**
-* @typedef {Object} CreateResponseAsset_TwitterFeedBlock
+* @typedef {Object} CreateRequestAsset_TwitterFeedBlock
 * @property {string} id
 * @property {string} name - REQUIRED
 * - The name of this page region, for example, 'DEFAULT', or 'JAVASCRIPT-INCLUDE'. This MUST correspond to the name of a region defined in the template.
@@ -3346,7 +3346,7 @@
 * @property {string} path
 * @property {string} lastModifiedDate
 * @property {string} lastModifiedBy
-* @property {CreateResponseAssetTwitterFeedBlock_Metadata} metadata
+* @property {CreateRequestAssetTwitterFeedBlock_Metadata} metadata
 * @property {string} metadataSetId
 * @property {string} metadataSetPath
 * @property {boolean} reviewOnSchedule
@@ -3361,7 +3361,7 @@
 * @property {boolean} excludeJQuery
 */
 /**
- * @typedef {Object} CreateResponseAssetTwitterFeedBlock_Metadata
+ * @typedef {Object} CreateRequestAssetTwitterFeedBlock_Metadata
  * @property {string} author
  * @property {string} displayName
  * @property {string} endDate
@@ -3369,7 +3369,7 @@
  * @property {string} metaDescription
  */
 /**
-* @typedef {Object} CreateResponseAsset_Site
+* @typedef {Object} CreateRequestAsset_Site
 * @property {string} id
 * @property {string} name - REQUIRED
 * - The name of this page region, for example, 'DEFAULT', or 'JAVASCRIPT-INCLUDE'. This MUST correspond to the name of a region defined in the template.
@@ -3381,7 +3381,7 @@
 * @property {string} siteAssetFactoryContainerId
 */
 /**
-* @typedef {Object} CreateResponseAsset_EditorConfiguration
+* @typedef {Object} CreateRequestAsset_EditorConfiguration
 * @property {string} id
 * @property {string} name - REQUIRED
 * - The name of this page region, for example, 'DEFAULT', or 'JAVASCRIPT-INCLUDE'. This MUST correspond to the name of a region defined in the template.
