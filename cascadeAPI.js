@@ -1,3 +1,4 @@
+import * as Requests from "./types";
 export default class CascadeAPI {
   constructor(config = { apiKey, url }) {
     this.apiKey = config.apiKey;
@@ -5,45 +6,14 @@ export default class CascadeAPI {
   }
 
   /**
-   * @typedef identifierObject - An object that contains: type, id?, path?, recycled?.
-   * @property {"assetfactory" | "assetfactorycontainer" | "block" | "block_FEED" | "block_INDEX" | "block_TEXT" | "block_XHTML_DATADEFINITION" | "block_XML" | "block_TWITTER_FEED" | "connectorcontainer" | "twitterconnector" | "facebookconnector" | "wordpressconnector" | "googleanalyticsconnector" | "contenttype" | "contenttypecontainer" | "destination" | "editorconfiguration" | "file" | "folder" | "group" | "message" | "metadataset" | "metadatasetcontainer" | "page" | "pageconfigurationset" | "pageconfiguration" | "pageregion" | "pageconfigurationsetcontainer" | "publishset" | "publishsetcontainer" | "reference" | "role" | "datadefinition" | "datadefinitioncontainer" | "sharedfield" | "sharedfieldcontainer" | "format" | "format_XSLT" | "format_SCRIPT" | "site" | "sitedestinationcontainer" | "symlink" | "target" | "template" | "transport" | "transport_fs" | "transport_ftp" | "transport_db" | "transport_cloud" | "transportcontainer" | "user" | "workflow" | "workflowdefinition" | "workflowdefinitioncontainer" | "workflowemail" | "workflowemailcontainer"} type - REQUIRED: The type of asset to read.
-   * - Example: `{type: "page"}`
-   * @property {string} [id] - OPTIONAL: The ID of the asset.
-   * - Example: `{type: "page", id: "1234"}`
-   * @property {Object} [path] - OPTIONAL: Path object.
-   * - Example: `{type: "page", id: "1234", path: {}}`
-   * @property {string} [path.siteId] - OPTIONAL: The siteId of the parent site.
-   * - Example: `{type: "page", id: "1234", path: {siteId: "1234"}}`
-   * @property {string} [path.path] - OPTIONAL: The path to the asset.
-   * - Example: `{type: "page", id: "1234", path: {siteId: "1234", path: "/some/path"}}`
-   * @property {boolean} [recycled] - OPTIONAL: For reading purposes only. Ignored when editing, copying etc.
-   * - Example: `{type: "page", id: "1234", path: {siteId: "1234", path: "/some/path"}, recycled: false}`
-   */
-
-  /**
-   * Make a read operation on an asset.
+   * read operation.
    *
-   * @param {identifierObject} identifier - An object that contains: type, id?, path?, recycled?.
-   * @example
-   * {
-   *  type: "page",
-   *  id: "1234",
-   *  path: {
-   *   siteId: "1234",
-   *   path: "/some/path"
-   *   },
-   *  recycled: false
-   * }
-   * @return {Object} - The result of the operation
-   * @example
-   * {
-   *  success: string,
-   *  message?: string | undefined,
-   *  asset: object,
-   * }
+   * @param {Requests.readRequest} opts
+   * @param {Boolean} [muteHttpExceptions]
+   * @return {Requests.readResponse}
    */
   async read(
-    identifier,
+    opts,
     // Apps Script Specific
     muteHttpExceptions = false
   ) {
@@ -51,7 +21,7 @@ export default class CascadeAPI {
     const requestParams = {
       method: "POST",
       muteHttpExceptions,
-      payload: JSON.stringify({ identifier }),
+      payload: JSON.stringify(opts),
     };
     const request = await this.call(endPoint, requestParams);
     if (!request.success) {
@@ -61,156 +31,122 @@ export default class CascadeAPI {
   }
 
   /**
-   * Perform a removal operation on an asset.
+   * removal operation.
    *
-   * @param {identifierObject} identifier - An object that contains: type, id?, path?, recycled?.
-   * @example
-   * {
-   *  type: "page",
-   *  id: "1234",
-   *  path: {
-   *   siteId: "1234",
-   *   path: "/some/path"
-   *   },
-   *  recycled: false
-   * }
-   * @param {Object} [deleteParameters]
-   * @param {boolean} [deleteParameters.doWorkFlow]
-   * @param {Object} [workflowConfiguration] - For configuring workflow
-   * @param {string} workflowConfiguration.workflowName - When the workflow is instantiated this will be its name.
-   * @param {string} [workflowConfiguration.workflowDefinitionId] - Which workflow definition to use? Priority: workflowDefinitionId > workflowDefinitionPath - ONE IS REQUIRED
-   * @param {string} [workflowConfiguration.workflowDefinitionPath] - Which workflow definition to use? Priority: workflowDefinitionId > workflowDefinitionPath - ONE IS REQUIRED
-   * @param {string} workflowConfiguration.workflowComments - The comments for this operation which will be recorded with the workflow.
-   * @param {Object} [workflowConfiguration.workflowStepConfigurations] - The optional step configurations for each assignable step in the workflow.
-   * NOT REQUIRED default: the defaults as defined in the workflow definition
-   * @param {Object[]} [workflowConfiguration.workflowStepConfigurations.workflowStepConfiguration] - An array of workflow step configuration objects.
-   * @param {string} workflowConfiguration.workflowStepConfigurations.workflowStepConfiguration[].stepIdentifier - The step's unique text identifier/name.
-   * @param {string} workflowConfiguration.workflowStepConfigurations.workflowStepConfiguration[].stepAssignment - The step's assignment (user or group name).
-   * @param {date} [workflowConfiguration.endDate] - Optional due date for the workflow.  If not specified, will default to 7 days from today.
+   * @param {Requests.deleteRequest} opts
+   * @param {Boolean} [muteHttpExceptions]
+   * @return {Requests.deleteResponse}
    */
   async remove( // Delete
-    identifier,
-    deleteParameters,
-    workflowConfiguration,
+    opts,
     // Apps Script Specific
     muteHttpExceptions = false
   ) {
-    console.log(deleteParameters);
-    return;
     const endPoint = `delete`;
     const requestParams = {
       method: "POST",
       muteHttpExceptions,
-      payload: JSON.stringify({
-        identifier,
-        deleteParameters,
-        workflowConfiguration,
-      }),
-    };
-    console.log(requestParams);
-    // const request = await this.call(endPoint, requestParams);
-    // if (!request.success) {
-    //   throw `Request Failed. Request Response: ${request.message}`;
-    // }
-    // return request;
-  }
-
-  /**
-   *
-   * @param {*} asset
-   * @param {*} muteHttpExceptions
-   * @returns
-   */
-  async edit(
-    asset = {
-      feedBlock: {},
-      indexBlock: {},
-      textBlock: {},
-      xhtmlDataDefinitionBlock: {},
-      xmlBlock: {},
-      file: {},
-      folder: {},
-      page: { id, contentTypeId, xhtml, metadata: {} },
-      reference: {},
-      xsltFormat: {},
-      scriptFormat: {},
-      symlink: {},
-      template: {},
-    },
-    // Apps Script Specific
-    muteHttpExceptions = false
-  ) {
-    const endPoint = `read`;
-    const requestParams = {
-      method: "POST",
-      muteHttpExceptions,
-      payload: JSON.stringify({ identifier }),
+      payload: JSON.stringify(opts),
     };
     const request = await this.call(endPoint, requestParams);
     if (!request.success) {
       throw `Request Failed. Request Response: ${request.message}`;
     }
-    return request.asset[identifier.type];
+    return request;
   }
 
-  async create() {}
-
-  async move() {}
-
   /**
-   * Search Cascade using a searchInformation object. Pass in an object with the specific keys.
-   * @param {Object} searchInformation - Search parameters provided as a single object.
-   * @param {string} searchInformation.searchTerms - The search term to be searched.
-   * @param {string} [searchInformation.siteId] - Not required, if left blank all sites will be searched.
-   * @param {string} [searchInformation.siteName] - Not required, if left blank all sites will be searched.
-   * @param {string[]} [searchInformation.searchFields] - Array of asset fields to search:
-   * ```
-   * [
-   * "name",
-   * "path",
-   * "createdBy",
-   * "modifiedBy",
-   * "displayName",
-   * "title",
-   * "summary",
-   * "teaser",
-   * "keywords",
-   * "description",
-   * "author",
-   * "blob",
-   * "velocityFormatContent",
-   * "xml",
-   * "link"
-   * ]
-   * ```
-   * @param {string[]} [searchInformation.searchTypes] - Array of asset types to search:
-   * ```
-   * [
-   * "page",
-   * "folder",
-   * "site"
-   * ]
-   * ```
-   * @param {boolean} muteHttpExceptions - Whether or not to mute exceptions raised by UrlFetchApp
-   * @return {array} matches - An array of matches found by Cascade.
-   * @method
+   * edit operation.
+   *
+   * @param {Requests.editRequest} opts
+   * @param {Boolean} [muteHttpExceptions]
+   * @return {Requests.editResponse}
    */
-  async search(
-    searchInformation = {
-      searchTerms,
-      siteId,
-      siteName,
-      searchFields,
-      searchTypes,
-    },
+  async edit(
+    opts,
     // Apps Script Specific
     muteHttpExceptions = false
   ) {
-    const endPoint = "search?";
+    const endPoint = `edit`;
     const requestParams = {
       method: "POST",
       muteHttpExceptions,
-      payload: JSON.stringify({ searchInformation }),
+      payload: JSON.stringify(opts),
+    };
+    const request = await this.call(endPoint, requestParams);
+    if (!request.success) {
+      throw `Request Failed. Request Response: ${request.message}`;
+    }
+    return request;
+  }
+
+  /**
+   * create operation.
+   *
+   * @param {Requests.createRequest} opts
+   * @param {Boolean} [muteHttpExceptions]
+   * @return {Requests.createResponse}
+   */
+  async create(
+    opts,
+    // Apps Script Specific
+    muteHttpExceptions = false
+  ) {
+    const endPoint = `create`;
+    const requestParams = {
+      method: "POST",
+      muteHttpExceptions,
+      payload: JSON.stringify(opts),
+    };
+    const request = await this.call(endPoint, requestParams);
+    if (!request.success) {
+      throw `Request Failed. Request Response: ${request.message}`;
+    }
+    return request;
+  }
+
+  /**
+   * move operation.
+   *
+   * @param {Requests.moveRequest} opts
+   * @param {Boolean} [muteHttpExceptions]
+   * @return {Requests.moveResponse}
+   */
+  async move(
+    opts,
+    // Apps Script Specific
+    muteHttpExceptions = false
+  ) {
+    const endPoint = `move`;
+    const requestParams = {
+      method: "POST",
+      muteHttpExceptions,
+      payload: JSON.stringify(opts),
+    };
+    const request = await this.call(endPoint, requestParams);
+    if (!request.success) {
+      throw `Request Failed. Request Response: ${request.message}`;
+    }
+    return request;
+  }
+
+  /**
+   * search operation.
+   *
+   * @param {Requests.searchRequest} opts
+   * @param {Boolean} [muteHttpExceptions]
+   * @return {Requests.searchResponse}
+   */
+  async search(
+    opts,
+    // Apps Script Specific
+    muteHttpExceptions = false
+  ) {
+    const endPoint = "search";
+    const requestParams = {
+      method: "POST",
+      muteHttpExceptions,
+      payload: JSON.stringify(opts),
     };
     const request = await this.call(endPoint, requestParams);
     if (!request.success) {
@@ -219,39 +155,430 @@ export default class CascadeAPI {
     return request.matches;
   }
 
-  async copy() {}
+  /**
+   * copy operation.
+   *
+   * @param {Requests.copyRequest} opts
+   * @param {Boolean} [muteHttpExceptions]
+   * @return {Requests.copyResponse}
+   */
+  async copy(
+    opts,
+    // Apps Script Specific
+    muteHttpExceptions = false
+  ) {
+    const endPoint = "copy";
+    const requestParams = {
+      method: "POST",
+      muteHttpExceptions,
+      payload: JSON.stringify(opts),
+    };
+    const request = await this.call(endPoint, requestParams);
+    if (!request.success) {
+      throw `Request Failed. Request Response: ${request.message}`;
+    }
+    return request.matches;
+  }
 
-  async siteCopy() {}
+  /**
+   * siteCopy operation.
+   *
+   * @param {Requests.siteCopyRequest} opts
+   * @param {Boolean} [muteHttpExceptions]
+   * @return {Requests.siteCopyResponse}
+   */
+  async siteCopy(
+    opts,
+    // Apps Script Specific
+    muteHttpExceptions = false
+  ) {
+    const endPoint = "siteCopy";
+    const requestParams = {
+      method: "POST",
+      muteHttpExceptions,
+      payload: JSON.stringify(opts),
+    };
+    const request = await this.call(endPoint, requestParams);
+    if (!request.success) {
+      throw `Request Failed. Request Response: ${request.message}`;
+    }
+    return request.matches;
+  }
 
-  async readAccessRights() {}
+  /**
+   * readAccessRights operation.
+   *
+   * @param {Requests.readAccessRightsRequest} opts
+   * @param {Boolean} [muteHttpExceptions]
+   * @return {Requests.readAccessRightsResponse}
+   */
+  async readAccessRights(
+    opts,
+    // Apps Script Specific
+    muteHttpExceptions = false
+  ) {
+    const endPoint = "readAccessRights";
+    const requestParams = {
+      method: "POST",
+      muteHttpExceptions,
+      payload: JSON.stringify(opts),
+    };
+    const request = await this.call(endPoint, requestParams);
+    if (!request.success) {
+      throw `Request Failed. Request Response: ${request.message}`;
+    }
+    return request.matches;
+  }
 
-  async editAccessRights() {}
+  /**
+   * editAccessRights operation.
+   *
+   * @param {Requests.editAccessRightsRequest} opts
+   * @param {Boolean} [muteHttpExceptions]
+   * @return {Requests.editAccessRightsResponse}
+   */
+  async editAccessRights(
+    opts,
+    // Apps Script Specific
+    muteHttpExceptions = false
+  ) {
+    const endPoint = "editAccessRights";
+    const requestParams = {
+      method: "POST",
+      muteHttpExceptions,
+      payload: JSON.stringify(opts),
+    };
+    const request = await this.call(endPoint, requestParams);
+    if (!request.success) {
+      throw `Request Failed. Request Response: ${request.message}`;
+    }
+    return request.matches;
+  }
 
-  async readWorkflowSettings() {}
+  /**
+   * readWorkflowSettings operation.
+   *
+   * @param {Requests.readWorkflowSettingsRequest} opts
+   * @param {Boolean} [muteHttpExceptions]
+   * @return {Requests.readWorkflowSettingsResponse}
+   */
+  async readWorkflowSettings(
+    opts,
+    // Apps Script Specific
+    muteHttpExceptions = false
+  ) {
+    const endPoint = "readWorkflowSettings";
+    const requestParams = {
+      method: "POST",
+      muteHttpExceptions,
+      payload: JSON.stringify(opts),
+    };
+    const request = await this.call(endPoint, requestParams);
+    if (!request.success) {
+      throw `Request Failed. Request Response: ${request.message}`;
+    }
+    return request.matches;
+  }
 
-  async editWorkflowSettings() {}
+  /**
+   * editWorkflowSettings operation.
+   *
+   * @param {Requests.editWorkflowSettingsRequest} opts
+   * @param {Boolean} [muteHttpExceptions]
+   * @return {Requests.editWorkflowSettingsResponse}
+   */
+  async editWorkflowSettings(
+    opts,
+    // Apps Script Specific
+    muteHttpExceptions = false
+  ) {
+    const endPoint = "editWorkflowSettings";
+    const requestParams = {
+      method: "POST",
+      muteHttpExceptions,
+      payload: JSON.stringify(opts),
+    };
+    const request = await this.call(endPoint, requestParams);
+    if (!request.success) {
+      throw `Request Failed. Request Response: ${request.message}`;
+    }
+    return request.matches;
+  }
 
-  async listSubscribers() {}
+  /**
+   * listSubscribers operation.
+   *
+   * @param {Requests.listSubscribersRequest} opts
+   * @param {Boolean} [muteHttpExceptions]
+   * @return {Requests.listSubscribersResponse}
+   */
+  async listSubscribers(
+    opts,
+    // Apps Script Specific
+    muteHttpExceptions = false
+  ) {
+    const endPoint = "listSubscribers";
+    const requestParams = {
+      method: "POST",
+      muteHttpExceptions,
+      payload: JSON.stringify(opts),
+    };
+    const request = await this.call(endPoint, requestParams);
+    if (!request.success) {
+      throw `Request Failed. Request Response: ${request.message}`;
+    }
+    return request.matches;
+  }
 
-  async listMessages() {}
+  /**
+   * listMessages operation.
+   *
+   * @param {Requests.listMessagesRequest} opts
+   * @param {Boolean} [muteHttpExceptions]
+   * @return {Requests.listMessagesResponse}
+   */
+  async listMessages(
+    opts,
+    // Apps Script Specific
+    muteHttpExceptions = false
+  ) {
+    const endPoint = "listMessages";
+    const requestParams = {
+      method: "POST",
+      muteHttpExceptions,
+      payload: JSON.stringify(opts),
+    };
+    const request = await this.call(endPoint, requestParams);
+    if (!request.success) {
+      throw `Request Failed. Request Response: ${request.message}`;
+    }
+    return request.matches;
+  }
 
-  async markMessage() {}
+  /**
+   * markMessage operation.
+   *
+   * @param {Requests.markMessageRequest} opts
+   * @param {Boolean} [muteHttpExceptions]
+   * @return {Requests.markMessageResponse}
+   */
+  async markMessage(
+    opts,
+    // Apps Script Specific
+    muteHttpExceptions = false
+  ) {
+    const endPoint = "markMessage";
+    const requestParams = {
+      method: "POST",
+      muteHttpExceptions,
+      payload: JSON.stringify(opts),
+    };
+    const request = await this.call(endPoint, requestParams);
+    if (!request.success) {
+      throw `Request Failed. Request Response: ${request.message}`;
+    }
+    return request.matches;
+  }
 
-  async deleteMessage() {}
+  /**
+   * deleteMessage operation.
+   *
+   * @param {Requests.deleteMessageRequest} opts
+   * @param {Boolean} [muteHttpExceptions]
+   * @return {Requests.deleteMessageResponse}
+   */
+  async deleteMessage(
+    opts,
+    // Apps Script Specific
+    muteHttpExceptions = false
+  ) {
+    const endPoint = "deleteMessage";
+    const requestParams = {
+      method: "POST",
+      muteHttpExceptions,
+      payload: JSON.stringify(opts),
+    };
+    const request = await this.call(endPoint, requestParams);
+    if (!request.success) {
+      throw `Request Failed. Request Response: ${request.message}`;
+    }
+    return request.matches;
+  }
 
-  async checkOut() {}
+  /**
+   * checkOut operation.
+   *
+   * @param {Requests.checkOutRequest} opts
+   * @param {Boolean} [muteHttpExceptions]
+   * @return {Requests.checkOutResponse}
+   */
+  async checkOut(
+    opts,
+    // Apps Script Specific
+    muteHttpExceptions = false
+  ) {
+    const endPoint = "checkOut";
+    const requestParams = {
+      method: "POST",
+      muteHttpExceptions,
+      payload: JSON.stringify(opts),
+    };
+    const request = await this.call(endPoint, requestParams);
+    if (!request.success) {
+      throw `Request Failed. Request Response: ${request.message}`;
+    }
+    return request.matches;
+  }
 
-  async checkIn() {}
+  /**
+   * checkIn operation.
+   *
+   * @param {Requests.checkInRequest} opts
+   * @param {Boolean} [muteHttpExceptions]
+   * @return {Requests.checkInResponse}
+   */
+  async checkIn(
+    opts,
+    // Apps Script Specific
+    muteHttpExceptions = false
+  ) {
+    const endPoint = "checkIn";
+    const requestParams = {
+      method: "POST",
+      muteHttpExceptions,
+      payload: JSON.stringify(opts),
+    };
+    const request = await this.call(endPoint, requestParams);
+    if (!request.success) {
+      throw `Request Failed. Request Response: ${request.message}`;
+    }
+    return request.matches;
+  }
 
-  async listSites() {}
+  /**
+   * listSites operation.
+   *
+   * @param {Requests.listSitesRequest} opts
+   * @param {Boolean} [muteHttpExceptions]
+   * @return {Requests.listSitesResponse}
+   */
+  async listSites(
+    opts,
+    // Apps Script Specific
+    muteHttpExceptions = false
+  ) {
+    const endPoint = "listSites";
+    const requestParams = {
+      method: "POST",
+      muteHttpExceptions,
+      payload: JSON.stringify(opts),
+    };
+    const request = await this.call(endPoint, requestParams);
+    if (!request.success) {
+      throw `Request Failed. Request Response: ${request.message}`;
+    }
+    return request.matches;
+  }
 
-  async readAudits() {}
+  /**
+   * readAudits operation.
+   *
+   * @param {Requests.readAuditsRequest} opts
+   * @param {Boolean} [muteHttpExceptions]
+   * @return {Requests.readAuditsResponse}
+   */
+  async readAudits(
+    opts,
+    // Apps Script Specific
+    muteHttpExceptions = false
+  ) {
+    const endPoint = "readAudits";
+    const requestParams = {
+      method: "POST",
+      muteHttpExceptions,
+      payload: JSON.stringify(opts),
+    };
+    const request = await this.call(endPoint, requestParams);
+    if (!request.success) {
+      throw `Request Failed. Request Response: ${request.message}`;
+    }
+    return request.matches;
+  }
 
-  async readWorkflowInformation() {}
+  /**
+   * readWorkflowInformation operation.
+   *
+   * @param {Requests.readWorkflowInformationRequest} opts
+   * @param {Boolean} [muteHttpExceptions]
+   * @return {Requests.readWorkflowInformationResponse}
+   */
+  async readWorkflowInformation(
+    opts,
+    // Apps Script Specific
+    muteHttpExceptions = false
+  ) {
+    const endPoint = "readWorkflowInformation";
+    const requestParams = {
+      method: "POST",
+      muteHttpExceptions,
+      payload: JSON.stringify(opts),
+    };
+    const request = await this.call(endPoint, requestParams);
+    if (!request.success) {
+      throw `Request Failed. Request Response: ${request.message}`;
+    }
+    return request.matches;
+  }
 
-  async performWorkflowTransition() {}
+  /**
+   * performWorkflowTransition operation.
+   *
+   * @param {Requests.performWorkflowTransitionRequest} opts
+   * @param {Boolean} [muteHttpExceptions]
+   * @return {Requests.performWorkflowTransitionResponse}
+   */
+  async performWorkflowTransition(
+    opts,
+    // Apps Script Specific
+    muteHttpExceptions = false
+  ) {
+    const endPoint = "performWorkflowTransition";
+    const requestParams = {
+      method: "POST",
+      muteHttpExceptions,
+      payload: JSON.stringify(opts),
+    };
+    const request = await this.call(endPoint, requestParams);
+    if (!request.success) {
+      throw `Request Failed. Request Response: ${request.message}`;
+    }
+    return request.matches;
+  }
 
-  async readPreferences() {}
+  /**
+   * readPreferences operation.
+   *
+   * @param {Requests.readPreferencesRequest} opts
+   * @param {Boolean} [muteHttpExceptions]
+   * @return {Requests.readPreferencesResponse}
+   */
+  async readPreferences(
+    opts,
+    // Apps Script Specific
+    muteHttpExceptions = false
+  ) {
+    const endPoint = "readPreferences";
+    const requestParams = {
+      method: "POST",
+      muteHttpExceptions,
+      payload: JSON.stringify(opts),
+    };
+    const request = await this.call(endPoint, requestParams);
+    if (!request.success) {
+      throw `Request Failed. Request Response: ${request.message}`;
+    }
+    return request.matches;
+  }
 
   //   For Apps Script
 
