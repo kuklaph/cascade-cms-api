@@ -4043,10 +4043,8 @@ class CascadeAPI {
       Authorization: `Bearer ${this.apiKey}`,
     };
     requestParams.headers = headers;
-    log("info", { request: true }, requestParams);
     const request = await UrlFetchApp.fetch(this.url + endPoint, requestParams);
     const parsed = JSON.parse(request);
-    log("info", { request: true }, parsed);
     return parsed;
   }
 }
