@@ -4039,6 +4039,9 @@ class CascadeAPI {
   }
 
   call(endPoint, requestParams) {
+    if (!this.apiKey || !this.url) {
+      throw `Missing API key or cascade URL`;
+    }
     const headers = {
       Authorization: `Bearer ${this.apiKey}`,
     };

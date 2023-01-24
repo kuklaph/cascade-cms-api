@@ -446,6 +446,9 @@ export default class CascadeAPI {
 
   async call(endPoint, requestParams) {
     try {
+      if (!this.apiKey || !this.url) {
+        throw `Missing API key or cascade URL`;
+      }
       const headers = {
         Authorization: `Bearer ${this.apiKey}`,
       };
