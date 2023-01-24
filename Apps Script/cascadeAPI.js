@@ -1379,11 +1379,11 @@ class CascadeAPI {
   /**
    * read operation.
    *
-   * @param {readRequest} opts
+   * @param {readRequest} opts - The starting object container.
    * @param {Boolean} [muteHttpExceptions]
    * @return {readResponse}
    */
-  async read(
+  read(
     opts,
     // Apps Script Specific
     muteHttpExceptions = false
@@ -1394,21 +1394,21 @@ class CascadeAPI {
       muteHttpExceptions,
       payload: JSON.stringify(opts),
     };
-    const request = await this.call(endPoint, requestParams);
+    const request = this.call(endPoint, requestParams);
     if (!request.success) {
       throw `Request Failed. Request Response: ${request.message}`;
     }
-    return request.asset[identifier.type];
+    return request.asset[opts.identifier.type];
   }
 
   /**
    * removal operation.
    *
-   * @param {deleteRequest} opts
+   * @param {removeRequest} opts - The starting object container.
    * @param {Boolean} [muteHttpExceptions]
-   * @return {deleteResponse}
+   * @return {removeResponse}
    */
-  async remove( // Delete
+  remove( // Delete
     opts,
     // Apps Script Specific
     muteHttpExceptions = false
@@ -1419,7 +1419,7 @@ class CascadeAPI {
       muteHttpExceptions,
       payload: JSON.stringify(opts),
     };
-    const request = await this.call(endPoint, requestParams);
+    const request = this.call(endPoint, requestParams);
     if (!request.success) {
       throw `Request Failed. Request Response: ${request.message}`;
     }
@@ -1429,11 +1429,11 @@ class CascadeAPI {
   /**
    * edit operation.
    *
-   * @param {editRequest} opts
+   * @param {editRequest} opts - The starting object container.
    * @param {Boolean} [muteHttpExceptions]
    * @return {editResponse}
    */
-  async edit(
+  edit(
     opts,
     // Apps Script Specific
     muteHttpExceptions = false
@@ -1444,7 +1444,7 @@ class CascadeAPI {
       muteHttpExceptions,
       payload: JSON.stringify(opts),
     };
-    const request = await this.call(endPoint, requestParams);
+    const request = this.call(endPoint, requestParams);
     if (!request.success) {
       throw `Request Failed. Request Response: ${request.message}`;
     }
@@ -3492,11 +3492,11 @@ class CascadeAPI {
   /**
    * create operation.
    *
-   * @param {createRequest} opts
+   * @param {createRequest} opts - The starting object container.
    * @param {Boolean} [muteHttpExceptions]
    * @return {createResponse}
    */
-  async create(
+  create(
     opts,
     // Apps Script Specific
     muteHttpExceptions = false
@@ -3507,7 +3507,7 @@ class CascadeAPI {
       muteHttpExceptions,
       payload: JSON.stringify(opts),
     };
-    const request = await this.call(endPoint, requestParams);
+    const request = this.call(endPoint, requestParams);
     if (!request.success) {
       throw `Request Failed. Request Response: ${request.message}`;
     }
@@ -3517,11 +3517,11 @@ class CascadeAPI {
   /**
    * move operation.
    *
-   * @param {moveRequest} opts
+   * @param {moveRequest} opts - The starting object container.
    * @param {Boolean} [muteHttpExceptions]
    * @return {moveResponse}
    */
-  async move(
+  move(
     opts,
     // Apps Script Specific
     muteHttpExceptions = false
@@ -3532,7 +3532,7 @@ class CascadeAPI {
       muteHttpExceptions,
       payload: JSON.stringify(opts),
     };
-    const request = await this.call(endPoint, requestParams);
+    const request = this.call(endPoint, requestParams);
     if (!request.success) {
       throw `Request Failed. Request Response: ${request.message}`;
     }
@@ -3591,11 +3591,11 @@ class CascadeAPI {
   /**
    * search operation.
    *
-   * @param {searchRequest} opts
+   * @param {searchRequest} opts - The starting object container.
    * @param {Boolean} [muteHttpExceptions]
    * @return {searchResponse}
    */
-  async search(
+  search(
     opts,
     // Apps Script Specific
     muteHttpExceptions = false
@@ -3606,7 +3606,7 @@ class CascadeAPI {
       muteHttpExceptions,
       payload: JSON.stringify(opts),
     };
-    const request = await this.call(endPoint, requestParams);
+    const request = this.call(endPoint, requestParams);
     if (!request.success) {
       throw `Request Failed. Request Response: ${request.message}`;
     }
@@ -3616,11 +3616,11 @@ class CascadeAPI {
   /**
    * copy operation.
    *
-   * @param {copyRequest} opts
+   * @param {copyRequest} opts - The starting object container.
    * @param {Boolean} [muteHttpExceptions]
    * @return {copyResponse}
    */
-  async copy(
+  copy(
     opts,
     // Apps Script Specific
     muteHttpExceptions = false
@@ -3631,7 +3631,7 @@ class CascadeAPI {
       muteHttpExceptions,
       payload: JSON.stringify(opts),
     };
-    const request = await this.call(endPoint, requestParams);
+    const request = this.call(endPoint, requestParams);
     if (!request.success) {
       throw `Request Failed. Request Response: ${request.message}`;
     }
@@ -3641,11 +3641,11 @@ class CascadeAPI {
   /**
    * siteCopy operation.
    *
-   * @param {siteCopyRequest} opts
+   * @param {siteCopyRequest} opts - The starting object container.
    * @param {Boolean} [muteHttpExceptions]
    * @return {siteCopyResponse}
    */
-  async siteCopy(
+  siteCopy(
     opts,
     // Apps Script Specific
     muteHttpExceptions = false
@@ -3656,7 +3656,7 @@ class CascadeAPI {
       muteHttpExceptions,
       payload: JSON.stringify(opts),
     };
-    const request = await this.call(endPoint, requestParams);
+    const request = this.call(endPoint, requestParams);
     if (!request.success) {
       throw `Request Failed. Request Response: ${request.message}`;
     }
@@ -3666,11 +3666,11 @@ class CascadeAPI {
   /**
    * readAccessRights operation.
    *
-   * @param {readAccessRightsRequest} opts
+   * @param {readAccessRightsRequest} opts - The starting object container.
    * @param {Boolean} [muteHttpExceptions]
    * @return {readAccessRightsResponse}
    */
-  async readAccessRights(
+  readAccessRights(
     opts,
     // Apps Script Specific
     muteHttpExceptions = false
@@ -3681,7 +3681,7 @@ class CascadeAPI {
       muteHttpExceptions,
       payload: JSON.stringify(opts),
     };
-    const request = await this.call(endPoint, requestParams);
+    const request = this.call(endPoint, requestParams);
     if (!request.success) {
       throw `Request Failed. Request Response: ${request.message}`;
     }
@@ -3691,11 +3691,11 @@ class CascadeAPI {
   /**
    * editAccessRights operation.
    *
-   * @param {editAccessRightsRequest} opts
+   * @param {editAccessRightsRequest} opts - The starting object container.
    * @param {Boolean} [muteHttpExceptions]
    * @return {editAccessRightsResponse}
    */
-  async editAccessRights(
+  editAccessRights(
     opts,
     // Apps Script Specific
     muteHttpExceptions = false
@@ -3706,7 +3706,7 @@ class CascadeAPI {
       muteHttpExceptions,
       payload: JSON.stringify(opts),
     };
-    const request = await this.call(endPoint, requestParams);
+    const request = this.call(endPoint, requestParams);
     if (!request.success) {
       throw `Request Failed. Request Response: ${request.message}`;
     }
@@ -3716,11 +3716,11 @@ class CascadeAPI {
   /**
    * readWorkflowSettings operation.
    *
-   * @param {readWorkflowSettingsRequest} opts
+   * @param {readWorkflowSettingsRequest} opts - The starting object container.
    * @param {Boolean} [muteHttpExceptions]
    * @return {readWorkflowSettingsResponse}
    */
-  async readWorkflowSettings(
+  readWorkflowSettings(
     opts,
     // Apps Script Specific
     muteHttpExceptions = false
@@ -3731,7 +3731,7 @@ class CascadeAPI {
       muteHttpExceptions,
       payload: JSON.stringify(opts),
     };
-    const request = await this.call(endPoint, requestParams);
+    const request = this.call(endPoint, requestParams);
     if (!request.success) {
       throw `Request Failed. Request Response: ${request.message}`;
     }
@@ -3741,11 +3741,11 @@ class CascadeAPI {
   /**
    * editWorkflowSettings operation.
    *
-   * @param {editWorkflowSettingsRequest} opts
+   * @param {editWorkflowSettingsRequest} opts - The starting object container.
    * @param {Boolean} [muteHttpExceptions]
    * @return {editWorkflowSettingsResponse}
    */
-  async editWorkflowSettings(
+  editWorkflowSettings(
     opts,
     // Apps Script Specific
     muteHttpExceptions = false
@@ -3756,7 +3756,7 @@ class CascadeAPI {
       muteHttpExceptions,
       payload: JSON.stringify(opts),
     };
-    const request = await this.call(endPoint, requestParams);
+    const request = this.call(endPoint, requestParams);
     if (!request.success) {
       throw `Request Failed. Request Response: ${request.message}`;
     }
@@ -3766,11 +3766,11 @@ class CascadeAPI {
   /**
    * listSubscribers operation.
    *
-   * @param {listSubscribersRequest} opts
+   * @param {listSubscribersRequest} opts - The starting object container.
    * @param {Boolean} [muteHttpExceptions]
    * @return {listSubscribersResponse}
    */
-  async listSubscribers(
+  listSubscribers(
     opts,
     // Apps Script Specific
     muteHttpExceptions = false
@@ -3781,7 +3781,7 @@ class CascadeAPI {
       muteHttpExceptions,
       payload: JSON.stringify(opts),
     };
-    const request = await this.call(endPoint, requestParams);
+    const request = this.call(endPoint, requestParams);
     if (!request.success) {
       throw `Request Failed. Request Response: ${request.message}`;
     }
@@ -3791,11 +3791,11 @@ class CascadeAPI {
   /**
    * listMessages operation.
    *
-   * @param {listMessagesRequest} opts
+   * @param {listMessagesRequest} opts - The starting object container.
    * @param {Boolean} [muteHttpExceptions]
    * @return {listMessagesResponse}
    */
-  async listMessages(
+  listMessages(
     opts,
     // Apps Script Specific
     muteHttpExceptions = false
@@ -3806,7 +3806,7 @@ class CascadeAPI {
       muteHttpExceptions,
       payload: JSON.stringify(opts),
     };
-    const request = await this.call(endPoint, requestParams);
+    const request = this.call(endPoint, requestParams);
     if (!request.success) {
       throw `Request Failed. Request Response: ${request.message}`;
     }
@@ -3816,11 +3816,11 @@ class CascadeAPI {
   /**
    * markMessage operation.
    *
-   * @param {markMessageRequest} opts
+   * @param {markMessageRequest} opts - The starting object container.
    * @param {Boolean} [muteHttpExceptions]
    * @return {markMessageResponse}
    */
-  async markMessage(
+  markMessage(
     opts,
     // Apps Script Specific
     muteHttpExceptions = false
@@ -3831,7 +3831,7 @@ class CascadeAPI {
       muteHttpExceptions,
       payload: JSON.stringify(opts),
     };
-    const request = await this.call(endPoint, requestParams);
+    const request = this.call(endPoint, requestParams);
     if (!request.success) {
       throw `Request Failed. Request Response: ${request.message}`;
     }
@@ -3841,11 +3841,11 @@ class CascadeAPI {
   /**
    * deleteMessage operation.
    *
-   * @param {deleteMessageRequest} opts
+   * @param {deleteMessageRequest} opts - The starting object container.
    * @param {Boolean} [muteHttpExceptions]
    * @return {deleteMessageResponse}
    */
-  async deleteMessage(
+  deleteMessage(
     opts,
     // Apps Script Specific
     muteHttpExceptions = false
@@ -3856,7 +3856,7 @@ class CascadeAPI {
       muteHttpExceptions,
       payload: JSON.stringify(opts),
     };
-    const request = await this.call(endPoint, requestParams);
+    const request = this.call(endPoint, requestParams);
     if (!request.success) {
       throw `Request Failed. Request Response: ${request.message}`;
     }
@@ -3866,11 +3866,11 @@ class CascadeAPI {
   /**
    * checkOut operation.
    *
-   * @param {checkOutRequest} opts
+   * @param {checkOutRequest} opts - The starting object container.
    * @param {Boolean} [muteHttpExceptions]
    * @return {checkOutResponse}
    */
-  async checkOut(
+  checkOut(
     opts,
     // Apps Script Specific
     muteHttpExceptions = false
@@ -3881,7 +3881,7 @@ class CascadeAPI {
       muteHttpExceptions,
       payload: JSON.stringify(opts),
     };
-    const request = await this.call(endPoint, requestParams);
+    const request = this.call(endPoint, requestParams);
     if (!request.success) {
       throw `Request Failed. Request Response: ${request.message}`;
     }
@@ -3891,11 +3891,11 @@ class CascadeAPI {
   /**
    * checkIn operation.
    *
-   * @param {checkInRequest} opts
+   * @param {checkInRequest} opts - The starting object container.
    * @param {Boolean} [muteHttpExceptions]
    * @return {checkInResponse}
    */
-  async checkIn(
+  checkIn(
     opts,
     // Apps Script Specific
     muteHttpExceptions = false
@@ -3906,7 +3906,7 @@ class CascadeAPI {
       muteHttpExceptions,
       payload: JSON.stringify(opts),
     };
-    const request = await this.call(endPoint, requestParams);
+    const request = this.call(endPoint, requestParams);
     if (!request.success) {
       throw `Request Failed. Request Response: ${request.message}`;
     }
@@ -3916,11 +3916,11 @@ class CascadeAPI {
   /**
    * listSites operation.
    *
-   * @param {listSitesRequest} opts
+   * @param {listSitesRequest} opts - The starting object container.
    * @param {Boolean} [muteHttpExceptions]
    * @return {listSitesResponse}
    */
-  async listSites(
+  listSites(
     opts,
     // Apps Script Specific
     muteHttpExceptions = false
@@ -3931,7 +3931,7 @@ class CascadeAPI {
       muteHttpExceptions,
       payload: JSON.stringify(opts),
     };
-    const request = await this.call(endPoint, requestParams);
+    const request = this.call(endPoint, requestParams);
     if (!request.success) {
       throw `Request Failed. Request Response: ${request.message}`;
     }
@@ -3941,11 +3941,11 @@ class CascadeAPI {
   /**
    * readAudits operation.
    *
-   * @param {readAuditsRequest} opts
+   * @param {readAuditsRequest} opts - The starting object container.
    * @param {Boolean} [muteHttpExceptions]
    * @return {readAuditsResponse}
    */
-  async readAudits(
+  readAudits(
     opts,
     // Apps Script Specific
     muteHttpExceptions = false
@@ -3956,7 +3956,7 @@ class CascadeAPI {
       muteHttpExceptions,
       payload: JSON.stringify(opts),
     };
-    const request = await this.call(endPoint, requestParams);
+    const request = this.call(endPoint, requestParams);
     if (!request.success) {
       throw `Request Failed. Request Response: ${request.message}`;
     }
@@ -3966,11 +3966,11 @@ class CascadeAPI {
   /**
    * readWorkflowInformation operation.
    *
-   * @param {readWorkflowInformationRequest} opts
+   * @param {readWorkflowInformationRequest} opts - The starting object container.
    * @param {Boolean} [muteHttpExceptions]
    * @return {readWorkflowInformationResponse}
    */
-  async readWorkflowInformation(
+  readWorkflowInformation(
     opts,
     // Apps Script Specific
     muteHttpExceptions = false
@@ -3981,7 +3981,7 @@ class CascadeAPI {
       muteHttpExceptions,
       payload: JSON.stringify(opts),
     };
-    const request = await this.call(endPoint, requestParams);
+    const request = this.call(endPoint, requestParams);
     if (!request.success) {
       throw `Request Failed. Request Response: ${request.message}`;
     }
@@ -3991,11 +3991,11 @@ class CascadeAPI {
   /**
    * performWorkflowTransition operation.
    *
-   * @param {performWorkflowTransitionRequest} opts
+   * @param {performWorkflowTransitionRequest} opts - The starting object container.
    * @param {Boolean} [muteHttpExceptions]
    * @return {performWorkflowTransitionResponse}
    */
-  async performWorkflowTransition(
+  performWorkflowTransition(
     opts,
     // Apps Script Specific
     muteHttpExceptions = false
@@ -4006,7 +4006,7 @@ class CascadeAPI {
       muteHttpExceptions,
       payload: JSON.stringify(opts),
     };
-    const request = await this.call(endPoint, requestParams);
+    const request = this.call(endPoint, requestParams);
     if (!request.success) {
       throw `Request Failed. Request Response: ${request.message}`;
     }
@@ -4016,11 +4016,11 @@ class CascadeAPI {
   /**
    * readPreferences operation.
    *
-   * @param {readPreferencesRequest} opts
+   * @param {readPreferencesRequest} opts - The starting object container.
    * @param {Boolean} [muteHttpExceptions]
    * @return {readPreferencesResponse}
    */
-  async readPreferences(
+  readPreferences(
     opts,
     // Apps Script Specific
     muteHttpExceptions = false
@@ -4031,19 +4031,19 @@ class CascadeAPI {
       muteHttpExceptions,
       payload: JSON.stringify(opts),
     };
-    const request = await this.call(endPoint, requestParams);
+    const request = this.call(endPoint, requestParams);
     if (!request.success) {
       throw `Request Failed. Request Response: ${request.message}`;
     }
     return request;
   }
 
-  async call(endPoint, requestParams) {
+  call(endPoint, requestParams) {
     const headers = {
       Authorization: `Bearer ${this.apiKey}`,
     };
     requestParams.headers = headers;
-    const request = await UrlFetchApp.fetch(this.url + endPoint, requestParams);
+    const request = UrlFetchApp.fetch(this.url + endPoint, requestParams);
     const parsed = JSON.parse(request);
     return parsed;
   }

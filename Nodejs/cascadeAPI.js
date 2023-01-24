@@ -9,8 +9,7 @@ export default class CascadeAPI {
   /**
    * read operation.
    *
-   * @param {Requests.readRequest} opts
-   * @param {Boolean} [muteHttpExceptions]
+   * @param {Requests.readRequest} opts - The starting object container.
    * @return {Requests.readResponse}
    */
   async read(opts) {
@@ -23,15 +22,14 @@ export default class CascadeAPI {
     if (!request.success) {
       throw `Request Failed. Request Response: ${request.message}`;
     }
-    return request.asset[identifier.type];
+    return request.asset[opts.identifier.type];
   }
 
   /**
    * removal operation.
    *
-   * @param {Requests.deleteRequest} opts
-   * @param {Boolean} [muteHttpExceptions]
-   * @return {Requests.deleteResponse}
+   * @param {Requests.removeRequest} opts - The starting object container.
+   * @return {Requests.removeResponse}
    */
   async remove(opts) {
     // Delete
@@ -50,8 +48,7 @@ export default class CascadeAPI {
   /**
    * edit operation.
    *
-   * @param {Requests.editRequest} opts
-   * @param {Boolean} [muteHttpExceptions]
+   * @param {Requests.editRequest} opts - The starting object container.
    * @return {Requests.editResponse}
    */
   async edit(opts) {
@@ -70,8 +67,7 @@ export default class CascadeAPI {
   /**
    * create operation.
    *
-   * @param {Requests.createRequest} opts
-   * @param {Boolean} [muteHttpExceptions]
+   * @param {Requests.createRequest} opts - The starting object container.
    * @return {Requests.createResponse}
    */
   async create(opts) {
@@ -90,8 +86,7 @@ export default class CascadeAPI {
   /**
    * move operation.
    *
-   * @param {Requests.moveRequest} opts
-   * @param {Boolean} [muteHttpExceptions]
+   * @param {Requests.moveRequest} opts - The starting object container.
    * @return {Requests.moveResponse}
    */
   async move(opts) {
@@ -110,8 +105,7 @@ export default class CascadeAPI {
   /**
    * search operation.
    *
-   * @param {Requests.searchRequest} opts
-   * @param {Boolean} [muteHttpExceptions]
+   * @param {Requests.searchRequest} opts - The starting object container.
    * @return {Requests.searchResponse}
    */
   async search(opts) {
@@ -130,8 +124,7 @@ export default class CascadeAPI {
   /**
    * copy operation.
    *
-   * @param {Requests.copyRequest} opts
-   * @param {Boolean} [muteHttpExceptions]
+   * @param {Requests.copyRequest} opts - The starting object container.
    * @return {Requests.copyResponse}
    */
   async copy(opts) {
@@ -150,8 +143,7 @@ export default class CascadeAPI {
   /**
    * siteCopy operation.
    *
-   * @param {Requests.siteCopyRequest} opts
-   * @param {Boolean} [muteHttpExceptions]
+   * @param {Requests.siteCopyRequest} opts - The starting object container.
    * @return {Requests.siteCopyResponse}
    */
   async siteCopy(opts) {
@@ -170,8 +162,7 @@ export default class CascadeAPI {
   /**
    * readAccessRights operation.
    *
-   * @param {Requests.readAccessRightsRequest} opts
-   * @param {Boolean} [muteHttpExceptions]
+   * @param {Requests.readAccessRightsRequest} opts - The starting object container.
    * @return {Requests.readAccessRightsResponse}
    */
   async readAccessRights(opts) {
@@ -190,8 +181,7 @@ export default class CascadeAPI {
   /**
    * editAccessRights operation.
    *
-   * @param {Requests.editAccessRightsRequest} opts
-   * @param {Boolean} [muteHttpExceptions]
+   * @param {Requests.editAccessRightsRequest} opts - The starting object container.
    * @return {Requests.editAccessRightsResponse}
    */
   async editAccessRights(opts) {
@@ -210,8 +200,7 @@ export default class CascadeAPI {
   /**
    * readWorkflowSettings operation.
    *
-   * @param {Requests.readWorkflowSettingsRequest} opts
-   * @param {Boolean} [muteHttpExceptions]
+   * @param {Requests.readWorkflowSettingsRequest} opts - The starting object container.
    * @return {Requests.readWorkflowSettingsResponse}
    */
   async readWorkflowSettings(opts) {
@@ -230,8 +219,7 @@ export default class CascadeAPI {
   /**
    * editWorkflowSettings operation.
    *
-   * @param {Requests.editWorkflowSettingsRequest} opts
-   * @param {Boolean} [muteHttpExceptions]
+   * @param {Requests.editWorkflowSettingsRequest} opts - The starting object container.
    * @return {Requests.editWorkflowSettingsResponse}
    */
   async editWorkflowSettings(opts) {
@@ -250,8 +238,7 @@ export default class CascadeAPI {
   /**
    * listSubscribers operation.
    *
-   * @param {Requests.listSubscribersRequest} opts
-   * @param {Boolean} [muteHttpExceptions]
+   * @param {Requests.listSubscribersRequest} opts - The starting object container.
    * @return {Requests.listSubscribersResponse}
    */
   async listSubscribers(opts) {
@@ -270,8 +257,7 @@ export default class CascadeAPI {
   /**
    * listMessages operation.
    *
-   * @param {Requests.listMessagesRequest} opts
-   * @param {Boolean} [muteHttpExceptions]
+   * @param {Requests.listMessagesRequest} opts - The starting object container.
    * @return {Requests.listMessagesResponse}
    */
   async listMessages(opts) {
@@ -290,8 +276,7 @@ export default class CascadeAPI {
   /**
    * markMessage operation.
    *
-   * @param {Requests.markMessageRequest} opts
-   * @param {Boolean} [muteHttpExceptions]
+   * @param {Requests.markMessageRequest} opts - The starting object container.
    * @return {Requests.markMessageResponse}
    */
   async markMessage(opts) {
@@ -310,8 +295,7 @@ export default class CascadeAPI {
   /**
    * deleteMessage operation.
    *
-   * @param {Requests.deleteMessageRequest} opts
-   * @param {Boolean} [muteHttpExceptions]
+   * @param {Requests.deleteMessageRequest} opts - The starting object container.
    * @return {Requests.deleteMessageResponse}
    */
   async deleteMessage(opts) {
@@ -330,8 +314,7 @@ export default class CascadeAPI {
   /**
    * checkOut operation.
    *
-   * @param {Requests.checkOutRequest} opts
-   * @param {Boolean} [muteHttpExceptions]
+   * @param {Requests.checkOutRequest} opts - The starting object container.
    * @return {Requests.checkOutResponse}
    */
   async checkOut(opts) {
@@ -350,8 +333,7 @@ export default class CascadeAPI {
   /**
    * checkIn operation.
    *
-   * @param {Requests.checkInRequest} opts
-   * @param {Boolean} [muteHttpExceptions]
+   * @param {Requests.checkInRequest} opts - The starting object container.
    * @return {Requests.checkInResponse}
    */
   async checkIn(opts) {
@@ -370,8 +352,7 @@ export default class CascadeAPI {
   /**
    * listSites operation.
    *
-   * @param {Requests.listSitesRequest} opts
-   * @param {Boolean} [muteHttpExceptions]
+   * @param {Requests.listSitesRequest} opts - The starting object container.
    * @return {Requests.listSitesResponse}
    */
   async listSites(opts) {
@@ -390,8 +371,7 @@ export default class CascadeAPI {
   /**
    * readAudits operation.
    *
-   * @param {Requests.readAuditsRequest} opts
-   * @param {Boolean} [muteHttpExceptions]
+   * @param {Requests.readAuditsRequest} opts - The starting object container.
    * @return {Requests.readAuditsResponse}
    */
   async readAudits(opts) {
@@ -410,8 +390,7 @@ export default class CascadeAPI {
   /**
    * readWorkflowInformation operation.
    *
-   * @param {Requests.readWorkflowInformationRequest} opts
-   * @param {Boolean} [muteHttpExceptions]
+   * @param {Requests.readWorkflowInformationRequest} opts - The starting object container.
    * @return {Requests.readWorkflowInformationResponse}
    */
   async readWorkflowInformation(opts) {
@@ -430,8 +409,7 @@ export default class CascadeAPI {
   /**
    * performWorkflowTransition operation.
    *
-   * @param {Requests.performWorkflowTransitionRequest} opts
-   * @param {Boolean} [muteHttpExceptions]
+   * @param {Requests.performWorkflowTransitionRequest} opts - The starting object container.
    * @return {Requests.performWorkflowTransitionResponse}
    */
   async performWorkflowTransition(opts) {
@@ -450,8 +428,7 @@ export default class CascadeAPI {
   /**
    * readPreferences operation.
    *
-   * @param {Requests.readPreferencesRequest} opts
-   * @param {Boolean} [muteHttpExceptions]
+   * @param {Requests.readPreferencesRequest} opts - The starting object container.
    * @return {Requests.readPreferencesResponse}
    */
   async readPreferences(opts) {
