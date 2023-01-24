@@ -24,7 +24,7 @@ class CascadeAPI {
    
    * @property {boolean} [recycled] - NOT REQUIRED: For reading purposes only. Ignored when editing, copying etc.
    */
-   /**
+  /**
    * @typedef {Object} ReadRequestIdentifier_Path
    * @property {string} [path] - NOT REQUIRED: The path to the asset.
    * - When reading a site, the 'path' element should be populated with the parent site's name
@@ -1398,7 +1398,7 @@ class CascadeAPI {
     if (!request.success) {
       throw `Request Failed. Request Response: ${request.message}`;
     }
-    return request.asset[opts.identifier.type];
+    return request.asset;
   }
 
   /**
