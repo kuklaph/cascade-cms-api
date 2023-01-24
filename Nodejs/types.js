@@ -2,7 +2,7 @@
 //#region
 /**
  * @typedef {Object} readRequest
- * @property {ReadRequest_Identifier} identifier
+ * @property {ReadRequest_Identifier} identifier - REQUIRED: Parameters used when reading an asset
  */
 /**
 * @typedef {Object} ReadRequest_Identifier
@@ -1369,6 +1369,14 @@
  */
 
 //#endregion
+
+// ─── Remove Request ──────────────────────────────────────────────────────────
+
+// ─── Remove Response ─────────────────────────────────────────────────────────
+
+// ─── Edit Request ────────────────────────────────────────────────────────────
+
+// ─── Edit Response ───────────────────────────────────────────────────────────
 
 // ─── Create Request ──────────────────────────────────────────────────────────
 //#region
@@ -3407,6 +3415,127 @@
  * @property {string} createdAssetId
  */
 //#endregion
+
+// ─── Move Request ────────────────────────────────────────────────────────────
+
+// ─── Move Response ───────────────────────────────────────────────────────────
+
+// ─── Search Request ──────────────────────────────────────────────────────────
+//#region
+/**
+ * @typedef {Object} searchRequest
+ * @property {SearchRequest_SearchInformation} searchInformation
+ */
+/**
+* @typedef {Object} SearchRequest_SearchInformation
+* @property {string} searchTerms - REQUIRED
+* @property {string} [siteId] - NOT REQUIRED, if left blank, all sites will be searched
+* - Id or name of the site to search
+
+* @property {string} [siteName] - NOT REQUIRED: The parent site name
+* @property {"name" | "path" | "createdBy" | "modifiedBy" | "displayName" | "title" | "summary" | "teaser" | "keywords" | "description" | "author" | "blob" | "velocityFormatContent" | "xml" | "link"} [searchFields] - NOT REQUIRED
+* - Asset fields to search (e.g. name, title, content), see searchField simpleType for valid values
+
+* @property {"assetfactory" | "assetfactorycontainer" | "block" | "block_FEED" | "block_INDEX" | "block_TEXT" | "block_XHTML_DATADEFINITION" | "block_XML" | "block_TWITTER_FEED" | "connectorcontainer" | "twitterconnector" | "facebookconnector" | "wordpressconnector" | "googleanalyticsconnector" | "contenttype" | "contenttypecontainer" | "destination" | "editorconfiguration" | "file" | "folder" | "group" | "message" | "metadataset" | "metadatasetcontainer" | "page" | "pageconfigurationset" | "pageconfiguration" | "pageregion" | "pageconfigurationsetcontainer" | "publishset" | "publishsetcontainer" | "reference" | "role" | "datadefinition" | "datadefinitioncontainer" | "sharedfield" | "sharedfieldcontainer" | "format" | "format_XSLT" | "format_SCRIPT" | "site" | "sitedestinationcontainer" | "symlink" | "target" | "template" | "transport" | "transport_fs" | "transport_ftp" | "transport_db" | "transport_cloud" | "transportcontainer" | "user" | "workflow" | "workflowdefinition" | "workflowdefinitioncontainer" | "workflowemail" | "workflowemailcontainer"} [searchTypes] - NOT REQUIRED, if left blank, all asset types will be searched
+* - Asset types to search (e.g. page, folder, site)
+
+*/
+//#endregion
+
+// ─── Search Response ─────────────────────────────────────────────────────────
+//#region
+/**
+ * @typedef {Object} searchResponse
+ * @property {string} success
+ * @property {string} message
+ * @property {SearchResponse_Matches} matches
+ */
+/**
+ * @typedef {Object} SearchResponse_Matches
+ * @property {SearchResponseMatches_Match} match
+ */
+/**
+ * @typedef {Object} SearchResponseMatches_Match
+ * @property {string} id
+ * @property {SearchResponseMatchesMatch_Path} path
+ * @property {string} type
+ * @property {boolean} recycled
+ */
+/**
+ * @typedef {Object} SearchResponseMatchesMatch_Path
+ * @property {string} path
+ * @property {string} siteId
+ * @property {string} siteName
+ */
+//#endregion
+
+// ─── Copy Request ────────────────────────────────────────────────────────────
+
+// ─── Copy Response ───────────────────────────────────────────────────────────
+
+// ─── Sitecopy Request ────────────────────────────────────────────────────────
+
+// ─── Sitecopy Response ───────────────────────────────────────────────────────
+
+// ─── Readaccessrights Request ────────────────────────────────────────────────
+
+// ─── Readaccessrights Response ───────────────────────────────────────────────
+
+// ─── Editaccessrights Request ────────────────────────────────────────────────
+
+// ─── Editaccessrights Response ───────────────────────────────────────────────
+
+// ─── Readworkflowsettings Request ────────────────────────────────────────────
+
+// ─── Readworkflowsettings Response ───────────────────────────────────────────
+
+// ─── Editworkflowsettings Request ────────────────────────────────────────────
+
+// ─── Editworkflowsettings Response ───────────────────────────────────────────
+
+// ─── Listsubscribers Request ─────────────────────────────────────────────────
+
+// ─── Listsubscribers Response ────────────────────────────────────────────────
+
+// ─── Listmessages Request ────────────────────────────────────────────────────
+
+// ─── Listmessages Response ───────────────────────────────────────────────────
+
+// ─── Markmessages Request ────────────────────────────────────────────────────
+
+// ─── Markmessages Response ───────────────────────────────────────────────────
+
+// ─── Deletemessage Request ───────────────────────────────────────────────────
+
+// ─── Deletemessage Response ──────────────────────────────────────────────────
+
+// ─── Checkout Request ────────────────────────────────────────────────────────
+
+// ─── Checkout Response ───────────────────────────────────────────────────────
+
+// ─── Checkin Request ─────────────────────────────────────────────────────────
+
+// ─── Checkin Response ────────────────────────────────────────────────────────
+
+// ─── Listsites Request ───────────────────────────────────────────────────────
+
+// ─── Listsites Response ──────────────────────────────────────────────────────
+
+// ─── Readaudits Request ──────────────────────────────────────────────────────
+
+// ─── Readaudits Response ─────────────────────────────────────────────────────
+
+// ─── Readworkflowinformation Request ─────────────────────────────────────────
+
+// ─── Readworkflowinformation Response ────────────────────────────────────────
+
+// ─── Performworkflowtransition Request ───────────────────────────────────────
+
+// ─── Performworkflowtransition Response ──────────────────────────────────────
+
+// ─── Readpreferences Request ─────────────────────────────────────────────────
+
+// ─── Readpreferences Response ────────────────────────────────────────────────
 
 export default {};
 
