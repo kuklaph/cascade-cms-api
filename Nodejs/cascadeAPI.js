@@ -22,7 +22,7 @@ export default class CascadeAPI {
     if (!request.success) {
       throw `Request Failed. Request Response: ${request.message}`;
     }
-    return request.asset;
+    return request;
   }
 
   /**

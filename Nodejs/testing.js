@@ -8,7 +8,3 @@ function test() {
     },
   });
 }
-
-
-
-
