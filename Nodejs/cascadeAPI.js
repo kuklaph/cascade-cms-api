@@ -1,11 +1,7 @@
 import * as Requests from "./types";
 import axios from "axios";
-export default class CascadeAPI {
-  constructor(config = { apiKey, url }) {
-    this.apiKey = config.apiKey;
-    this.url = config.url;
-  }
 
+const CascadeAPIMethods = {
   /**
    * read operation.
    *
@@ -23,7 +19,7 @@ export default class CascadeAPI {
       throw `Request Failed. Request Response: ${request.message}`;
     }
     return request;
-  }
+  },
 
   /**
    * removal operation.
@@ -43,7 +39,7 @@ export default class CascadeAPI {
       throw `Request Failed. Request Response: ${request.message}`;
     }
     return request;
-  }
+  },
 
   /**
    * edit operation.
@@ -62,7 +58,7 @@ export default class CascadeAPI {
       throw `Request Failed. Request Response: ${request.message}`;
     }
     return request;
-  }
+  },
 
   /**
    * create operation.
@@ -81,7 +77,7 @@ export default class CascadeAPI {
       throw `Request Failed. Request Response: ${request.message}`;
     }
     return request;
-  }
+  },
 
   /**
    * move operation.
@@ -100,7 +96,7 @@ export default class CascadeAPI {
       throw `Request Failed. Request Response: ${request.message}`;
     }
     return request;
-  }
+  },
 
   /**
    * search operation.
@@ -119,7 +115,7 @@ export default class CascadeAPI {
       throw `Request Failed. Request Response: ${request.message}`;
     }
     return request.matches;
-  }
+  },
 
   /**
    * copy operation.
@@ -138,7 +134,7 @@ export default class CascadeAPI {
       throw `Request Failed. Request Response: ${request.message}`;
     }
     return request;
-  }
+  },
 
   /**
    * siteCopy operation.
@@ -157,7 +153,7 @@ export default class CascadeAPI {
       throw `Request Failed. Request Response: ${request.message}`;
     }
     return request;
-  }
+  },
 
   /**
    * readAccessRights operation.
@@ -176,7 +172,7 @@ export default class CascadeAPI {
       throw `Request Failed. Request Response: ${request.message}`;
     }
     return request;
-  }
+  },
 
   /**
    * editAccessRights operation.
@@ -195,7 +191,7 @@ export default class CascadeAPI {
       throw `Request Failed. Request Response: ${request.message}`;
     }
     return request;
-  }
+  },
 
   /**
    * readWorkflowSettings operation.
@@ -214,7 +210,7 @@ export default class CascadeAPI {
       throw `Request Failed. Request Response: ${request.message}`;
     }
     return request;
-  }
+  },
 
   /**
    * editWorkflowSettings operation.
@@ -233,7 +229,7 @@ export default class CascadeAPI {
       throw `Request Failed. Request Response: ${request.message}`;
     }
     return request;
-  }
+  },
 
   /**
    * listSubscribers operation.
@@ -252,7 +248,7 @@ export default class CascadeAPI {
       throw `Request Failed. Request Response: ${request.message}`;
     }
     return request;
-  }
+  },
 
   /**
    * listMessages operation.
@@ -271,7 +267,7 @@ export default class CascadeAPI {
       throw `Request Failed. Request Response: ${request.message}`;
     }
     return request;
-  }
+  },
 
   /**
    * markMessage operation.
@@ -290,7 +286,7 @@ export default class CascadeAPI {
       throw `Request Failed. Request Response: ${request.message}`;
     }
     return request;
-  }
+  },
 
   /**
    * deleteMessage operation.
@@ -309,7 +305,7 @@ export default class CascadeAPI {
       throw `Request Failed. Request Response: ${request.message}`;
     }
     return request;
-  }
+  },
 
   /**
    * checkOut operation.
@@ -328,7 +324,7 @@ export default class CascadeAPI {
       throw `Request Failed. Request Response: ${request.message}`;
     }
     return request;
-  }
+  },
 
   /**
    * checkIn operation.
@@ -347,7 +343,7 @@ export default class CascadeAPI {
       throw `Request Failed. Request Response: ${request.message}`;
     }
     return request;
-  }
+  },
 
   /**
    * listSites operation.
@@ -366,7 +362,7 @@ export default class CascadeAPI {
       throw `Request Failed. Request Response: ${request.message}`;
     }
     return request;
-  }
+  },
 
   /**
    * readAudits operation.
@@ -385,7 +381,7 @@ export default class CascadeAPI {
       throw `Request Failed. Request Response: ${request.message}`;
     }
     return request;
-  }
+  },
 
   /**
    * readWorkflowInformation operation.
@@ -404,7 +400,7 @@ export default class CascadeAPI {
       throw `Request Failed. Request Response: ${request.message}`;
     }
     return request;
-  }
+  },
 
   /**
    * performWorkflowTransition operation.
@@ -423,7 +419,7 @@ export default class CascadeAPI {
       throw `Request Failed. Request Response: ${request.message}`;
     }
     return request;
-  }
+  },
 
   /**
    * readPreferences operation.
@@ -442,7 +438,7 @@ export default class CascadeAPI {
       throw `Request Failed. Request Response: ${request.message}`;
     }
     return request;
-  }
+  },
 
   async call(endPoint, requestParams) {
     try {
@@ -459,5 +455,9 @@ export default class CascadeAPI {
     } catch (error) {
       console.error(error);
     }
-  }
-}
+  },
+};
+
+export default CascadeAPI = ({ apiKey, url }) => {
+  return { ...CascadeAPIMethods, apiKey, url };
+};

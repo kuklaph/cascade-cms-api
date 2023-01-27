@@ -1,9 +1,4 @@
-class CascadeAPI {
-  constructor(config = { apiKey, url }) {
-    this.apiKey = config.apiKey;
-    this.url = config.url;
-  }
-
+const CascadeAPIMethods = {
   // ─── Read Request ────────────────────────────────────────────────────────────
   //#region
   /**
@@ -1399,7 +1394,7 @@ class CascadeAPI {
       throw `Request Failed. Request Response: ${request.message}`;
     }
     return request;
-  }
+  },
 
   /**
    * removal operation.
@@ -1424,7 +1419,7 @@ class CascadeAPI {
       throw `Request Failed. Request Response: ${request.message}`;
     }
     return request;
-  }
+  },
 
   /**
    * edit operation.
@@ -1449,7 +1444,7 @@ class CascadeAPI {
       throw `Request Failed. Request Response: ${request.message}`;
     }
     return request;
-  }
+  },
 
   // ─── Create Request ──────────────────────────────────────────────────────────
   //#region
@@ -3512,7 +3507,7 @@ class CascadeAPI {
       throw `Request Failed. Request Response: ${request.message}`;
     }
     return request;
-  }
+  },
 
   /**
    * move operation.
@@ -3537,7 +3532,7 @@ class CascadeAPI {
       throw `Request Failed. Request Response: ${request.message}`;
     }
     return request;
-  }
+  },
 
   // ─── Search Request ──────────────────────────────────────────────────────────
   //#region
@@ -3611,7 +3606,7 @@ class CascadeAPI {
       throw `Request Failed. Request Response: ${request.message}`;
     }
     return request.matches;
-  }
+  },
 
   /**
    * copy operation.
@@ -3636,7 +3631,7 @@ class CascadeAPI {
       throw `Request Failed. Request Response: ${request.message}`;
     }
     return request;
-  }
+  },
 
   /**
    * siteCopy operation.
@@ -3661,7 +3656,7 @@ class CascadeAPI {
       throw `Request Failed. Request Response: ${request.message}`;
     }
     return request;
-  }
+  },
 
   /**
    * readAccessRights operation.
@@ -3686,7 +3681,7 @@ class CascadeAPI {
       throw `Request Failed. Request Response: ${request.message}`;
     }
     return request;
-  }
+  },
 
   /**
    * editAccessRights operation.
@@ -3711,7 +3706,7 @@ class CascadeAPI {
       throw `Request Failed. Request Response: ${request.message}`;
     }
     return request;
-  }
+  },
 
   /**
    * readWorkflowSettings operation.
@@ -3736,7 +3731,7 @@ class CascadeAPI {
       throw `Request Failed. Request Response: ${request.message}`;
     }
     return request;
-  }
+  },
 
   /**
    * editWorkflowSettings operation.
@@ -3761,7 +3756,7 @@ class CascadeAPI {
       throw `Request Failed. Request Response: ${request.message}`;
     }
     return request;
-  }
+  },
 
   /**
    * listSubscribers operation.
@@ -3786,7 +3781,7 @@ class CascadeAPI {
       throw `Request Failed. Request Response: ${request.message}`;
     }
     return request;
-  }
+  },
 
   /**
    * listMessages operation.
@@ -3811,7 +3806,7 @@ class CascadeAPI {
       throw `Request Failed. Request Response: ${request.message}`;
     }
     return request;
-  }
+  },
 
   /**
    * markMessage operation.
@@ -3836,7 +3831,7 @@ class CascadeAPI {
       throw `Request Failed. Request Response: ${request.message}`;
     }
     return request;
-  }
+  },
 
   /**
    * deleteMessage operation.
@@ -3861,7 +3856,7 @@ class CascadeAPI {
       throw `Request Failed. Request Response: ${request.message}`;
     }
     return request;
-  }
+  },
 
   /**
    * checkOut operation.
@@ -3886,7 +3881,7 @@ class CascadeAPI {
       throw `Request Failed. Request Response: ${request.message}`;
     }
     return request;
-  }
+  },
 
   /**
    * checkIn operation.
@@ -3911,7 +3906,7 @@ class CascadeAPI {
       throw `Request Failed. Request Response: ${request.message}`;
     }
     return request;
-  }
+  },
 
   /**
    * listSites operation.
@@ -3936,7 +3931,7 @@ class CascadeAPI {
       throw `Request Failed. Request Response: ${request.message}`;
     }
     return request;
-  }
+  },
 
   /**
    * readAudits operation.
@@ -3961,7 +3956,7 @@ class CascadeAPI {
       throw `Request Failed. Request Response: ${request.message}`;
     }
     return request;
-  }
+  },
 
   /**
    * readWorkflowInformation operation.
@@ -3986,7 +3981,7 @@ class CascadeAPI {
       throw `Request Failed. Request Response: ${request.message}`;
     }
     return request;
-  }
+  },
 
   /**
    * performWorkflowTransition operation.
@@ -4011,7 +4006,7 @@ class CascadeAPI {
       throw `Request Failed. Request Response: ${request.message}`;
     }
     return request;
-  }
+  },
 
   /**
    * readPreferences operation.
@@ -4036,7 +4031,7 @@ class CascadeAPI {
       throw `Request Failed. Request Response: ${request.message}`;
     }
     return request;
-  }
+  },
 
   call(endPoint, requestParams) {
     if (!this.apiKey || !this.url) {
@@ -4049,5 +4044,9 @@ class CascadeAPI {
     const request = UrlFetchApp.fetch(this.url + endPoint, requestParams);
     const parsed = JSON.parse(request);
     return parsed;
-  }
-}
+  },
+};
+
+const CascadeAPI = ({ apiKey, url }) => {
+  return { ...CascadeAPIMethods, apiKey, url };
+};
