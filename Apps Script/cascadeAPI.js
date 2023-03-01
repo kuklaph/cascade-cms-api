@@ -1,1586 +1,139 @@
-const CascadeAPIMethods = {
-  // ─── Read Request ────────────────────────────────────────────────────────────
-  //#region
-  /**
-   * @typedef {Object} readRequest
-   * @property {ReadRequest_Identifier} identifier - REQUIRED: Parameters used when reading an asset
-   */
-  /**
-   * @typedef {Object} ReadRequest_Identifier
-   * @property {string} id - One is REQUIRED: id | type | path
-   * - When editing and selected asset is recycled, it is recommended to preserve this relationship by providing selected asset's id in case if the selected asset gets restored from the recycle bin.
-   
-   * @property {ReadRequestIdentifier_Path} path - One is REQUIRED: id | type | path
-   * - The Path object container.
-   * - Path works only for non-recycled assets
-   
-   * @property {"assetfactory" | "assetfactorycontainer" | "block" | "block_FEED" | "block_INDEX" | "block_TEXT" | "block_XHTML_DATADEFINITION" | "block_XML" | "block_TWITTER_FEED" | "connectorcontainer" | "twitterconnector" | "facebookconnector" | "wordpressconnector" | "googleanalyticsconnector" | "contenttype" | "contenttypecontainer" | "destination" | "editorconfiguration" | "file" | "folder" | "group" | "message" | "metadataset" | "metadatasetcontainer" | "page" | "pageconfigurationset" | "pageconfiguration" | "pageregion" | "pageconfigurationsetcontainer" | "publishset" | "publishsetcontainer" | "reference" | "role" | "datadefinition" | "datadefinitioncontainer" | "sharedfield" | "sharedfieldcontainer" | "format" | "format_XSLT" | "format_SCRIPT" | "site" | "sitedestinationcontainer" | "symlink" | "target" | "template" | "transport" | "transport_fs" | "transport_ftp" | "transport_db" | "transport_cloud" | "transportcontainer" | "user" | "workflow" | "workflowdefinition" | "workflowdefinitioncontainer" | "workflowemail" | "workflowemailcontainer"} type - One is REQUIRED: id | type | path
-   * - The type of asset to read.
-   
-   * @property {boolean} [recycled] - NOT REQUIRED: For reading purposes only. Ignored when editing, copying etc.
-   */
-  /**
-   * @typedef {Object} ReadRequestIdentifier_Path
-   * @property {string} [path] - NOT REQUIRED: The path to the asset.
-   * - When reading a site, the 'path' element should be populated with the parent site's name
-   
-   * @property {string} [siteId] - NOT REQUIRED: The siteId of the parent site.
-   * @property {string} [siteName] - NOT REQUIRED: The parent siteName
-  */
-  //#endregion
-
-  // ─── Read Response ───────────────────────────────────────────────────────────
-  //#region
-  /**
-   * @typedef {Object} readResponse
-   * @property {string} success
-   * @property {string} message
-   * @property {ReadResponse_Asset} asset
-   */
-  /**
-   * @typedef {Object} ReadResponse_Asset
-   * @property {ReadResponseAsset_WorkflowConfiguration} workflowConfiguration
-   * @property {ReadResponseAsset_FeedBlock} feedBlock
-   * @property {ReadResponseAsset_IndexBlock} indexBlock
-   * @property {ReadResponseAsset_TextBlock} textBlock
-   * @property {ReadResponseAsset_XhtmlDataDefinitionBlock} xhtmlDataDefinitionBlock
-   * @property {ReadResponseAsset_XmlBlock} xmlBlock
-   * @property {ReadResponseAsset_File} file
-   * @property {ReadResponseAsset_Folder} folder
-   * @property {ReadResponseAsset_Page} page
-   * @property {ReadResponseAsset_Reference} reference
-   * @property {ReadResponseAsset_XsltFormat} xsltFormat
-   * @property {ReadResponseAsset_ScriptFormat} scriptFormat
-   * @property {ReadResponseAsset_Symlink} symlink
-   * @property {ReadResponseAsset_Template} template
-   * @property {ReadResponseAsset_User} user
-   * @property {ReadResponseAsset_Group} group
-   * @property {ReadResponseAsset_Role} role
-   * @property {ReadResponseAsset_AssetFactory} assetFactory
-   * @property {ReadResponseAsset_AssetFactoryContainer} assetFactoryContainer
-   * @property {ReadResponseAsset_ContentType} contentType
-   * @property {ReadResponseAsset_ContentTypeContainer} contentTypeContainer
-   * @property {ReadResponseAsset_ConnectorContainer} connectorContainer
-   * @property {ReadResponseAsset_FacebookConnector} facebookConnector
-   * @property {ReadResponseAsset_WordPressConnector} wordPressConnector
-   * @property {ReadResponseAsset_GoogleAnalyticsConnector} googleAnalyticsConnector
-   * @property {ReadResponseAsset_PageConfigurationSet} pageConfigurationSet
-   * @property {ReadResponseAsset_PageConfigurationSetContainer} pageConfigurationSetContainer
-   * @property {ReadResponseAsset_DataDefinition} dataDefinition
-   * @property {ReadResponseAsset_DataDefinitionContainer} dataDefinitionContainer
-   * @property {ReadResponseAsset_SharedField} sharedField
-   * @property {ReadResponseAsset_SharedFieldContainer} sharedFieldContainer
-   * @property {ReadResponseAsset_MetadataSet} metadataSet
-   * @property {ReadResponseAsset_MetadataSetContainer} metadataSetContainer
-   * @property {ReadResponseAsset_PublishSet} publishSet
-   * @property {ReadResponseAsset_PublishSetContainer} publishSetContainer
-   * @property {ReadResponseAsset_Target} target
-   * @property {ReadResponseAsset_SiteDestinationContainer} siteDestinationContainer
-   * @property {ReadResponseAsset_Destination} destination
-   * @property {ReadResponseAsset_FileSystemTransport} fileSystemTransport
-   * @property {ReadResponseAsset_FtpTransport} ftpTransport
-   * @property {ReadResponseAsset_DatabaseTransport} databaseTransport
-   * @property {ReadResponseAsset_CloudTransport} cloudTransport
-   * @property {ReadResponseAsset_TransportContainer} transportContainer
-   * @property {ReadResponseAsset_WorkflowDefinition} workflowDefinition
-   * @property {ReadResponseAsset_WorkflowDefinitionContainer} workflowDefinitionContainer
-   * @property {ReadResponseAsset_WorkflowEmail} workflowEmail
-   * @property {ReadResponseAsset_WorkflowEmailContainer} workflowEmailContainer
-   * @property {ReadResponseAsset_TwitterFeedBlock} twitterFeedBlock
-   * @property {ReadResponseAsset_Site} site
-   * @property {ReadResponseAsset_EditorConfiguration} editorConfiguration
-   */
-  /**
-   * @typedef {Object} ReadResponseAsset_WorkflowConfiguration
-   * @property {string} workflowName
-   * @property {string} workflowDefinitionId
-   * @property {string} workflowDefinitionPath
-   * @property {string} workflowComments
-   * @property {ReadResponseAssetWorkflowConfiguration_WorkflowStepConfigurations} workflowStepConfigurations
-   * @property {string} endDate
-   */
-  /**
-   * @typedef {Object} ReadResponseAssetWorkflowConfiguration_WorkflowStepConfigurations
-   * @property {ReadResponseAssetWorkflowConfigurationWorkflowStepConfigurations_WorkflowStepConfiguration} workflowStepConfiguration
-   */
-  /**
-   * @typedef {Object} ReadResponseAssetWorkflowConfigurationWorkflowStepConfigurations_WorkflowStepConfiguration
-   * @property {string} stepIdentifier
-   * @property {string} stepAssignment
-   */
-  /**
-   * @typedef {Object} ReadResponseAsset_FeedBlock
-   * @property {string} id
-   * @property {string} name
-   * @property {string} parentFolderId
-   * @property {string} parentFolderPath
-   * @property {string} path
-   * @property {string} lastModifiedDate
-   * @property {string} lastModifiedBy
-   * @property {string} createdDate
-   * @property {string} createdBy
-   * @property {string} siteId
-   * @property {string} siteName
-   * @property {ReadResponseAssetFeedBlock_Tags} tags
-   * @property {ReadResponseAssetFeedBlock_Metadata} metadata
-   * @property {string} metadataSetId
-   * @property {string} metadataSetPath
-   * @property {boolean} reviewOnSchedule
-   * @property {number} reviewEvery
-   * @property {string} expirationFolderId
-   * @property {string} expirationFolderPath
-   * @property {boolean} expirationFolderRecycled
-   * @property {string} feedURL
-   */
-  /**
-   * @typedef {Object} ReadResponseAssetFeedBlock_Tags
-   * @property {ReadResponseAssetFeedBlockTags_Tag} tag
-   */
-  /**
-   * @typedef {Object} ReadResponseAssetFeedBlockTags_Tag
-   * @property {string} name
-   */
-  /**
-   * @typedef {Object} ReadResponseAssetFeedBlock_Metadata
-   * @property {string} author
-   * @property {string} displayName
-   * @property {string} endDate
-   * @property {string} keywords
-   * @property {string} metaDescription
-   * @property {string} reviewDate
-   * @property {string} startDate
-   * @property {string} summary
-   * @property {string} teaser
-   * @property {string} title
-   * @property {ReadResponseAssetFeedBlockMetadata_DynamicFields} dynamicFields
-   */
-  /**
-   * @typedef {Object} ReadResponseAssetFeedBlockMetadata_DynamicFields
-   * @property {ReadResponseAssetFeedBlockMetadataDynamicFields_DynamicField} dynamicField
-   */
-  /**
-   * @typedef {Object} ReadResponseAssetFeedBlockMetadataDynamicFields_DynamicField
-   * @property {string} name
-   * @property {ReadResponseAssetFeedBlockMetadataDynamicFieldsDynamicField_FieldValues} fieldValues
-   */
-  /**
-   * @typedef {Object} ReadResponseAssetFeedBlockMetadataDynamicFieldsDynamicField_FieldValues
-   * @property {string} fieldValue
-   */
-  /**
-   * @typedef {Object} ReadResponseAsset_IndexBlock
-   * @property {string} id
-   * @property {string} name
-   * @property {string} parentFolderId
-   * @property {string} parentFolderPath
-   * @property {string} path
-   * @property {string} lastModifiedDate
-   * @property {string} lastModifiedBy
-   * @property {string} createdDate
-   * @property {string} createdBy
-   * @property {string} siteId
-   * @property {string} siteName
-   * @property {ReadResponseAssetIndexBlock_Tags} tags
-   * @property {ReadResponseAssetIndexBlock_Metadata} metadata
-   * @property {string} metadataSetId
-   * @property {string} metadataSetPath
-   * @property {boolean} reviewOnSchedule
-   * @property {number} reviewEvery
-   * @property {string} expirationFolderId
-   * @property {string} expirationFolderPath
-   * @property {boolean} expirationFolderRecycled
-   * @property {string} indexBlockType
-   * @property {string} indexedFolderId
-   * @property {string} indexedFolderPath
-   * @property {string} indexedContentTypeId
-   * @property {string} indexedContentTypePath
-   * @property {boolean} indexedFolderRecycled
-   * @property {number} maxRenderedAssets
-   * @property {number} depthOfIndex
-   * @property {string} renderingBehavior
-   * @property {boolean} indexPages
-   * @property {boolean} indexBlocks
-   * @property {boolean} indexLinks
-   * @property {boolean} indexFiles
-   * @property {boolean} indexRegularContent
-   * @property {boolean} indexSystemMetadata
-   * @property {boolean} indexUserMetadata
-   * @property {boolean} indexAccessRights
-   * @property {boolean} indexTags
-   * @property {boolean} indexUserInfo
-   * @property {boolean} indexWorkflowInfo
-   * @property {boolean} appendCallingPageData
-   * @property {string} sortMethod
-   * @property {string} sortOrder
-   * @property {string} pageXML
-   */
-  /**
-   * @typedef {Object} ReadResponseAssetIndexBlock_Tags
-   * @property {ReadResponseAssetIndexBlockTags_Tag} tag
-   */
-  /**
-   * @typedef {Object} ReadResponseAssetIndexBlockTags_Tag
-   * @property {string} name
-   */
-  /**
-   * @typedef {Object} ReadResponseAssetIndexBlock_Metadata
-   * @property {string} author
-   * @property {string} displayName
-   * @property {string} endDate
-   * @property {string} keywords
-   * @property {string} metaDescription
-   * @property {string} reviewDate
-   * @property {string} startDate
-   * @property {string} summary
-   * @property {string} teaser
-   * @property {string} title
-   * @property {ReadResponseAssetIndexBlockMetadata_DynamicFields} dynamicFields
-   */
-  /**
-   * @typedef {Object} ReadResponseAssetIndexBlockMetadata_DynamicFields
-   * @property {ReadResponseAssetIndexBlockMetadataDynamicFields_DynamicField} dynamicField
-   */
-  /**
-   * @typedef {Object} ReadResponseAssetIndexBlockMetadataDynamicFields_DynamicField
-   * @property {string} name
-   * @property {ReadResponseAssetIndexBlockMetadataDynamicFieldsDynamicField_FieldValues} fieldValues
-   */
-  /**
-   * @typedef {Object} ReadResponseAssetIndexBlockMetadataDynamicFieldsDynamicField_FieldValues
-   * @property {string} fieldValue
-   */
-  /**
-   * @typedef {Object} ReadResponseAsset_TextBlock
-   * @property {string} id
-   * @property {string} name
-   * @property {string} parentFolderId
-   * @property {string} parentFolderPath
-   * @property {string} path
-   * @property {string} lastModifiedDate
-   * @property {string} lastModifiedBy
-   * @property {string} createdDate
-   * @property {string} createdBy
-   * @property {string} siteId
-   * @property {string} siteName
-   * @property {ReadResponseAssetTextBlock_Tags} tags
-   * @property {ReadResponseAssetTextBlock_Metadata} metadata
-   * @property {string} metadataSetId
-   * @property {string} metadataSetPath
-   * @property {boolean} reviewOnSchedule
-   * @property {number} reviewEvery
-   * @property {string} expirationFolderId
-   * @property {string} expirationFolderPath
-   * @property {boolean} expirationFolderRecycled
-   * @property {string} text
-   */
-  /**
-   * @typedef {Object} ReadResponseAssetTextBlock_Tags
-   * @property {ReadResponseAssetTextBlockTags_Tag} tag
-   */
-  /**
-   * @typedef {Object} ReadResponseAssetTextBlockTags_Tag
-   * @property {string} name
-   */
-  /**
-   * @typedef {Object} ReadResponseAssetTextBlock_Metadata
-   * @property {string} author
-   * @property {string} displayName
-   * @property {string} endDate
-   * @property {string} keywords
-   * @property {string} metaDescription
-   * @property {string} reviewDate
-   * @property {string} startDate
-   * @property {string} summary
-   * @property {string} teaser
-   * @property {string} title
-   * @property {ReadResponseAssetTextBlockMetadata_DynamicFields} dynamicFields
-   */
-  /**
-   * @typedef {Object} ReadResponseAssetTextBlockMetadata_DynamicFields
-   * @property {ReadResponseAssetTextBlockMetadataDynamicFields_DynamicField} dynamicField
-   */
-  /**
-   * @typedef {Object} ReadResponseAssetTextBlockMetadataDynamicFields_DynamicField
-   * @property {string} name
-   * @property {ReadResponseAssetTextBlockMetadataDynamicFieldsDynamicField_FieldValues} fieldValues
-   */
-  /**
-   * @typedef {Object} ReadResponseAssetTextBlockMetadataDynamicFieldsDynamicField_FieldValues
-   * @property {string} fieldValue
-   */
-  /**
-   * @typedef {Object} ReadResponseAsset_XhtmlDataDefinitionBlock
-   * @property {string} id
-   * @property {string} name
-   * @property {string} parentFolderId
-   * @property {string} parentFolderPath
-   * @property {string} path
-   * @property {string} lastModifiedDate
-   * @property {string} lastModifiedBy
-   * @property {string} createdDate
-   * @property {string} createdBy
-   * @property {string} siteId
-   * @property {string} siteName
-   * @property {ReadResponseAssetXhtmlDataDefinitionBlock_Tags} tags
-   * @property {ReadResponseAssetXhtmlDataDefinitionBlock_Metadata} metadata
-   * @property {string} metadataSetId
-   * @property {string} metadataSetPath
-   * @property {boolean} reviewOnSchedule
-   * @property {number} reviewEvery
-   * @property {string} expirationFolderId
-   * @property {string} expirationFolderPath
-   * @property {boolean} expirationFolderRecycled
-   * @property {ReadResponseAssetXhtmlDataDefinitionBlock_StructuredData} structuredData
-   * @property {string} xhtml
-   */
-  /**
-   * @typedef {Object} ReadResponseAssetXhtmlDataDefinitionBlock_Tags
-   * @property {ReadResponseAssetXhtmlDataDefinitionBlockTags_Tag} tag
-   */
-  /**
-   * @typedef {Object} ReadResponseAssetXhtmlDataDefinitionBlockTags_Tag
-   * @property {string} name
-   */
-  /**
-   * @typedef {Object} ReadResponseAssetXhtmlDataDefinitionBlock_Metadata
-   * @property {string} author
-   * @property {string} displayName
-   * @property {string} endDate
-   * @property {string} keywords
-   * @property {string} metaDescription
-   * @property {string} reviewDate
-   * @property {string} startDate
-   * @property {string} summary
-   * @property {string} teaser
-   * @property {string} title
-   * @property {ReadResponseAssetXhtmlDataDefinitionBlockMetadata_DynamicFields} dynamicFields
-   */
-  /**
-   * @typedef {Object} ReadResponseAssetXhtmlDataDefinitionBlockMetadata_DynamicFields
-   * @property {ReadResponseAssetXhtmlDataDefinitionBlockMetadataDynamicFields_DynamicField} dynamicField
-   */
-  /**
-   * @typedef {Object} ReadResponseAssetXhtmlDataDefinitionBlockMetadataDynamicFields_DynamicField
-   * @property {string} name
-   * @property {ReadResponseAssetXhtmlDataDefinitionBlockMetadataDynamicFieldsDynamicField_FieldValues} fieldValues
-   */
-  /**
-   * @typedef {Object} ReadResponseAssetXhtmlDataDefinitionBlockMetadataDynamicFieldsDynamicField_FieldValues
-   * @property {string} fieldValue
-   */
-  /**
-   * @typedef {Object} ReadResponseAssetXhtmlDataDefinitionBlock_StructuredData
-   * @property {string} definitionId
-   * @property {string} definitionPath
-   * @property {ReadResponseAssetXhtmlDataDefinitionBlockStructuredData_StructuredDataNodes} structuredDataNodes
-   */
-  /**
-   * @typedef {Object} ReadResponseAssetXhtmlDataDefinitionBlockStructuredData_StructuredDataNodes
-   * @property {ReadResponseAssetXhtmlDataDefinitionBlockStructuredDataStructuredDataNodes_StructuredDataNode} structuredDataNode
-   */
-  /**
-   * @typedef {Object} ReadResponseAssetXhtmlDataDefinitionBlockStructuredDataStructuredDataNodes_StructuredDataNode
-   * @property {string} type
-   * @property {string} identifier
-   * @property {string} structuredDataNodes
-   * @property {string} text
-   * @property {string} assetType
-   * @property {string} blockId
-   * @property {string} blockPath
-   * @property {string} fileId
-   * @property {string} filePath
-   * @property {string} pageId
-   * @property {string} pagePath
-   * @property {string} symlinkId
-   * @property {string} symlinkPath
-   * @property {boolean} recycled
-   */
-  /**
-   * @typedef {Object} ReadResponseAsset_XmlBlock
-   * @property {string} id
-   * @property {string} name
-   * @property {string} parentFolderId
-   * @property {string} parentFolderPath
-   * @property {string} path
-   * @property {string} lastModifiedDate
-   * @property {string} lastModifiedBy
-   * @property {ReadResponseAssetXmlBlock_Metadata} metadata
-   * @property {string} metadataSetId
-   * @property {string} metadataSetPath
-   * @property {boolean} reviewOnSchedule
-   * @property {number} reviewEvery
-   * @property {string} expirationFolderId
-   * @property {string} expirationFolderPath
-   * @property {boolean} expirationFolderRecycled
-   * @property {string} xml
-   */
-  /**
-   * @typedef {Object} ReadResponseAssetXmlBlock_Metadata
-   * @property {string} author
-   * @property {string} displayName
-   * @property {string} endDate
-   * @property {string} keywords
-   * @property {string} metaDescription
-   */
-  /**
-   * @typedef {Object} ReadResponseAsset_File
-   * @property {string} id
-   * @property {string} name
-   * @property {string} parentFolderId
-   * @property {string} parentFolderPath
-   * @property {string} path
-   * @property {string} lastModifiedDate
-   * @property {string} lastModifiedBy
-   * @property {ReadResponseAssetFile_Metadata} metadata
-   * @property {string} metadataSetId
-   * @property {string} metadataSetPath
-   * @property {boolean} reviewOnSchedule
-   * @property {number} reviewEvery
-   * @property {string} expirationFolderId
-   * @property {string} expirationFolderPath
-   * @property {boolean} expirationFolderRecycled
-   * @property {boolean} shouldBePublished
-   * @property {boolean} shouldBeIndexed
-   * @property {string} lastPublishedDate
-   * @property {string} lastPublishedBy
-   * @property {string} text
-   * @property {string} data
-   * @property {boolean} rewriteLinks
-   * @property {string} linkRewriting
-   */
-  /**
-   * @typedef {Object} ReadResponseAssetFile_Metadata
-   * @property {string} author
-   * @property {string} displayName
-   * @property {string} endDate
-   * @property {string} keywords
-   * @property {string} metaDescription
-   */
-  /**
-   * @typedef {Object} ReadResponseAsset_Folder
-   * @property {string} id
-   * @property {string} name
-   * @property {string} parentFolderId
-   * @property {string} parentFolderPath
-   * @property {string} path
-   * @property {string} lastModifiedDate
-   * @property {string} lastModifiedBy
-   * @property {ReadResponseAssetFolder_Metadata} metadata
-   * @property {string} metadataSetId
-   * @property {string} metadataSetPath
-   * @property {boolean} reviewOnSchedule
-   * @property {number} reviewEvery
-   * @property {string} expirationFolderId
-   * @property {string} expirationFolderPath
-   * @property {boolean} expirationFolderRecycled
-   * @property {boolean} shouldBePublished
-   * @property {boolean} shouldBeIndexed
-   * @property {string} lastPublishedDate
-   * @property {string} lastPublishedBy
-   * @property {ReadResponseAssetFolder_Children} children
-   * @property {boolean} includeInStaleContent
-   */
-  /**
-   * @typedef {Object} ReadResponseAssetFolder_Metadata
-   * @property {string} author
-   * @property {string} displayName
-   * @property {string} endDate
-   * @property {string} keywords
-   * @property {string} metaDescription
-   */
-  /**
-   * @typedef {Object} ReadResponseAssetFolder_Children
-   * @property {ReadResponseAssetFolderChildren_Child} child
-   */
-  /**
-   * @typedef {Object} ReadResponseAssetFolderChildren_Child
-   * @property {string} id
-   * @property {ReadResponseAssetFolderChildrenChild_Path} path
-   * @property {string} type
-   * @property {boolean} recycled
-   */
-  /**
-   * @typedef {Object} ReadResponseAssetFolderChildrenChild_Path
-   * @property {string} path
-   * @property {string} siteId
-   * @property {string} siteName
-   */
-  /**
-   * @typedef {Object} ReadResponseAsset_Page
-   * @property {string} id
-   * @property {string} name
-   * @property {string} parentFolderId
-   * @property {string} parentFolderPath
-   * @property {string} path
-   * @property {string} lastModifiedDate
-   * @property {string} lastModifiedBy
-   * @property {ReadResponseAssetPage_Metadata} metadata
-   * @property {string} metadataSetId
-   * @property {string} metadataSetPath
-   * @property {boolean} reviewOnSchedule
-   * @property {number} reviewEvery
-   * @property {string} expirationFolderId
-   * @property {string} expirationFolderPath
-   * @property {boolean} expirationFolderRecycled
-   * @property {boolean} shouldBePublished
-   * @property {boolean} shouldBeIndexed
-   * @property {string} lastPublishedDate
-   * @property {string} lastPublishedBy
-   * @property {string} configurationSetId
-   * @property {string} configurationSetPath
-   * @property {string} contentTypeId
-   * @property {string} contentTypePath
-   * @property {ReadResponseAssetPage_StructuredData} structuredData
-   */
-  /**
-   * @typedef {Object} ReadResponseAssetPage_Metadata
-   * @property {string} author
-   * @property {string} displayName
-   * @property {string} endDate
-   * @property {string} keywords
-   * @property {string} metaDescription
-   */
-  /**
-   * @typedef {Object} ReadResponseAssetPage_StructuredData
-   * @property {string} definitionId
-   * @property {string} definitionPath
-   * @property {ReadResponseAssetPageStructuredData_StructuredDataNodes} structuredDataNodes
-   */
-  /**
-   * @typedef {Object} ReadResponseAssetPageStructuredData_StructuredDataNodes
-   * @property {ReadResponseAssetPageStructuredDataStructuredDataNodes_StructuredDataNode} structuredDataNode
-   */
-  /**
-   * @typedef {Object} ReadResponseAssetPageStructuredDataStructuredDataNodes_StructuredDataNode
-   * @property {string} type
-   * @property {string} identifier
-   * @property {string} structuredDataNodes
-   * @property {string} text
-   * @property {string} assetType
-   */
-  /**
-   * @typedef {Object} ReadResponseAsset_Reference
-   * @property {string} id
-   * @property {string} name
-   * @property {string} parentFolderId
-   * @property {string} parentFolderPath
-   * @property {string} path
-   * @property {string} lastModifiedDate
-   * @property {string} lastModifiedBy
-   * @property {string} referencedAssetId
-   * @property {string} referencedAssetPath
-   * @property {string} referencedAssetType
-   */
-  /**
-   * @typedef {Object} ReadResponseAsset_XsltFormat
-   * @property {string} id
-   * @property {string} name
-   * @property {string} parentFolderId
-   * @property {string} parentFolderPath
-   * @property {string} path
-   * @property {string} lastModifiedDate
-   * @property {string} lastModifiedBy
-   * @property {string} xml
-   */
-  /**
-   * @typedef {Object} ReadResponseAsset_ScriptFormat
-   * @property {string} id
-   * @property {string} name
-   * @property {string} parentFolderId
-   * @property {string} parentFolderPath
-   * @property {string} path
-   * @property {string} lastModifiedDate
-   * @property {string} lastModifiedBy
-   * @property {string} script
-   */
-  /**
-   * @typedef {Object} ReadResponseAsset_Symlink
-   * @property {string} id
-   * @property {string} name
-   * @property {string} parentFolderId
-   * @property {string} parentFolderPath
-   * @property {string} path
-   * @property {string} lastModifiedDate
-   * @property {string} lastModifiedBy
-   * @property {ReadResponseAssetSymlink_Metadata} metadata
-   * @property {string} metadataSetId
-   * @property {string} metadataSetPath
-   * @property {boolean} reviewOnSchedule
-   * @property {number} reviewEvery
-   * @property {string} expirationFolderId
-   * @property {string} expirationFolderPath
-   * @property {boolean} expirationFolderRecycled
-   * @property {string} linkURL
-   */
-  /**
-   * @typedef {Object} ReadResponseAssetSymlink_Metadata
-   * @property {string} author
-   * @property {string} displayName
-   * @property {string} endDate
-   * @property {string} keywords
-   * @property {string} metaDescription
-   */
-  /**
-   * @typedef {Object} ReadResponseAsset_Template
-   * @property {string} id
-   * @property {string} name
-   * @property {string} parentFolderId
-   * @property {string} parentFolderPath
-   * @property {string} path
-   * @property {string} lastModifiedDate
-   * @property {string} lastModifiedBy
-   * @property {string} targetId
-   * @property {string} targetPath
-   * @property {string} formatId
-   * @property {string} formatPath
-   * @property {boolean} formatRecycled
-   */
-  /**
-   * @typedef {Object} ReadResponseAsset_User
-   * @property {string} username
-   * @property {string} fullName
-   * @property {string} email
-   * @property {string} authType
-   * @property {string} password
-   */
-  /**
-   * @typedef {Object} ReadResponseAsset_Group
-   * @property {string} groupName
-   * @property {string} users
-   * @property {string} role
-   */
-  /**
-   * @typedef {Object} ReadResponseAsset_Role
-   * @property {string} id
-   * @property {string} name
-   * @property {string} roleType
-   * @property {ReadResponseAssetRole_GlobalAbilities} globalAbilities
-   * @property {ReadResponseAssetRole_SiteAbilities} siteAbilities
-   */
-  /**
-   * @typedef {Object} ReadResponseAssetRole_GlobalAbilities
-   * @property {boolean} bypassAllPermissionsChecks
-   * @property {boolean} accessSiteManagement
-   * @property {boolean} createSites
-   * @property {boolean} editAccessRights
-   * @property {boolean} accessAudits
-   */
-  /**
-   * @typedef {Object} ReadResponseAssetRole_SiteAbilities
-   * @property {boolean} bypassAllPermissionsChecks
-   * @property {boolean} uploadImagesFromWysiwyg
-   * @property {boolean} multiSelectCopy
-   * @property {boolean} multiSelectPublish
-   * @property {boolean} multiSelectMove
-   */
-  /**
-   * @typedef {Object} ReadResponseAsset_AssetFactory
-   * @property {string} id
-   * @property {string} name
-   * @property {string} parentContainerId
-   * @property {string} parentContainerPath
-   * @property {string} path
-   * @property {string} siteId
-   * @property {string} siteName
-   * @property {string} applicableGroups
-   * @property {string} assetType
-   * @property {string} baseAssetId
-   * @property {string} baseAssetPath
-   * @property {boolean} baseAssetRecycled
-   */
-  /**
-   * @typedef {Object} ReadResponseAsset_AssetFactoryContainer
-   * @property {string} id
-   * @property {string} name
-   * @property {string} parentContainerId
-   * @property {string} parentContainerPath
-   * @property {string} path
-   * @property {string} siteId
-   * @property {string} siteName
-   * @property {string} applicableGroups
-   * @property {string} description
-   * @property {ReadResponseAssetAssetFactoryContainer_Children} children
-   */
-  /**
-   * @typedef {Object} ReadResponseAssetAssetFactoryContainer_Children
-   * @property {ReadResponseAssetAssetFactoryContainerChildren_Child} child
-   */
-  /**
-   * @typedef {Object} ReadResponseAssetAssetFactoryContainerChildren_Child
-   * @property {string} id
-   * @property {ReadResponseAssetAssetFactoryContainerChildrenChild_Path} path
-   * @property {string} type
-   * @property {boolean} recycled
-   */
-  /**
-   * @typedef {Object} ReadResponseAssetAssetFactoryContainerChildrenChild_Path
-   * @property {string} path
-   * @property {string} siteId
-   * @property {string} siteName
-   */
-  /**
-   * @typedef {Object} ReadResponseAsset_ContentType
-   * @property {string} id
-   * @property {string} name
-   * @property {string} parentContainerId
-   * @property {string} parentContainerPath
-   * @property {string} path
-   * @property {string} siteId
-   * @property {string} siteName
-   * @property {string} pageConfigurationSetId
-   * @property {string} pageConfigurationSetPath
-   * @property {string} metadataSetId
-   * @property {string} metadataSetPath
-   * @property {string} dataDefinitionId
-   */
-  /**
-   * @typedef {Object} ReadResponseAsset_ContentTypeContainer
-   * @property {string} id
-   * @property {string} name
-   * @property {string} parentContainerId
-   * @property {string} parentContainerPath
-   * @property {string} path
-   * @property {string} siteId
-   * @property {string} siteName
-   * @property {ReadResponseAssetContentTypeContainer_Children} children
-   */
-  /**
-   * @typedef {Object} ReadResponseAssetContentTypeContainer_Children
-   * @property {ReadResponseAssetContentTypeContainerChildren_Child} child
-   */
-  /**
-   * @typedef {Object} ReadResponseAssetContentTypeContainerChildren_Child
-   * @property {string} id
-   * @property {ReadResponseAssetContentTypeContainerChildrenChild_Path} path
-   * @property {string} type
-   * @property {boolean} recycled
-   */
-  /**
-   * @typedef {Object} ReadResponseAssetContentTypeContainerChildrenChild_Path
-   * @property {string} path
-   * @property {string} siteId
-   * @property {string} siteName
-   */
-  /**
-   * @typedef {Object} ReadResponseAsset_ConnectorContainer
-   * @property {string} id
-   * @property {string} name
-   * @property {string} parentContainerId
-   * @property {string} parentContainerPath
-   * @property {string} path
-   * @property {string} siteId
-   * @property {string} siteName
-   * @property {ReadResponseAssetConnectorContainer_Children} children
-   */
-  /**
-   * @typedef {Object} ReadResponseAssetConnectorContainer_Children
-   * @property {ReadResponseAssetConnectorContainerChildren_Child} child
-   */
-  /**
-   * @typedef {Object} ReadResponseAssetConnectorContainerChildren_Child
-   * @property {string} id
-   * @property {ReadResponseAssetConnectorContainerChildrenChild_Path} path
-   * @property {string} type
-   * @property {boolean} recycled
-   */
-  /**
-   * @typedef {Object} ReadResponseAssetConnectorContainerChildrenChild_Path
-   * @property {string} path
-   * @property {string} siteId
-   * @property {string} siteName
-   */
-  /**
-   * @typedef {Object} ReadResponseAsset_FacebookConnector
-   * @property {string} id
-   * @property {string} name
-   * @property {string} parentContainerId
-   * @property {string} parentContainerPath
-   * @property {string} path
-   * @property {string} siteId
-   * @property {string} siteName
-   * @property {string} auth1
-   * @property {string} auth2
-   * @property {string} url
-   * @property {boolean} verified
-   * @property {string} verifiedDate
-   * @property {string} destinationId
-   * @property {string} destinationPath
-   */
-  /**
-   * @typedef {Object} ReadResponseAsset_WordPressConnector
-   * @property {string} id
-   * @property {string} name
-   * @property {string} parentContainerId
-   * @property {string} parentContainerPath
-   * @property {string} path
-   * @property {string} siteId
-   * @property {string} siteName
-   * @property {string} auth1
-   * @property {string} auth2
-   * @property {string} url
-   * @property {boolean} verified
-   * @property {string} verifiedDate
-   */
-  /**
-   * @typedef {Object} ReadResponseAsset_GoogleAnalyticsConnector
-   * @property {string} id
-   * @property {string} name
-   * @property {string} parentContainerId
-   * @property {string} parentContainerPath
-   * @property {string} path
-   * @property {string} siteId
-   * @property {string} siteName
-   * @property {string} auth1
-   * @property {string} auth2
-   * @property {string} url
-   * @property {boolean} verified
-   * @property {string} verifiedDate
-   */
-  /**
-   * @typedef {Object} ReadResponseAsset_PageConfigurationSet
-   * @property {string} id
-   * @property {string} name
-   * @property {string} parentContainerId
-   * @property {string} parentContainerPath
-   * @property {string} path
-   * @property {string} siteId
-   * @property {string} siteName
-   * @property {ReadResponseAssetPageConfigurationSet_PageConfigurations} pageConfigurations
-   */
-  /**
-   * @typedef {Object} ReadResponseAssetPageConfigurationSet_PageConfigurations
-   * @property {ReadResponseAssetPageConfigurationSetPageConfigurations_PageConfiguration} pageConfiguration
-   */
-  /**
-   * @typedef {Object} ReadResponseAssetPageConfigurationSetPageConfigurations_PageConfiguration
-   * @property {string} id
-   * @property {string} name
-   * @property {boolean} defaultConfiguration
-   * @property {string} templateId
-   * @property {string} templatePath
-   * @property {string} formatId
-   */
-  /**
-   * @typedef {Object} ReadResponseAsset_PageConfigurationSetContainer
-   * @property {string} id
-   * @property {string} name
-   * @property {string} parentContainerId
-   * @property {string} parentContainerPath
-   * @property {string} path
-   * @property {string} siteId
-   * @property {string} siteName
-   * @property {ReadResponseAssetPageConfigurationSetContainer_Children} children
-   */
-  /**
-   * @typedef {Object} ReadResponseAssetPageConfigurationSetContainer_Children
-   * @property {ReadResponseAssetPageConfigurationSetContainerChildren_Child} child
-   */
-  /**
-   * @typedef {Object} ReadResponseAssetPageConfigurationSetContainerChildren_Child
-   * @property {string} id
-   * @property {ReadResponseAssetPageConfigurationSetContainerChildrenChild_Path} path
-   * @property {string} type
-   * @property {boolean} recycled
-   */
-  /**
-   * @typedef {Object} ReadResponseAssetPageConfigurationSetContainerChildrenChild_Path
-   * @property {string} path
-   * @property {string} siteId
-   * @property {string} siteName
-   */
-  /**
-   * @typedef {Object} ReadResponseAsset_DataDefinition
-   * @property {string} id
-   * @property {string} name
-   * @property {string} parentContainerId
-   * @property {string} parentContainerPath
-   * @property {string} path
-   * @property {string} siteId
-   * @property {string} siteName
-   * @property {string} xml
-   */
-  /**
-   * @typedef {Object} ReadResponseAsset_DataDefinitionContainer
-   * @property {string} id
-   * @property {string} name
-   * @property {string} parentContainerId
-   * @property {string} parentContainerPath
-   * @property {string} path
-   * @property {string} siteId
-   * @property {string} siteName
-   * @property {ReadResponseAssetDataDefinitionContainer_Children} children
-   */
-  /**
-   * @typedef {Object} ReadResponseAssetDataDefinitionContainer_Children
-   * @property {ReadResponseAssetDataDefinitionContainerChildren_Child} child
-   */
-  /**
-   * @typedef {Object} ReadResponseAssetDataDefinitionContainerChildren_Child
-   * @property {string} id
-   * @property {ReadResponseAssetDataDefinitionContainerChildrenChild_Path} path
-   * @property {string} type
-   * @property {boolean} recycled
-   */
-  /**
-   * @typedef {Object} ReadResponseAssetDataDefinitionContainerChildrenChild_Path
-   * @property {string} path
-   * @property {string} siteId
-   * @property {string} siteName
-   */
-  /**
-   * @typedef {Object} ReadResponseAsset_SharedField
-   * @property {string} id
-   * @property {string} name
-   * @property {string} parentContainerId
-   * @property {string} parentContainerPath
-   * @property {string} path
-   * @property {string} siteId
-   * @property {string} siteName
-   * @property {string} xml
-   */
-  /**
-   * @typedef {Object} ReadResponseAsset_SharedFieldContainer
-   * @property {string} id
-   * @property {string} name
-   * @property {string} parentContainerId
-   * @property {string} parentContainerPath
-   * @property {string} path
-   * @property {string} siteId
-   * @property {string} siteName
-   * @property {ReadResponseAssetSharedFieldContainer_Children} children
-   */
-  /**
-   * @typedef {Object} ReadResponseAssetSharedFieldContainer_Children
-   * @property {ReadResponseAssetSharedFieldContainerChildren_Child} child
-   */
-  /**
-   * @typedef {Object} ReadResponseAssetSharedFieldContainerChildren_Child
-   * @property {string} id
-   * @property {ReadResponseAssetSharedFieldContainerChildrenChild_Path} path
-   * @property {string} type
-   * @property {boolean} recycled
-   */
-  /**
-   * @typedef {Object} ReadResponseAssetSharedFieldContainerChildrenChild_Path
-   * @property {string} path
-   * @property {string} siteId
-   * @property {string} siteName
-   */
-  /**
-   * @typedef {Object} ReadResponseAsset_MetadataSet
-   * @property {string} id
-   * @property {string} name
-   * @property {string} parentContainerId
-   * @property {string} parentContainerPath
-   * @property {string} path
-   * @property {string} siteId
-   * @property {string} siteName
-   * @property {boolean} authorFieldRequired
-   * @property {string} authorFieldVisibility
-   * @property {string} authorFieldHelpText
-   * @property {boolean} descriptionFieldRequired
-   * @property {string} descriptionFieldVisibility
-   */
-  /**
-   * @typedef {Object} ReadResponseAsset_MetadataSetContainer
-   * @property {string} id
-   * @property {string} name
-   * @property {string} parentContainerId
-   * @property {string} parentContainerPath
-   * @property {string} path
-   * @property {string} siteId
-   * @property {string} siteName
-   * @property {ReadResponseAssetMetadataSetContainer_Children} children
-   */
-  /**
-   * @typedef {Object} ReadResponseAssetMetadataSetContainer_Children
-   * @property {ReadResponseAssetMetadataSetContainerChildren_Child} child
-   */
-  /**
-   * @typedef {Object} ReadResponseAssetMetadataSetContainerChildren_Child
-   * @property {string} id
-   * @property {ReadResponseAssetMetadataSetContainerChildrenChild_Path} path
-   * @property {string} type
-   * @property {boolean} recycled
-   */
-  /**
-   * @typedef {Object} ReadResponseAssetMetadataSetContainerChildrenChild_Path
-   * @property {string} path
-   * @property {string} siteId
-   * @property {string} siteName
-   */
-  /**
-   * @typedef {Object} ReadResponseAsset_PublishSet
-   * @property {string} id
-   * @property {string} name
-   * @property {string} parentContainerId
-   * @property {string} parentContainerPath
-   * @property {string} path
-   * @property {string} siteId
-   * @property {string} siteName
-   * @property {ReadResponseAssetPublishSet_Files} files
-   * @property {ReadResponseAssetPublishSet_Folders} folders
-   * @property {ReadResponseAssetPublishSet_Pages} pages
-   * @property {boolean} usesScheduledPublishing
-   * @property {string} scheduledPublishDestinationMode
-   */
-  /**
-   * @typedef {Object} ReadResponseAssetPublishSet_Files
-   * @property {ReadResponseAssetPublishSetFiles_PublishableAssetIdentifier} publishableAssetIdentifier
-   */
-  /**
-   * @typedef {Object} ReadResponseAssetPublishSetFiles_PublishableAssetIdentifier
-   * @property {string} id
-   * @property {ReadResponseAssetPublishSetFilesPublishableAssetIdentifier_Path} path
-   * @property {string} type
-   * @property {boolean} recycled
-   */
-  /**
-   * @typedef {Object} ReadResponseAssetPublishSetFilesPublishableAssetIdentifier_Path
-   * @property {string} path
-   * @property {string} siteId
-   * @property {string} siteName
-   */
-  /**
-   * @typedef {Object} ReadResponseAssetPublishSet_Folders
-   * @property {ReadResponseAssetPublishSetFolders_PublishableAssetIdentifier} publishableAssetIdentifier
-   */
-  /**
-   * @typedef {Object} ReadResponseAssetPublishSetFolders_PublishableAssetIdentifier
-   * @property {string} id
-   * @property {ReadResponseAssetPublishSetFoldersPublishableAssetIdentifier_Path} path
-   * @property {string} type
-   * @property {boolean} recycled
-   */
-  /**
-   * @typedef {Object} ReadResponseAssetPublishSetFoldersPublishableAssetIdentifier_Path
-   * @property {string} path
-   * @property {string} siteId
-   * @property {string} siteName
-   */
-  /**
-   * @typedef {Object} ReadResponseAssetPublishSet_Pages
-   * @property {ReadResponseAssetPublishSetPages_PublishableAssetIdentifier} publishableAssetIdentifier
-   */
-  /**
-   * @typedef {Object} ReadResponseAssetPublishSetPages_PublishableAssetIdentifier
-   * @property {string} id
-   * @property {ReadResponseAssetPublishSetPagesPublishableAssetIdentifier_Path} path
-   * @property {string} type
-   * @property {boolean} recycled
-   */
-  /**
-   * @typedef {Object} ReadResponseAssetPublishSetPagesPublishableAssetIdentifier_Path
-   * @property {string} path
-   * @property {string} siteId
-   * @property {string} siteName
-   */
-  /**
-   * @typedef {Object} ReadResponseAsset_PublishSetContainer
-   * @property {string} id
-   * @property {string} name
-   * @property {string} parentContainerId
-   * @property {string} parentContainerPath
-   * @property {string} path
-   * @property {string} siteId
-   * @property {string} siteName
-   * @property {ReadResponseAssetPublishSetContainer_Children} children
-   */
-  /**
-   * @typedef {Object} ReadResponseAssetPublishSetContainer_Children
-   * @property {ReadResponseAssetPublishSetContainerChildren_Child} child
-   */
-  /**
-   * @typedef {Object} ReadResponseAssetPublishSetContainerChildren_Child
-   * @property {string} id
-   * @property {ReadResponseAssetPublishSetContainerChildrenChild_Path} path
-   * @property {string} type
-   * @property {boolean} recycled
-   */
-  /**
-   * @typedef {Object} ReadResponseAssetPublishSetContainerChildrenChild_Path
-   * @property {string} path
-   * @property {string} siteId
-   * @property {string} siteName
-   */
-  /**
-   * @typedef {Object} ReadResponseAsset_Target
-   * @property {string} id
-   * @property {string} name
-   * @property {string} parentTargetId
-   * @property {string} parentTargetPath
-   * @property {string} path
-   * @property {string} baseFolderId
-   * @property {string} baseFolderPath
-   */
-  /**
-   * @typedef {Object} ReadResponseAsset_SiteDestinationContainer
-   * @property {string} id
-   * @property {string} name
-   * @property {string} parentContainerId
-   * @property {string} parentContainerPath
-   * @property {string} path
-   * @property {string} siteId
-   * @property {string} siteName
-   * @property {ReadResponseAssetSiteDestinationContainer_Children} children
-   */
-  /**
-   * @typedef {Object} ReadResponseAssetSiteDestinationContainer_Children
-   * @property {ReadResponseAssetSiteDestinationContainerChildren_Child} child
-   */
-  /**
-   * @typedef {Object} ReadResponseAssetSiteDestinationContainerChildren_Child
-   * @property {string} id
-   * @property {ReadResponseAssetSiteDestinationContainerChildrenChild_Path} path
-   * @property {string} type
-   * @property {boolean} recycled
-   */
-  /**
-   * @typedef {Object} ReadResponseAssetSiteDestinationContainerChildrenChild_Path
-   * @property {string} path
-   * @property {string} siteId
-   * @property {string} siteName
-   */
-  /**
-   * @typedef {Object} ReadResponseAsset_Destination
-   * @property {string} id
-   * @property {string} name
-   * @property {string} parentContainerId
-   * @property {string} parentContainerPath
-   * @property {string} transportId
-   * @property {string} transportPath
-   * @property {string} applicableGroups
-   */
-  /**
-   * @typedef {Object} ReadResponseAsset_FileSystemTransport
-   * @property {string} id
-   * @property {string} name
-   * @property {string} parentContainerId
-   * @property {string} parentContainerPath
-   * @property {string} path
-   * @property {string} siteId
-   * @property {string} siteName
-   * @property {string} directory
-   */
-  /**
-   * @typedef {Object} ReadResponseAsset_FtpTransport
-   * @property {string} id
-   * @property {string} name
-   * @property {string} parentContainerId
-   * @property {string} parentContainerPath
-   * @property {string} path
-   * @property {string} siteId
-   * @property {string} siteName
-   * @property {string} hostName
-   * @property {number} port
-   * @property {boolean} doPASV
-   * @property {string} username
-   * @property {string} authMode
-   */
-  /**
-   * @typedef {Object} ReadResponseAsset_DatabaseTransport
-   * @property {string} id
-   * @property {string} name
-   * @property {string} parentContainerId
-   * @property {string} parentContainerPath
-   * @property {string} path
-   * @property {string} siteId
-   * @property {string} siteName
-   * @property {number} transportSiteId
-   * @property {string} serverName
-   * @property {number} serverPort
-   * @property {string} databaseName
-   * @property {string} username
-   */
-  /**
-   * @typedef {Object} ReadResponseAsset_CloudTransport
-   * @property {string} id
-   * @property {string} name
-   * @property {string} parentContainerId
-   * @property {string} parentContainerPath
-   * @property {string} path
-   * @property {string} siteId
-   * @property {string} siteName
-   * @property {string} key
-   * @property {string} secret
-   * @property {string} bucketName
-   * @property {string} basePath
-   */
-  /**
-   * @typedef {Object} ReadResponseAsset_TransportContainer
-   * @property {string} id
-   * @property {string} name
-   * @property {string} parentContainerId
-   * @property {string} parentContainerPath
-   * @property {string} path
-   * @property {string} siteId
-   * @property {string} siteName
-   * @property {ReadResponseAssetTransportContainer_Children} children
-   */
-  /**
-   * @typedef {Object} ReadResponseAssetTransportContainer_Children
-   * @property {ReadResponseAssetTransportContainerChildren_Child} child
-   */
-  /**
-   * @typedef {Object} ReadResponseAssetTransportContainerChildren_Child
-   * @property {string} id
-   * @property {ReadResponseAssetTransportContainerChildrenChild_Path} path
-   * @property {string} type
-   * @property {boolean} recycled
-   */
-  /**
-   * @typedef {Object} ReadResponseAssetTransportContainerChildrenChild_Path
-   * @property {string} path
-   * @property {string} siteId
-   * @property {string} siteName
-   */
-  /**
-   * @typedef {Object} ReadResponseAsset_WorkflowDefinition
-   * @property {string} id
-   * @property {string} name
-   * @property {string} parentContainerId
-   * @property {string} parentContainerPath
-   * @property {string} path
-   * @property {string} siteId
-   * @property {string} siteName
-   * @property {string} applicableGroups
-   * @property {boolean} copy
-   * @property {boolean} create
-   * @property {boolean} delete
-   * @property {boolean} edit
-   */
-  /**
-   * @typedef {Object} ReadResponseAsset_WorkflowDefinitionContainer
-   * @property {string} id
-   * @property {string} name
-   * @property {string} parentContainerId
-   * @property {string} parentContainerPath
-   * @property {string} path
-   * @property {string} siteId
-   * @property {string} siteName
-   * @property {ReadResponseAssetWorkflowDefinitionContainer_Children} children
-   */
-  /**
-   * @typedef {Object} ReadResponseAssetWorkflowDefinitionContainer_Children
-   * @property {ReadResponseAssetWorkflowDefinitionContainerChildren_Child} child
-   */
-  /**
-   * @typedef {Object} ReadResponseAssetWorkflowDefinitionContainerChildren_Child
-   * @property {string} id
-   * @property {ReadResponseAssetWorkflowDefinitionContainerChildrenChild_Path} path
-   * @property {string} type
-   * @property {boolean} recycled
-   */
-  /**
-   * @typedef {Object} ReadResponseAssetWorkflowDefinitionContainerChildrenChild_Path
-   * @property {string} path
-   * @property {string} siteId
-   * @property {string} siteName
-   */
-  /**
-   * @typedef {Object} ReadResponseAsset_WorkflowEmail
-   * @property {string} id
-   * @property {string} name
-   * @property {string} parentContainerId
-   * @property {string} parentContainerPath
-   * @property {string} path
-   * @property {string} siteId
-   * @property {string} siteName
-   * @property {string} subject
-   * @property {string} body
-   */
-  /**
-   * @typedef {Object} ReadResponseAsset_WorkflowEmailContainer
-   * @property {string} id
-   * @property {string} name
-   * @property {string} parentContainerId
-   * @property {string} parentContainerPath
-   * @property {string} path
-   * @property {string} siteId
-   * @property {string} siteName
-   * @property {ReadResponseAssetWorkflowEmailContainer_Children} children
-   */
-  /**
-   * @typedef {Object} ReadResponseAssetWorkflowEmailContainer_Children
-   * @property {ReadResponseAssetWorkflowEmailContainerChildren_Child} child
-   */
-  /**
-   * @typedef {Object} ReadResponseAssetWorkflowEmailContainerChildren_Child
-   * @property {string} id
-   * @property {ReadResponseAssetWorkflowEmailContainerChildrenChild_Path} path
-   * @property {string} type
-   * @property {boolean} recycled
-   */
-  /**
-   * @typedef {Object} ReadResponseAssetWorkflowEmailContainerChildrenChild_Path
-   * @property {string} path
-   * @property {string} siteId
-   * @property {string} siteName
-   */
-  /**
-   * @typedef {Object} ReadResponseAsset_TwitterFeedBlock
-   * @property {string} id
-   * @property {string} name
-   * @property {string} parentFolderId
-   * @property {string} parentFolderPath
-   * @property {string} path
-   * @property {string} lastModifiedDate
-   * @property {string} lastModifiedBy
-   * @property {ReadResponseAssetTwitterFeedBlock_Metadata} metadata
-   * @property {string} metadataSetId
-   * @property {string} metadataSetPath
-   * @property {boolean} reviewOnSchedule
-   * @property {number} reviewEvery
-   * @property {string} expirationFolderId
-   * @property {string} expirationFolderPath
-   * @property {boolean} expirationFolderRecycled
-   * @property {string} accountName
-   * @property {string} searchString
-   * @property {number} maxResults
-   * @property {boolean} useDefaultStyle
-   * @property {boolean} excludeJQuery
-   */
-  /**
-   * @typedef {Object} ReadResponseAssetTwitterFeedBlock_Metadata
-   * @property {string} author
-   * @property {string} displayName
-   * @property {string} endDate
-   * @property {string} keywords
-   * @property {string} metaDescription
-   */
-  /**
-   * @typedef {Object} ReadResponseAsset_Site
-   * @property {string} id
-   * @property {string} name
-   * @property {string} url
-   * @property {string} extensionsToStrip
-   * @property {string} defaultMetadataSetId
-   * @property {string} defaultMetadataSetPath
-   * @property {string} siteAssetFactoryContainerId
-   */
-  /**
-   * @typedef {Object} ReadResponseAsset_EditorConfiguration
-   * @property {string} id
-   * @property {string} name
-   * @property {string} siteId
-   * @property {string} siteName
-   * @property {string} cssFileId
-   * @property {string} cssFilePath
-   * @property {boolean} cssFileRecycled
-   */
-
-  //#endregion
-
-  /**
-   * read operation.
-   *
-   * @param {readRequest} opts - The starting object container.
-   * @param {Boolean} [muteHttpExceptions]
-   * @return {readResponse}
-   */
-  read(
-    opts,
-    // Apps Script Specific
-    muteHttpExceptions = false
-  ) {
-    const endPoint = `read`;
-    const requestParams = {
-      method: "POST",
-      muteHttpExceptions,
-      payload: JSON.stringify(opts),
-    };
-    const request = this.call(endPoint, requestParams);
-    if (!request.success) {
-      throw `Request Failed. Request Response: ${request.message}`;
-    }
-    return request;
-  },
-
-  /**
-   * removal operation.
-   *
-   * @param {removeRequest} opts - The starting object container.
-   * @param {Boolean} [muteHttpExceptions]
-   * @return {removeResponse}
-   */
-  remove( // Delete
-    opts,
-    // Apps Script Specific
-    muteHttpExceptions = false
-  ) {
-    const endPoint = `delete`;
-    const requestParams = {
-      method: "POST",
-      muteHttpExceptions,
-      payload: JSON.stringify(opts),
-    };
-    const request = this.call(endPoint, requestParams);
-    if (!request.success) {
-      throw `Request Failed. Request Response: ${request.message}`;
-    }
-    return request;
-  },
-
-  /**
-   * edit operation.
-   *
-   * @param {editRequest} opts - The starting object container.
-   * @param {Boolean} [muteHttpExceptions]
-   * @return {editResponse}
-   */
-  edit(
-    opts,
-    // Apps Script Specific
-    muteHttpExceptions = false
-  ) {
-    const endPoint = `edit`;
-    const requestParams = {
-      method: "POST",
-      muteHttpExceptions,
-      payload: JSON.stringify(opts),
-    };
-    const request = this.call(endPoint, requestParams);
-    if (!request.success) {
-      throw `Request Failed. Request Response: ${request.message}`;
-    }
-    return request;
-  },
-
-  // ─── Create Request ──────────────────────────────────────────────────────────
-  //#region
-  /**
-* @typedef {Object} createRequest
-* @property {CreateRequest_Asset} asset - REQUIRED: Asset object container
+// Universal Blocks
+// ─── Asset Block ─────────────────────────────────────────────────────────────
+//#region
+/**
+* @typedef {Object} AssetContainer
+* @property {AssetContainer_Asset} asset - REQUIRED: Asset object container
 * - Asset is an aggregate type that includes all possible Cascade Server assets bundled with workflow configuration. When a user does not have the privileges to bypass workflow, this configuration is used to configure the step assignments of the workflow
 
 */
-  /**
-* @typedef {Object} CreateRequest_Asset
-* @property {CreateRequestAsset_WorkflowConfiguration} [workflowConfiguration] - NOT REQUIRED: For configuring workflow
-* @property {CreateRequestAsset_FeedBlock} [feedBlock] - One is REQUIRED
-* @property {CreateRequestAsset_IndexBlock} [indexBlock] - One is REQUIRED
-* @property {CreateRequestAsset_TextBlock} [textBlock] - One is REQUIRED
-* @property {CreateRequestAsset_XhtmlDataDefinitionBlock} [xhtmlDataDefinitionBlock] - One is REQUIRED
-* @property {CreateRequestAsset_XmlBlock} [xmlBlock] - One is REQUIRED
-* @property {CreateRequestAsset_File} [file] - One is REQUIRED
-* @property {CreateRequestAsset_Folder} [folder] - One is REQUIRED
-* @property {CreateRequestAsset_Page} [page] - ONE IS REQUIRED
-* @property {CreateRequestAsset_Reference} [reference] - One is REQUIRED
-* @property {CreateRequestAsset_XsltFormat} [xsltFormat] - One is REQUIRED
-* @property {CreateRequestAsset_ScriptFormat} [scriptFormat] - One is REQUIRED
-* @property {CreateRequestAsset_Symlink} [symlink] - One is REQUIRED
-* @property {CreateRequestAsset_Template} [template] - One is REQUIRED
-* @property {CreateRequestAsset_User} [user] - One is REQUIRED
+/**
+* @typedef {Object} AssetContainer_Asset
+* @property {AssetContainerAsset_WorkflowConfiguration} [workflowConfiguration] - NOT REQUIRED: For configuring workflow
+* @property {AssetContainerAsset_FeedBlock} [feedBlock] - One is REQUIRED
+* @property {AssetContainerAsset_IndexBlock} [indexBlock] - One is REQUIRED
+* @property {AssetContainerAsset_TextBlock} [textBlock] - One is REQUIRED
+* @property {AssetContainerAsset_XhtmlDataDefinitionBlock} [xhtmlDataDefinitionBlock] - One is REQUIRED
+* @property {AssetContainerAsset_XmlBlock} [xmlBlock] - One is REQUIRED
+* @property {AssetContainerAsset_File} [file] - One is REQUIRED
+* @property {AssetContainerAsset_Folder} [folder] - One is REQUIRED
+* @property {AssetContainerAsset_Page} [page] - ONE IS REQUIRED
+* @property {AssetContainerAsset_Reference} [reference] - One is REQUIRED
+* @property {AssetContainerAsset_XsltFormat} [xsltFormat] - One is REQUIRED
+* @property {AssetContainerAsset_ScriptFormat} [scriptFormat] - One is REQUIRED
+* @property {AssetContainerAsset_Symlink} [symlink] - One is REQUIRED
+* @property {AssetContainerAsset_Template} [template] - One is REQUIRED
+* @property {AssetContainerAsset_User} [user] - One is REQUIRED
 * - Admin area assets (must be manager or higher to access, no workflowConfiguration needed
 
-* @property {CreateRequestAsset_Group} [group] - One is REQUIRED
+* @property {AssetContainerAsset_Group} [group] - One is REQUIRED
 * - Admin area assets (must be manager or higher to access, no workflowConfiguration needed
 
-* @property {CreateRequestAsset_Role} [role] - One is REQUIRED
+* @property {AssetContainerAsset_Role} [role] - One is REQUIRED
 * - Admin area assets (must be manager or higher to access, no workflowConfiguration needed
 
-* @property {CreateRequestAsset_AssetFactory} [assetFactory] - One is REQUIRED
+* @property {AssetContainerAsset_AssetFactory} [assetFactory] - One is REQUIRED
 * - Admin area assets (must be manager or higher to access, no workflowConfiguration needed
 
-* @property {CreateRequestAsset_AssetFactoryContainer} [assetFactoryContainer] - One is REQUIRED
+* @property {AssetContainerAsset_AssetFactoryContainer} [assetFactoryContainer] - One is REQUIRED
 * - Admin area assets (must be manager or higher to access, no workflowConfiguration needed
 
-* @property {CreateRequestAsset_ContentType} [contentType] - One is REQUIRED
+* @property {AssetContainerAsset_ContentType} [contentType] - One is REQUIRED
 * - Admin area assets (must be manager or higher to access, no workflowConfiguration needed
 
-* @property {CreateRequestAsset_ContentTypeContainer} [contentTypeContainer] - One is REQUIRED
+* @property {AssetContainerAsset_ContentTypeContainer} [contentTypeContainer] - One is REQUIRED
 * - Admin area assets (must be manager or higher to access, no workflowConfiguration needed
 
-* @property {CreateRequestAsset_ConnectorContainer} [connectorContainer] - One is REQUIRED
+* @property {AssetContainerAsset_ConnectorContainer} [connectorContainer] - One is REQUIRED
 * - Admin area assets (must be manager or higher to access, no workflowConfiguration needed
 
-* @property {CreateRequestAsset_FacebookConnector} [facebookConnector] - One is REQUIRED
+* @property {AssetContainerAsset_FacebookConnector} [facebookConnector] - One is REQUIRED
 * - Admin area assets (must be manager or higher to access, no workflowConfiguration needed
 
-* @property {CreateRequestAsset_WordPressConnector} [wordPressConnector] - One is REQUIRED
+* @property {AssetContainerAsset_WordPressConnector} [wordPressConnector] - One is REQUIRED
 * - Admin area assets (must be manager or higher to access, no workflowConfiguration needed
 
-* @property {CreateRequestAsset_GoogleAnalyticsConnector} [googleAnalyticsConnector] - One is REQUIRED
+* @property {AssetContainerAsset_GoogleAnalyticsConnector} [googleAnalyticsConnector] - One is REQUIRED
 * - Admin area assets (must be manager or higher to access, no workflowConfiguration needed
 
-* @property {CreateRequestAsset_PageConfigurationSet} [pageConfigurationSet] - One is REQUIRED
+* @property {AssetContainerAsset_PageConfigurationSet} [pageConfigurationSet] - One is REQUIRED
 * - Admin area assets (must be manager or higher to access, no workflowConfiguration needed
 
-* @property {CreateRequestAsset_PageConfigurationSetContainer} [pageConfigurationSetContainer] - One is REQUIRED
+* @property {AssetContainerAsset_PageConfigurationSetContainer} [pageConfigurationSetContainer] - One is REQUIRED
 * - Admin area assets (must be manager or higher to access, no workflowConfiguration needed
 
-* @property {CreateRequestAsset_DataDefinition} [dataDefinition] - One is REQUIRED
+* @property {AssetContainerAsset_DataDefinition} [dataDefinition] - One is REQUIRED
 * - Admin area assets (must be manager or higher to access, no workflowConfiguration needed
 
-* @property {CreateRequestAsset_DataDefinitionContainer} [dataDefinitionContainer] - One is REQUIRED
+* @property {AssetContainerAsset_DataDefinitionContainer} [dataDefinitionContainer] - One is REQUIRED
 * - Admin area assets (must be manager or higher to access, no workflowConfiguration needed
 
-* @property {CreateRequestAsset_SharedField} [sharedField] - One is REQUIRED
+* @property {AssetContainerAsset_SharedField} [sharedField] - One is REQUIRED
 * - Admin area assets (must be manager or higher to access, no workflowConfiguration needed
 
-* @property {CreateRequestAsset_SharedFieldContainer} [sharedFieldContainer] - One is REQUIRED
+* @property {AssetContainerAsset_SharedFieldContainer} [sharedFieldContainer] - One is REQUIRED
 * - Admin area assets (must be manager or higher to access, no workflowConfiguration needed
 
-* @property {CreateRequestAsset_MetadataSet} [metadataSet] - One is REQUIRED
+* @property {AssetContainerAsset_MetadataSet} [metadataSet] - One is REQUIRED
 * - Admin area assets (must be manager or higher to access, no workflowConfiguration needed
 
-* @property {CreateRequestAsset_MetadataSetContainer} [metadataSetContainer] - One is REQUIRED
+* @property {AssetContainerAsset_MetadataSetContainer} [metadataSetContainer] - One is REQUIRED
 * - Admin area assets (must be manager or higher to access, no workflowConfiguration needed
 
-* @property {CreateRequestAsset_PublishSet} [publishSet] - One is REQUIRED
+* @property {AssetContainerAsset_PublishSet} [publishSet] - One is REQUIRED
 * - Admin area assets (must be manager or higher to access, no workflowConfiguration needed
 
-* @property {CreateRequestAsset_PublishSetContainer} [publishSetContainer] - One is REQUIRED
+* @property {AssetContainerAsset_PublishSetContainer} [publishSetContainer] - One is REQUIRED
 * - Admin area assets (must be manager or higher to access, no workflowConfiguration needed
 
-* @property {CreateRequestAsset_Target} [target] - One is REQUIRED
+* @property {AssetContainerAsset_Target} [target] - One is REQUIRED
 * - Admin area assets (must be manager or higher to access, no workflowConfiguration needed
 
-* @property {CreateRequestAsset_SiteDestinationContainer} [siteDestinationContainer] - One is REQUIRED
+* @property {AssetContainerAsset_SiteDestinationContainer} [siteDestinationContainer] - One is REQUIRED
 * - Admin area assets (must be manager or higher to access, no workflowConfiguration needed
 
-* @property {CreateRequestAsset_Destination} [destination] - One is REQUIRED
+* @property {AssetContainerAsset_Destination} [destination] - One is REQUIRED
 * - Admin area assets (must be manager or higher to access, no workflowConfiguration needed
 
-* @property {CreateRequestAsset_FileSystemTransport} [fileSystemTransport] - One is REQUIRED
+* @property {AssetContainerAsset_FileSystemTransport} [fileSystemTransport] - One is REQUIRED
 * - Admin area assets (must be manager or higher to access, no workflowConfiguration needed
 
-* @property {CreateRequestAsset_FtpTransport} [ftpTransport] - One is REQUIRED
+* @property {AssetContainerAsset_FtpTransport} [ftpTransport] - One is REQUIRED
 * - Admin area assets (must be manager or higher to access, no workflowConfiguration needed
 
-* @property {CreateRequestAsset_DatabaseTransport} [databaseTransport] - One is REQUIRED
+* @property {AssetContainerAsset_DatabaseTransport} [databaseTransport] - One is REQUIRED
 * - Admin area assets (must be manager or higher to access, no workflowConfiguration needed
 
-* @property {CreateRequestAsset_CloudTransport} [cloudTransport] - One is REQUIRED
+* @property {AssetContainerAsset_CloudTransport} [cloudTransport] - One is REQUIRED
 * - Admin area assets (must be manager or higher to access, no workflowConfiguration needed
 
-* @property {CreateRequestAsset_TransportContainer} [transportContainer] - One is REQUIRED
+* @property {AssetContainerAsset_TransportContainer} [transportContainer] - One is REQUIRED
 * - Admin area assets (must be manager or higher to access, no workflowConfiguration needed
 
-* @property {CreateRequestAsset_WorkflowDefinition} [workflowDefinition] - One is REQUIRED
+* @property {AssetContainerAsset_WorkflowDefinition} [workflowDefinition] - One is REQUIRED
 * - Admin area assets (must be manager or higher to access, no workflowConfiguration needed
 
-* @property {CreateRequestAsset_WorkflowDefinitionContainer} [workflowDefinitionContainer] - One is REQUIRED
+* @property {AssetContainerAsset_WorkflowDefinitionContainer} [workflowDefinitionContainer] - One is REQUIRED
 * - Admin area assets (must be manager or higher to access, no workflowConfiguration needed
 
-* @property {CreateRequestAsset_WorkflowEmail} [workflowEmail] - One is REQUIRED
+* @property {AssetContainerAsset_WorkflowEmail} [workflowEmail] - One is REQUIRED
 * - Admin area assets (must be manager or higher to access, no workflowConfiguration needed
 
-* @property {CreateRequestAsset_WorkflowEmailContainer} [workflowEmailContainer] - One is REQUIRED
+* @property {AssetContainerAsset_WorkflowEmailContainer} [workflowEmailContainer] - One is REQUIRED
 * - Admin area assets (must be manager or higher to access, no workflowConfiguration needed
 
-* @property {CreateRequestAsset_TwitterFeedBlock} [twitterFeedBlock] - One is REQUIRED
+* @property {AssetContainerAsset_TwitterFeedBlock} [twitterFeedBlock] - One is REQUIRED
 * - Admin area assets (must be manager or higher to access, no workflowConfiguration needed
 
-* @property {CreateRequestAsset_Site} [site] - One is REQUIRED
+* @property {AssetContainerAsset_Site} [site] - One is REQUIRED
 * - Admin area assets (must be manager or higher to access, no workflowConfiguration needed
 
-* @property {CreateRequestAsset_EditorConfiguration} [editorConfiguration] - One is REQUIRED
+* @property {AssetContainerAsset_EditorConfiguration} [editorConfiguration] - One is REQUIRED
 * - Admin area assets (must be manager or higher to access, no workflowConfiguration needed
 
 */
-  /**
-* @typedef {Object} CreateRequestAsset_WorkflowConfiguration
+/**
+* @typedef {Object} AssetContainerAsset_WorkflowConfiguration
 * @property {string} workflowName - REQUIRED: When the workflow is instantiated, this will be its name
 * @property {string} [workflowDefinitionId] - One is REQUIRED
 * - Priority: workflowDefinitionId > workflowDefinitionPath
@@ -1591,18 +144,18 @@ const CascadeAPIMethods = {
 * - Which workflow definition to use
 
 * @property {string} workflowComments - REQUIRED: The comments for this operation which will be recorded with the workflow
-* @property {CreateRequestAssetWorkflowConfiguration_WorkflowStepConfigurations[]} [workflowStepConfigurations] - NOT REQUIRED default: the defaults as defined in the workflow definition
+* @property {AssetContainerAssetWorkflowConfiguration_WorkflowStepConfigurations[]} [workflowStepConfigurations] - NOT REQUIRED default: the defaults as defined in the workflow definition
 * - The optional step configurations for each assignable step in the workflow
 
 * @property {string} [endDate] - NOT REQUIRED
 */
-  /**
-   * @typedef {Object} CreateRequestAssetWorkflowConfiguration_WorkflowStepConfigurations
-   * @property {string} stepIdentifier - REQUIRED: The step's unique text identifier/name
-   * @property {string} stepAssignment - REQUIRED: The step's assignment (user or group name)
-   */
-  /**
-* @typedef {Object} CreateRequestAsset_FeedBlock
+/**
+ * @typedef {Object} AssetContainerAssetWorkflowConfiguration_WorkflowStepConfigurations
+ * @property {string} stepIdentifier - REQUIRED: The step's unique text identifier/name
+ * @property {string} stepAssignment - REQUIRED: The step's assignment (user or group name)
+ */
+/**
+* @typedef {Object} AssetContainerAsset_FeedBlock
 * @property {string} id
 * @property {string} name - REQUIRED
 * - The name of this page region, for example, 'DEFAULT', or 'JAVASCRIPT-INCLUDE'. This MUST correspond to the name of a region defined in the template.
@@ -1626,8 +179,8 @@ const CascadeAPIMethods = {
 * @property {string} siteName - One is REQUIRED: siteId | siteName
 * - The Site in which the asset is located
 
-* @property {CreateRequestAssetFeedBlock_Tags} tags
-* @property {CreateRequestAssetFeedBlock_Metadata} metadata
+* @property {AssetContainerAssetFeedBlock_Tags} tags
+* @property {AssetContainerAssetFeedBlock_Metadata} metadata
 * @property {string} metadataSetId
 * @property {string} metadataSetPath
 * @property {boolean} reviewOnSchedule
@@ -1637,51 +190,51 @@ const CascadeAPIMethods = {
 * @property {boolean} expirationFolderRecycled
 * @property {string} feedURL
 */
-  /**
-   * @typedef {Object} CreateRequestAssetFeedBlock_Tags
-   * @property {CreateRequestAssetFeedBlockTags_Tag} tag
-   */
-  /**
-* @typedef {Object} CreateRequestAssetFeedBlockTags_Tag
+/**
+ * @typedef {Object} AssetContainerAssetFeedBlock_Tags
+ * @property {AssetContainerAssetFeedBlockTags_Tag} tag
+ */
+/**
+* @typedef {Object} AssetContainerAssetFeedBlockTags_Tag
 * @property {string} name - REQUIRED
 * - The name of this page region, for example, 'DEFAULT', or 'JAVASCRIPT-INCLUDE'. This MUST correspond to the name of a region defined in the template.
 
 */
-  /**
-   * @typedef {Object} CreateRequestAssetFeedBlock_Metadata
-   * @property {string} author
-   * @property {string} displayName
-   * @property {string} endDate
-   * @property {string} keywords
-   * @property {string} metaDescription
-   * @property {string} reviewDate
-   * @property {string} startDate
-   * @property {string} summary
-   * @property {string} teaser
-   * @property {string} title
-   * @property {CreateRequestAssetFeedBlockMetadata_DynamicFields} dynamicFields
-   */
-  /**
-   * @typedef {Object} CreateRequestAssetFeedBlockMetadata_DynamicFields
-   * @property {CreateRequestAssetFeedBlockMetadataDynamicFields_DynamicField} dynamicField
-   */
-  /**
-* @typedef {Object} CreateRequestAssetFeedBlockMetadataDynamicFields_DynamicField
+/**
+ * @typedef {Object} AssetContainerAssetFeedBlock_Metadata
+ * @property {string} author
+ * @property {string} displayName
+ * @property {string} endDate
+ * @property {string} keywords
+ * @property {string} metaDescription
+ * @property {string} reviewDate
+ * @property {string} startDate
+ * @property {string} summary
+ * @property {string} teaser
+ * @property {string} title
+ * @property {AssetContainerAssetFeedBlockMetadata_DynamicFields} dynamicFields
+ */
+/**
+ * @typedef {Object} AssetContainerAssetFeedBlockMetadata_DynamicFields
+ * @property {AssetContainerAssetFeedBlockMetadataDynamicFields_DynamicField} dynamicField
+ */
+/**
+* @typedef {Object} AssetContainerAssetFeedBlockMetadataDynamicFields_DynamicField
 * @property {string} name - REQUIRED
 * - The name of this page region, for example, 'DEFAULT', or 'JAVASCRIPT-INCLUDE'. This MUST correspond to the name of a region defined in the template.
 
-* @property {CreateRequestAssetFeedBlockMetadataDynamicFieldsDynamicField_FieldValues} fieldValues
+* @property {AssetContainerAssetFeedBlockMetadataDynamicFieldsDynamicField_FieldValues} fieldValues
 */
-  /**
-   * @typedef {Object} CreateRequestAssetFeedBlockMetadataDynamicFieldsDynamicField_FieldValues
-   * @property {CreateRequestAssetFeedBlockMetadataDynamicFieldsDynamicFieldFieldValues_FieldValue} fieldValue
-   */
-  /**
-   * @typedef {Object} CreateRequestAssetFeedBlockMetadataDynamicFieldsDynamicFieldFieldValues_FieldValue
-   * @property {string} value
-   */
-  /**
-* @typedef {Object} CreateRequestAsset_IndexBlock
+/**
+ * @typedef {Object} AssetContainerAssetFeedBlockMetadataDynamicFieldsDynamicField_FieldValues
+ * @property {AssetContainerAssetFeedBlockMetadataDynamicFieldsDynamicFieldFieldValues_FieldValue} fieldValue
+ */
+/**
+ * @typedef {Object} AssetContainerAssetFeedBlockMetadataDynamicFieldsDynamicFieldFieldValues_FieldValue
+ * @property {string} value
+ */
+/**
+* @typedef {Object} AssetContainerAsset_IndexBlock
 * @property {string} id
 * @property {string} name - REQUIRED
 * - The name of this page region, for example, 'DEFAULT', or 'JAVASCRIPT-INCLUDE'. This MUST correspond to the name of a region defined in the template.
@@ -1705,8 +258,8 @@ const CascadeAPIMethods = {
 * @property {string} siteName - One is REQUIRED: siteId | siteName
 * - The Site in which the asset is located
 
-* @property {CreateRequestAssetIndexBlock_Tags} tags
-* @property {CreateRequestAssetIndexBlock_Metadata} metadata
+* @property {AssetContainerAssetIndexBlock_Tags} tags
+* @property {AssetContainerAssetIndexBlock_Metadata} metadata
 * @property {string} metadataSetId
 * @property {string} metadataSetPath
 * @property {boolean} reviewOnSchedule
@@ -1739,51 +292,51 @@ const CascadeAPIMethods = {
 * @property {string} sortOrder
 * @property {string} pageXML
 */
-  /**
-   * @typedef {Object} CreateRequestAssetIndexBlock_Tags
-   * @property {CreateRequestAssetIndexBlockTags_Tag} tag
-   */
-  /**
-* @typedef {Object} CreateRequestAssetIndexBlockTags_Tag
+/**
+ * @typedef {Object} AssetContainerAssetIndexBlock_Tags
+ * @property {AssetContainerAssetIndexBlockTags_Tag} tag
+ */
+/**
+* @typedef {Object} AssetContainerAssetIndexBlockTags_Tag
 * @property {string} name - REQUIRED
 * - The name of this page region, for example, 'DEFAULT', or 'JAVASCRIPT-INCLUDE'. This MUST correspond to the name of a region defined in the template.
 
 */
-  /**
-   * @typedef {Object} CreateRequestAssetIndexBlock_Metadata
-   * @property {string} author
-   * @property {string} displayName
-   * @property {string} endDate
-   * @property {string} keywords
-   * @property {string} metaDescription
-   * @property {string} reviewDate
-   * @property {string} startDate
-   * @property {string} summary
-   * @property {string} teaser
-   * @property {string} title
-   * @property {CreateRequestAssetIndexBlockMetadata_DynamicFields} dynamicFields
-   */
-  /**
-   * @typedef {Object} CreateRequestAssetIndexBlockMetadata_DynamicFields
-   * @property {CreateRequestAssetIndexBlockMetadataDynamicFields_DynamicField} dynamicField
-   */
-  /**
-* @typedef {Object} CreateRequestAssetIndexBlockMetadataDynamicFields_DynamicField
+/**
+ * @typedef {Object} AssetContainerAssetIndexBlock_Metadata
+ * @property {string} author
+ * @property {string} displayName
+ * @property {string} endDate
+ * @property {string} keywords
+ * @property {string} metaDescription
+ * @property {string} reviewDate
+ * @property {string} startDate
+ * @property {string} summary
+ * @property {string} teaser
+ * @property {string} title
+ * @property {AssetContainerAssetIndexBlockMetadata_DynamicFields} dynamicFields
+ */
+/**
+ * @typedef {Object} AssetContainerAssetIndexBlockMetadata_DynamicFields
+ * @property {AssetContainerAssetIndexBlockMetadataDynamicFields_DynamicField} dynamicField
+ */
+/**
+* @typedef {Object} AssetContainerAssetIndexBlockMetadataDynamicFields_DynamicField
 * @property {string} name - REQUIRED
 * - The name of this page region, for example, 'DEFAULT', or 'JAVASCRIPT-INCLUDE'. This MUST correspond to the name of a region defined in the template.
 
-* @property {CreateRequestAssetIndexBlockMetadataDynamicFieldsDynamicField_FieldValues} fieldValues
+* @property {AssetContainerAssetIndexBlockMetadataDynamicFieldsDynamicField_FieldValues} fieldValues
 */
-  /**
-   * @typedef {Object} CreateRequestAssetIndexBlockMetadataDynamicFieldsDynamicField_FieldValues
-   * @property {CreateRequestAssetIndexBlockMetadataDynamicFieldsDynamicFieldFieldValues_FieldValue} fieldValue
-   */
-  /**
-   * @typedef {Object} CreateRequestAssetIndexBlockMetadataDynamicFieldsDynamicFieldFieldValues_FieldValue
-   * @property {string} value
-   */
-  /**
-* @typedef {Object} CreateRequestAsset_TextBlock
+/**
+ * @typedef {Object} AssetContainerAssetIndexBlockMetadataDynamicFieldsDynamicField_FieldValues
+ * @property {AssetContainerAssetIndexBlockMetadataDynamicFieldsDynamicFieldFieldValues_FieldValue} fieldValue
+ */
+/**
+ * @typedef {Object} AssetContainerAssetIndexBlockMetadataDynamicFieldsDynamicFieldFieldValues_FieldValue
+ * @property {string} value
+ */
+/**
+* @typedef {Object} AssetContainerAsset_TextBlock
 * @property {string} id
 * @property {string} name - REQUIRED
 * - The name of this page region, for example, 'DEFAULT', or 'JAVASCRIPT-INCLUDE'. This MUST correspond to the name of a region defined in the template.
@@ -1807,8 +360,8 @@ const CascadeAPIMethods = {
 * @property {string} siteName - One is REQUIRED: siteId | siteName
 * - The Site in which the asset is located
 
-* @property {CreateRequestAssetTextBlock_Tags} tags
-* @property {CreateRequestAssetTextBlock_Metadata} metadata
+* @property {AssetContainerAssetTextBlock_Tags} tags
+* @property {AssetContainerAssetTextBlock_Metadata} metadata
 * @property {string} metadataSetId
 * @property {string} metadataSetPath
 * @property {boolean} reviewOnSchedule
@@ -1818,51 +371,51 @@ const CascadeAPIMethods = {
 * @property {boolean} expirationFolderRecycled
 * @property {string} text
 */
-  /**
-   * @typedef {Object} CreateRequestAssetTextBlock_Tags
-   * @property {CreateRequestAssetTextBlockTags_Tag} tag
-   */
-  /**
-* @typedef {Object} CreateRequestAssetTextBlockTags_Tag
+/**
+ * @typedef {Object} AssetContainerAssetTextBlock_Tags
+ * @property {AssetContainerAssetTextBlockTags_Tag} tag
+ */
+/**
+* @typedef {Object} AssetContainerAssetTextBlockTags_Tag
 * @property {string} name - REQUIRED
 * - The name of this page region, for example, 'DEFAULT', or 'JAVASCRIPT-INCLUDE'. This MUST correspond to the name of a region defined in the template.
 
 */
-  /**
-   * @typedef {Object} CreateRequestAssetTextBlock_Metadata
-   * @property {string} author
-   * @property {string} displayName
-   * @property {string} endDate
-   * @property {string} keywords
-   * @property {string} metaDescription
-   * @property {string} reviewDate
-   * @property {string} startDate
-   * @property {string} summary
-   * @property {string} teaser
-   * @property {string} title
-   * @property {CreateRequestAssetTextBlockMetadata_DynamicFields} dynamicFields
-   */
-  /**
-   * @typedef {Object} CreateRequestAssetTextBlockMetadata_DynamicFields
-   * @property {CreateRequestAssetTextBlockMetadataDynamicFields_DynamicField} dynamicField
-   */
-  /**
-* @typedef {Object} CreateRequestAssetTextBlockMetadataDynamicFields_DynamicField
+/**
+ * @typedef {Object} AssetContainerAssetTextBlock_Metadata
+ * @property {string} author
+ * @property {string} displayName
+ * @property {string} endDate
+ * @property {string} keywords
+ * @property {string} metaDescription
+ * @property {string} reviewDate
+ * @property {string} startDate
+ * @property {string} summary
+ * @property {string} teaser
+ * @property {string} title
+ * @property {AssetContainerAssetTextBlockMetadata_DynamicFields} dynamicFields
+ */
+/**
+ * @typedef {Object} AssetContainerAssetTextBlockMetadata_DynamicFields
+ * @property {AssetContainerAssetTextBlockMetadataDynamicFields_DynamicField} dynamicField
+ */
+/**
+* @typedef {Object} AssetContainerAssetTextBlockMetadataDynamicFields_DynamicField
 * @property {string} name - REQUIRED
 * - The name of this page region, for example, 'DEFAULT', or 'JAVASCRIPT-INCLUDE'. This MUST correspond to the name of a region defined in the template.
 
-* @property {CreateRequestAssetTextBlockMetadataDynamicFieldsDynamicField_FieldValues} fieldValues
+* @property {AssetContainerAssetTextBlockMetadataDynamicFieldsDynamicField_FieldValues} fieldValues
 */
-  /**
-   * @typedef {Object} CreateRequestAssetTextBlockMetadataDynamicFieldsDynamicField_FieldValues
-   * @property {CreateRequestAssetTextBlockMetadataDynamicFieldsDynamicFieldFieldValues_FieldValue} fieldValue
-   */
-  /**
-   * @typedef {Object} CreateRequestAssetTextBlockMetadataDynamicFieldsDynamicFieldFieldValues_FieldValue
-   * @property {string} value
-   */
-  /**
-* @typedef {Object} CreateRequestAsset_XhtmlDataDefinitionBlock
+/**
+ * @typedef {Object} AssetContainerAssetTextBlockMetadataDynamicFieldsDynamicField_FieldValues
+ * @property {AssetContainerAssetTextBlockMetadataDynamicFieldsDynamicFieldFieldValues_FieldValue} fieldValue
+ */
+/**
+ * @typedef {Object} AssetContainerAssetTextBlockMetadataDynamicFieldsDynamicFieldFieldValues_FieldValue
+ * @property {string} value
+ */
+/**
+* @typedef {Object} AssetContainerAsset_XhtmlDataDefinitionBlock
 * @property {string} id
 * @property {string} name - REQUIRED
 * - The name of this page region, for example, 'DEFAULT', or 'JAVASCRIPT-INCLUDE'. This MUST correspond to the name of a region defined in the template.
@@ -1886,8 +439,8 @@ const CascadeAPIMethods = {
 * @property {string} siteName - One is REQUIRED: siteId | siteName
 * - The Site in which the asset is located
 
-* @property {CreateRequestAssetXhtmlDataDefinitionBlock_Tags} tags
-* @property {CreateRequestAssetXhtmlDataDefinitionBlock_Metadata} metadata
+* @property {AssetContainerAssetXhtmlDataDefinitionBlock_Tags} tags
+* @property {AssetContainerAssetXhtmlDataDefinitionBlock_Metadata} metadata
 * @property {string} metadataSetId
 * @property {string} metadataSetPath
 * @property {boolean} reviewOnSchedule
@@ -1895,7 +448,7 @@ const CascadeAPIMethods = {
 * @property {string} expirationFolderId
 * @property {string} expirationFolderPath
 * @property {boolean} expirationFolderRecycled
-* @property {CreateRequestAssetXhtmlDataDefinitionBlock_StructuredData} structuredData - One is REQUIRED: structuredData | xhtml
+* @property {AssetContainerAssetXhtmlDataDefinitionBlock_StructuredData} structuredData - One is REQUIRED: structuredData | xhtml
 * - Priority: xhtml > structuredData
 * - A page either contains XHTML content (plain WYSIWYG page) or structured data content
 * - Page structured data information
@@ -1905,61 +458,61 @@ const CascadeAPIMethods = {
 * - A page either contains XHTML content (plain WYSIWYG page) or structured data content
 
 */
-  /**
-   * @typedef {Object} CreateRequestAssetXhtmlDataDefinitionBlock_Tags
-   * @property {CreateRequestAssetXhtmlDataDefinitionBlockTags_Tag} tag
-   */
-  /**
-* @typedef {Object} CreateRequestAssetXhtmlDataDefinitionBlockTags_Tag
+/**
+ * @typedef {Object} AssetContainerAssetXhtmlDataDefinitionBlock_Tags
+ * @property {AssetContainerAssetXhtmlDataDefinitionBlockTags_Tag} tag
+ */
+/**
+* @typedef {Object} AssetContainerAssetXhtmlDataDefinitionBlockTags_Tag
 * @property {string} name - REQUIRED
 * - The name of this page region, for example, 'DEFAULT', or 'JAVASCRIPT-INCLUDE'. This MUST correspond to the name of a region defined in the template.
 
 */
-  /**
-   * @typedef {Object} CreateRequestAssetXhtmlDataDefinitionBlock_Metadata
-   * @property {string} author
-   * @property {string} displayName
-   * @property {string} endDate
-   * @property {string} keywords
-   * @property {string} metaDescription
-   * @property {string} reviewDate
-   * @property {string} startDate
-   * @property {string} summary
-   * @property {string} teaser
-   * @property {string} title
-   * @property {CreateRequestAssetXhtmlDataDefinitionBlockMetadata_DynamicFields} dynamicFields
-   */
-  /**
-   * @typedef {Object} CreateRequestAssetXhtmlDataDefinitionBlockMetadata_DynamicFields
-   * @property {CreateRequestAssetXhtmlDataDefinitionBlockMetadataDynamicFields_DynamicField} dynamicField
-   */
-  /**
-* @typedef {Object} CreateRequestAssetXhtmlDataDefinitionBlockMetadataDynamicFields_DynamicField
+/**
+ * @typedef {Object} AssetContainerAssetXhtmlDataDefinitionBlock_Metadata
+ * @property {string} author
+ * @property {string} displayName
+ * @property {string} endDate
+ * @property {string} keywords
+ * @property {string} metaDescription
+ * @property {string} reviewDate
+ * @property {string} startDate
+ * @property {string} summary
+ * @property {string} teaser
+ * @property {string} title
+ * @property {AssetContainerAssetXhtmlDataDefinitionBlockMetadata_DynamicFields} dynamicFields
+ */
+/**
+ * @typedef {Object} AssetContainerAssetXhtmlDataDefinitionBlockMetadata_DynamicFields
+ * @property {AssetContainerAssetXhtmlDataDefinitionBlockMetadataDynamicFields_DynamicField} dynamicField
+ */
+/**
+* @typedef {Object} AssetContainerAssetXhtmlDataDefinitionBlockMetadataDynamicFields_DynamicField
 * @property {string} name - REQUIRED
 * - The name of this page region, for example, 'DEFAULT', or 'JAVASCRIPT-INCLUDE'. This MUST correspond to the name of a region defined in the template.
 
-* @property {CreateRequestAssetXhtmlDataDefinitionBlockMetadataDynamicFieldsDynamicField_FieldValues} fieldValues
+* @property {AssetContainerAssetXhtmlDataDefinitionBlockMetadataDynamicFieldsDynamicField_FieldValues} fieldValues
 */
-  /**
-   * @typedef {Object} CreateRequestAssetXhtmlDataDefinitionBlockMetadataDynamicFieldsDynamicField_FieldValues
-   * @property {CreateRequestAssetXhtmlDataDefinitionBlockMetadataDynamicFieldsDynamicFieldFieldValues_FieldValue} fieldValue
-   */
-  /**
-   * @typedef {Object} CreateRequestAssetXhtmlDataDefinitionBlockMetadataDynamicFieldsDynamicFieldFieldValues_FieldValue
-   * @property {string} value
-   */
-  /**
-   * @typedef {Object} CreateRequestAssetXhtmlDataDefinitionBlock_StructuredData
-   * @property {string} definitionId
-   * @property {string} definitionPath
-   * @property {CreateRequestAssetXhtmlDataDefinitionBlockStructuredData_StructuredDataNodes} structuredDataNodes
-   */
-  /**
-   * @typedef {Object} CreateRequestAssetXhtmlDataDefinitionBlockStructuredData_StructuredDataNodes
-   * @property {CreateRequestAssetXhtmlDataDefinitionBlockStructuredDataStructuredDataNodes_StructuredDataNode} structuredDataNode
-   */
-  /**
-* @typedef {Object} CreateRequestAssetXhtmlDataDefinitionBlockStructuredDataStructuredDataNodes_StructuredDataNode
+/**
+ * @typedef {Object} AssetContainerAssetXhtmlDataDefinitionBlockMetadataDynamicFieldsDynamicField_FieldValues
+ * @property {AssetContainerAssetXhtmlDataDefinitionBlockMetadataDynamicFieldsDynamicFieldFieldValues_FieldValue} fieldValue
+ */
+/**
+ * @typedef {Object} AssetContainerAssetXhtmlDataDefinitionBlockMetadataDynamicFieldsDynamicFieldFieldValues_FieldValue
+ * @property {string} value
+ */
+/**
+ * @typedef {Object} AssetContainerAssetXhtmlDataDefinitionBlock_StructuredData
+ * @property {string} definitionId
+ * @property {string} definitionPath
+ * @property {AssetContainerAssetXhtmlDataDefinitionBlockStructuredData_StructuredDataNodes} structuredDataNodes
+ */
+/**
+ * @typedef {Object} AssetContainerAssetXhtmlDataDefinitionBlockStructuredData_StructuredDataNodes
+ * @property {AssetContainerAssetXhtmlDataDefinitionBlockStructuredDataStructuredDataNodes_StructuredDataNode} structuredDataNode
+ */
+/**
+* @typedef {Object} AssetContainerAssetXhtmlDataDefinitionBlockStructuredDataStructuredDataNodes_StructuredDataNode
 * @property {string} type - REQUIRED: Each node has a type
 * @property {string} identifier - REQUIRED
 * - The text identifier of the node coming from corresponding field in Data Definition. If this node is preserved on the asset but corresponding field no longer exists in Data Definition, the identifier's value will be '<legacy>'.
@@ -1977,8 +530,8 @@ const CascadeAPIMethods = {
 * @property {string} symlinkPath
 * @property {boolean} recycled
 */
-  /**
-* @typedef {Object} CreateRequestAsset_XmlBlock
+/**
+* @typedef {Object} AssetContainerAsset_XmlBlock
 * @property {string} id
 * @property {string} name - REQUIRED
 * - The name of this page region, for example, 'DEFAULT', or 'JAVASCRIPT-INCLUDE'. This MUST correspond to the name of a region defined in the template.
@@ -1994,7 +547,7 @@ const CascadeAPIMethods = {
 * @property {string} path
 * @property {string} lastModifiedDate
 * @property {string} lastModifiedBy
-* @property {CreateRequestAssetXmlBlock_Metadata} metadata
+* @property {AssetContainerAssetXmlBlock_Metadata} metadata
 * @property {string} metadataSetId
 * @property {string} metadataSetPath
 * @property {boolean} reviewOnSchedule
@@ -2004,16 +557,16 @@ const CascadeAPIMethods = {
 * @property {boolean} expirationFolderRecycled
 * @property {string} xml
 */
-  /**
-   * @typedef {Object} CreateRequestAssetXmlBlock_Metadata
-   * @property {string} author
-   * @property {string} displayName
-   * @property {string} endDate
-   * @property {string} keywords
-   * @property {string} metaDescription
-   */
-  /**
-* @typedef {Object} CreateRequestAsset_File
+/**
+ * @typedef {Object} AssetContainerAssetXmlBlock_Metadata
+ * @property {string} author
+ * @property {string} displayName
+ * @property {string} endDate
+ * @property {string} keywords
+ * @property {string} metaDescription
+ */
+/**
+* @typedef {Object} AssetContainerAsset_File
 * @property {string} id
 * @property {string} name - REQUIRED
 * - The name of this page region, for example, 'DEFAULT', or 'JAVASCRIPT-INCLUDE'. This MUST correspond to the name of a region defined in the template.
@@ -2029,7 +582,7 @@ const CascadeAPIMethods = {
 * @property {string} path
 * @property {string} lastModifiedDate
 * @property {string} lastModifiedBy
-* @property {CreateRequestAssetFile_Metadata} metadata
+* @property {AssetContainerAssetFile_Metadata} metadata
 * @property {string} metadataSetId
 * @property {string} metadataSetPath
 * @property {boolean} reviewOnSchedule
@@ -2046,16 +599,16 @@ const CascadeAPIMethods = {
 * @property {boolean} rewriteLinks
 * @property {string} linkRewriting
 */
-  /**
-   * @typedef {Object} CreateRequestAssetFile_Metadata
-   * @property {string} author
-   * @property {string} displayName
-   * @property {string} endDate
-   * @property {string} keywords
-   * @property {string} metaDescription
-   */
-  /**
-* @typedef {Object} CreateRequestAsset_Folder
+/**
+ * @typedef {Object} AssetContainerAssetFile_Metadata
+ * @property {string} author
+ * @property {string} displayName
+ * @property {string} endDate
+ * @property {string} keywords
+ * @property {string} metaDescription
+ */
+/**
+* @typedef {Object} AssetContainerAsset_Folder
 * @property {string} id
 * @property {string} name - REQUIRED
 * - The name of this page region, for example, 'DEFAULT', or 'JAVASCRIPT-INCLUDE'. This MUST correspond to the name of a region defined in the template.
@@ -2071,7 +624,7 @@ const CascadeAPIMethods = {
 * @property {string} path
 * @property {string} lastModifiedDate
 * @property {string} lastModifiedBy
-* @property {CreateRequestAssetFolder_Metadata} metadata
+* @property {AssetContainerAssetFolder_Metadata} metadata
 * @property {string} metadataSetId
 * @property {string} metadataSetPath
 * @property {boolean} reviewOnSchedule
@@ -2083,30 +636,30 @@ const CascadeAPIMethods = {
 * @property {boolean} shouldBeIndexed
 * @property {string} lastPublishedDate
 * @property {string} lastPublishedBy
-* @property {CreateRequestAssetFolder_Children} children
+* @property {AssetContainerAssetFolder_Children} children
 * @property {boolean} includeInStaleContent
 */
-  /**
-   * @typedef {Object} CreateRequestAssetFolder_Metadata
-   * @property {string} author
-   * @property {string} displayName
-   * @property {string} endDate
-   * @property {string} keywords
-   * @property {string} metaDescription
-   */
-  /**
-   * @typedef {Object} CreateRequestAssetFolder_Children
-   * @property {CreateRequestAssetFolderChildren_Child} child
-   */
-  /**
-   * @typedef {Object} CreateRequestAssetFolderChildren_Child
-   * @property {string} id
-   * @property {CreateRequestAssetFolderChildrenChild_Path} path
-   * @property {string} type - REQUIRED: Each node has a type
-   * @property {boolean} recycled
-   */
-  /**
-* @typedef {Object} CreateRequestAssetFolderChildrenChild_Path
+/**
+ * @typedef {Object} AssetContainerAssetFolder_Metadata
+ * @property {string} author
+ * @property {string} displayName
+ * @property {string} endDate
+ * @property {string} keywords
+ * @property {string} metaDescription
+ */
+/**
+ * @typedef {Object} AssetContainerAssetFolder_Children
+ * @property {AssetContainerAssetFolderChildren_Child} child
+ */
+/**
+ * @typedef {Object} AssetContainerAssetFolderChildren_Child
+ * @property {string} id
+ * @property {AssetContainerAssetFolderChildrenChild_Path} path
+ * @property {string} type - REQUIRED: Each node has a type
+ * @property {boolean} recycled
+ */
+/**
+* @typedef {Object} AssetContainerAssetFolderChildrenChild_Path
 * @property {string} path
 * @property {string} siteId - One is REQUIRED: siteId | siteName
 * - The Site in which the asset is located
@@ -2115,8 +668,8 @@ const CascadeAPIMethods = {
 * - The Site in which the asset is located
 
 */
-  /**
-* @typedef {Object} CreateRequestAsset_Page
+/**
+* @typedef {Object} AssetContainerAsset_Page
 * @property {string} [id] - The id of the asset. When creating, this should not be present as an asset does not have an id until it is created. When editing, specify this to uniquely identify an asset.
 * @property {string} name - REQUIRED
 * - The name of this page region, for example, 'DEFAULT', or 'JAVASCRIPT-INCLUDE'. This MUST correspond to the name of a region defined in the template.
@@ -2144,7 +697,7 @@ const CascadeAPIMethods = {
 * - The Site in which the asset is located
 
 * @property {string} [tags] - NOT REQUIRED: Content Tags assigned to the asset
-* @property {CreateRequestAssetPage_Metadata} [metadata] - NOT REQUIRED default: all empty
+* @property {AssetContainerAssetPage_Metadata} [metadata] - NOT REQUIRED default: all empty
 * - The individual wired metadata fields
 * - The content of the wired metadata fields. None of the fields are required and the defaults are empty
 
@@ -2188,41 +741,41 @@ const CascadeAPIMethods = {
 * - Priority: xhtml > structuredData
 * - A page either contains XHTML content (plain WYSIWYG page) or structured data content
 
-* @property {CreateRequestAssetPage_StructuredData} structuredData - One is REQUIRED: structuredData | xhtml
+* @property {AssetContainerAssetPage_StructuredData} structuredData - One is REQUIRED: structuredData | xhtml
 * - Priority: xhtml > structuredData
 * - A page either contains XHTML content (plain WYSIWYG page) or structured data content
 * - Page structured data information
 
-* @property {CreateRequestAssetPage_PageConfigurations[]} [pageConfigurations] - NOT REQUIRED when creating a page, but you must submit assignment information when editing if you want to maintain the region assignments
+* @property {AssetContainerAssetPage_PageConfigurations[]} [pageConfigurations] - NOT REQUIRED when creating a page, but you must submit assignment information when editing if you want to maintain the region assignments
 * - The page configurations containing page-level region block/format assignments
 
 * @property {"inherit" | "absolute" | "relative" | "site-relative"} [linkRewriting] - NOT REQUIRED: default: inherit
 */
-  /**
-   * @typedef {Object} CreateRequestAssetPage_Metadata
-   * @property {string} [author] - NOT REQUIRED
-   * @property {string} [displayName] - NOT REQUIRED
-   * @property {string} [endDate] - NOT REQUIRED
-   * @property {string} [keywords] - NOT REQUIRED
-   * @property {string} [metaDescription] - NOT REQUIRED
-   * @property {string} [reviewDate] - NOT REQUIRED
-   * @property {string} [startDate] - NOT REQUIRED
-   * @property {string} [summary] - NOT REQUIRED
-   * @property {string} [teaser] - NOT REQUIRED
-   * @property {string} [title] - NOT REQUIRED
-   * @property {CreateRequestAssetPageMetadata_DynamicFields[]} [dynamicFields] - NOT REQUIRED: Array
-   */
-  /**
-   * @typedef {Object} CreateRequestAssetPageMetadata_DynamicFields
-   * @property {string} [name] - NOT REQUIRED
-   * @property {CreateRequestAssetPageMetadataDynamicFields_FieldValues[]} [fieldValues] - NOT REQUIRED: Array
-   */
-  /**
-   * @typedef {Object} CreateRequestAssetPageMetadataDynamicFields_FieldValues
-   * @property {string} [value] - NOT REQUIRED
-   */
-  /**
-* @typedef {Object} CreateRequestAssetPage_StructuredData
+/**
+ * @typedef {Object} AssetContainerAssetPage_Metadata
+ * @property {string} [author] - NOT REQUIRED
+ * @property {string} [displayName] - NOT REQUIRED
+ * @property {string} [endDate] - NOT REQUIRED
+ * @property {string} [keywords] - NOT REQUIRED
+ * @property {string} [metaDescription] - NOT REQUIRED
+ * @property {string} [reviewDate] - NOT REQUIRED
+ * @property {string} [startDate] - NOT REQUIRED
+ * @property {string} [summary] - NOT REQUIRED
+ * @property {string} [teaser] - NOT REQUIRED
+ * @property {string} [title] - NOT REQUIRED
+ * @property {AssetContainerAssetPageMetadata_DynamicFields[]} [dynamicFields] - NOT REQUIRED: Array
+ */
+/**
+ * @typedef {Object} AssetContainerAssetPageMetadata_DynamicFields
+ * @property {string} [name] - NOT REQUIRED
+ * @property {AssetContainerAssetPageMetadataDynamicFields_FieldValues[]} [fieldValues] - NOT REQUIRED: Array
+ */
+/**
+ * @typedef {Object} AssetContainerAssetPageMetadataDynamicFields_FieldValues
+ * @property {string} [value] - NOT REQUIRED
+ */
+/**
+* @typedef {Object} AssetContainerAssetPage_StructuredData
 * @property {string} [definitionId] - NOT REQUIRED
 * - Priority: definitionId > definitionPath
 * - For defining an asset's Data Definition relationship
@@ -2231,10 +784,10 @@ const CascadeAPIMethods = {
 * - Priority: definitionId > definitionPath
 * - For defining an asset's Data Definition relationship
 
-* @property {CreateRequestAssetPageStructuredData_StructuredDataNodes[]} [structuredDataNodes] - NOT REQUIRED: An array of structured data nodes
+* @property {AssetContainerAssetPageStructuredData_StructuredDataNodes[]} [structuredDataNodes] - NOT REQUIRED: An array of structured data nodes
 */
-  /**
-* @typedef {Object} CreateRequestAssetPageStructuredData_StructuredDataNodes
+/**
+* @typedef {Object} AssetContainerAssetPageStructuredData_StructuredDataNodes
 * @property {string} type - REQUIRED: Each node has a type
 * @property {string} identifier - REQUIRED
 * - The text identifier of the node coming from corresponding field in Data Definition. If this node is preserved on the asset but corresponding field no longer exists in Data Definition, the identifier's value will be '<legacy>'.
@@ -2292,8 +845,8 @@ const CascadeAPIMethods = {
 * - If path is provided, Cascade will look only for a non-recycled asset with given path even if 'recycled=true' is provided.
 
 */
-  /**
-* @typedef {Object} CreateRequestAssetPage_PageConfigurations
+/**
+* @typedef {Object} AssetContainerAssetPage_PageConfigurations
 * @property {string} name - REQUIRED
 * - The name of this page region, for example, 'DEFAULT', or 'JAVASCRIPT-INCLUDE'. This MUST correspond to the name of a region defined in the template.
 
@@ -2320,7 +873,7 @@ const CascadeAPIMethods = {
 * - The format assigned at this page region, can be either xslt or script
 
 * @property {boolean} [formatRecycled] - NOT REQUIRED: For reading purposes only. Ignored when editing, copying etc.
-* @property {CreateRequestAssetPagePageConfigurations_PageRegions[]} [pageRegions] - NOT REQUIRED: The individual page region assignments for this configuration
+* @property {AssetContainerAssetPagePageConfigurations_PageRegions[]} [pageRegions] - NOT REQUIRED: The individual page region assignments for this configuration
 * @property {string} [outputExtension] - Only required when in a site
 * - The output file extension, for example '.html'
 
@@ -2333,8 +886,8 @@ const CascadeAPIMethods = {
 * @property {boolean} [publishable] - Is this configuration publishable?
 * @property {string} [id] - The id of the asset. When creating, this should not be present as an asset does not have an id until it is created. When editing, specify this to uniquely identify an asset.
 */
-  /**
-* @typedef {Object} CreateRequestAssetPagePageConfigurations_PageRegions
+/**
+* @typedef {Object} AssetContainerAssetPagePageConfigurations_PageRegions
 * @property {string} name - REQUIRED
 * - The name of this page region, for example, 'DEFAULT', or 'JAVASCRIPT-INCLUDE'. This MUST correspond to the name of a region defined in the template.
 
@@ -2370,8 +923,8 @@ const CascadeAPIMethods = {
 
 * @property {string} [id] - The id of the asset. When creating, this should not be present as an asset does not have an id until it is created. When editing, specify this to uniquely identify an asset.
 */
-  /**
-* @typedef {Object} CreateRequestAsset_Reference
+/**
+* @typedef {Object} AssetContainerAsset_Reference
 * @property {string} id
 * @property {string} name - REQUIRED
 * - The name of this page region, for example, 'DEFAULT', or 'JAVASCRIPT-INCLUDE'. This MUST correspond to the name of a region defined in the template.
@@ -2391,8 +944,8 @@ const CascadeAPIMethods = {
 * @property {string} referencedAssetPath
 * @property {string} referencedAssetType
 */
-  /**
-* @typedef {Object} CreateRequestAsset_XsltFormat
+/**
+* @typedef {Object} AssetContainerAsset_XsltFormat
 * @property {string} id
 * @property {string} name - REQUIRED
 * - The name of this page region, for example, 'DEFAULT', or 'JAVASCRIPT-INCLUDE'. This MUST correspond to the name of a region defined in the template.
@@ -2410,8 +963,8 @@ const CascadeAPIMethods = {
 * @property {string} lastModifiedBy
 * @property {string} xml
 */
-  /**
-* @typedef {Object} CreateRequestAsset_ScriptFormat
+/**
+* @typedef {Object} AssetContainerAsset_ScriptFormat
 * @property {string} id
 * @property {string} name - REQUIRED
 * - The name of this page region, for example, 'DEFAULT', or 'JAVASCRIPT-INCLUDE'. This MUST correspond to the name of a region defined in the template.
@@ -2429,8 +982,8 @@ const CascadeAPIMethods = {
 * @property {string} lastModifiedBy
 * @property {string} script
 */
-  /**
-* @typedef {Object} CreateRequestAsset_Symlink
+/**
+* @typedef {Object} AssetContainerAsset_Symlink
 * @property {string} id
 * @property {string} name - REQUIRED
 * - The name of this page region, for example, 'DEFAULT', or 'JAVASCRIPT-INCLUDE'. This MUST correspond to the name of a region defined in the template.
@@ -2446,7 +999,7 @@ const CascadeAPIMethods = {
 * @property {string} path
 * @property {string} lastModifiedDate
 * @property {string} lastModifiedBy
-* @property {CreateRequestAssetSymlink_Metadata} metadata
+* @property {AssetContainerAssetSymlink_Metadata} metadata
 * @property {string} metadataSetId
 * @property {string} metadataSetPath
 * @property {boolean} reviewOnSchedule
@@ -2456,16 +1009,16 @@ const CascadeAPIMethods = {
 * @property {boolean} expirationFolderRecycled
 * @property {string} linkURL
 */
-  /**
-   * @typedef {Object} CreateRequestAssetSymlink_Metadata
-   * @property {string} author
-   * @property {string} displayName
-   * @property {string} endDate
-   * @property {string} keywords
-   * @property {string} metaDescription
-   */
-  /**
-* @typedef {Object} CreateRequestAsset_Template
+/**
+ * @typedef {Object} AssetContainerAssetSymlink_Metadata
+ * @property {string} author
+ * @property {string} displayName
+ * @property {string} endDate
+ * @property {string} keywords
+ * @property {string} metaDescription
+ */
+/**
+* @typedef {Object} AssetContainerAsset_Template
 * @property {string} id
 * @property {string} name - REQUIRED
 * - The name of this page region, for example, 'DEFAULT', or 'JAVASCRIPT-INCLUDE'. This MUST correspond to the name of a region defined in the template.
@@ -2487,48 +1040,48 @@ const CascadeAPIMethods = {
 * @property {string} formatPath
 * @property {boolean} formatRecycled
 */
-  /**
-   * @typedef {Object} CreateRequestAsset_User
-   * @property {string} username
-   * @property {string} fullName
-   * @property {string} email
-   * @property {string} authType
-   * @property {string} password
-   */
-  /**
-   * @typedef {Object} CreateRequestAsset_Group
-   * @property {string} groupName
-   * @property {string} users
-   * @property {string} role
-   */
-  /**
-* @typedef {Object} CreateRequestAsset_Role
+/**
+ * @typedef {Object} AssetContainerAsset_User
+ * @property {string} username
+ * @property {string} fullName
+ * @property {string} email
+ * @property {string} authType
+ * @property {string} password
+ */
+/**
+ * @typedef {Object} AssetContainerAsset_Group
+ * @property {string} groupName
+ * @property {string} users
+ * @property {string} role
+ */
+/**
+* @typedef {Object} AssetContainerAsset_Role
 * @property {string} id
 * @property {string} name - REQUIRED
 * - The name of this page region, for example, 'DEFAULT', or 'JAVASCRIPT-INCLUDE'. This MUST correspond to the name of a region defined in the template.
 
 * @property {string} roleType
-* @property {CreateRequestAssetRole_GlobalAbilities} globalAbilities
-* @property {CreateRequestAssetRole_SiteAbilities} siteAbilities
+* @property {AssetContainerAssetRole_GlobalAbilities} globalAbilities
+* @property {AssetContainerAssetRole_SiteAbilities} siteAbilities
 */
-  /**
-   * @typedef {Object} CreateRequestAssetRole_GlobalAbilities
-   * @property {boolean} bypassAllPermissionsChecks
-   * @property {boolean} accessSiteManagement
-   * @property {boolean} createSites
-   * @property {boolean} editAccessRights
-   * @property {boolean} accessAudits
-   */
-  /**
-   * @typedef {Object} CreateRequestAssetRole_SiteAbilities
-   * @property {boolean} bypassAllPermissionsChecks
-   * @property {boolean} uploadImagesFromWysiwyg
-   * @property {boolean} multiSelectCopy
-   * @property {boolean} multiSelectPublish
-   * @property {boolean} multiSelectMove
-   */
-  /**
-* @typedef {Object} CreateRequestAsset_AssetFactory
+/**
+ * @typedef {Object} AssetContainerAssetRole_GlobalAbilities
+ * @property {boolean} bypassAllPermissionsChecks
+ * @property {boolean} accessSiteManagement
+ * @property {boolean} createSites
+ * @property {boolean} editAccessRights
+ * @property {boolean} accessAudits
+ */
+/**
+ * @typedef {Object} AssetContainerAssetRole_SiteAbilities
+ * @property {boolean} bypassAllPermissionsChecks
+ * @property {boolean} uploadImagesFromWysiwyg
+ * @property {boolean} multiSelectCopy
+ * @property {boolean} multiSelectPublish
+ * @property {boolean} multiSelectMove
+ */
+/**
+* @typedef {Object} AssetContainerAsset_AssetFactory
 * @property {string} id
 * @property {string} name - REQUIRED
 * - The name of this page region, for example, 'DEFAULT', or 'JAVASCRIPT-INCLUDE'. This MUST correspond to the name of a region defined in the template.
@@ -2548,8 +1101,8 @@ const CascadeAPIMethods = {
 * @property {string} baseAssetPath
 * @property {boolean} baseAssetRecycled
 */
-  /**
-* @typedef {Object} CreateRequestAsset_AssetFactoryContainer
+/**
+* @typedef {Object} AssetContainerAsset_AssetFactoryContainer
 * @property {string} id
 * @property {string} name - REQUIRED
 * - The name of this page region, for example, 'DEFAULT', or 'JAVASCRIPT-INCLUDE'. This MUST correspond to the name of a region defined in the template.
@@ -2565,21 +1118,21 @@ const CascadeAPIMethods = {
 
 * @property {string} applicableGroups
 * @property {string} description
-* @property {CreateRequestAssetAssetFactoryContainer_Children} children
+* @property {AssetContainerAssetAssetFactoryContainer_Children} children
 */
-  /**
-   * @typedef {Object} CreateRequestAssetAssetFactoryContainer_Children
-   * @property {CreateRequestAssetAssetFactoryContainerChildren_Child} child
-   */
-  /**
-   * @typedef {Object} CreateRequestAssetAssetFactoryContainerChildren_Child
-   * @property {string} id
-   * @property {CreateRequestAssetAssetFactoryContainerChildrenChild_Path} path
-   * @property {string} type - REQUIRED: Each node has a type
-   * @property {boolean} recycled
-   */
-  /**
-* @typedef {Object} CreateRequestAssetAssetFactoryContainerChildrenChild_Path
+/**
+ * @typedef {Object} AssetContainerAssetAssetFactoryContainer_Children
+ * @property {AssetContainerAssetAssetFactoryContainerChildren_Child} child
+ */
+/**
+ * @typedef {Object} AssetContainerAssetAssetFactoryContainerChildren_Child
+ * @property {string} id
+ * @property {AssetContainerAssetAssetFactoryContainerChildrenChild_Path} path
+ * @property {string} type - REQUIRED: Each node has a type
+ * @property {boolean} recycled
+ */
+/**
+* @typedef {Object} AssetContainerAssetAssetFactoryContainerChildrenChild_Path
 * @property {string} path
 * @property {string} siteId - One is REQUIRED: siteId | siteName
 * - The Site in which the asset is located
@@ -2588,8 +1141,8 @@ const CascadeAPIMethods = {
 * - The Site in which the asset is located
 
 */
-  /**
-* @typedef {Object} CreateRequestAsset_ContentType
+/**
+* @typedef {Object} AssetContainerAsset_ContentType
 * @property {string} id
 * @property {string} name - REQUIRED
 * - The name of this page region, for example, 'DEFAULT', or 'JAVASCRIPT-INCLUDE'. This MUST correspond to the name of a region defined in the template.
@@ -2609,8 +1162,8 @@ const CascadeAPIMethods = {
 * @property {string} metadataSetPath
 * @property {string} dataDefinitionId
 */
-  /**
-* @typedef {Object} CreateRequestAsset_ContentTypeContainer
+/**
+* @typedef {Object} AssetContainerAsset_ContentTypeContainer
 * @property {string} id
 * @property {string} name - REQUIRED
 * - The name of this page region, for example, 'DEFAULT', or 'JAVASCRIPT-INCLUDE'. This MUST correspond to the name of a region defined in the template.
@@ -2624,21 +1177,21 @@ const CascadeAPIMethods = {
 * @property {string} siteName - One is REQUIRED: siteId | siteName
 * - The Site in which the asset is located
 
-* @property {CreateRequestAssetContentTypeContainer_Children} children
+* @property {AssetContainerAssetContentTypeContainer_Children} children
 */
-  /**
-   * @typedef {Object} CreateRequestAssetContentTypeContainer_Children
-   * @property {CreateRequestAssetContentTypeContainerChildren_Child} child
-   */
-  /**
-   * @typedef {Object} CreateRequestAssetContentTypeContainerChildren_Child
-   * @property {string} id
-   * @property {CreateRequestAssetContentTypeContainerChildrenChild_Path} path
-   * @property {string} type - REQUIRED: Each node has a type
-   * @property {boolean} recycled
-   */
-  /**
-* @typedef {Object} CreateRequestAssetContentTypeContainerChildrenChild_Path
+/**
+ * @typedef {Object} AssetContainerAssetContentTypeContainer_Children
+ * @property {AssetContainerAssetContentTypeContainerChildren_Child} child
+ */
+/**
+ * @typedef {Object} AssetContainerAssetContentTypeContainerChildren_Child
+ * @property {string} id
+ * @property {AssetContainerAssetContentTypeContainerChildrenChild_Path} path
+ * @property {string} type - REQUIRED: Each node has a type
+ * @property {boolean} recycled
+ */
+/**
+* @typedef {Object} AssetContainerAssetContentTypeContainerChildrenChild_Path
 * @property {string} path
 * @property {string} siteId - One is REQUIRED: siteId | siteName
 * - The Site in which the asset is located
@@ -2647,8 +1200,8 @@ const CascadeAPIMethods = {
 * - The Site in which the asset is located
 
 */
-  /**
-* @typedef {Object} CreateRequestAsset_ConnectorContainer
+/**
+* @typedef {Object} AssetContainerAsset_ConnectorContainer
 * @property {string} id
 * @property {string} name - REQUIRED
 * - The name of this page region, for example, 'DEFAULT', or 'JAVASCRIPT-INCLUDE'. This MUST correspond to the name of a region defined in the template.
@@ -2662,21 +1215,21 @@ const CascadeAPIMethods = {
 * @property {string} siteName - One is REQUIRED: siteId | siteName
 * - The Site in which the asset is located
 
-* @property {CreateRequestAssetConnectorContainer_Children} children
+* @property {AssetContainerAssetConnectorContainer_Children} children
 */
-  /**
-   * @typedef {Object} CreateRequestAssetConnectorContainer_Children
-   * @property {CreateRequestAssetConnectorContainerChildren_Child} child
-   */
-  /**
-   * @typedef {Object} CreateRequestAssetConnectorContainerChildren_Child
-   * @property {string} id
-   * @property {CreateRequestAssetConnectorContainerChildrenChild_Path} path
-   * @property {string} type - REQUIRED: Each node has a type
-   * @property {boolean} recycled
-   */
-  /**
-* @typedef {Object} CreateRequestAssetConnectorContainerChildrenChild_Path
+/**
+ * @typedef {Object} AssetContainerAssetConnectorContainer_Children
+ * @property {AssetContainerAssetConnectorContainerChildren_Child} child
+ */
+/**
+ * @typedef {Object} AssetContainerAssetConnectorContainerChildren_Child
+ * @property {string} id
+ * @property {AssetContainerAssetConnectorContainerChildrenChild_Path} path
+ * @property {string} type - REQUIRED: Each node has a type
+ * @property {boolean} recycled
+ */
+/**
+* @typedef {Object} AssetContainerAssetConnectorContainerChildrenChild_Path
 * @property {string} path
 * @property {string} siteId - One is REQUIRED: siteId | siteName
 * - The Site in which the asset is located
@@ -2685,8 +1238,8 @@ const CascadeAPIMethods = {
 * - The Site in which the asset is located
 
 */
-  /**
-* @typedef {Object} CreateRequestAsset_FacebookConnector
+/**
+* @typedef {Object} AssetContainerAsset_FacebookConnector
 * @property {string} id
 * @property {string} name - REQUIRED
 * - The name of this page region, for example, 'DEFAULT', or 'JAVASCRIPT-INCLUDE'. This MUST correspond to the name of a region defined in the template.
@@ -2708,8 +1261,8 @@ const CascadeAPIMethods = {
 * @property {string} destinationId
 * @property {string} destinationPath
 */
-  /**
-* @typedef {Object} CreateRequestAsset_WordPressConnector
+/**
+* @typedef {Object} AssetContainerAsset_WordPressConnector
 * @property {string} id
 * @property {string} name - REQUIRED
 * - The name of this page region, for example, 'DEFAULT', or 'JAVASCRIPT-INCLUDE'. This MUST correspond to the name of a region defined in the template.
@@ -2729,8 +1282,8 @@ const CascadeAPIMethods = {
 * @property {boolean} verified
 * @property {string} verifiedDate
 */
-  /**
-* @typedef {Object} CreateRequestAsset_GoogleAnalyticsConnector
+/**
+* @typedef {Object} AssetContainerAsset_GoogleAnalyticsConnector
 * @property {string} id
 * @property {string} name - REQUIRED
 * - The name of this page region, for example, 'DEFAULT', or 'JAVASCRIPT-INCLUDE'. This MUST correspond to the name of a region defined in the template.
@@ -2750,8 +1303,8 @@ const CascadeAPIMethods = {
 * @property {boolean} verified
 * @property {string} verifiedDate
 */
-  /**
-* @typedef {Object} CreateRequestAsset_PageConfigurationSet
+/**
+* @typedef {Object} AssetContainerAsset_PageConfigurationSet
 * @property {string} id
 * @property {string} name - REQUIRED
 * - The name of this page region, for example, 'DEFAULT', or 'JAVASCRIPT-INCLUDE'. This MUST correspond to the name of a region defined in the template.
@@ -2765,14 +1318,14 @@ const CascadeAPIMethods = {
 * @property {string} siteName - One is REQUIRED: siteId | siteName
 * - The Site in which the asset is located
 
-* @property {CreateRequestAssetPageConfigurationSet_PageConfigurations} pageConfigurations
+* @property {AssetContainerAssetPageConfigurationSet_PageConfigurations} pageConfigurations
 */
-  /**
-   * @typedef {Object} CreateRequestAssetPageConfigurationSet_PageConfigurations
-   * @property {CreateRequestAssetPageConfigurationSetPageConfigurations_PageConfiguration} pageConfiguration
-   */
-  /**
-* @typedef {Object} CreateRequestAssetPageConfigurationSetPageConfigurations_PageConfiguration
+/**
+ * @typedef {Object} AssetContainerAssetPageConfigurationSet_PageConfigurations
+ * @property {AssetContainerAssetPageConfigurationSetPageConfigurations_PageConfiguration} pageConfiguration
+ */
+/**
+* @typedef {Object} AssetContainerAssetPageConfigurationSetPageConfigurations_PageConfiguration
 * @property {string} id
 * @property {string} name - REQUIRED
 * - The name of this page region, for example, 'DEFAULT', or 'JAVASCRIPT-INCLUDE'. This MUST correspond to the name of a region defined in the template.
@@ -2782,8 +1335,8 @@ const CascadeAPIMethods = {
 * @property {string} templatePath
 * @property {string} formatId
 */
-  /**
-* @typedef {Object} CreateRequestAsset_PageConfigurationSetContainer
+/**
+* @typedef {Object} AssetContainerAsset_PageConfigurationSetContainer
 * @property {string} id
 * @property {string} name - REQUIRED
 * - The name of this page region, for example, 'DEFAULT', or 'JAVASCRIPT-INCLUDE'. This MUST correspond to the name of a region defined in the template.
@@ -2797,21 +1350,21 @@ const CascadeAPIMethods = {
 * @property {string} siteName - One is REQUIRED: siteId | siteName
 * - The Site in which the asset is located
 
-* @property {CreateRequestAssetPageConfigurationSetContainer_Children} children
+* @property {AssetContainerAssetPageConfigurationSetContainer_Children} children
 */
-  /**
-   * @typedef {Object} CreateRequestAssetPageConfigurationSetContainer_Children
-   * @property {CreateRequestAssetPageConfigurationSetContainerChildren_Child} child
-   */
-  /**
-   * @typedef {Object} CreateRequestAssetPageConfigurationSetContainerChildren_Child
-   * @property {string} id
-   * @property {CreateRequestAssetPageConfigurationSetContainerChildrenChild_Path} path
-   * @property {string} type - REQUIRED: Each node has a type
-   * @property {boolean} recycled
-   */
-  /**
-* @typedef {Object} CreateRequestAssetPageConfigurationSetContainerChildrenChild_Path
+/**
+ * @typedef {Object} AssetContainerAssetPageConfigurationSetContainer_Children
+ * @property {AssetContainerAssetPageConfigurationSetContainerChildren_Child} child
+ */
+/**
+ * @typedef {Object} AssetContainerAssetPageConfigurationSetContainerChildren_Child
+ * @property {string} id
+ * @property {AssetContainerAssetPageConfigurationSetContainerChildrenChild_Path} path
+ * @property {string} type - REQUIRED: Each node has a type
+ * @property {boolean} recycled
+ */
+/**
+* @typedef {Object} AssetContainerAssetPageConfigurationSetContainerChildrenChild_Path
 * @property {string} path
 * @property {string} siteId - One is REQUIRED: siteId | siteName
 * - The Site in which the asset is located
@@ -2820,63 +1373,8 @@ const CascadeAPIMethods = {
 * - The Site in which the asset is located
 
 */
-  /**
-* @typedef {Object} CreateRequestAsset_DataDefinition
-* @property {string} id
-* @property {string} name - REQUIRED
-* - The name of this page region, for example, 'DEFAULT', or 'JAVASCRIPT-INCLUDE'. This MUST correspond to the name of a region defined in the template.
-
-* @property {string} parentContainerId
-* @property {string} parentContainerPath
-* @property {string} path
-* @property {string} siteId - One is REQUIRED: siteId | siteName
-* - The Site in which the asset is located
-
-* @property {string} siteName - One is REQUIRED: siteId | siteName
-* - The Site in which the asset is located
-
-* @property {string} xml
-*/
-  /**
-* @typedef {Object} CreateRequestAsset_DataDefinitionContainer
-* @property {string} id
-* @property {string} name - REQUIRED
-* - The name of this page region, for example, 'DEFAULT', or 'JAVASCRIPT-INCLUDE'. This MUST correspond to the name of a region defined in the template.
-
-* @property {string} parentContainerId
-* @property {string} parentContainerPath
-* @property {string} path
-* @property {string} siteId - One is REQUIRED: siteId | siteName
-* - The Site in which the asset is located
-
-* @property {string} siteName - One is REQUIRED: siteId | siteName
-* - The Site in which the asset is located
-
-* @property {CreateRequestAssetDataDefinitionContainer_Children} children
-*/
-  /**
-   * @typedef {Object} CreateRequestAssetDataDefinitionContainer_Children
-   * @property {CreateRequestAssetDataDefinitionContainerChildren_Child} child
-   */
-  /**
-   * @typedef {Object} CreateRequestAssetDataDefinitionContainerChildren_Child
-   * @property {string} id
-   * @property {CreateRequestAssetDataDefinitionContainerChildrenChild_Path} path
-   * @property {string} type - REQUIRED: Each node has a type
-   * @property {boolean} recycled
-   */
-  /**
-* @typedef {Object} CreateRequestAssetDataDefinitionContainerChildrenChild_Path
-* @property {string} path
-* @property {string} siteId - One is REQUIRED: siteId | siteName
-* - The Site in which the asset is located
-
-* @property {string} siteName - One is REQUIRED: siteId | siteName
-* - The Site in which the asset is located
-
-*/
-  /**
-* @typedef {Object} CreateRequestAsset_SharedField
+/**
+* @typedef {Object} AssetContainerAsset_DataDefinition
 * @property {string} id
 * @property {string} name - REQUIRED
 * - The name of this page region, for example, 'DEFAULT', or 'JAVASCRIPT-INCLUDE'. This MUST correspond to the name of a region defined in the template.
@@ -2892,8 +1390,8 @@ const CascadeAPIMethods = {
 
 * @property {string} xml
 */
-  /**
-* @typedef {Object} CreateRequestAsset_SharedFieldContainer
+/**
+* @typedef {Object} AssetContainerAsset_DataDefinitionContainer
 * @property {string} id
 * @property {string} name - REQUIRED
 * - The name of this page region, for example, 'DEFAULT', or 'JAVASCRIPT-INCLUDE'. This MUST correspond to the name of a region defined in the template.
@@ -2907,21 +1405,21 @@ const CascadeAPIMethods = {
 * @property {string} siteName - One is REQUIRED: siteId | siteName
 * - The Site in which the asset is located
 
-* @property {CreateRequestAssetSharedFieldContainer_Children} children
+* @property {AssetContainerAssetDataDefinitionContainer_Children} children
 */
-  /**
-   * @typedef {Object} CreateRequestAssetSharedFieldContainer_Children
-   * @property {CreateRequestAssetSharedFieldContainerChildren_Child} child
-   */
-  /**
-   * @typedef {Object} CreateRequestAssetSharedFieldContainerChildren_Child
-   * @property {string} id
-   * @property {CreateRequestAssetSharedFieldContainerChildrenChild_Path} path
-   * @property {string} type - REQUIRED: Each node has a type
-   * @property {boolean} recycled
-   */
-  /**
-* @typedef {Object} CreateRequestAssetSharedFieldContainerChildrenChild_Path
+/**
+ * @typedef {Object} AssetContainerAssetDataDefinitionContainer_Children
+ * @property {AssetContainerAssetDataDefinitionContainerChildren_Child} child
+ */
+/**
+ * @typedef {Object} AssetContainerAssetDataDefinitionContainerChildren_Child
+ * @property {string} id
+ * @property {AssetContainerAssetDataDefinitionContainerChildrenChild_Path} path
+ * @property {string} type - REQUIRED: Each node has a type
+ * @property {boolean} recycled
+ */
+/**
+* @typedef {Object} AssetContainerAssetDataDefinitionContainerChildrenChild_Path
 * @property {string} path
 * @property {string} siteId - One is REQUIRED: siteId | siteName
 * - The Site in which the asset is located
@@ -2930,8 +1428,63 @@ const CascadeAPIMethods = {
 * - The Site in which the asset is located
 
 */
-  /**
-* @typedef {Object} CreateRequestAsset_MetadataSet
+/**
+* @typedef {Object} AssetContainerAsset_SharedField
+* @property {string} id
+* @property {string} name - REQUIRED
+* - The name of this page region, for example, 'DEFAULT', or 'JAVASCRIPT-INCLUDE'. This MUST correspond to the name of a region defined in the template.
+
+* @property {string} parentContainerId
+* @property {string} parentContainerPath
+* @property {string} path
+* @property {string} siteId - One is REQUIRED: siteId | siteName
+* - The Site in which the asset is located
+
+* @property {string} siteName - One is REQUIRED: siteId | siteName
+* - The Site in which the asset is located
+
+* @property {string} xml
+*/
+/**
+* @typedef {Object} AssetContainerAsset_SharedFieldContainer
+* @property {string} id
+* @property {string} name - REQUIRED
+* - The name of this page region, for example, 'DEFAULT', or 'JAVASCRIPT-INCLUDE'. This MUST correspond to the name of a region defined in the template.
+
+* @property {string} parentContainerId
+* @property {string} parentContainerPath
+* @property {string} path
+* @property {string} siteId - One is REQUIRED: siteId | siteName
+* - The Site in which the asset is located
+
+* @property {string} siteName - One is REQUIRED: siteId | siteName
+* - The Site in which the asset is located
+
+* @property {AssetContainerAssetSharedFieldContainer_Children} children
+*/
+/**
+ * @typedef {Object} AssetContainerAssetSharedFieldContainer_Children
+ * @property {AssetContainerAssetSharedFieldContainerChildren_Child} child
+ */
+/**
+ * @typedef {Object} AssetContainerAssetSharedFieldContainerChildren_Child
+ * @property {string} id
+ * @property {AssetContainerAssetSharedFieldContainerChildrenChild_Path} path
+ * @property {string} type - REQUIRED: Each node has a type
+ * @property {boolean} recycled
+ */
+/**
+* @typedef {Object} AssetContainerAssetSharedFieldContainerChildrenChild_Path
+* @property {string} path
+* @property {string} siteId - One is REQUIRED: siteId | siteName
+* - The Site in which the asset is located
+
+* @property {string} siteName - One is REQUIRED: siteId | siteName
+* - The Site in which the asset is located
+
+*/
+/**
+* @typedef {Object} AssetContainerAsset_MetadataSet
 * @property {string} id
 * @property {string} name - REQUIRED
 * - The name of this page region, for example, 'DEFAULT', or 'JAVASCRIPT-INCLUDE'. This MUST correspond to the name of a region defined in the template.
@@ -2951,8 +1504,8 @@ const CascadeAPIMethods = {
 * @property {boolean} descriptionFieldRequired
 * @property {string} descriptionFieldVisibility
 */
-  /**
-* @typedef {Object} CreateRequestAsset_MetadataSetContainer
+/**
+* @typedef {Object} AssetContainerAsset_MetadataSetContainer
 * @property {string} id
 * @property {string} name - REQUIRED
 * - The name of this page region, for example, 'DEFAULT', or 'JAVASCRIPT-INCLUDE'. This MUST correspond to the name of a region defined in the template.
@@ -2966,21 +1519,21 @@ const CascadeAPIMethods = {
 * @property {string} siteName - One is REQUIRED: siteId | siteName
 * - The Site in which the asset is located
 
-* @property {CreateRequestAssetMetadataSetContainer_Children} children
+* @property {AssetContainerAssetMetadataSetContainer_Children} children
 */
-  /**
-   * @typedef {Object} CreateRequestAssetMetadataSetContainer_Children
-   * @property {CreateRequestAssetMetadataSetContainerChildren_Child} child
-   */
-  /**
-   * @typedef {Object} CreateRequestAssetMetadataSetContainerChildren_Child
-   * @property {string} id
-   * @property {CreateRequestAssetMetadataSetContainerChildrenChild_Path} path
-   * @property {string} type - REQUIRED: Each node has a type
-   * @property {boolean} recycled
-   */
-  /**
-* @typedef {Object} CreateRequestAssetMetadataSetContainerChildrenChild_Path
+/**
+ * @typedef {Object} AssetContainerAssetMetadataSetContainer_Children
+ * @property {AssetContainerAssetMetadataSetContainerChildren_Child} child
+ */
+/**
+ * @typedef {Object} AssetContainerAssetMetadataSetContainerChildren_Child
+ * @property {string} id
+ * @property {AssetContainerAssetMetadataSetContainerChildrenChild_Path} path
+ * @property {string} type - REQUIRED: Each node has a type
+ * @property {boolean} recycled
+ */
+/**
+* @typedef {Object} AssetContainerAssetMetadataSetContainerChildrenChild_Path
 * @property {string} path
 * @property {string} siteId - One is REQUIRED: siteId | siteName
 * - The Site in which the asset is located
@@ -2989,8 +1542,8 @@ const CascadeAPIMethods = {
 * - The Site in which the asset is located
 
 */
-  /**
-* @typedef {Object} CreateRequestAsset_PublishSet
+/**
+* @typedef {Object} AssetContainerAsset_PublishSet
 * @property {string} id
 * @property {string} name - REQUIRED
 * - The name of this page region, for example, 'DEFAULT', or 'JAVASCRIPT-INCLUDE'. This MUST correspond to the name of a region defined in the template.
@@ -3004,25 +1557,25 @@ const CascadeAPIMethods = {
 * @property {string} siteName - One is REQUIRED: siteId | siteName
 * - The Site in which the asset is located
 
-* @property {CreateRequestAssetPublishSet_Files} files
-* @property {CreateRequestAssetPublishSet_Folders} folders
-* @property {CreateRequestAssetPublishSet_Pages} pages
+* @property {AssetContainerAssetPublishSet_Files} files
+* @property {AssetContainerAssetPublishSet_Folders} folders
+* @property {AssetContainerAssetPublishSet_Pages} pages
 * @property {boolean} usesScheduledPublishing
 * @property {string} scheduledPublishDestinationMode
 */
-  /**
-   * @typedef {Object} CreateRequestAssetPublishSet_Files
-   * @property {CreateRequestAssetPublishSetFiles_PublishableAssetIdentifier} publishableAssetIdentifier
-   */
-  /**
-   * @typedef {Object} CreateRequestAssetPublishSetFiles_PublishableAssetIdentifier
-   * @property {string} id
-   * @property {CreateRequestAssetPublishSetFilesPublishableAssetIdentifier_Path} path
-   * @property {string} type - REQUIRED: Each node has a type
-   * @property {boolean} recycled
-   */
-  /**
-* @typedef {Object} CreateRequestAssetPublishSetFilesPublishableAssetIdentifier_Path
+/**
+ * @typedef {Object} AssetContainerAssetPublishSet_Files
+ * @property {AssetContainerAssetPublishSetFiles_PublishableAssetIdentifier} publishableAssetIdentifier
+ */
+/**
+ * @typedef {Object} AssetContainerAssetPublishSetFiles_PublishableAssetIdentifier
+ * @property {string} id
+ * @property {AssetContainerAssetPublishSetFilesPublishableAssetIdentifier_Path} path
+ * @property {string} type - REQUIRED: Each node has a type
+ * @property {boolean} recycled
+ */
+/**
+* @typedef {Object} AssetContainerAssetPublishSetFilesPublishableAssetIdentifier_Path
 * @property {string} path
 * @property {string} siteId - One is REQUIRED: siteId | siteName
 * - The Site in which the asset is located
@@ -3031,19 +1584,19 @@ const CascadeAPIMethods = {
 * - The Site in which the asset is located
 
 */
-  /**
-   * @typedef {Object} CreateRequestAssetPublishSet_Folders
-   * @property {CreateRequestAssetPublishSetFolders_PublishableAssetIdentifier} publishableAssetIdentifier
-   */
-  /**
-   * @typedef {Object} CreateRequestAssetPublishSetFolders_PublishableAssetIdentifier
-   * @property {string} id
-   * @property {CreateRequestAssetPublishSetFoldersPublishableAssetIdentifier_Path} path
-   * @property {string} type - REQUIRED: Each node has a type
-   * @property {boolean} recycled
-   */
-  /**
-* @typedef {Object} CreateRequestAssetPublishSetFoldersPublishableAssetIdentifier_Path
+/**
+ * @typedef {Object} AssetContainerAssetPublishSet_Folders
+ * @property {AssetContainerAssetPublishSetFolders_PublishableAssetIdentifier} publishableAssetIdentifier
+ */
+/**
+ * @typedef {Object} AssetContainerAssetPublishSetFolders_PublishableAssetIdentifier
+ * @property {string} id
+ * @property {AssetContainerAssetPublishSetFoldersPublishableAssetIdentifier_Path} path
+ * @property {string} type - REQUIRED: Each node has a type
+ * @property {boolean} recycled
+ */
+/**
+* @typedef {Object} AssetContainerAssetPublishSetFoldersPublishableAssetIdentifier_Path
 * @property {string} path
 * @property {string} siteId - One is REQUIRED: siteId | siteName
 * - The Site in which the asset is located
@@ -3052,19 +1605,19 @@ const CascadeAPIMethods = {
 * - The Site in which the asset is located
 
 */
-  /**
-   * @typedef {Object} CreateRequestAssetPublishSet_Pages
-   * @property {CreateRequestAssetPublishSetPages_PublishableAssetIdentifier} publishableAssetIdentifier
-   */
-  /**
-   * @typedef {Object} CreateRequestAssetPublishSetPages_PublishableAssetIdentifier
-   * @property {string} id
-   * @property {CreateRequestAssetPublishSetPagesPublishableAssetIdentifier_Path} path
-   * @property {string} type - REQUIRED: Each node has a type
-   * @property {boolean} recycled
-   */
-  /**
-* @typedef {Object} CreateRequestAssetPublishSetPagesPublishableAssetIdentifier_Path
+/**
+ * @typedef {Object} AssetContainerAssetPublishSet_Pages
+ * @property {AssetContainerAssetPublishSetPages_PublishableAssetIdentifier} publishableAssetIdentifier
+ */
+/**
+ * @typedef {Object} AssetContainerAssetPublishSetPages_PublishableAssetIdentifier
+ * @property {string} id
+ * @property {AssetContainerAssetPublishSetPagesPublishableAssetIdentifier_Path} path
+ * @property {string} type - REQUIRED: Each node has a type
+ * @property {boolean} recycled
+ */
+/**
+* @typedef {Object} AssetContainerAssetPublishSetPagesPublishableAssetIdentifier_Path
 * @property {string} path
 * @property {string} siteId - One is REQUIRED: siteId | siteName
 * - The Site in which the asset is located
@@ -3073,8 +1626,8 @@ const CascadeAPIMethods = {
 * - The Site in which the asset is located
 
 */
-  /**
-* @typedef {Object} CreateRequestAsset_PublishSetContainer
+/**
+* @typedef {Object} AssetContainerAsset_PublishSetContainer
 * @property {string} id
 * @property {string} name - REQUIRED
 * - The name of this page region, for example, 'DEFAULT', or 'JAVASCRIPT-INCLUDE'. This MUST correspond to the name of a region defined in the template.
@@ -3088,21 +1641,21 @@ const CascadeAPIMethods = {
 * @property {string} siteName - One is REQUIRED: siteId | siteName
 * - The Site in which the asset is located
 
-* @property {CreateRequestAssetPublishSetContainer_Children} children
+* @property {AssetContainerAssetPublishSetContainer_Children} children
 */
-  /**
-   * @typedef {Object} CreateRequestAssetPublishSetContainer_Children
-   * @property {CreateRequestAssetPublishSetContainerChildren_Child} child
-   */
-  /**
-   * @typedef {Object} CreateRequestAssetPublishSetContainerChildren_Child
-   * @property {string} id
-   * @property {CreateRequestAssetPublishSetContainerChildrenChild_Path} path
-   * @property {string} type - REQUIRED: Each node has a type
-   * @property {boolean} recycled
-   */
-  /**
-* @typedef {Object} CreateRequestAssetPublishSetContainerChildrenChild_Path
+/**
+ * @typedef {Object} AssetContainerAssetPublishSetContainer_Children
+ * @property {AssetContainerAssetPublishSetContainerChildren_Child} child
+ */
+/**
+ * @typedef {Object} AssetContainerAssetPublishSetContainerChildren_Child
+ * @property {string} id
+ * @property {AssetContainerAssetPublishSetContainerChildrenChild_Path} path
+ * @property {string} type - REQUIRED: Each node has a type
+ * @property {boolean} recycled
+ */
+/**
+* @typedef {Object} AssetContainerAssetPublishSetContainerChildrenChild_Path
 * @property {string} path
 * @property {string} siteId - One is REQUIRED: siteId | siteName
 * - The Site in which the asset is located
@@ -3111,8 +1664,8 @@ const CascadeAPIMethods = {
 * - The Site in which the asset is located
 
 */
-  /**
-* @typedef {Object} CreateRequestAsset_Target
+/**
+* @typedef {Object} AssetContainerAsset_Target
 * @property {string} id
 * @property {string} name - REQUIRED
 * - The name of this page region, for example, 'DEFAULT', or 'JAVASCRIPT-INCLUDE'. This MUST correspond to the name of a region defined in the template.
@@ -3123,8 +1676,8 @@ const CascadeAPIMethods = {
 * @property {string} baseFolderId
 * @property {string} baseFolderPath
 */
-  /**
-* @typedef {Object} CreateRequestAsset_SiteDestinationContainer
+/**
+* @typedef {Object} AssetContainerAsset_SiteDestinationContainer
 * @property {string} id
 * @property {string} name - REQUIRED
 * - The name of this page region, for example, 'DEFAULT', or 'JAVASCRIPT-INCLUDE'. This MUST correspond to the name of a region defined in the template.
@@ -3138,21 +1691,21 @@ const CascadeAPIMethods = {
 * @property {string} siteName - One is REQUIRED: siteId | siteName
 * - The Site in which the asset is located
 
-* @property {CreateRequestAssetSiteDestinationContainer_Children} children
+* @property {AssetContainerAssetSiteDestinationContainer_Children} children
 */
-  /**
-   * @typedef {Object} CreateRequestAssetSiteDestinationContainer_Children
-   * @property {CreateRequestAssetSiteDestinationContainerChildren_Child} child
-   */
-  /**
-   * @typedef {Object} CreateRequestAssetSiteDestinationContainerChildren_Child
-   * @property {string} id
-   * @property {CreateRequestAssetSiteDestinationContainerChildrenChild_Path} path
-   * @property {string} type - REQUIRED: Each node has a type
-   * @property {boolean} recycled
-   */
-  /**
-* @typedef {Object} CreateRequestAssetSiteDestinationContainerChildrenChild_Path
+/**
+ * @typedef {Object} AssetContainerAssetSiteDestinationContainer_Children
+ * @property {AssetContainerAssetSiteDestinationContainerChildren_Child} child
+ */
+/**
+ * @typedef {Object} AssetContainerAssetSiteDestinationContainerChildren_Child
+ * @property {string} id
+ * @property {AssetContainerAssetSiteDestinationContainerChildrenChild_Path} path
+ * @property {string} type - REQUIRED: Each node has a type
+ * @property {boolean} recycled
+ */
+/**
+* @typedef {Object} AssetContainerAssetSiteDestinationContainerChildrenChild_Path
 * @property {string} path
 * @property {string} siteId - One is REQUIRED: siteId | siteName
 * - The Site in which the asset is located
@@ -3161,8 +1714,8 @@ const CascadeAPIMethods = {
 * - The Site in which the asset is located
 
 */
-  /**
-* @typedef {Object} CreateRequestAsset_Destination
+/**
+* @typedef {Object} AssetContainerAsset_Destination
 * @property {string} id
 * @property {string} name - REQUIRED
 * - The name of this page region, for example, 'DEFAULT', or 'JAVASCRIPT-INCLUDE'. This MUST correspond to the name of a region defined in the template.
@@ -3173,8 +1726,8 @@ const CascadeAPIMethods = {
 * @property {string} transportPath
 * @property {string} applicableGroups
 */
-  /**
-* @typedef {Object} CreateRequestAsset_FileSystemTransport
+/**
+* @typedef {Object} AssetContainerAsset_FileSystemTransport
 * @property {string} id
 * @property {string} name - REQUIRED
 * - The name of this page region, for example, 'DEFAULT', or 'JAVASCRIPT-INCLUDE'. This MUST correspond to the name of a region defined in the template.
@@ -3190,8 +1743,8 @@ const CascadeAPIMethods = {
 
 * @property {string} directory
 */
-  /**
-* @typedef {Object} CreateRequestAsset_FtpTransport
+/**
+* @typedef {Object} AssetContainerAsset_FtpTransport
 * @property {string} id
 * @property {string} name - REQUIRED
 * - The name of this page region, for example, 'DEFAULT', or 'JAVASCRIPT-INCLUDE'. This MUST correspond to the name of a region defined in the template.
@@ -3211,8 +1764,8 @@ const CascadeAPIMethods = {
 * @property {string} username
 * @property {string} authMode
 */
-  /**
-* @typedef {Object} CreateRequestAsset_DatabaseTransport
+/**
+* @typedef {Object} AssetContainerAsset_DatabaseTransport
 * @property {string} id
 * @property {string} name - REQUIRED
 * - The name of this page region, for example, 'DEFAULT', or 'JAVASCRIPT-INCLUDE'. This MUST correspond to the name of a region defined in the template.
@@ -3232,8 +1785,8 @@ const CascadeAPIMethods = {
 * @property {string} databaseName
 * @property {string} username
 */
-  /**
-* @typedef {Object} CreateRequestAsset_CloudTransport
+/**
+* @typedef {Object} AssetContainerAsset_CloudTransport
 * @property {string} id
 * @property {string} name - REQUIRED
 * - The name of this page region, for example, 'DEFAULT', or 'JAVASCRIPT-INCLUDE'. This MUST correspond to the name of a region defined in the template.
@@ -3252,8 +1805,8 @@ const CascadeAPIMethods = {
 * @property {string} bucketName
 * @property {string} basePath
 */
-  /**
-* @typedef {Object} CreateRequestAsset_TransportContainer
+/**
+* @typedef {Object} AssetContainerAsset_TransportContainer
 * @property {string} id
 * @property {string} name - REQUIRED
 * - The name of this page region, for example, 'DEFAULT', or 'JAVASCRIPT-INCLUDE'. This MUST correspond to the name of a region defined in the template.
@@ -3267,21 +1820,21 @@ const CascadeAPIMethods = {
 * @property {string} siteName - One is REQUIRED: siteId | siteName
 * - The Site in which the asset is located
 
-* @property {CreateRequestAssetTransportContainer_Children} children
+* @property {AssetContainerAssetTransportContainer_Children} children
 */
-  /**
-   * @typedef {Object} CreateRequestAssetTransportContainer_Children
-   * @property {CreateRequestAssetTransportContainerChildren_Child} child
-   */
-  /**
-   * @typedef {Object} CreateRequestAssetTransportContainerChildren_Child
-   * @property {string} id
-   * @property {CreateRequestAssetTransportContainerChildrenChild_Path} path
-   * @property {string} type - REQUIRED: Each node has a type
-   * @property {boolean} recycled
-   */
-  /**
-* @typedef {Object} CreateRequestAssetTransportContainerChildrenChild_Path
+/**
+ * @typedef {Object} AssetContainerAssetTransportContainer_Children
+ * @property {AssetContainerAssetTransportContainerChildren_Child} child
+ */
+/**
+ * @typedef {Object} AssetContainerAssetTransportContainerChildren_Child
+ * @property {string} id
+ * @property {AssetContainerAssetTransportContainerChildrenChild_Path} path
+ * @property {string} type - REQUIRED: Each node has a type
+ * @property {boolean} recycled
+ */
+/**
+* @typedef {Object} AssetContainerAssetTransportContainerChildrenChild_Path
 * @property {string} path
 * @property {string} siteId - One is REQUIRED: siteId | siteName
 * - The Site in which the asset is located
@@ -3290,8 +1843,8 @@ const CascadeAPIMethods = {
 * - The Site in which the asset is located
 
 */
-  /**
-* @typedef {Object} CreateRequestAsset_WorkflowDefinition
+/**
+* @typedef {Object} AssetContainerAsset_WorkflowDefinition
 * @property {string} id
 * @property {string} name - REQUIRED
 * - The name of this page region, for example, 'DEFAULT', or 'JAVASCRIPT-INCLUDE'. This MUST correspond to the name of a region defined in the template.
@@ -3311,8 +1864,8 @@ const CascadeAPIMethods = {
 * @property {boolean} delete
 * @property {boolean} edit
 */
-  /**
-* @typedef {Object} CreateRequestAsset_WorkflowDefinitionContainer
+/**
+* @typedef {Object} AssetContainerAsset_WorkflowDefinitionContainer
 * @property {string} id
 * @property {string} name - REQUIRED
 * - The name of this page region, for example, 'DEFAULT', or 'JAVASCRIPT-INCLUDE'. This MUST correspond to the name of a region defined in the template.
@@ -3326,21 +1879,21 @@ const CascadeAPIMethods = {
 * @property {string} siteName - One is REQUIRED: siteId | siteName
 * - The Site in which the asset is located
 
-* @property {CreateRequestAssetWorkflowDefinitionContainer_Children} children
+* @property {AssetContainerAssetWorkflowDefinitionContainer_Children} children
 */
-  /**
-   * @typedef {Object} CreateRequestAssetWorkflowDefinitionContainer_Children
-   * @property {CreateRequestAssetWorkflowDefinitionContainerChildren_Child} child
-   */
-  /**
-   * @typedef {Object} CreateRequestAssetWorkflowDefinitionContainerChildren_Child
-   * @property {string} id
-   * @property {CreateRequestAssetWorkflowDefinitionContainerChildrenChild_Path} path
-   * @property {string} type - REQUIRED: Each node has a type
-   * @property {boolean} recycled
-   */
-  /**
-* @typedef {Object} CreateRequestAssetWorkflowDefinitionContainerChildrenChild_Path
+/**
+ * @typedef {Object} AssetContainerAssetWorkflowDefinitionContainer_Children
+ * @property {AssetContainerAssetWorkflowDefinitionContainerChildren_Child} child
+ */
+/**
+ * @typedef {Object} AssetContainerAssetWorkflowDefinitionContainerChildren_Child
+ * @property {string} id
+ * @property {AssetContainerAssetWorkflowDefinitionContainerChildrenChild_Path} path
+ * @property {string} type - REQUIRED: Each node has a type
+ * @property {boolean} recycled
+ */
+/**
+* @typedef {Object} AssetContainerAssetWorkflowDefinitionContainerChildrenChild_Path
 * @property {string} path
 * @property {string} siteId - One is REQUIRED: siteId | siteName
 * - The Site in which the asset is located
@@ -3349,8 +1902,8 @@ const CascadeAPIMethods = {
 * - The Site in which the asset is located
 
 */
-  /**
-* @typedef {Object} CreateRequestAsset_WorkflowEmail
+/**
+* @typedef {Object} AssetContainerAsset_WorkflowEmail
 * @property {string} id
 * @property {string} name - REQUIRED
 * - The name of this page region, for example, 'DEFAULT', or 'JAVASCRIPT-INCLUDE'. This MUST correspond to the name of a region defined in the template.
@@ -3367,8 +1920,8 @@ const CascadeAPIMethods = {
 * @property {string} subject
 * @property {string} body
 */
-  /**
-* @typedef {Object} CreateRequestAsset_WorkflowEmailContainer
+/**
+* @typedef {Object} AssetContainerAsset_WorkflowEmailContainer
 * @property {string} id
 * @property {string} name - REQUIRED
 * - The name of this page region, for example, 'DEFAULT', or 'JAVASCRIPT-INCLUDE'. This MUST correspond to the name of a region defined in the template.
@@ -3382,21 +1935,21 @@ const CascadeAPIMethods = {
 * @property {string} siteName - One is REQUIRED: siteId | siteName
 * - The Site in which the asset is located
 
-* @property {CreateRequestAssetWorkflowEmailContainer_Children} children
+* @property {AssetContainerAssetWorkflowEmailContainer_Children} children
 */
-  /**
-   * @typedef {Object} CreateRequestAssetWorkflowEmailContainer_Children
-   * @property {CreateRequestAssetWorkflowEmailContainerChildren_Child} child
-   */
-  /**
-   * @typedef {Object} CreateRequestAssetWorkflowEmailContainerChildren_Child
-   * @property {string} id
-   * @property {CreateRequestAssetWorkflowEmailContainerChildrenChild_Path} path
-   * @property {string} type - REQUIRED: Each node has a type
-   * @property {boolean} recycled
-   */
-  /**
-* @typedef {Object} CreateRequestAssetWorkflowEmailContainerChildrenChild_Path
+/**
+ * @typedef {Object} AssetContainerAssetWorkflowEmailContainer_Children
+ * @property {AssetContainerAssetWorkflowEmailContainerChildren_Child} child
+ */
+/**
+ * @typedef {Object} AssetContainerAssetWorkflowEmailContainerChildren_Child
+ * @property {string} id
+ * @property {AssetContainerAssetWorkflowEmailContainerChildrenChild_Path} path
+ * @property {string} type - REQUIRED: Each node has a type
+ * @property {boolean} recycled
+ */
+/**
+* @typedef {Object} AssetContainerAssetWorkflowEmailContainerChildrenChild_Path
 * @property {string} path
 * @property {string} siteId - One is REQUIRED: siteId | siteName
 * - The Site in which the asset is located
@@ -3405,8 +1958,8 @@ const CascadeAPIMethods = {
 * - The Site in which the asset is located
 
 */
-  /**
-* @typedef {Object} CreateRequestAsset_TwitterFeedBlock
+/**
+* @typedef {Object} AssetContainerAsset_TwitterFeedBlock
 * @property {string} id
 * @property {string} name - REQUIRED
 * - The name of this page region, for example, 'DEFAULT', or 'JAVASCRIPT-INCLUDE'. This MUST correspond to the name of a region defined in the template.
@@ -3422,7 +1975,7 @@ const CascadeAPIMethods = {
 * @property {string} path
 * @property {string} lastModifiedDate
 * @property {string} lastModifiedBy
-* @property {CreateRequestAssetTwitterFeedBlock_Metadata} metadata
+* @property {AssetContainerAssetTwitterFeedBlock_Metadata} metadata
 * @property {string} metadataSetId
 * @property {string} metadataSetPath
 * @property {boolean} reviewOnSchedule
@@ -3436,16 +1989,16 @@ const CascadeAPIMethods = {
 * @property {boolean} useDefaultStyle
 * @property {boolean} excludeJQuery
 */
-  /**
-   * @typedef {Object} CreateRequestAssetTwitterFeedBlock_Metadata
-   * @property {string} author
-   * @property {string} displayName
-   * @property {string} endDate
-   * @property {string} keywords
-   * @property {string} metaDescription
-   */
-  /**
-* @typedef {Object} CreateRequestAsset_Site
+/**
+ * @typedef {Object} AssetContainerAssetTwitterFeedBlock_Metadata
+ * @property {string} author
+ * @property {string} displayName
+ * @property {string} endDate
+ * @property {string} keywords
+ * @property {string} metaDescription
+ */
+/**
+* @typedef {Object} AssetContainerAsset_Site
 * @property {string} id
 * @property {string} name - REQUIRED
 * - The name of this page region, for example, 'DEFAULT', or 'JAVASCRIPT-INCLUDE'. This MUST correspond to the name of a region defined in the template.
@@ -3456,8 +2009,8 @@ const CascadeAPIMethods = {
 * @property {string} defaultMetadataSetPath
 * @property {string} siteAssetFactoryContainerId
 */
-  /**
-* @typedef {Object} CreateRequestAsset_EditorConfiguration
+/**
+* @typedef {Object} AssetContainerAsset_EditorConfiguration
 * @property {string} id
 * @property {string} name - REQUIRED
 * - The name of this page region, for example, 'DEFAULT', or 'JAVASCRIPT-INCLUDE'. This MUST correspond to the name of a region defined in the template.
@@ -3472,8 +2025,143 @@ const CascadeAPIMethods = {
 * @property {string} cssFilePath
 * @property {boolean} cssFileRecycled
 */
+//#endregion
+
+const CascadeAPIMethods = {
+  // ─── Read Request ────────────────────────────────────────────────────────────
+  //#region
+  /**
+   * @typedef {Object} readRequest
+   * @property {ReadRequest_Identifier} identifier - REQUIRED: Parameters used when reading an asset
+   */
+  /**
+   * @typedef {Object} ReadRequest_Identifier
+   * @property {string} id - One is REQUIRED: id | type | path
+   * - When editing and selected asset is recycled, it is recommended to preserve this relationship by providing selected asset's id in case if the selected asset gets restored from the recycle bin.
+
+   * @property {ReadRequestIdentifier_Path} path - One is REQUIRED: id | type | path
+   * - The Path object container.
+   * - Path works only for non-recycled assets
+
+   * @property {"assetfactory" | "assetfactorycontainer" | "block" | "block_FEED" | "block_INDEX" | "block_TEXT" | "block_XHTML_DATADEFINITION" | "block_XML" | "block_TWITTER_FEED" | "connectorcontainer" | "twitterconnector" | "facebookconnector" | "wordpressconnector" | "googleanalyticsconnector" | "contenttype" | "contenttypecontainer" | "destination" | "editorconfiguration" | "file" | "folder" | "group" | "message" | "metadataset" | "metadatasetcontainer" | "page" | "pageconfigurationset" | "pageconfiguration" | "pageregion" | "pageconfigurationsetcontainer" | "publishset" | "publishsetcontainer" | "reference" | "role" | "datadefinition" | "datadefinitioncontainer" | "sharedfield" | "sharedfieldcontainer" | "format" | "format_XSLT" | "format_SCRIPT" | "site" | "sitedestinationcontainer" | "symlink" | "target" | "template" | "transport" | "transport_fs" | "transport_ftp" | "transport_db" | "transport_cloud" | "transportcontainer" | "user" | "workflow" | "workflowdefinition" | "workflowdefinitioncontainer" | "workflowemail" | "workflowemailcontainer"} type - One is REQUIRED: id | type | path
+   * - The type of asset to read.
+
+   * @property {boolean} [recycled] - NOT REQUIRED: For reading purposes only. Ignored when editing, copying etc.
+   */
+  /**
+   * @typedef {Object} ReadRequestIdentifier_Path
+   * @property {string} [path] - NOT REQUIRED: The path to the asset.
+   * - When reading a site, the 'path' element should be populated with the parent site's name
+
+   * @property {string} [siteId] - NOT REQUIRED: The siteId of the parent site.
+   * @property {string} [siteName] - NOT REQUIRED: The parent siteName
+  */
   //#endregion
 
+  // ─── Read Response ───────────────────────────────────────────────────────────
+  //#region
+  /**
+   * @typedef {Object} readResponse
+   * @property {string} success
+   * @property {string} message
+   * @property {AssetContainer} asset
+   */
+  //#endregion
+
+  /**
+   * read operation.
+   *
+   * @param {readRequest} opts - The starting object container.
+   * @param {Boolean} [muteHttpExceptions]
+   * @return {readResponse}
+   */
+  read(
+    opts,
+    // Apps Script Specific
+    muteHttpExceptions = false
+  ) {
+    const endPoint = `read`;
+    const requestParams = {
+      method: "POST",
+      muteHttpExceptions,
+      payload: JSON.stringify(opts),
+    };
+    const request = this.call(endPoint, requestParams);
+    if (!request.success) {
+      throw `Request Failed. Request Response: ${request.message}`;
+    }
+    return request;
+  },
+
+  /**
+   * removal operation.
+   *
+   * @param {removeRequest} opts - The starting object container.
+   * @param {Boolean} [muteHttpExceptions]
+   * @return {removeResponse}
+   */
+  remove( // Delete
+    opts,
+    // Apps Script Specific
+    muteHttpExceptions = false
+  ) {
+    const endPoint = `delete`;
+    const requestParams = {
+      method: "POST",
+      muteHttpExceptions,
+      payload: JSON.stringify(opts),
+    };
+    const request = this.call(endPoint, requestParams);
+    if (!request.success) {
+      throw `Request Failed. Request Response: ${request.message}`;
+    }
+    return request;
+  },
+
+  // ─── Edit Request ────────────────────────────────────────────────────
+  /**
+   * @typedef {AssetContainer} editRequest
+   */
+  // ─── Edit Response ───────────────────────────────────────────────────
+  //#region
+  /**
+   * @typedef {Object} editResponse
+   * @property {string} assetId
+   * @property {boolean} success
+   * @property {string} message
+   * @property {string[]} warnings
+   */
+  //#endregion
+
+  /**
+   * edit operation.
+   *
+   * @param {editRequest} opts - The starting object container.
+   * @param {Boolean} [muteHttpExceptions]
+   * @return {editResponse}
+   */
+  edit(
+    opts,
+    // Apps Script Specific
+    muteHttpExceptions = false
+  ) {
+    const endPoint = `edit`;
+    const requestParams = {
+      method: "POST",
+      muteHttpExceptions,
+      payload: JSON.stringify(opts),
+    };
+    const request = this.call(endPoint, requestParams);
+    if (!request.success) {
+      throw `Request Failed. Request Response: ${request.message}`;
+    }
+    return request;
+  },
+
+  // ─── Create Request ──────────────────────────────────────────────────────────
+  /**
+   * @typedef {AssetContainer} createRequest
+   */
   // ─── Create Response ─────────────────────────────────────────────────────────
   //#region
   /**
