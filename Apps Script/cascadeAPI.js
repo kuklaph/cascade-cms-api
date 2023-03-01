@@ -2072,7 +2072,7 @@ const CascadeAPIMethods = {
    * read operation.
    *
    * @param {readRequest} opts - The starting object container.
-   * @param {Boolean} [muteHttpExceptions]
+   * @param {Boolean} [muteHttpExceptions] - Optional: Whether or not to mute http exceptions
    * @return {readResponse}
    */
   read(
@@ -2097,7 +2097,7 @@ const CascadeAPIMethods = {
    * removal operation.
    *
    * @param {removeRequest} opts - The starting object container.
-   * @param {Boolean} [muteHttpExceptions]
+   * @param {Boolean} [muteHttpExceptions] - Optional: Whether or not to mute http exceptions
    * @return {removeResponse}
    */
   remove( // Delete
@@ -2137,7 +2137,7 @@ const CascadeAPIMethods = {
    * edit operation.
    *
    * @param {editRequest} opts - The starting object container.
-   * @param {Boolean} [muteHttpExceptions]
+   * @param {Boolean} [muteHttpExceptions] - Optional: Whether or not to mute http exceptions
    * @return {editResponse}
    */
   edit(
@@ -2176,7 +2176,7 @@ const CascadeAPIMethods = {
    * create operation.
    *
    * @param {createRequest} opts - The starting object container.
-   * @param {Boolean} [muteHttpExceptions]
+   * @param {Boolean} [muteHttpExceptions] - Optional: Whether or not to mute http exceptions
    * @return {createResponse}
    */
   create(
@@ -2201,7 +2201,7 @@ const CascadeAPIMethods = {
    * move operation.
    *
    * @param {moveRequest} opts - The starting object container.
-   * @param {Boolean} [muteHttpExceptions]
+   * @param {Boolean} [muteHttpExceptions] - Optional: Whether or not to mute http exceptions
    * @return {moveResponse}
    */
   move(
@@ -2275,7 +2275,7 @@ const CascadeAPIMethods = {
    * search operation.
    *
    * @param {searchRequest} opts - The starting object container.
-   * @param {Boolean} [muteHttpExceptions]
+   * @param {Boolean} [muteHttpExceptions] - Optional: Whether or not to mute http exceptions
    * @return {searchResponse}
    */
   search(
@@ -2300,7 +2300,7 @@ const CascadeAPIMethods = {
    * copy operation.
    *
    * @param {copyRequest} opts - The starting object container.
-   * @param {Boolean} [muteHttpExceptions]
+   * @param {Boolean} [muteHttpExceptions] - Optional: Whether or not to mute http exceptions
    * @return {copyResponse}
    */
   copy(
@@ -2325,7 +2325,7 @@ const CascadeAPIMethods = {
    * siteCopy operation.
    *
    * @param {siteCopyRequest} opts - The starting object container.
-   * @param {Boolean} [muteHttpExceptions]
+   * @param {Boolean} [muteHttpExceptions] - Optional: Whether or not to mute http exceptions
    * @return {siteCopyResponse}
    */
   siteCopy(
@@ -2350,7 +2350,7 @@ const CascadeAPIMethods = {
    * readAccessRights operation.
    *
    * @param {readAccessRightsRequest} opts - The starting object container.
-   * @param {Boolean} [muteHttpExceptions]
+   * @param {Boolean} [muteHttpExceptions] - Optional: Whether or not to mute http exceptions
    * @return {readAccessRightsResponse}
    */
   readAccessRights(
@@ -2375,7 +2375,7 @@ const CascadeAPIMethods = {
    * editAccessRights operation.
    *
    * @param {editAccessRightsRequest} opts - The starting object container.
-   * @param {Boolean} [muteHttpExceptions]
+   * @param {Boolean} [muteHttpExceptions] - Optional: Whether or not to mute http exceptions
    * @return {editAccessRightsResponse}
    */
   editAccessRights(
@@ -2400,7 +2400,7 @@ const CascadeAPIMethods = {
    * readWorkflowSettings operation.
    *
    * @param {readWorkflowSettingsRequest} opts - The starting object container.
-   * @param {Boolean} [muteHttpExceptions]
+   * @param {Boolean} [muteHttpExceptions] - Optional: Whether or not to mute http exceptions
    * @return {readWorkflowSettingsResponse}
    */
   readWorkflowSettings(
@@ -2425,7 +2425,7 @@ const CascadeAPIMethods = {
    * editWorkflowSettings operation.
    *
    * @param {editWorkflowSettingsRequest} opts - The starting object container.
-   * @param {Boolean} [muteHttpExceptions]
+   * @param {Boolean} [muteHttpExceptions] - Optional: Whether or not to mute http exceptions
    * @return {editWorkflowSettingsResponse}
    */
   editWorkflowSettings(
@@ -2450,7 +2450,7 @@ const CascadeAPIMethods = {
    * listSubscribers operation.
    *
    * @param {listSubscribersRequest} opts - The starting object container.
-   * @param {Boolean} [muteHttpExceptions]
+   * @param {Boolean} [muteHttpExceptions] - Optional: Whether or not to mute http exceptions
    * @return {listSubscribersResponse}
    */
   listSubscribers(
@@ -2475,7 +2475,7 @@ const CascadeAPIMethods = {
    * listMessages operation.
    *
    * @param {listMessagesRequest} opts - The starting object container.
-   * @param {Boolean} [muteHttpExceptions]
+   * @param {Boolean} [muteHttpExceptions] - Optional: Whether or not to mute http exceptions
    * @return {listMessagesResponse}
    */
   listMessages(
@@ -2500,7 +2500,7 @@ const CascadeAPIMethods = {
    * markMessage operation.
    *
    * @param {markMessageRequest} opts - The starting object container.
-   * @param {Boolean} [muteHttpExceptions]
+   * @param {Boolean} [muteHttpExceptions] - Optional: Whether or not to mute http exceptions
    * @return {markMessageResponse}
    */
   markMessage(
@@ -2525,7 +2525,7 @@ const CascadeAPIMethods = {
    * deleteMessage operation.
    *
    * @param {deleteMessageRequest} opts - The starting object container.
-   * @param {Boolean} [muteHttpExceptions]
+   * @param {Boolean} [muteHttpExceptions] - Optional: Whether or not to mute http exceptions
    * @return {deleteMessageResponse}
    */
   deleteMessage(
@@ -2550,7 +2550,7 @@ const CascadeAPIMethods = {
    * checkOut operation.
    *
    * @param {checkOutRequest} opts - The starting object container.
-   * @param {Boolean} [muteHttpExceptions]
+   * @param {Boolean} [muteHttpExceptions] - Optional: Whether or not to mute http exceptions
    * @return {checkOutResponse}
    */
   checkOut(
@@ -2575,7 +2575,7 @@ const CascadeAPIMethods = {
    * checkIn operation.
    *
    * @param {checkInRequest} opts - The starting object container.
-   * @param {Boolean} [muteHttpExceptions]
+   * @param {Boolean} [muteHttpExceptions] - Optional: Whether or not to mute http exceptions
    * @return {checkInResponse}
    */
   checkIn(
@@ -2600,7 +2600,7 @@ const CascadeAPIMethods = {
    * listSites operation.
    *
    * @param {listSitesRequest} opts - The starting object container.
-   * @param {Boolean} [muteHttpExceptions]
+   * @param {Boolean} [muteHttpExceptions] - Optional: Whether or not to mute http exceptions
    * @return {listSitesResponse}
    */
   listSites(
@@ -2625,7 +2625,7 @@ const CascadeAPIMethods = {
    * readAudits operation.
    *
    * @param {readAuditsRequest} opts - The starting object container.
-   * @param {Boolean} [muteHttpExceptions]
+   * @param {Boolean} [muteHttpExceptions] - Optional: Whether or not to mute http exceptions
    * @return {readAuditsResponse}
    */
   readAudits(
@@ -2650,7 +2650,7 @@ const CascadeAPIMethods = {
    * readWorkflowInformation operation.
    *
    * @param {readWorkflowInformationRequest} opts - The starting object container.
-   * @param {Boolean} [muteHttpExceptions]
+   * @param {Boolean} [muteHttpExceptions] - Optional: Whether or not to mute http exceptions
    * @return {readWorkflowInformationResponse}
    */
   readWorkflowInformation(
@@ -2675,7 +2675,7 @@ const CascadeAPIMethods = {
    * performWorkflowTransition operation.
    *
    * @param {performWorkflowTransitionRequest} opts - The starting object container.
-   * @param {Boolean} [muteHttpExceptions]
+   * @param {Boolean} [muteHttpExceptions] - Optional: Whether or not to mute http exceptions
    * @return {performWorkflowTransitionResponse}
    */
   performWorkflowTransition(
@@ -2700,7 +2700,7 @@ const CascadeAPIMethods = {
    * readPreferences operation.
    *
    * @param {readPreferencesRequest} opts - The starting object container.
-   * @param {Boolean} [muteHttpExceptions]
+   * @param {Boolean} [muteHttpExceptions] - Optional: Whether or not to mute http exceptions
    * @return {readPreferencesResponse}
    */
   readPreferences(
