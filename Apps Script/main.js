@@ -2027,47 +2027,211 @@
 */
 //#endregion
 
+// ─── Read Request ────────────────────────────────────────────────────────────
+//#region
+/**
+ * @typedef {Object} readRequest
+ * @property {ReadRequest_Identifier} identifier - REQUIRED: Parameters used when reading an asset
+ */
+/**
+* @typedef {Object} ReadRequest_Identifier
+* @property {string} id - One is REQUIRED: id | type | path
+* - When editing and selected asset is recycled, it is recommended to preserve this relationship by providing selected asset's id in case if the selected asset gets restored from the recycle bin.
+
+* @property {ReadRequestIdentifier_Path} path - One is REQUIRED: id | type | path
+* - The Path object container.
+* - Path works only for non-recycled assets
+
+* @property {"assetfactory" | "assetfactorycontainer" | "block" | "block_FEED" | "block_INDEX" | "block_TEXT" | "block_XHTML_DATADEFINITION" | "block_XML" | "block_TWITTER_FEED" | "connectorcontainer" | "twitterconnector" | "facebookconnector" | "wordpressconnector" | "googleanalyticsconnector" | "contenttype" | "contenttypecontainer" | "destination" | "editorconfiguration" | "file" | "folder" | "group" | "message" | "metadataset" | "metadatasetcontainer" | "page" | "pageconfigurationset" | "pageconfiguration" | "pageregion" | "pageconfigurationsetcontainer" | "publishset" | "publishsetcontainer" | "reference" | "role" | "datadefinition" | "datadefinitioncontainer" | "sharedfield" | "sharedfieldcontainer" | "format" | "format_XSLT" | "format_SCRIPT" | "site" | "sitedestinationcontainer" | "symlink" | "target" | "template" | "transport" | "transport_fs" | "transport_ftp" | "transport_db" | "transport_cloud" | "transportcontainer" | "user" | "workflow" | "workflowdefinition" | "workflowdefinitioncontainer" | "workflowemail" | "workflowemailcontainer"} type - One is REQUIRED: id | type | path
+* - The type of asset to read.
+
+* @property {boolean} [recycled] - NOT REQUIRED: For reading purposes only. Ignored when editing, copying etc.
+*/
+/**
+* @typedef {Object} ReadRequestIdentifier_Path
+* @property {string} [path] - NOT REQUIRED: The path to the asset.
+* - When reading a site, the 'path' element should be populated with the parent site's name
+
+* @property {string} [siteId] - NOT REQUIRED: The siteId of the parent site.
+* @property {string} [siteName] - NOT REQUIRED: The parent siteName
+*/
+//#endregion
+
+// ─── Read Response ───────────────────────────────────────────────────────────
+//#region
+/**
+ * @typedef {Object} readResponse
+ * @property {boolean} success
+ * @property {string} message
+ * @property {AssetContainer_Asset} asset
+ */
+//#endregion
+
+// ─── Remove Request ──────────────────────────────────────────────────────────
+
+// ─── Remove Response ─────────────────────────────────────────────────────────
+
+// ─── Edit Request ────────────────────────────────────────────────────────────
+//#region
+/**
+ * @typedef {AssetContainer} editRequest
+ */
+//#endregion
+
+// ─── Edit Response ───────────────────────────────────────────────────────────
+//#region
+/**
+ * @typedef {Object} editResponse
+ * @property {string} assetId
+ * @property {boolean} success
+ * @property {string} message
+ * @property {string[]} warnings
+ */
+//#endregion
+
+// ─── Create Request ──────────────────────────────────────────────────────────
+//#region
+/**
+ * @typedef {AssetContainer} createRequest
+ */
+//#endregion
+
+// ─── Create Response ─────────────────────────────────────────────────────────
+//#region
+/**
+ * @typedef {Object} createResponse
+ * @property {boolean} success
+ * @property {string} message
+ * @property {string} createdAssetId
+ */
+//#endregion
+
+// ─── Move Request ────────────────────────────────────────────────────────────
+
+// ─── Move Response ───────────────────────────────────────────────────────────
+
+// ─── Search Request ──────────────────────────────────────────────────────────
+//#region
+/**
+ * @typedef {Object} searchRequest
+ * @property {SearchRequest_SearchInformation} searchInformation
+ */
+/**
+* @typedef {Object} SearchRequest_SearchInformation
+* @property {string} searchTerms - REQUIRED
+* @property {string} [siteId] - NOT REQUIRED, if left blank, all sites will be searched
+* - Id or name of the site to search
+
+* @property {string} [siteName] - NOT REQUIRED: The parent site name
+* @property {"name" | "path" | "createdBy" | "modifiedBy" | "displayName" | "title" | "summary" | "teaser" | "keywords" | "description" | "author" | "blob" | "velocityFormatContent" | "xml" | "link"} [searchFields] - NOT REQUIRED
+* - Asset fields to search (e.g. name, title, content), see searchField simpleType for valid values
+
+* @property {"assetfactory" | "assetfactorycontainer" | "block" | "block_FEED" | "block_INDEX" | "block_TEXT" | "block_XHTML_DATADEFINITION" | "block_XML" | "block_TWITTER_FEED" | "connectorcontainer" | "twitterconnector" | "facebookconnector" | "wordpressconnector" | "googleanalyticsconnector" | "contenttype" | "contenttypecontainer" | "destination" | "editorconfiguration" | "file" | "folder" | "group" | "message" | "metadataset" | "metadatasetcontainer" | "page" | "pageconfigurationset" | "pageconfiguration" | "pageregion" | "pageconfigurationsetcontainer" | "publishset" | "publishsetcontainer" | "reference" | "role" | "datadefinition" | "datadefinitioncontainer" | "sharedfield" | "sharedfieldcontainer" | "format" | "format_XSLT" | "format_SCRIPT" | "site" | "sitedestinationcontainer" | "symlink" | "target" | "template" | "transport" | "transport_fs" | "transport_ftp" | "transport_db" | "transport_cloud" | "transportcontainer" | "user" | "workflow" | "workflowdefinition" | "workflowdefinitioncontainer" | "workflowemail" | "workflowemailcontainer"} [searchTypes] - NOT REQUIRED, if left blank, all asset types will be searched
+* - Asset types to search (e.g. page, folder, site)
+
+*/
+//#endregion
+
+// ─── Search Response ─────────────────────────────────────────────────────────
+//#region
+/**
+ * @typedef {Object} searchResponse
+ * @property {boolean} success
+ * @property {string} message
+ * @property {SearchResponse_Matches} matches
+ */
+/**
+ * @typedef {Object} SearchResponse_Matches
+ * @property {SearchResponseMatches_Match} match
+ */
+/**
+ * @typedef {Object} SearchResponseMatches_Match
+ * @property {string} id
+ * @property {SearchResponseMatchesMatch_Path} path
+ * @property {string} type
+ * @property {boolean} recycled
+ */
+/**
+ * @typedef {Object} SearchResponseMatchesMatch_Path
+ * @property {string} path
+ * @property {string} siteId
+ * @property {string} siteName
+ */
+//#endregion
+
+// ─── Copy Request ────────────────────────────────────────────────────────────
+
+// ─── Copy Response ───────────────────────────────────────────────────────────
+
+// ─── Sitecopy Request ────────────────────────────────────────────────────────
+
+// ─── Sitecopy Response ───────────────────────────────────────────────────────
+
+// ─── Readaccessrights Request ────────────────────────────────────────────────
+
+// ─── Readaccessrights Response ───────────────────────────────────────────────
+
+// ─── Editaccessrights Request ────────────────────────────────────────────────
+
+// ─── Editaccessrights Response ───────────────────────────────────────────────
+
+// ─── Readworkflowsettings Request ────────────────────────────────────────────
+
+// ─── Readworkflowsettings Response ───────────────────────────────────────────
+
+// ─── Editworkflowsettings Request ────────────────────────────────────────────
+
+// ─── Editworkflowsettings Response ───────────────────────────────────────────
+
+// ─── Listsubscribers Request ─────────────────────────────────────────────────
+
+// ─── Listsubscribers Response ────────────────────────────────────────────────
+
+// ─── Listmessages Request ────────────────────────────────────────────────────
+
+// ─── Listmessages Response ───────────────────────────────────────────────────
+
+// ─── Markmessages Request ────────────────────────────────────────────────────
+
+// ─── Markmessages Response ───────────────────────────────────────────────────
+
+// ─── Deletemessage Request ───────────────────────────────────────────────────
+
+// ─── Deletemessage Response ──────────────────────────────────────────────────
+
+// ─── Checkout Request ────────────────────────────────────────────────────────
+
+// ─── Checkout Response ───────────────────────────────────────────────────────
+
+// ─── Checkin Request ─────────────────────────────────────────────────────────
+
+// ─── Checkin Response ────────────────────────────────────────────────────────
+
+// ─── Listsites Request ───────────────────────────────────────────────────────
+
+// ─── Listsites Response ──────────────────────────────────────────────────────
+
+// ─── Readaudits Request ──────────────────────────────────────────────────────
+
+// ─── Readaudits Response ─────────────────────────────────────────────────────
+
+// ─── Readworkflowinformation Request ─────────────────────────────────────────
+
+// ─── Readworkflowinformation Response ────────────────────────────────────────
+
+// ─── Performworkflowtransition Request ───────────────────────────────────────
+
+// ─── Performworkflowtransition Response ──────────────────────────────────────
+
+// ─── Readpreferences Request ─────────────────────────────────────────────────
+
+// ─── Readpreferences Response ────────────────────────────────────────────────
+
+// export default {};
+
+// "feedBlock" | "indexBlock" | "textBlock" | "xhtmlDataDefinitionBlock" | "xmlBlock" | "file" | "folder" | "page" | "reference" | "xsltFormat" | "scriptFormat" | "symlink" | "template" | "user" | "group" | "role" | "assetFactory" | "assetFactoryContainer" | "contentType" | "contentTypeContainer" | "connectorContainer" | "facebookConnector" | "wordPressConnector" | "googleAnalyticsConnector" | "pageConfigurationSet" | "pageConfigurationSetContainer" | "dataDefinition" | "dataDefinitionContainer" | "sharedField" | "sharedFieldContainer" | "metadataSet" | "metadataSetContainer" | "publishSet" | "publishSetContainer" | "target" | "siteDestinationContainer" | "destination" | "fileSystemTransport" | "ftpTransport" | "databaseTransport" | "cloudTransport" | "transportContainer" | "workflowDefinition" | "workflowDefinitionContainer" | "workflowEmail" | "workflowEmailContainer" | "twitterFeedBlock" | "site" | "editorConfiguration"
+
 const CascadeAPIMethods = {
-  // ─── Read Request ────────────────────────────────────────────────────────────
-  //#region
-  /**
-   * @typedef {Object} readRequest
-   * @property {ReadRequest_Identifier} identifier - REQUIRED: Parameters used when reading an asset
-   */
-  /**
-   * @typedef {Object} ReadRequest_Identifier
-   * @property {string} id - One is REQUIRED: id | type | path
-   * - When editing and selected asset is recycled, it is recommended to preserve this relationship by providing selected asset's id in case if the selected asset gets restored from the recycle bin.
-
-   * @property {ReadRequestIdentifier_Path} path - One is REQUIRED: id | type | path
-   * - The Path object container.
-   * - Path works only for non-recycled assets
-
-   * @property {"assetfactory" | "assetfactorycontainer" | "block" | "block_FEED" | "block_INDEX" | "block_TEXT" | "block_XHTML_DATADEFINITION" | "block_XML" | "block_TWITTER_FEED" | "connectorcontainer" | "twitterconnector" | "facebookconnector" | "wordpressconnector" | "googleanalyticsconnector" | "contenttype" | "contenttypecontainer" | "destination" | "editorconfiguration" | "file" | "folder" | "group" | "message" | "metadataset" | "metadatasetcontainer" | "page" | "pageconfigurationset" | "pageconfiguration" | "pageregion" | "pageconfigurationsetcontainer" | "publishset" | "publishsetcontainer" | "reference" | "role" | "datadefinition" | "datadefinitioncontainer" | "sharedfield" | "sharedfieldcontainer" | "format" | "format_XSLT" | "format_SCRIPT" | "site" | "sitedestinationcontainer" | "symlink" | "target" | "template" | "transport" | "transport_fs" | "transport_ftp" | "transport_db" | "transport_cloud" | "transportcontainer" | "user" | "workflow" | "workflowdefinition" | "workflowdefinitioncontainer" | "workflowemail" | "workflowemailcontainer"} type - One is REQUIRED: id | type | path
-   * - The type of asset to read.
-
-   * @property {boolean} [recycled] - NOT REQUIRED: For reading purposes only. Ignored when editing, copying etc.
-   */
-  /**
-   * @typedef {Object} ReadRequestIdentifier_Path
-   * @property {string} [path] - NOT REQUIRED: The path to the asset.
-   * - When reading a site, the 'path' element should be populated with the parent site's name
-
-   * @property {string} [siteId] - NOT REQUIRED: The siteId of the parent site.
-   * @property {string} [siteName] - NOT REQUIRED: The parent siteName
-  */
-  //#endregion
-
-  // ─── Read Response ───────────────────────────────────────────────────────────
-  //#region
-  /**
-   * @typedef {Object} readResponse
-   * @property {string} success
-   * @property {string} message
-   * @property {AssetContainer} asset
-   */
-  //#endregion
-
   /**
    * read operation.
    *
@@ -2092,47 +2256,6 @@ const CascadeAPIMethods = {
     }
     return request;
   },
-
-  /**
-   * removal operation.
-   *
-   * @param {removeRequest} opts - The starting object container.
-   * @param {Boolean} [muteHttpExceptions] - Optional: Whether or not to mute http exceptions
-   * @return {removeResponse}
-   */
-  remove( // Delete
-    opts,
-    // Apps Script Specific
-    muteHttpExceptions = false
-  ) {
-    const endPoint = `delete`;
-    const requestParams = {
-      method: "POST",
-      muteHttpExceptions,
-      payload: JSON.stringify(opts),
-    };
-    const request = this.call(endPoint, requestParams);
-    if (!request.success) {
-      throw `Request Failed. Request Response: ${request.message}`;
-    }
-    return request;
-  },
-
-  // ─── Edit Request ────────────────────────────────────────────────────
-  /**
-   * @typedef {AssetContainer} editRequest
-   */
-  // ─── Edit Response ───────────────────────────────────────────────────
-  //#region
-  /**
-   * @typedef {Object} editResponse
-   * @property {string} assetId
-   * @property {boolean} success
-   * @property {string} message
-   * @property {string[]} warnings
-   */
-  //#endregion
-
   /**
    * edit operation.
    *
@@ -2157,21 +2280,6 @@ const CascadeAPIMethods = {
     }
     return request;
   },
-
-  // ─── Create Request ──────────────────────────────────────────────────────────
-  /**
-   * @typedef {AssetContainer} createRequest
-   */
-  // ─── Create Response ─────────────────────────────────────────────────────────
-  //#region
-  /**
-   * @typedef {Object} createResponse
-   * @property {string} success
-   * @property {string} message
-   * @property {string} createdAssetId
-   */
-  //#endregion
-
   /**
    * create operation.
    *
@@ -2196,7 +2304,6 @@ const CascadeAPIMethods = {
     }
     return request;
   },
-
   /**
    * move operation.
    *
@@ -2221,56 +2328,6 @@ const CascadeAPIMethods = {
     }
     return request;
   },
-
-  // ─── Search Request ──────────────────────────────────────────────────────────
-  //#region
-  /**
-   * @typedef {Object} searchRequest
-   * @property {SearchRequest_SearchInformation} searchInformation
-   */
-  /**
-* @typedef {Object} SearchRequest_SearchInformation
-* @property {string} searchTerms - REQUIRED
-* @property {string} [siteId] - NOT REQUIRED, if left blank, all sites will be searched
-* - Id or name of the site to search
-
-* @property {string} [siteName] - NOT REQUIRED: The parent site name
-* @property {"name" | "path" | "createdBy" | "modifiedBy" | "displayName" | "title" | "summary" | "teaser" | "keywords" | "description" | "author" | "blob" | "velocityFormatContent" | "xml" | "link"} [searchFields] - NOT REQUIRED
-* - Asset fields to search (e.g. name, title, content), see searchField simpleType for valid values
-
-* @property {"assetfactory" | "assetfactorycontainer" | "block" | "block_FEED" | "block_INDEX" | "block_TEXT" | "block_XHTML_DATADEFINITION" | "block_XML" | "block_TWITTER_FEED" | "connectorcontainer" | "twitterconnector" | "facebookconnector" | "wordpressconnector" | "googleanalyticsconnector" | "contenttype" | "contenttypecontainer" | "destination" | "editorconfiguration" | "file" | "folder" | "group" | "message" | "metadataset" | "metadatasetcontainer" | "page" | "pageconfigurationset" | "pageconfiguration" | "pageregion" | "pageconfigurationsetcontainer" | "publishset" | "publishsetcontainer" | "reference" | "role" | "datadefinition" | "datadefinitioncontainer" | "sharedfield" | "sharedfieldcontainer" | "format" | "format_XSLT" | "format_SCRIPT" | "site" | "sitedestinationcontainer" | "symlink" | "target" | "template" | "transport" | "transport_fs" | "transport_ftp" | "transport_db" | "transport_cloud" | "transportcontainer" | "user" | "workflow" | "workflowdefinition" | "workflowdefinitioncontainer" | "workflowemail" | "workflowemailcontainer"} [searchTypes] - NOT REQUIRED, if left blank, all asset types will be searched
-* - Asset types to search (e.g. page, folder, site)
-
-*/
-  //#endregion
-
-  // ─── Search Response ─────────────────────────────────────────────────────────
-  //#region
-  /**
-   * @typedef {Object} searchResponse
-   * @property {string} success
-   * @property {string} message
-   * @property {SearchResponse_Matches} matches
-   */
-  /**
-   * @typedef {Object} SearchResponse_Matches
-   * @property {SearchResponseMatches_Match} match
-   */
-  /**
-   * @typedef {Object} SearchResponseMatches_Match
-   * @property {string} id
-   * @property {SearchResponseMatchesMatch_Path} path
-   * @property {string} type
-   * @property {boolean} recycled
-   */
-  /**
-   * @typedef {Object} SearchResponseMatchesMatch_Path
-   * @property {string} path
-   * @property {string} siteId
-   * @property {string} siteName
-   */
-  //#endregion
-
   /**
    * search operation.
    *
@@ -2295,7 +2352,6 @@ const CascadeAPIMethods = {
     }
     return request.matches;
   },
-
   /**
    * copy operation.
    *
@@ -2320,7 +2376,6 @@ const CascadeAPIMethods = {
     }
     return request;
   },
-
   /**
    * siteCopy operation.
    *
@@ -2345,7 +2400,6 @@ const CascadeAPIMethods = {
     }
     return request;
   },
-
   /**
    * readAccessRights operation.
    *
@@ -2370,7 +2424,6 @@ const CascadeAPIMethods = {
     }
     return request;
   },
-
   /**
    * editAccessRights operation.
    *
@@ -2395,7 +2448,6 @@ const CascadeAPIMethods = {
     }
     return request;
   },
-
   /**
    * readWorkflowSettings operation.
    *
@@ -2420,7 +2472,6 @@ const CascadeAPIMethods = {
     }
     return request;
   },
-
   /**
    * editWorkflowSettings operation.
    *
@@ -2445,7 +2496,6 @@ const CascadeAPIMethods = {
     }
     return request;
   },
-
   /**
    * listSubscribers operation.
    *
@@ -2470,7 +2520,6 @@ const CascadeAPIMethods = {
     }
     return request;
   },
-
   /**
    * listMessages operation.
    *
@@ -2495,7 +2544,6 @@ const CascadeAPIMethods = {
     }
     return request;
   },
-
   /**
    * markMessage operation.
    *
@@ -2520,7 +2568,6 @@ const CascadeAPIMethods = {
     }
     return request;
   },
-
   /**
    * deleteMessage operation.
    *
@@ -2545,7 +2592,6 @@ const CascadeAPIMethods = {
     }
     return request;
   },
-
   /**
    * checkOut operation.
    *
@@ -2570,7 +2616,6 @@ const CascadeAPIMethods = {
     }
     return request;
   },
-
   /**
    * checkIn operation.
    *
@@ -2595,7 +2640,6 @@ const CascadeAPIMethods = {
     }
     return request;
   },
-
   /**
    * listSites operation.
    *
@@ -2620,7 +2664,6 @@ const CascadeAPIMethods = {
     }
     return request;
   },
-
   /**
    * readAudits operation.
    *
@@ -2645,7 +2688,6 @@ const CascadeAPIMethods = {
     }
     return request;
   },
-
   /**
    * readWorkflowInformation operation.
    *
@@ -2670,7 +2712,6 @@ const CascadeAPIMethods = {
     }
     return request;
   },
-
   /**
    * performWorkflowTransition operation.
    *
@@ -2695,7 +2736,6 @@ const CascadeAPIMethods = {
     }
     return request;
   },
-
   /**
    * readPreferences operation.
    *
@@ -2720,7 +2760,6 @@ const CascadeAPIMethods = {
     }
     return request;
   },
-
   call(endPoint, requestParams) {
     if (!this.apiKey || !this.url) {
       throw `Missing API key or cascade URL`;

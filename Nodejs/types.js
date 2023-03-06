@@ -2063,7 +2063,7 @@
  * @typedef {Object} readResponse
  * @property {boolean} success
  * @property {string} message
- * @property {AssetContainer} asset
+ * @property {AssetContainer_Asset} asset
  */
 //#endregion
 
