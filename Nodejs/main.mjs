@@ -1,4 +1,4 @@
-import * as Requests from "./types";
+import * as Requests from "./types.mjs";
 import axios from "axios";
 
 const CascadeAPIMethods = {
@@ -6,7 +6,7 @@ const CascadeAPIMethods = {
    * read operation.
    *
    * @param {Requests.readRequest} opts - The starting object container.
-   * @return {Requests.readResponse}
+   * @return {Promise<Requests.readResponse>}
    */
   async read(opts) {
     const endPoint = `read`;
@@ -25,7 +25,7 @@ const CascadeAPIMethods = {
    * removal operation.
    *
    * @param {Requests.removeRequest} opts - The starting object container.
-   * @return {Requests.removeResponse}
+   * @return {Promise<Requests.removeResponse>}
    */
   async remove(opts) {
     // Delete
@@ -45,7 +45,7 @@ const CascadeAPIMethods = {
    * edit operation.
    *
    * @param {Requests.editRequest} opts - The starting object container.
-   * @return {Requests.editResponse}
+   * @return {Promise<Requests.editResponse>}
    */
   async edit(opts) {
     const endPoint = `edit`;
@@ -64,7 +64,7 @@ const CascadeAPIMethods = {
    * create operation.
    *
    * @param {Requests.createRequest} opts - The starting object container.
-   * @return {Requests.createResponse}
+   * @return {Promise<Requests.createResponse>}
    */
   async create(opts) {
     const endPoint = `create`;
@@ -83,7 +83,7 @@ const CascadeAPIMethods = {
    * move operation.
    *
    * @param {Requests.moveRequest} opts - The starting object container.
-   * @return {Requests.moveResponse}
+   * @return {Promise<Requests.moveResponse>}
    */
   async move(opts) {
     const endPoint = `move`;
@@ -102,7 +102,7 @@ const CascadeAPIMethods = {
    * search operation.
    *
    * @param {Requests.searchRequest} opts - The starting object container.
-   * @return {Requests.searchResponse}
+   * @return {Promise<Requests.searchResponse>}
    */
   async search(opts) {
     const endPoint = "search";
@@ -121,7 +121,7 @@ const CascadeAPIMethods = {
    * copy operation.
    *
    * @param {Requests.copyRequest} opts - The starting object container.
-   * @return {Requests.copyResponse}
+   * @return {Promise<Requests.copyResponse>}
    */
   async copy(opts) {
     const endPoint = "copy";
@@ -140,7 +140,7 @@ const CascadeAPIMethods = {
    * siteCopy operation.
    *
    * @param {Requests.siteCopyRequest} opts - The starting object container.
-   * @return {Requests.siteCopyResponse}
+   * @return {Promise<Requests.siteCopyResponse>}
    */
   async siteCopy(opts) {
     const endPoint = "siteCopy";
@@ -159,7 +159,7 @@ const CascadeAPIMethods = {
    * readAccessRights operation.
    *
    * @param {Requests.readAccessRightsRequest} opts - The starting object container.
-   * @return {Requests.readAccessRightsResponse}
+   * @return {Promise<Requests.readAccessRightsResponse>}
    */
   async readAccessRights(opts) {
     const endPoint = "readAccessRights";
@@ -178,7 +178,7 @@ const CascadeAPIMethods = {
    * editAccessRights operation.
    *
    * @param {Requests.editAccessRightsRequest} opts - The starting object container.
-   * @return {Requests.editAccessRightsResponse}
+   * @return {Promise<Requests.editAccessRightsResponse>}
    */
   async editAccessRights(opts) {
     const endPoint = "editAccessRights";
@@ -197,7 +197,7 @@ const CascadeAPIMethods = {
    * readWorkflowSettings operation.
    *
    * @param {Requests.readWorkflowSettingsRequest} opts - The starting object container.
-   * @return {Requests.readWorkflowSettingsResponse}
+   * @return {Promise<Requests.readWorkflowSettingsResponse>}
    */
   async readWorkflowSettings(opts) {
     const endPoint = "readWorkflowSettings";
@@ -216,7 +216,7 @@ const CascadeAPIMethods = {
    * editWorkflowSettings operation.
    *
    * @param {Requests.editWorkflowSettingsRequest} opts - The starting object container.
-   * @return {Requests.editWorkflowSettingsResponse}
+   * @return {Promise<Requests.editWorkflowSettingsResponse>}
    */
   async editWorkflowSettings(opts) {
     const endPoint = "editWorkflowSettings";
@@ -235,7 +235,7 @@ const CascadeAPIMethods = {
    * listSubscribers operation.
    *
    * @param {Requests.listSubscribersRequest} opts - The starting object container.
-   * @return {Requests.listSubscribersResponse}
+   * @return {Promise<Requests.listSubscribersResponse>}
    */
   async listSubscribers(opts) {
     const endPoint = "listSubscribers";
@@ -254,7 +254,7 @@ const CascadeAPIMethods = {
    * listMessages operation.
    *
    * @param {Requests.listMessagesRequest} opts - The starting object container.
-   * @return {Requests.listMessagesResponse}
+   * @return {Promise<Requests.listMessagesResponse>}
    */
   async listMessages(opts) {
     const endPoint = "listMessages";
@@ -273,7 +273,7 @@ const CascadeAPIMethods = {
    * markMessage operation.
    *
    * @param {Requests.markMessageRequest} opts - The starting object container.
-   * @return {Requests.markMessageResponse}
+   * @return {Promise<Requests.markMessageResponse>}
    */
   async markMessage(opts) {
     const endPoint = "markMessage";
@@ -292,7 +292,7 @@ const CascadeAPIMethods = {
    * deleteMessage operation.
    *
    * @param {Requests.deleteMessageRequest} opts - The starting object container.
-   * @return {Requests.deleteMessageResponse}
+   * @return {Promise<Requests.deleteMessageResponse>}
    */
   async deleteMessage(opts) {
     const endPoint = "deleteMessage";
@@ -311,7 +311,7 @@ const CascadeAPIMethods = {
    * checkOut operation.
    *
    * @param {Requests.checkOutRequest} opts - The starting object container.
-   * @return {Requests.checkOutResponse}
+   * @return {Promise<Requests.checkOutResponse>}
    */
   async checkOut(opts) {
     const endPoint = "checkOut";
@@ -330,7 +330,7 @@ const CascadeAPIMethods = {
    * checkIn operation.
    *
    * @param {Requests.checkInRequest} opts - The starting object container.
-   * @return {Requests.checkInResponse}
+   * @return {Promise<Requests.checkInResponse>}
    */
   async checkIn(opts) {
     const endPoint = "checkIn";
@@ -349,7 +349,7 @@ const CascadeAPIMethods = {
    * listSites operation.
    *
    * @param {Requests.listSitesRequest} opts - The starting object container.
-   * @return {Requests.listSitesResponse}
+   * @return {Promise<Requests.listSitesResponse>}
    */
   async listSites(opts) {
     const endPoint = "listSites";
@@ -368,7 +368,7 @@ const CascadeAPIMethods = {
    * readAudits operation.
    *
    * @param {Requests.readAuditsRequest} opts - The starting object container.
-   * @return {Requests.readAuditsResponse}
+   * @return {Promise<Requests.readAuditsResponse>}
    */
   async readAudits(opts) {
     const endPoint = "readAudits";
@@ -387,7 +387,7 @@ const CascadeAPIMethods = {
    * readWorkflowInformation operation.
    *
    * @param {Requests.readWorkflowInformationRequest} opts - The starting object container.
-   * @return {Requests.readWorkflowInformationResponse}
+   * @return {Promise<Requests.readWorkflowInformationResponse>}
    */
   async readWorkflowInformation(opts) {
     const endPoint = "readWorkflowInformation";
@@ -406,7 +406,7 @@ const CascadeAPIMethods = {
    * performWorkflowTransition operation.
    *
    * @param {Requests.performWorkflowTransitionRequest} opts - The starting object container.
-   * @return {Requests.performWorkflowTransitionResponse}
+   * @return {Promise<Requests.performWorkflowTransitionResponse>}
    */
   async performWorkflowTransition(opts) {
     const endPoint = "performWorkflowTransition";
@@ -425,7 +425,7 @@ const CascadeAPIMethods = {
    * readPreferences operation.
    *
    * @param {Requests.readPreferencesRequest} opts - The starting object container.
-   * @return {Requests.readPreferencesResponse}
+   * @return {Promise<Requests.readPreferencesResponse>}
    */
   async readPreferences(opts) {
     const endPoint = "readPreferences";
@@ -458,6 +458,8 @@ const CascadeAPIMethods = {
   },
 };
 
-export default CascadeAPI = ({ apiKey, url }) => {
+const CascadeAPI = ({ apiKey, url }) => {
   return { ...CascadeAPIMethods, apiKey, url };
 };
+
+export default CascadeAPI;
