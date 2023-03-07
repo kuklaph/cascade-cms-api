@@ -2123,10 +2123,10 @@
 * - Id or name of the site to search
 
 * @property {string} [siteName] - NOT REQUIRED: The parent site name
-* @property {"name" | "path" | "createdBy" | "modifiedBy" | "displayName" | "title" | "summary" | "teaser" | "keywords" | "description" | "author" | "blob" | "velocityFormatContent" | "xml" | "link"} [searchFields] - NOT REQUIRED
+* @property {"name"[] | "path"[] | "createdBy"[] | "modifiedBy"[] | "displayName"[] | "title"[] | "summary"[] | "teaser"[] | "keywords"[] | "description"[] | "author"[] | "blob"[] | "velocityFormatContent"[] | "xml"[] | "link"[]} [searchFields] - NOT REQUIRED
 * - Asset fields to search (e.g. name, title, content), see searchField simpleType for valid values
 
-* @property {"assetfactory" | "assetfactorycontainer" | "block" | "block_FEED" | "block_INDEX" | "block_TEXT" | "block_XHTML_DATADEFINITION" | "block_XML" | "block_TWITTER_FEED" | "connectorcontainer" | "twitterconnector" | "facebookconnector" | "wordpressconnector" | "googleanalyticsconnector" | "contenttype" | "contenttypecontainer" | "destination" | "editorconfiguration" | "file" | "folder" | "group" | "message" | "metadataset" | "metadatasetcontainer" | "page" | "pageconfigurationset" | "pageconfiguration" | "pageregion" | "pageconfigurationsetcontainer" | "publishset" | "publishsetcontainer" | "reference" | "role" | "datadefinition" | "datadefinitioncontainer" | "sharedfield" | "sharedfieldcontainer" | "format" | "format_XSLT" | "format_SCRIPT" | "site" | "sitedestinationcontainer" | "symlink" | "target" | "template" | "transport" | "transport_fs" | "transport_ftp" | "transport_db" | "transport_cloud" | "transportcontainer" | "user" | "workflow" | "workflowdefinition" | "workflowdefinitioncontainer" | "workflowemail" | "workflowemailcontainer"} [searchTypes] - NOT REQUIRED, if left blank, all asset types will be searched
+* @property {"assetfactory"[] | "assetfactorycontainer"[] | "block"[] | "block_FEED"[] | "block_INDEX"[] | "block_TEXT"[] | "block_XHTML_DATADEFINITION"[] | "block_XML"[] | "block_TWITTER_FEED"[] | "connectorcontainer"[] | "twitterconnector"[] | "facebookconnector"[] | "wordpressconnector"[] | "googleanalyticsconnector"[] | "contenttype"[] | "contenttypecontainer"[] | "destination"[] | "editorconfiguration"[] | "file"[] | "folder"[] | "group"[] | "message"[] | "metadataset"[] | "metadatasetcontainer"[] | "page"[] | "pageconfigurationset"[] | "pageconfiguration"[] | "pageregion"[] | "pageconfigurationsetcontainer"[] | "publishset"[] | "publishsetcontainer"[] | "reference"[] | "role"[] | "datadefinition"[] | "datadefinitioncontainer"[] | "sharedfield"[] | "sharedfieldcontainer"[] | "format"[] | "format_XSLT"[] | "format_SCRIPT"[] | "site"[] | "sitedestinationcontainer"[] | "symlink"[] | "target"[] | "template"[] | "transport"[] | "transport_fs"[] | "transport_ftp"[] | "transport_db"[] | "transport_cloud"[] | "transportcontainer"[] | "user"[] | "workflow"[] | "workflowdefinition"[] | "workflowdefinitioncontainer"[] | "workflowemail"[] | "workflowemailcontainer"[]} [searchTypes] - NOT REQUIRED, if left blank, all asset types will be searched
 * - Asset types to search (e.g. page, folder, site)
 
 */
@@ -2350,7 +2350,7 @@ const CascadeAPIMethods = {
     if (!request.success) {
       throw `Request Failed. Request Response: ${request.message}`;
     }
-    return request.matches;
+    return request;
   },
   /**
    * copy operation.

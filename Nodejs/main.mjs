@@ -114,7 +114,7 @@ const CascadeAPIMethods = {
     if (!request.success) {
       throw `Request Failed. Request Response: ${request.message}`;
     }
-    return request.matches;
+    return request;
   },
 
   /**
