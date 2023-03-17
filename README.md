@@ -14,11 +14,16 @@ This can be used either via NodeJS or Google Apps Script.
 
 ### NodeJS
 
+Download/Copy the files and extract the zip. In your project file import the Cascade API.
+```js
+import CascadeAPI from "../Cascade-CMS-API/Nodejs/main.mjs"
+```
+
 ### Google Apps Script
 
 In order to use this library within a Google Apps Script (GAS) project you will need to copy the `main.js` and paste the contents as a new `.gs` file in your project.
 
-## Generaul Usage
+## General Usage
 
 To use the library you will need to load the `CascadeAPI` function and pass it a `config `object. This can be done inline, but it's best to pass it in as a variable.
 
@@ -31,7 +36,7 @@ const cascadeAPI = CascadeAPI(
 )
 ```
 
-The `apikey` is generated in your Cascade dashboard. The `url` is `yourOrg.cascadecms.com/api/v1/` (this is the current version as of 1/9/2023).
+The `apiKey` is generated in your Cascade dashboard. The `url` is `yourOrg.cascadecms.com/api/v1/` (this is the current version as of 1/9/2023).
 
 If you are using this in Google Apps Script the async/await pattern is not used/required. GAS does not follow this pattern.
 
