@@ -2107,8 +2107,83 @@
 //#endregion
 
 // ─── Move Request ────────────────────────────────────────────────────────────
+//#region
+/**
+ * @typedef {Object} moveRequest
+ * @property {MoveRequest_Identifier} identifier - REQUIRED: Parameters used when reading an asset
+ * @property {MoveRequest_WorkflowConfiguration} [workflowConfiguration] - NOT REQUIRED: For configuring workflow
+ * @property {MoveRequest_MoveParameters} moveParameters
+ */
+/**
+ * @typedef {Object} MoveRequest_Identifier
+ * @property {string} id - OPT 1: REQUIRED
+ * @property {MoveRequestIdentifier_Path} path - OPT 2: REQUIRED
+ * @property {"assetfactory" | "assetfactorycontainer" | "block" | "block_FEED" | "block_INDEX" | "block_TEXT" | "block_XHTML_DATADEFINITION" | "block_XML" | "block_TWITTER_FEED" | "connectorcontainer" | "twitterconnector" | "facebookconnector" | "wordpressconnector" | "googleanalyticsconnector" | "contenttype" | "contenttypecontainer" | "destination" | "editorconfiguration" | "file" | "folder" | "group" | "message" | "metadataset" | "metadatasetcontainer" | "page" | "pageconfigurationset" | "pageconfiguration" | "pageregion" | "pageconfigurationsetcontainer" | "publishset" | "publishsetcontainer" | "reference" | "role" | "datadefinition" | "datadefinitioncontainer" | "sharedfield" | "sharedfieldcontainer" | "format" | "format_XSLT" | "format_SCRIPT" | "site" | "sitedestinationcontainer" | "symlink" | "target" | "template" | "transport" | "transport_fs" | "transport_ftp" | "transport_db" | "transport_cloud" | "transportcontainer" | "user" | "workflow" | "workflowdefinition" | "workflowdefinitioncontainer" | "workflowemail" | "workflowemailcontainer"} type - OPT 2: REQUIRED
+ * @property {boolean} [recycled] - NOT REQUIRED: For reading purposes only. Ignored when editing, copying etc.
+ */
+/**
+* @typedef {Object} MoveRequestIdentifier_Path
+* @property {string} [path] - NOT REQUIRED: The path to the asset.
+* - When reading a site, the 'path' element should be populated with the parent site's name
+
+* @property {string} [siteId] - NOT REQUIRED: The siteId of the parent site.
+* @property {string} [siteName] - NOT REQUIRED: The parent siteName
+*/
+/**
+* @typedef {Object} MoveRequest_WorkflowConfiguration
+* @property {string} workflowName - REQUIRED: When the workflow is instantiated, this will be its name
+* @property {string} [workflowDefinitionId] - One is REQUIRED
+* - Priority: workflowDefinitionId > workflowDefinitionPath
+* - Which workflow definition to use
+
+* @property {string} [workflowDefinitionPath] - One is REQUIRED
+* - Priority: workflowDefinitionId > workflowDefinitionPath
+* - Which workflow definition to use
+
+* @property {string} workflowComments - REQUIRED: The comments for this operation which will be recorded with the workflow
+* @property {MoveRequestWorkflowConfiguration_WorkflowStepConfigurations[]} [workflowStepConfigurations] - NOT REQUIRED default: the defaults as defined in the workflow definition
+* - The optional step configurations for each assignable step in the workflow
+
+* @property {string} [endDate] - NOT REQUIRED: Optional due date for the workflow.  If not specified, will default to 7 days from today
+*/
+/**
+ * @typedef {Object} MoveRequestWorkflowConfiguration_WorkflowStepConfigurations
+ * @property {string} stepIdentifier - REQUIRED: The step's unique text identifier/name
+ * @property {string} stepAssignment - REQUIRED: The step's assignment (user or group name)
+ */
+/**
+* @typedef {Object} MoveRequest_MoveParameters
+* @property {boolean} [unpublish] - NOT REQUIRED
+* @property {MoveRequestMoveParameters_DestinationContainerIdentifier} destinationContainerIdentifier - NOT REQUIRED
+* - If not included, asset will be renamed
+* - CHOOSE OPTION 1 OR 2 PARAMETERS
+
+* @property {boolean} doWorkflow - REQUIRED
+* @property {string} [newName] - NOT REQUIRED: If not included name won't change.
+*/
+/**
+ * @typedef {Object} MoveRequestMoveParameters_DestinationContainerIdentifier
+ * @property {string} id - OPT 1: REQUIRED
+ * @property {"assetfactory" | "assetfactorycontainer" | "block" | "block_FEED" | "block_INDEX" | "block_TEXT" | "block_XHTML_DATADEFINITION" | "block_XML" | "block_TWITTER_FEED" | "connectorcontainer" | "twitterconnector" | "facebookconnector" | "wordpressconnector" | "googleanalyticsconnector" | "contenttype" | "contenttypecontainer" | "destination" | "editorconfiguration" | "file" | "folder" | "group" | "message" | "metadataset" | "metadatasetcontainer" | "page" | "pageconfigurationset" | "pageconfiguration" | "pageregion" | "pageconfigurationsetcontainer" | "publishset" | "publishsetcontainer" | "reference" | "role" | "datadefinition" | "datadefinitioncontainer" | "sharedfield" | "sharedfieldcontainer" | "format" | "format_XSLT" | "format_SCRIPT" | "site" | "sitedestinationcontainer" | "symlink" | "target" | "template" | "transport" | "transport_fs" | "transport_ftp" | "transport_db" | "transport_cloud" | "transportcontainer" | "user" | "workflow" | "workflowdefinition" | "workflowdefinitioncontainer" | "workflowemail" | "workflowemailcontainer"} type - REQUIRED
+ * @property {MoveRequestMoveParametersDestinationContainerIdentifier_Path} path - OPT 2: REQUIRED
+ */
+/**
+ * @typedef {Object} MoveRequestMoveParametersDestinationContainerIdentifier_Path
+ * @property {string} path - OPT 2: REQUIRED
+ * @property {string} siteName - OPT 2: REQUIRED: One of siteId or siteName
+ * @property {string} siteId - OPT 2: REQUIRED: One of siteId or siteName
+ * @property {"assetfactory" | "assetfactorycontainer" | "block" | "block_FEED" | "block_INDEX" | "block_TEXT" | "block_XHTML_DATADEFINITION" | "block_XML" | "block_TWITTER_FEED" | "connectorcontainer" | "twitterconnector" | "facebookconnector" | "wordpressconnector" | "googleanalyticsconnector" | "contenttype" | "contenttypecontainer" | "destination" | "editorconfiguration" | "file" | "folder" | "group" | "message" | "metadataset" | "metadatasetcontainer" | "page" | "pageconfigurationset" | "pageconfiguration" | "pageregion" | "pageconfigurationsetcontainer" | "publishset" | "publishsetcontainer" | "reference" | "role" | "datadefinition" | "datadefinitioncontainer" | "sharedfield" | "sharedfieldcontainer" | "format" | "format_XSLT" | "format_SCRIPT" | "site" | "sitedestinationcontainer" | "symlink" | "target" | "template" | "transport" | "transport_fs" | "transport_ftp" | "transport_db" | "transport_cloud" | "transportcontainer" | "user" | "workflow" | "workflowdefinition" | "workflowdefinitioncontainer" | "workflowemail" | "workflowemailcontainer"} type - REQUIRED
+ */
+//#endregion
 
 // ─── Move Response ───────────────────────────────────────────────────────────
+//#region
+/**
+ * @typedef {Object} moveResponse
+ * @property {string} success
+ * @property {string} message
+ */
+//#endregion
 
 // ─── Search Request ──────────────────────────────────────────────────────────
 //#region
