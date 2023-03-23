@@ -1,4 +1,7 @@
 # Cascade CMS API
+
+### **Please note this library is incomplete and a work in progress**
+
 A JavaScript library for the Cascade CMS API. You can find more information about their API here: https://www.hannonhill.com/cascadecms/latest/developing-in-cascade/rest-api/index.html#Operations
 
 Available for Cascade CMS v8.1.1 and later.
