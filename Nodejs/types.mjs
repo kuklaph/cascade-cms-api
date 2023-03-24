@@ -2068,8 +2068,95 @@
 //#endregion
 
 // ─── Remove Request ──────────────────────────────────────────────────────────
+//#region
+/**
+ * @typedef {Object} removeRequest
+ * @property {RemoveRequest_Identifier} identifier - REQUIRED: Parameters used when reading an asset
+ * @property {RemoveRequest_WorkflowConfiguration} [workflowConfiguration] - NOT REQUIRED: For configuring workflow
+ * @property {RemoveRequest_DeleteParameters} [deleteParameters] - NOT REQUIRED: Parameters used when deleting an asset
+ */
+/**
+* @typedef {Object} RemoveRequest_Identifier
+* @property {string} id - One is REQUIRED: id | type | path
+* - When editing and selected asset is recycled, it is recommended to preserve this relationship by providing selected asset's id in case if the selected asset gets restored from the recycle bin.
+
+* @property {RemoveRequestIdentifier_Path} path - One is REQUIRED: id | type | path
+* - The Path object container.
+* - Path works only for non-recycled assets
+
+* @property {"assetfactory" | "assetfactorycontainer" | "block" | "block_FEED" | "block_INDEX" | "block_TEXT" | "block_XHTML_DATADEFINITION" | "block_XML" | "block_TWITTER_FEED" | "connectorcontainer" | "twitterconnector" | "facebookconnector" | "wordpressconnector" | "googleanalyticsconnector" | "contenttype" | "contenttypecontainer" | "destination" | "editorconfiguration" | "file" | "folder" | "group" | "message" | "metadataset" | "metadatasetcontainer" | "page" | "pageconfigurationset" | "pageconfiguration" | "pageregion" | "pageconfigurationsetcontainer" | "publishset" | "publishsetcontainer" | "reference" | "role" | "datadefinition" | "datadefinitioncontainer" | "sharedfield" | "sharedfieldcontainer" | "format" | "format_XSLT" | "format_SCRIPT" | "site" | "sitedestinationcontainer" | "symlink" | "target" | "template" | "transport" | "transport_fs" | "transport_ftp" | "transport_db" | "transport_cloud" | "transportcontainer" | "user" | "workflow" | "workflowdefinition" | "workflowdefinitioncontainer" | "workflowemail" | "workflowemailcontainer"} type - One is REQUIRED: id | type | path
+* - The type of asset to read.
+
+* @property {boolean} [recycled] - NOT REQUIRED: For reading purposes only. Ignored when editing, copying etc.
+*/
+/**
+* @typedef {Object} RemoveRequestIdentifier_Path
+* @property {string} [path] - NOT REQUIRED: The path to the asset.
+* - When reading a site, the 'path' element should be populated with the parent site's name
+
+* @property {string} [siteId] - NOT REQUIRED: The siteId of the parent site.
+* @property {string} [siteName] - NOT REQUIRED: The parent siteName
+*/
+/**
+* @typedef {Object} RemoveRequest_WorkflowConfiguration
+* @property {string} workflowName - REQUIRED: When the workflow is instantiated, this will be its name
+* @property {string} [workflowDefinitionId] - One is REQUIRED
+* - Priority: workflowDefinitionId > workflowDefinitionPath
+* - Which workflow definition to use
+
+* @property {string} [workflowDefinitionPath] - One is REQUIRED
+* - Priority: workflowDefinitionId > workflowDefinitionPath
+* - Which workflow definition to use
+
+* @property {string} workflowComments - REQUIRED: The comments for this operation which will be recorded with the workflow
+* @property {RemoveRequestWorkflowConfiguration_WorkflowStepConfigurations[]} [workflowStepConfigurations] - NOT REQUIRED default: the defaults as defined in the workflow definition
+* - The optional step configurations for each assignable step in the workflow
+
+* @property {string} [endDate] - NOT REQUIRED: Optional due date for the workflow.  If not specified, will default to 7 days from today
+*/
+/**
+ * @typedef {Object} RemoveRequestWorkflowConfiguration_WorkflowStepConfigurations
+ * @property {string} stepIdentifier - REQUIRED: The step's unique text identifier/name
+ * @property {string} stepAssignment - REQUIRED: The step's assignment (user or group name)
+ */
+/**
+ * @typedef {Object} RemoveRequest_DeleteParameters
+ * @property {boolean} [unpublish] - NOT REQUIRED: when true, the asset will be unpublished. Default: false
+ * @property {RemoveRequestDeleteParameters_Destinations[]} [destinations] - NOT REQUIRED: unpublishes the asset from the given destinations. Default: all enabled destinations in the asset's site
+ * @property {boolean} doWorkflow - REQUIRED
+ */
+/**
+* @typedef {Object} RemoveRequestDeleteParameters_Destinations
+* @property {string} id - One is REQUIRED: id | type | path
+* - When editing and selected asset is recycled, it is recommended to preserve this relationship by providing selected asset's id in case if the selected asset gets restored from the recycle bin.
+
+* @property {RemoveRequestDeleteParametersDestinations_Path} path - One is REQUIRED: id | type | path
+* - The Path object container.
+* - Path works only for non-recycled assets
+
+* @property {"assetfactory" | "assetfactorycontainer" | "block" | "block_FEED" | "block_INDEX" | "block_TEXT" | "block_XHTML_DATADEFINITION" | "block_XML" | "block_TWITTER_FEED" | "connectorcontainer" | "twitterconnector" | "facebookconnector" | "wordpressconnector" | "googleanalyticsconnector" | "contenttype" | "contenttypecontainer" | "destination" | "editorconfiguration" | "file" | "folder" | "group" | "message" | "metadataset" | "metadatasetcontainer" | "page" | "pageconfigurationset" | "pageconfiguration" | "pageregion" | "pageconfigurationsetcontainer" | "publishset" | "publishsetcontainer" | "reference" | "role" | "datadefinition" | "datadefinitioncontainer" | "sharedfield" | "sharedfieldcontainer" | "format" | "format_XSLT" | "format_SCRIPT" | "site" | "sitedestinationcontainer" | "symlink" | "target" | "template" | "transport" | "transport_fs" | "transport_ftp" | "transport_db" | "transport_cloud" | "transportcontainer" | "user" | "workflow" | "workflowdefinition" | "workflowdefinitioncontainer" | "workflowemail" | "workflowemailcontainer"} type - One is REQUIRED: id | type | path
+* - The type of asset to read.
+
+* @property {boolean} [recycled] - NOT REQUIRED: For reading purposes only. Ignored when editing, copying etc.
+*/
+/**
+* @typedef {Object} RemoveRequestDeleteParametersDestinations_Path
+* @property {string} [path] - NOT REQUIRED: The path to the asset.
+* - When reading a site, the 'path' element should be populated with the parent site's name
+
+* @property {string} [siteId] - NOT REQUIRED: The siteId of the parent site.
+* @property {string} [siteName] - NOT REQUIRED: The parent siteName
+*/
+//#endregion
 
 // ─── Remove Response ─────────────────────────────────────────────────────────
+//#region
+/**
+ * @typedef {Object} removeResponse
+ * @property {string} success
+ * @property {string} message
+ */
+//#endregion
 
 // ─── Edit Request ────────────────────────────────────────────────────────────
 //#region
