@@ -2425,14 +2425,14 @@ const CascadeAPIMethods = {
    * @param {Boolean} [muteHttpExceptions] - Optional: Whether or not to mute http exceptions
    * @return {removeResponse}
    */
-  async remove(opts) {
+  remove(opts) {
     // Delete
     const endPoint = `delete`;
     const requestParams = {
       method: "POST",
       data: JSON.stringify(opts),
     };
-    const request = await this.call(endPoint, requestParams);
+    const request = this.call(endPoint, requestParams);
     if (!request.success) {
       throw `Request Failed. Request Response: ${request.message}`;
     }
