@@ -2425,7 +2425,11 @@ const CascadeAPIMethods = {
    * @param {Boolean} [muteHttpExceptions] - Optional: Whether or not to mute http exceptions
    * @return {removeResponse}
    */
-  remove(opts) {
+  remove(
+    opts,
+    // Apps Script Specific
+    muteHttpExceptions = false
+  ) {
     // Delete
     const endPoint = `delete`;
     const requestParams = {
