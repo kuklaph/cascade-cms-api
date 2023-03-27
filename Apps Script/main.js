@@ -2435,7 +2435,7 @@ const CascadeAPIMethods = {
     const requestParams = {
       method: "POST",
       muteHttpExceptions,
-      data: JSON.stringify(opts),
+      payload: JSON.stringify(opts),
     };
     const request = this.call(endPoint, requestParams);
     if (!request.success) {
