@@ -2430,6 +2430,7 @@ const CascadeAPIMethods = {
     const endPoint = `delete`;
     const requestParams = {
       method: "POST",
+      muteHttpExceptions,
       data: JSON.stringify(opts),
     };
     const request = this.call(endPoint, requestParams);
