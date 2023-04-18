@@ -636,7 +636,7 @@
 * @property {boolean} shouldBeIndexed
 * @property {string} lastPublishedDate
 * @property {string} lastPublishedBy
-* @property {AssetContainerAssetFolder_Children} children
+* @property {AssetContainerAssetFolder_Children[]} children
 * @property {boolean} includeInStaleContent
 */
 /**
@@ -649,17 +649,13 @@
  */
 /**
  * @typedef {Object} AssetContainerAssetFolder_Children
- * @property {AssetContainerAssetFolderChildren_Child} child
- */
-/**
- * @typedef {Object} AssetContainerAssetFolderChildren_Child
  * @property {string} id
- * @property {AssetContainerAssetFolderChildrenChild_Path} path
+ * @property {AssetContainerAssetFolderChildren_Path} path
  * @property {string} type - REQUIRED: Each node has a type
  * @property {boolean} recycled
  */
 /**
-* @typedef {Object} AssetContainerAssetFolderChildrenChild_Path
+* @typedef {Object} AssetContainerAssetFolderChildren_Path
 * @property {string} path
 * @property {string} siteId - One is REQUIRED: siteId | siteName
 * - The Site in which the asset is located
@@ -1118,21 +1114,17 @@
 
 * @property {string} applicableGroups
 * @property {string} description
-* @property {AssetContainerAssetAssetFactoryContainer_Children} children
+* @property {AssetContainerAssetAssetFactoryContainer_Children[]} children
 */
 /**
  * @typedef {Object} AssetContainerAssetAssetFactoryContainer_Children
- * @property {AssetContainerAssetAssetFactoryContainerChildren_Child} child
- */
-/**
- * @typedef {Object} AssetContainerAssetAssetFactoryContainerChildren_Child
  * @property {string} id
- * @property {AssetContainerAssetAssetFactoryContainerChildrenChild_Path} path
+ * @property {AssetContainerAssetAssetFactoryContainerChildren_Path} path
  * @property {string} type - REQUIRED: Each node has a type
  * @property {boolean} recycled
  */
 /**
-* @typedef {Object} AssetContainerAssetAssetFactoryContainerChildrenChild_Path
+* @typedef {Object} AssetContainerAssetAssetFactoryContainerChildren_Path
 * @property {string} path
 * @property {string} siteId - One is REQUIRED: siteId | siteName
 * - The Site in which the asset is located
@@ -1177,21 +1169,17 @@
 * @property {string} siteName - One is REQUIRED: siteId | siteName
 * - The Site in which the asset is located
 
-* @property {AssetContainerAssetContentTypeContainer_Children} children
+* @property {AssetContainerAssetContentTypeContainer_Children[]} children
 */
 /**
  * @typedef {Object} AssetContainerAssetContentTypeContainer_Children
- * @property {AssetContainerAssetContentTypeContainerChildren_Child} child
- */
-/**
- * @typedef {Object} AssetContainerAssetContentTypeContainerChildren_Child
  * @property {string} id
- * @property {AssetContainerAssetContentTypeContainerChildrenChild_Path} path
+ * @property {AssetContainerAssetContentTypeContainerChildren_Path} path
  * @property {string} type - REQUIRED: Each node has a type
  * @property {boolean} recycled
  */
 /**
-* @typedef {Object} AssetContainerAssetContentTypeContainerChildrenChild_Path
+* @typedef {Object} AssetContainerAssetContentTypeContainerChildren_Path
 * @property {string} path
 * @property {string} siteId - One is REQUIRED: siteId | siteName
 * - The Site in which the asset is located
@@ -1215,21 +1203,17 @@
 * @property {string} siteName - One is REQUIRED: siteId | siteName
 * - The Site in which the asset is located
 
-* @property {AssetContainerAssetConnectorContainer_Children} children
+* @property {AssetContainerAssetConnectorContainer_Children[]} children
 */
 /**
  * @typedef {Object} AssetContainerAssetConnectorContainer_Children
- * @property {AssetContainerAssetConnectorContainerChildren_Child} child
- */
-/**
- * @typedef {Object} AssetContainerAssetConnectorContainerChildren_Child
  * @property {string} id
- * @property {AssetContainerAssetConnectorContainerChildrenChild_Path} path
+ * @property {AssetContainerAssetConnectorContainerChildren_Path} path
  * @property {string} type - REQUIRED: Each node has a type
  * @property {boolean} recycled
  */
 /**
-* @typedef {Object} AssetContainerAssetConnectorContainerChildrenChild_Path
+* @typedef {Object} AssetContainerAssetConnectorContainerChildren_Path
 * @property {string} path
 * @property {string} siteId - One is REQUIRED: siteId | siteName
 * - The Site in which the asset is located
@@ -1350,21 +1334,17 @@
 * @property {string} siteName - One is REQUIRED: siteId | siteName
 * - The Site in which the asset is located
 
-* @property {AssetContainerAssetPageConfigurationSetContainer_Children} children
+* @property {AssetContainerAssetPageConfigurationSetContainer_Children[]} children
 */
 /**
  * @typedef {Object} AssetContainerAssetPageConfigurationSetContainer_Children
- * @property {AssetContainerAssetPageConfigurationSetContainerChildren_Child} child
- */
-/**
- * @typedef {Object} AssetContainerAssetPageConfigurationSetContainerChildren_Child
  * @property {string} id
- * @property {AssetContainerAssetPageConfigurationSetContainerChildrenChild_Path} path
+ * @property {AssetContainerAssetPageConfigurationSetContainerChildren_Path} path
  * @property {string} type - REQUIRED: Each node has a type
  * @property {boolean} recycled
  */
 /**
-* @typedef {Object} AssetContainerAssetPageConfigurationSetContainerChildrenChild_Path
+* @typedef {Object} AssetContainerAssetPageConfigurationSetContainerChildren_Path
 * @property {string} path
 * @property {string} siteId - One is REQUIRED: siteId | siteName
 * - The Site in which the asset is located
@@ -1405,21 +1385,17 @@
 * @property {string} siteName - One is REQUIRED: siteId | siteName
 * - The Site in which the asset is located
 
-* @property {AssetContainerAssetDataDefinitionContainer_Children} children
+* @property {AssetContainerAssetDataDefinitionContainer_Children[]} children
 */
 /**
  * @typedef {Object} AssetContainerAssetDataDefinitionContainer_Children
- * @property {AssetContainerAssetDataDefinitionContainerChildren_Child} child
- */
-/**
- * @typedef {Object} AssetContainerAssetDataDefinitionContainerChildren_Child
  * @property {string} id
- * @property {AssetContainerAssetDataDefinitionContainerChildrenChild_Path} path
+ * @property {AssetContainerAssetDataDefinitionContainerChildren_Path} path
  * @property {string} type - REQUIRED: Each node has a type
  * @property {boolean} recycled
  */
 /**
-* @typedef {Object} AssetContainerAssetDataDefinitionContainerChildrenChild_Path
+* @typedef {Object} AssetContainerAssetDataDefinitionContainerChildren_Path
 * @property {string} path
 * @property {string} siteId - One is REQUIRED: siteId | siteName
 * - The Site in which the asset is located
@@ -1460,21 +1436,17 @@
 * @property {string} siteName - One is REQUIRED: siteId | siteName
 * - The Site in which the asset is located
 
-* @property {AssetContainerAssetSharedFieldContainer_Children} children
+* @property {AssetContainerAssetSharedFieldContainer_Children[]} children
 */
 /**
  * @typedef {Object} AssetContainerAssetSharedFieldContainer_Children
- * @property {AssetContainerAssetSharedFieldContainerChildren_Child} child
- */
-/**
- * @typedef {Object} AssetContainerAssetSharedFieldContainerChildren_Child
  * @property {string} id
- * @property {AssetContainerAssetSharedFieldContainerChildrenChild_Path} path
+ * @property {AssetContainerAssetSharedFieldContainerChildren_Path} path
  * @property {string} type - REQUIRED: Each node has a type
  * @property {boolean} recycled
  */
 /**
-* @typedef {Object} AssetContainerAssetSharedFieldContainerChildrenChild_Path
+* @typedef {Object} AssetContainerAssetSharedFieldContainerChildren_Path
 * @property {string} path
 * @property {string} siteId - One is REQUIRED: siteId | siteName
 * - The Site in which the asset is located
@@ -1519,21 +1491,17 @@
 * @property {string} siteName - One is REQUIRED: siteId | siteName
 * - The Site in which the asset is located
 
-* @property {AssetContainerAssetMetadataSetContainer_Children} children
+* @property {AssetContainerAssetMetadataSetContainer_Children[]} children
 */
 /**
  * @typedef {Object} AssetContainerAssetMetadataSetContainer_Children
- * @property {AssetContainerAssetMetadataSetContainerChildren_Child} child
- */
-/**
- * @typedef {Object} AssetContainerAssetMetadataSetContainerChildren_Child
  * @property {string} id
- * @property {AssetContainerAssetMetadataSetContainerChildrenChild_Path} path
+ * @property {AssetContainerAssetMetadataSetContainerChildren_Path} path
  * @property {string} type - REQUIRED: Each node has a type
  * @property {boolean} recycled
  */
 /**
-* @typedef {Object} AssetContainerAssetMetadataSetContainerChildrenChild_Path
+* @typedef {Object} AssetContainerAssetMetadataSetContainerChildren_Path
 * @property {string} path
 * @property {string} siteId - One is REQUIRED: siteId | siteName
 * - The Site in which the asset is located
@@ -1641,21 +1609,17 @@
 * @property {string} siteName - One is REQUIRED: siteId | siteName
 * - The Site in which the asset is located
 
-* @property {AssetContainerAssetPublishSetContainer_Children} children
+* @property {AssetContainerAssetPublishSetContainer_Children[]} children
 */
 /**
  * @typedef {Object} AssetContainerAssetPublishSetContainer_Children
- * @property {AssetContainerAssetPublishSetContainerChildren_Child} child
- */
-/**
- * @typedef {Object} AssetContainerAssetPublishSetContainerChildren_Child
  * @property {string} id
- * @property {AssetContainerAssetPublishSetContainerChildrenChild_Path} path
+ * @property {AssetContainerAssetPublishSetContainerChildren_Path} path
  * @property {string} type - REQUIRED: Each node has a type
  * @property {boolean} recycled
  */
 /**
-* @typedef {Object} AssetContainerAssetPublishSetContainerChildrenChild_Path
+* @typedef {Object} AssetContainerAssetPublishSetContainerChildren_Path
 * @property {string} path
 * @property {string} siteId - One is REQUIRED: siteId | siteName
 * - The Site in which the asset is located
@@ -1691,21 +1655,17 @@
 * @property {string} siteName - One is REQUIRED: siteId | siteName
 * - The Site in which the asset is located
 
-* @property {AssetContainerAssetSiteDestinationContainer_Children} children
+* @property {AssetContainerAssetSiteDestinationContainer_Children[]} children
 */
 /**
  * @typedef {Object} AssetContainerAssetSiteDestinationContainer_Children
- * @property {AssetContainerAssetSiteDestinationContainerChildren_Child} child
- */
-/**
- * @typedef {Object} AssetContainerAssetSiteDestinationContainerChildren_Child
  * @property {string} id
- * @property {AssetContainerAssetSiteDestinationContainerChildrenChild_Path} path
+ * @property {AssetContainerAssetSiteDestinationContainerChildren_Path} path
  * @property {string} type - REQUIRED: Each node has a type
  * @property {boolean} recycled
  */
 /**
-* @typedef {Object} AssetContainerAssetSiteDestinationContainerChildrenChild_Path
+* @typedef {Object} AssetContainerAssetSiteDestinationContainerChildren_Path
 * @property {string} path
 * @property {string} siteId - One is REQUIRED: siteId | siteName
 * - The Site in which the asset is located
@@ -1820,21 +1780,17 @@
 * @property {string} siteName - One is REQUIRED: siteId | siteName
 * - The Site in which the asset is located
 
-* @property {AssetContainerAssetTransportContainer_Children} children
+* @property {AssetContainerAssetTransportContainer_Children[]} children
 */
 /**
  * @typedef {Object} AssetContainerAssetTransportContainer_Children
- * @property {AssetContainerAssetTransportContainerChildren_Child} child
- */
-/**
- * @typedef {Object} AssetContainerAssetTransportContainerChildren_Child
  * @property {string} id
- * @property {AssetContainerAssetTransportContainerChildrenChild_Path} path
+ * @property {AssetContainerAssetTransportContainerChildren_Path} path
  * @property {string} type - REQUIRED: Each node has a type
  * @property {boolean} recycled
  */
 /**
-* @typedef {Object} AssetContainerAssetTransportContainerChildrenChild_Path
+* @typedef {Object} AssetContainerAssetTransportContainerChildren_Path
 * @property {string} path
 * @property {string} siteId - One is REQUIRED: siteId | siteName
 * - The Site in which the asset is located
@@ -1879,21 +1835,17 @@
 * @property {string} siteName - One is REQUIRED: siteId | siteName
 * - The Site in which the asset is located
 
-* @property {AssetContainerAssetWorkflowDefinitionContainer_Children} children
+* @property {AssetContainerAssetWorkflowDefinitionContainer_Children[]} children
 */
 /**
  * @typedef {Object} AssetContainerAssetWorkflowDefinitionContainer_Children
- * @property {AssetContainerAssetWorkflowDefinitionContainerChildren_Child} child
- */
-/**
- * @typedef {Object} AssetContainerAssetWorkflowDefinitionContainerChildren_Child
  * @property {string} id
- * @property {AssetContainerAssetWorkflowDefinitionContainerChildrenChild_Path} path
+ * @property {AssetContainerAssetWorkflowDefinitionContainerChildren_Path} path
  * @property {string} type - REQUIRED: Each node has a type
  * @property {boolean} recycled
  */
 /**
-* @typedef {Object} AssetContainerAssetWorkflowDefinitionContainerChildrenChild_Path
+* @typedef {Object} AssetContainerAssetWorkflowDefinitionContainerChildren_Path
 * @property {string} path
 * @property {string} siteId - One is REQUIRED: siteId | siteName
 * - The Site in which the asset is located
@@ -1935,21 +1887,17 @@
 * @property {string} siteName - One is REQUIRED: siteId | siteName
 * - The Site in which the asset is located
 
-* @property {AssetContainerAssetWorkflowEmailContainer_Children} children
+* @property {AssetContainerAssetWorkflowEmailContainer_Children[]} children
 */
 /**
  * @typedef {Object} AssetContainerAssetWorkflowEmailContainer_Children
- * @property {AssetContainerAssetWorkflowEmailContainerChildren_Child} child
- */
-/**
- * @typedef {Object} AssetContainerAssetWorkflowEmailContainerChildren_Child
  * @property {string} id
- * @property {AssetContainerAssetWorkflowEmailContainerChildrenChild_Path} path
+ * @property {AssetContainerAssetWorkflowEmailContainerChildren_Path} path
  * @property {string} type - REQUIRED: Each node has a type
  * @property {boolean} recycled
  */
 /**
-* @typedef {Object} AssetContainerAssetWorkflowEmailContainerChildrenChild_Path
+* @typedef {Object} AssetContainerAssetWorkflowEmailContainerChildren_Path
 * @property {string} path
 * @property {string} siteId - One is REQUIRED: siteId | siteName
 * - The Site in which the asset is located
