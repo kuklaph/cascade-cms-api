@@ -2246,23 +2246,19 @@
 //#region
 /**
  * @typedef {Object} searchResponse
- * @property {boolean} success
+ * @property {string} success
  * @property {string} message
- * @property {SearchResponse_Matches} matches
+ * @property {SearchResponse_Matches[]} matches
  */
 /**
  * @typedef {Object} SearchResponse_Matches
- * @property {SearchResponseMatches_Match} match
- */
-/**
- * @typedef {Object} SearchResponseMatches_Match
  * @property {string} id
- * @property {SearchResponseMatchesMatch_Path} path
+ * @property {SearchResponseMatches_Path} path
  * @property {string} type
  * @property {boolean} recycled
  */
 /**
- * @typedef {Object} SearchResponseMatchesMatch_Path
+ * @typedef {Object} SearchResponseMatches_Path
  * @property {string} path
  * @property {string} siteId
  * @property {string} siteName
