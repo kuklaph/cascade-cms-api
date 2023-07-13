@@ -1,5 +1,6 @@
+import withAxios from "./withAxios.mjs";
+// import withFetch from "./withFetch.mjs";
 import * as Requests from "./types.mjs";
-import axios from "axios";
 
 const CascadeAPIMethods = {
   /**
@@ -440,6 +441,25 @@ const CascadeAPIMethods = {
     return request;
   },
 
+  /**
+   * publishUnpublish operation.
+   *
+   * @param {Requests.publishUnpublishRequest} opts - The starting object container.
+   * @return {Promise<Requests.publishUnpublishResponse>}
+   */
+  async publishUnpublish(opts) {
+    const endPoint = "publish";
+    const requestParams = {
+      method: "POST",
+      data: JSON.stringify(opts),
+    };
+    const request = await this.call(endPoint, requestParams);
+    if (!request.success) {
+      throw `Request Failed. Request Response: ${request.message}`;
+    }
+    return request;
+  },
+
   async call(endPoint, requestParams) {
     try {
       if (!this.apiKey || !this.url) {
@@ -450,8 +470,8 @@ const CascadeAPIMethods = {
       };
       requestParams.headers = headers;
       requestParams.url = this.url + endPoint;
-      const request = await axios(requestParams);
-      return request.data;
+      return await withAxios(requestParams);
+      // return await withFetch(requestParams);
     } catch (error) {
       console.error(error);
     }

@@ -2333,6 +2333,50 @@
 
 // ─── Readpreferences Response ────────────────────────────────────────────────
 
+// ─── Publish/Unpublish Request ───────────────────────────────────────────────
+//#region
+/**
+ * @typedef {Object} publishUnpublishRequest
+ * @property {PublishUnpublishRequest_Identifier} identifier - REQUIRED: Parameters used when reading an asset
+ * @property {PublishUnpublishRequest_PublishInformation} [publishInformation] - NOT REQUIRED: Only use if you want to unpublish an asset.
+ */
+/**
+* @typedef {Object} PublishUnpublishRequest_Identifier
+* @property {string} id - One is REQUIRED: id | type | path
+* - When editing and selected asset is recycled, it is recommended to preserve this relationship by providing selected asset's id in case if the selected asset gets restored from the recycle bin.
+
+* @property {PublishUnpublishRequestIdentifier_Path} path - One is REQUIRED: id | type | path
+* - The Path object container.
+* - Path works only for non-recycled assets
+
+* @property {"assetfactory" | "assetfactorycontainer" | "block" | "block_FEED" | "block_INDEX" | "block_TEXT" | "block_XHTML_DATADEFINITION" | "block_XML" | "block_TWITTER_FEED" | "connectorcontainer" | "twitterconnector" | "facebookconnector" | "wordpressconnector" | "googleanalyticsconnector" | "contenttype" | "contenttypecontainer" | "destination" | "editorconfiguration" | "file" | "folder" | "group" | "message" | "metadataset" | "metadatasetcontainer" | "page" | "pageconfigurationset" | "pageconfiguration" | "pageregion" | "pageconfigurationsetcontainer" | "publishset" | "publishsetcontainer" | "reference" | "role" | "datadefinition" | "datadefinitioncontainer" | "sharedfield" | "sharedfieldcontainer" | "format" | "format_XSLT" | "format_SCRIPT" | "site" | "sitedestinationcontainer" | "symlink" | "target" | "template" | "transport" | "transport_fs" | "transport_ftp" | "transport_db" | "transport_cloud" | "transportcontainer" | "user" | "workflow" | "workflowdefinition" | "workflowdefinitioncontainer" | "workflowemail" | "workflowemailcontainer"} type - One is REQUIRED: id | type | path
+* - The type of asset to read.
+
+* @property {boolean} [recycled] - NOT REQUIRED: For reading purposes only. Ignored when editing, copying etc.
+*/
+/**
+* @typedef {Object} PublishUnpublishRequestIdentifier_Path
+* @property {string} [path] - NOT REQUIRED: The path to the asset.
+* - When reading a site, the 'path' element should be populated with the parent site's name
+
+* @property {string} [siteId] - NOT REQUIRED: The siteId of the parent site.
+* @property {string} [siteName] - NOT REQUIRED: The parent siteName
+*/
+/**
+ * @typedef {Object} PublishUnpublishRequest_PublishInformation
+ * @property {boolean} unpublish
+ */
+//#endregion
+
+// ─── Publish/Unpublish Response ──────────────────────────────────────────────
+//#region
+/**
+ * @typedef {Object} publishUnpublishResponse
+ * @property {string} success
+ * @property {string} message
+ */
+//#endregion
+
 // export default {};
 
 // "feedBlock" | "indexBlock" | "textBlock" | "xhtmlDataDefinitionBlock" | "xmlBlock" | "file" | "folder" | "page" | "reference" | "xsltFormat" | "scriptFormat" | "symlink" | "template" | "user" | "group" | "role" | "assetFactory" | "assetFactoryContainer" | "contentType" | "contentTypeContainer" | "connectorContainer" | "facebookConnector" | "wordPressConnector" | "googleAnalyticsConnector" | "pageConfigurationSet" | "pageConfigurationSetContainer" | "dataDefinition" | "dataDefinitionContainer" | "sharedField" | "sharedFieldContainer" | "metadataSet" | "metadataSetContainer" | "publishSet" | "publishSetContainer" | "target" | "siteDestinationContainer" | "destination" | "fileSystemTransport" | "ftpTransport" | "databaseTransport" | "cloudTransport" | "transportContainer" | "workflowDefinition" | "workflowDefinitionContainer" | "workflowEmail" | "workflowEmailContainer" | "twitterFeedBlock" | "site" | "editorConfiguration"
@@ -2891,6 +2935,32 @@ const CascadeAPIMethods = {
     }
     return request;
   },
+
+  /**
+   * publishUnpublish operation.
+   *
+   * @param {publishUnpublishRequest} opts - The starting object container.
+   * @param {Boolean} [muteHttpExceptions] - Optional: Whether or not to mute http exceptions
+   * @return {publishUnpublishResponse}
+   */
+  publishUnpublish(
+    opts,
+    // Apps Script Specific
+    muteHttpExceptions = false
+  ) {
+    const endPoint = "publish";
+    const requestParams = {
+      method: "POST",
+      muteHttpExceptions,
+      payload: JSON.stringify(opts),
+    };
+    const request = this.call(endPoint, requestParams);
+    if (!request.success) {
+      throw `Request Failed. Request Response: ${request.message}`;
+    }
+    return request;
+  },
+
   call(endPoint, requestParams) {
     if (!this.apiKey || !this.url) {
       throw `Missing API key or cascade URL`;
