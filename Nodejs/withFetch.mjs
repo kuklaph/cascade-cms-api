@@ -1,8 +1,14 @@
 export default async function withFetch(requestParams) {
-  const request = await fetch(requestParams);
-  if (!request.ok) {
-    throw new Error(`HTTP error! status: ${request.status}`);
+  const { url, data, headers, method } = requestParams;
+  const response = await fetch(url, {
+    method,
+    headers,
+    body: data,
+  });
+
+  if (!response.ok) {
+    throw new Error(`HTTP error! status: ${response.status}`);
   } else {
-    return await request.json();
+    return await response.json();
   }
 }
