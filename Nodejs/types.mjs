@@ -2274,8 +2274,73 @@
 // ─── Sitecopy Response ───────────────────────────────────────────────────────
 
 // ─── Readaccessrights Request ────────────────────────────────────────────────
+//#region
+/**
+ * @typedef {Object} readAccessRightsRequest
+ * @property {ReadAccessRightsRequest_Identifier} identifier - REQUIRED: Parameters used when reading an asset
+ */
+/**
+* @typedef {Object} ReadAccessRightsRequest_Identifier
+* @property {string} id - One is REQUIRED: id | type | path
+* - When editing and selected asset is recycled, it is recommended to preserve this relationship by providing selected asset's id in case if the selected asset gets restored from the recycle bin.
+
+* @property {ReadAccessRightsRequestIdentifier_Path} path - One is REQUIRED: id | type | path
+* - The Path object container.
+* - Path works only for non-recycled assets
+
+* @property {"assetfactory" | "assetfactorycontainer" | "block" | "block_FEED" | "block_INDEX" | "block_TEXT" | "block_XHTML_DATADEFINITION" | "block_XML" | "block_TWITTER_FEED" | "connectorcontainer" | "twitterconnector" | "facebookconnector" | "wordpressconnector" | "googleanalyticsconnector" | "contenttype" | "contenttypecontainer" | "destination" | "editorconfiguration" | "file" | "folder" | "group" | "message" | "metadataset" | "metadatasetcontainer" | "page" | "pageconfigurationset" | "pageconfiguration" | "pageregion" | "pageconfigurationsetcontainer" | "publishset" | "publishsetcontainer" | "reference" | "role" | "datadefinition" | "datadefinitioncontainer" | "sharedfield" | "sharedfieldcontainer" | "format" | "format_XSLT" | "format_SCRIPT" | "site" | "sitedestinationcontainer" | "symlink" | "target" | "template" | "transport" | "transport_fs" | "transport_ftp" | "transport_db" | "transport_cloud" | "transportcontainer" | "user" | "workflow" | "workflowdefinition" | "workflowdefinitioncontainer" | "workflowemail" | "workflowemailcontainer"} type - One is REQUIRED: id | type | path
+* - The type of asset to read.
+
+* @property {boolean} [recycled] - NOT REQUIRED: For reading purposes only. Ignored when editing, copying etc.
+*/
+/**
+* @typedef {Object} ReadAccessRightsRequestIdentifier_Path
+* @property {string} [path] - NOT REQUIRED: The path to the asset.
+* - When reading a site, the 'path' element should be populated with the parent site's name
+
+* @property {string} [siteId] - NOT REQUIRED: The siteId of the parent site.
+* @property {string} [siteName] - NOT REQUIRED: The parent siteName
+*/
+//#endregion
 
 // ─── Readaccessrights Response ───────────────────────────────────────────────
+//#region
+/**
+ * @typedef {Object} readAccessRightsResponse
+ * @property {string} success
+ * @property {string} message
+ * @property {ReadAccessRightsResponse_AccessRightsInformation} accessRightsInformation
+ */
+/**
+ * @typedef {Object} ReadAccessRightsResponse_AccessRightsInformation
+ * @property {ReadAccessRightsResponseAccessRightsInformation_Identifier} identifier
+ * @property {ReadAccessRightsResponseAccessRightsInformation_AclEntries} aclEntries
+ * @property {string} allLevel
+ */
+/**
+ * @typedef {Object} ReadAccessRightsResponseAccessRightsInformation_Identifier
+ * @property {string} id
+ * @property {ReadAccessRightsResponseAccessRightsInformationIdentifier_Path} path
+ * @property {string} type
+ * @property {boolean} recycled
+ */
+/**
+ * @typedef {Object} ReadAccessRightsResponseAccessRightsInformationIdentifier_Path
+ * @property {string} path
+ * @property {string} siteId
+ * @property {string} siteName
+ */
+/**
+ * @typedef {Object} ReadAccessRightsResponseAccessRightsInformation_AclEntries
+ * @property {ReadAccessRightsResponseAccessRightsInformationAclEntries_AclEntry} aclEntry
+ */
+/**
+ * @typedef {Object} ReadAccessRightsResponseAccessRightsInformationAclEntries_AclEntry
+ * @property {string} level
+ * @property {string} type
+ * @property {string} name
+ */
+//#endregion
 
 // ─── Editaccessrights Request ────────────────────────────────────────────────
 
