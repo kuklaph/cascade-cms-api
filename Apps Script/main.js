@@ -3042,7 +3042,7 @@ const CascadeAPIMethods = {
   },
 };
 
-const CascadeAPI = ({ apiKey, url }) => {
+const CascadeAPI_ = ({ apiKey, url }) => {
   return { ...CascadeAPIMethods, apiKey, url };
 };
 
