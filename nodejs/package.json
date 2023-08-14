@@ -2,26 +2,27 @@
   "name": "cascade-api",
   "version": "1.0.0",
   "description": "A library for the Cascade API",
-  "main": "cascadeAPI.js",
+  "main": "main.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/kuklaph/CascadeAPI.git"
+    "url": "git+https://github.com/kuklaph/cascade-cms-api.git"
   },
   "keywords": [
     "cascade",
-    "cascade",
+    "cms",
     "api"
   ],
   "author": "Philip Kukla",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/kuklaph/CascadeAPI/issues"
+    "url": "https://github.com/kuklaph/cascade-cms-api/issues"
   },
-  "homepage": "https://github.com/kuklaph/CascadeAPI#readme",
+  "homepage": "https://github.com/kuklaph/cascade-cms-api#readme",
   "dependencies": {
     "axios": "^1.2.3"
-  }
+  },
+  "type": "module"
 }

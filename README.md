@@ -16,9 +16,11 @@ Example: `isSandActuallySandy.cascadecms.com/ws/services/AssetOperationService?w
 
 This can be used either via NodeJS or Google Apps Script.
 
+Download/Copy the files and extract the zip. Once extracted to your project, use `npm ci` to install dependencies.
+
 ### NodeJS
 
-Download/Copy the files and extract the zip. In your project file import the Cascade API.
+In your project file import the Cascade API.
 
 ```js
 import CascadeAPI from "../cascade-cms-api/nodejs/main.mjs";
@@ -30,7 +32,9 @@ In order to use this library within a Google Apps Script (GAS) project you will 
 
 ## General Usage
 
-To use the library you will need to load the `CascadeAPI` function and pass it a `{ apiKey: "", url: "" }` object.
+To use the library you will need to instantiate the `CascadeAPI` function and pass it an object:
+
+`{ apiKey: "", url: "" }`
 
 ```js
 const cascadeAPI = CascadeAPI({
