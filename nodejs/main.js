@@ -1,5 +1,5 @@
 import withAxios from "./withAxios.js";
-// import withFetch from "./withFetch.mjs";
+// import withFetch from "./withFetch.js";
 import * as Requests from "./types.js";
 
 export default function CascadeAPI({ apiKey, url }) {
