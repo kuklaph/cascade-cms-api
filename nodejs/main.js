@@ -3,18 +3,29 @@ import withAxios from "./withAxios.js";
 import * as Requests from "./types.js";
 
 export default function CascadeAPI({ apiKey, url }) {
-  const call = async (endPoint, requestParams) => {
+  const call = (endPoint, requestParams) => {
+    if (!apiKey || !url) {
+      throw `Missing API key or cascade URL`;
+    }
+    const headers = {
+      Authorization: `Bearer ${apiKey}`,
+    };
+    requestParams.headers = headers;
+    requestParams.url = url + endPoint;
+    return withAxios(requestParams);
+    // return  withFetch(requestParams);
+  };
+  const handleRequest = async (endPoint, opts, method = "POST") => {
     try {
-      if (!apiKey || !url) {
-        throw `Missing API key or cascade URL`;
-      }
-      const headers = {
-        Authorization: `Bearer ${apiKey}`,
+      const requestParams = {
+        method,
+        data: JSON.stringify(opts),
       };
-      requestParams.headers = headers;
-      requestParams.url = url + endPoint;
-      return await withAxios(requestParams);
-      // return await withFetch(requestParams);
+      const request = await call(endPoint, requestParams);
+      if (!request.success) {
+        throw `Request Failed. Request Response: ${request.message}`;
+      }
+      return request;
     } catch (error) {
       console.error(error);
     }
@@ -26,17 +37,8 @@ export default function CascadeAPI({ apiKey, url }) {
      * @param {Requests.readRequest} opts - The starting object container.
      * @return {Promise<Requests.readResponse>}
      */
-    async read(opts) {
-      const endPoint = `read`;
-      const requestParams = {
-        method: "POST",
-        data: JSON.stringify(opts),
-      };
-      const request = await call(endPoint, requestParams);
-      if (!request.success) {
-        throw `Request Failed. Request Response: ${request.message}`;
-      }
-      return request;
+    read(opts) {
+      return handleRequest("read", opts);
     },
 
     /**
@@ -45,18 +47,8 @@ export default function CascadeAPI({ apiKey, url }) {
      * @param {Requests.removeRequest} opts - The starting object container.
      * @return {Promise<Requests.removeResponse>}
      */
-    async remove(opts) {
-      // Delete
-      const endPoint = `delete`;
-      const requestParams = {
-        method: "POST",
-        data: JSON.stringify(opts),
-      };
-      const request = await call(endPoint, requestParams);
-      if (!request.success) {
-        throw `Request Failed. Request Response: ${request.message}`;
-      }
-      return request;
+    remove(opts) {
+      return handleRequest("delete", opts);
     },
 
     /**
@@ -65,17 +57,8 @@ export default function CascadeAPI({ apiKey, url }) {
      * @param {Requests.editRequest} opts - The starting object container.
      * @return {Promise<Requests.editResponse>}
      */
-    async edit(opts) {
-      const endPoint = `edit`;
-      const requestParams = {
-        method: "POST",
-        data: JSON.stringify(opts),
-      };
-      const request = await call(endPoint, requestParams);
-      if (!request.success) {
-        throw `Request Failed. Request Response: ${request.message}`;
-      }
-      return request;
+    edit(opts) {
+      return handleRequest("edit", opts);
     },
 
     /**
@@ -84,17 +67,8 @@ export default function CascadeAPI({ apiKey, url }) {
      * @param {Requests.createRequest} opts - The starting object container.
      * @return {Promise<Requests.createResponse>}
      */
-    async create(opts) {
-      const endPoint = `create`;
-      const requestParams = {
-        method: "POST",
-        data: JSON.stringify(opts),
-      };
-      const request = await call(endPoint, requestParams);
-      if (!request.success) {
-        throw `Request Failed. Request Response: ${request.message}`;
-      }
-      return request;
+    create(opts) {
+      return handleRequest("create", opts);
     },
 
     /**
@@ -103,17 +77,8 @@ export default function CascadeAPI({ apiKey, url }) {
      * @param {Requests.moveRequest} opts - The starting object container.
      * @return {Promise<Requests.moveResponse>}
      */
-    async move(opts) {
-      const endPoint = `move`;
-      const requestParams = {
-        method: "POST",
-        data: JSON.stringify(opts),
-      };
-      const request = await call(endPoint, requestParams);
-      if (!request.success) {
-        throw `Request Failed. Request Response: ${request.message}`;
-      }
-      return request;
+    move(opts) {
+      return handleRequest("move", opts);
     },
 
     /**
@@ -122,17 +87,8 @@ export default function CascadeAPI({ apiKey, url }) {
      * @param {Requests.searchRequest} opts - The starting object container.
      * @return {Promise<Requests.searchResponse>}
      */
-    async search(opts) {
-      const endPoint = "search";
-      const requestParams = {
-        method: "POST",
-        data: JSON.stringify(opts),
-      };
-      const request = await call(endPoint, requestParams);
-      if (!request.success) {
-        throw `Request Failed. Request Response: ${request.message}`;
-      }
-      return request;
+    search(opts) {
+      return handleRequest("search", opts);
     },
 
     /**
@@ -141,17 +97,8 @@ export default function CascadeAPI({ apiKey, url }) {
      * @param {Requests.copyRequest} opts - The starting object container.
      * @return {Promise<Requests.copyResponse>}
      */
-    async copy(opts) {
-      const endPoint = "copy";
-      const requestParams = {
-        method: "POST",
-        data: JSON.stringify(opts),
-      };
-      const request = await call(endPoint, requestParams);
-      if (!request.success) {
-        throw `Request Failed. Request Response: ${request.message}`;
-      }
-      return request;
+    copy(opts) {
+      return handleRequest("copy", opts);
     },
 
     /**
@@ -160,17 +107,8 @@ export default function CascadeAPI({ apiKey, url }) {
      * @param {Requests.siteCopyRequest} opts - The starting object container.
      * @return {Promise<Requests.siteCopyResponse>}
      */
-    async siteCopy(opts) {
-      const endPoint = "siteCopy";
-      const requestParams = {
-        method: "POST",
-        data: JSON.stringify(opts),
-      };
-      const request = await call(endPoint, requestParams);
-      if (!request.success) {
-        throw `Request Failed. Request Response: ${request.message}`;
-      }
-      return request;
+    siteCopy(opts) {
+      return handleRequest("siteCopy", opts);
     },
 
     /**
@@ -179,17 +117,8 @@ export default function CascadeAPI({ apiKey, url }) {
      * @param {Requests.readAccessRightsRequest} opts - The starting object container.
      * @return {Promise<Requests.readAccessRightsResponse>}
      */
-    async readAccessRights(opts) {
-      const endPoint = "readAccessRights";
-      const requestParams = {
-        method: "POST",
-        data: JSON.stringify(opts),
-      };
-      const request = await call(endPoint, requestParams);
-      if (!request.success) {
-        throw `Request Failed. Request Response: ${request.message}`;
-      }
-      return request;
+    readAccessRights(opts) {
+      return handleRequest("readAccessRights", opts);
     },
 
     /**
@@ -198,17 +127,8 @@ export default function CascadeAPI({ apiKey, url }) {
      * @param {Requests.editAccessRightsRequest} opts - The starting object container.
      * @return {Promise<Requests.editAccessRightsResponse>}
      */
-    async editAccessRights(opts) {
-      const endPoint = "editAccessRights";
-      const requestParams = {
-        method: "POST",
-        data: JSON.stringify(opts),
-      };
-      const request = await call(endPoint, requestParams);
-      if (!request.success) {
-        throw `Request Failed. Request Response: ${request.message}`;
-      }
-      return request;
+    editAccessRights(opts) {
+      return handleRequest("editAccessRights", opts);
     },
 
     /**
@@ -217,17 +137,8 @@ export default function CascadeAPI({ apiKey, url }) {
      * @param {Requests.readWorkflowSettingsRequest} opts - The starting object container.
      * @return {Promise<Requests.readWorkflowSettingsResponse>}
      */
-    async readWorkflowSettings(opts) {
-      const endPoint = "readWorkflowSettings";
-      const requestParams = {
-        method: "POST",
-        data: JSON.stringify(opts),
-      };
-      const request = await call(endPoint, requestParams);
-      if (!request.success) {
-        throw `Request Failed. Request Response: ${request.message}`;
-      }
-      return request;
+    readWorkflowSettings(opts) {
+      return handleRequest("readWorkflowSettings", opts);
     },
 
     /**
@@ -236,17 +147,8 @@ export default function CascadeAPI({ apiKey, url }) {
      * @param {Requests.editWorkflowSettingsRequest} opts - The starting object container.
      * @return {Promise<Requests.editWorkflowSettingsResponse>}
      */
-    async editWorkflowSettings(opts) {
-      const endPoint = "editWorkflowSettings";
-      const requestParams = {
-        method: "POST",
-        data: JSON.stringify(opts),
-      };
-      const request = await call(endPoint, requestParams);
-      if (!request.success) {
-        throw `Request Failed. Request Response: ${request.message}`;
-      }
-      return request;
+    editWorkflowSettings(opts) {
+      return handleRequest("editWorkflowSettings", opts);
     },
 
     /**
@@ -255,17 +157,8 @@ export default function CascadeAPI({ apiKey, url }) {
      * @param {Requests.listSubscribersRequest} opts - The starting object container.
      * @return {Promise<Requests.listSubscribersResponse>}
      */
-    async listSubscribers(opts) {
-      const endPoint = "listSubscribers";
-      const requestParams = {
-        method: "POST",
-        data: JSON.stringify(opts),
-      };
-      const request = await call(endPoint, requestParams);
-      if (!request.success) {
-        throw `Request Failed. Request Response: ${request.message}`;
-      }
-      return request;
+    listSubscribers(opts) {
+      return handleRequest("listSubscribers", opts);
     },
 
     /**
@@ -274,17 +167,8 @@ export default function CascadeAPI({ apiKey, url }) {
      * @param {Requests.listMessagesRequest} opts - The starting object container.
      * @return {Promise<Requests.listMessagesResponse>}
      */
-    async listMessages(opts) {
-      const endPoint = "listMessages";
-      const requestParams = {
-        method: "POST",
-        data: JSON.stringify(opts),
-      };
-      const request = await call(endPoint, requestParams);
-      if (!request.success) {
-        throw `Request Failed. Request Response: ${request.message}`;
-      }
-      return request;
+    listMessages(opts) {
+      return handleRequest("listMessages", opts);
     },
 
     /**
@@ -293,17 +177,8 @@ export default function CascadeAPI({ apiKey, url }) {
      * @param {Requests.markMessageRequest} opts - The starting object container.
      * @return {Promise<Requests.markMessageResponse>}
      */
-    async markMessage(opts) {
-      const endPoint = "markMessage";
-      const requestParams = {
-        method: "POST",
-        data: JSON.stringify(opts),
-      };
-      const request = await call(endPoint, requestParams);
-      if (!request.success) {
-        throw `Request Failed. Request Response: ${request.message}`;
-      }
-      return request;
+    markMessage(opts) {
+      return handleRequest("markMessage", opts);
     },
 
     /**
@@ -312,17 +187,8 @@ export default function CascadeAPI({ apiKey, url }) {
      * @param {Requests.deleteMessageRequest} opts - The starting object container.
      * @return {Promise<Requests.deleteMessageResponse>}
      */
-    async deleteMessage(opts) {
-      const endPoint = "deleteMessage";
-      const requestParams = {
-        method: "POST",
-        data: JSON.stringify(opts),
-      };
-      const request = await call(endPoint, requestParams);
-      if (!request.success) {
-        throw `Request Failed. Request Response: ${request.message}`;
-      }
-      return request;
+    deleteMessage(opts) {
+      return handleRequest("deleteMessage", opts);
     },
 
     /**
@@ -331,17 +197,8 @@ export default function CascadeAPI({ apiKey, url }) {
      * @param {Requests.checkOutRequest} opts - The starting object container.
      * @return {Promise<Requests.checkOutResponse>}
      */
-    async checkOut(opts) {
-      const endPoint = "checkOut";
-      const requestParams = {
-        method: "POST",
-        data: JSON.stringify(opts),
-      };
-      const request = await call(endPoint, requestParams);
-      if (!request.success) {
-        throw `Request Failed. Request Response: ${request.message}`;
-      }
-      return request;
+    checkOut(opts) {
+      return handleRequest("checkOut", opts);
     },
 
     /**
@@ -350,17 +207,8 @@ export default function CascadeAPI({ apiKey, url }) {
      * @param {Requests.checkInRequest} opts - The starting object container.
      * @return {Promise<Requests.checkInResponse>}
      */
-    async checkIn(opts) {
-      const endPoint = "checkIn";
-      const requestParams = {
-        method: "POST",
-        data: JSON.stringify(opts),
-      };
-      const request = await call(endPoint, requestParams);
-      if (!request.success) {
-        throw `Request Failed. Request Response: ${request.message}`;
-      }
-      return request;
+    checkIn(opts) {
+      return handleRequest("checkIn", opts);
     },
 
     /**
@@ -369,17 +217,8 @@ export default function CascadeAPI({ apiKey, url }) {
      * @param {Requests.listSitesRequest} opts - The starting object container.
      * @return {Promise<Requests.listSitesResponse>}
      */
-    async listSites(opts) {
-      const endPoint = "listSites";
-      const requestParams = {
-        method: "POST",
-        data: JSON.stringify(opts),
-      };
-      const request = await call(endPoint, requestParams);
-      if (!request.success) {
-        throw `Request Failed. Request Response: ${request.message}`;
-      }
-      return request;
+    listSites(opts) {
+      return handleRequest("listSites", opts);
     },
 
     /**
@@ -388,17 +227,8 @@ export default function CascadeAPI({ apiKey, url }) {
      * @param {Requests.readAuditsRequest} opts - The starting object container.
      * @return {Promise<Requests.readAuditsResponse>}
      */
-    async readAudits(opts) {
-      const endPoint = "readAudits";
-      const requestParams = {
-        method: "POST",
-        data: JSON.stringify(opts),
-      };
-      const request = await call(endPoint, requestParams);
-      if (!request.success) {
-        throw `Request Failed. Request Response: ${request.message}`;
-      }
-      return request;
+    readAudits(opts) {
+      return handleRequest("readAudits", opts);
     },
 
     /**
@@ -407,17 +237,8 @@ export default function CascadeAPI({ apiKey, url }) {
      * @param {Requests.readWorkflowInformationRequest} opts - The starting object container.
      * @return {Promise<Requests.readWorkflowInformationResponse>}
      */
-    async readWorkflowInformation(opts) {
-      const endPoint = "readWorkflowInformation";
-      const requestParams = {
-        method: "POST",
-        data: JSON.stringify(opts),
-      };
-      const request = await call(endPoint, requestParams);
-      if (!request.success) {
-        throw `Request Failed. Request Response: ${request.message}`;
-      }
-      return request;
+    readWorkflowInformation(opts) {
+      return handleRequest("readWorkflowInformation", opts);
     },
 
     /**
@@ -426,17 +247,8 @@ export default function CascadeAPI({ apiKey, url }) {
      * @param {Requests.performWorkflowTransitionRequest} opts - The starting object container.
      * @return {Promise<Requests.performWorkflowTransitionResponse>}
      */
-    async performWorkflowTransition(opts) {
-      const endPoint = "performWorkflowTransition";
-      const requestParams = {
-        method: "POST",
-        data: JSON.stringify(opts),
-      };
-      const request = await call(endPoint, requestParams);
-      if (!request.success) {
-        throw `Request Failed. Request Response: ${request.message}`;
-      }
-      return request;
+    performWorkflowTransition(opts) {
+      return handleRequest("performWorkflowTransition", opts);
     },
 
     /**
@@ -445,17 +257,8 @@ export default function CascadeAPI({ apiKey, url }) {
      * @param {Requests.readPreferencesRequest} opts - The starting object container.
      * @return {Promise<Requests.readPreferencesResponse>}
      */
-    async readPreferences(opts) {
-      const endPoint = "readPreferences";
-      const requestParams = {
-        method: "POST",
-        data: JSON.stringify(opts),
-      };
-      const request = await call(endPoint, requestParams);
-      if (!request.success) {
-        throw `Request Failed. Request Response: ${request.message}`;
-      }
-      return request;
+    readPreferences(opts) {
+      return handleRequest("readPreferences", opts);
     },
 
     /**
@@ -464,17 +267,8 @@ export default function CascadeAPI({ apiKey, url }) {
      * @param {Requests.publishUnpublishRequest} opts - The starting object container.
      * @return {Promise<Requests.publishUnpublishResponse>}
      */
-    async publishUnpublish(opts) {
-      const endPoint = "publish";
-      const requestParams = {
-        method: "POST",
-        data: JSON.stringify(opts),
-      };
-      const request = await call(endPoint, requestParams);
-      if (!request.success) {
-        throw `Request Failed. Request Response: ${request.message}`;
-      }
-      return request;
+    publishUnpublish(opts) {
+      return handleRequest("publish", opts);
     },
   };
 }

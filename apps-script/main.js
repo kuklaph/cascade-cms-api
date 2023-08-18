@@ -2465,584 +2465,260 @@ function CascadeAPI_({ apiKey, url }) {
     const parsed = JSON.parse(request);
     return parsed;
   };
+  const handleRequest = (endPoint, opts, method = "POST") => {
+    try {
+      const requestParams = {
+        method,
+        data: JSON.stringify(opts),
+      };
+      const request = call(endPoint, requestParams);
+      if (!request.success) {
+        throw `Request Failed. Request Response: ${request.message}`;
+      }
+      return request;
+    } catch (error) {
+      console.error(error);
+    }
+  };
   return {
     /**
      * read operation.
      *
-     * @param {readRequest} opts - The starting object container.
-     * @param {Boolean} [muteHttpExceptions] - Optional: Whether or not to mute http exceptions
-     * @return {readResponse}
+     * @param {Requests.readRequest} opts - The starting object container.
+     * @return {Promise<Requests.readResponse>}
      */
-    read(
-      opts,
-      // Apps Script Specific
-      muteHttpExceptions = false
-    ) {
-      const endPoint = `read`;
-      const requestParams = {
-        method: "POST",
-        muteHttpExceptions,
-        payload: JSON.stringify(opts),
-      };
-      const request = call(endPoint, requestParams);
-      if (!request.success) {
-        throw `Request Failed. Request Response: ${request.message}`;
-      }
-      return request;
+    read(opts) {
+      return handleRequest("read", opts);
     },
+
     /**
      * removal operation.
      *
-     * @param {removeRequest} opts - The starting object container.
-     * @param {Boolean} [muteHttpExceptions] - Optional: Whether or not to mute http exceptions
-     * @return {removeResponse}
+     * @param {Requests.removeRequest} opts - The starting object container.
+     * @return {Promise<Requests.removeResponse>}
      */
-    remove(
-      opts,
-      // Apps Script Specific
-      muteHttpExceptions = false
-    ) {
-      // Delete
-      const endPoint = `delete`;
-      const requestParams = {
-        method: "POST",
-        muteHttpExceptions,
-        payload: JSON.stringify(opts),
-      };
-      const request = call(endPoint, requestParams);
-      if (!request.success) {
-        throw `Request Failed. Request Response: ${request.message}`;
-      }
-      return request;
+    remove(opts) {
+      return handleRequest("delete", opts);
     },
+
     /**
      * edit operation.
      *
-     * @param {editRequest} opts - The starting object container.
-     * @param {Boolean} [muteHttpExceptions] - Optional: Whether or not to mute http exceptions
-     * @return {editResponse}
+     * @param {Requests.editRequest} opts - The starting object container.
+     * @return {Promise<Requests.editResponse>}
      */
-    edit(
-      opts,
-      // Apps Script Specific
-      muteHttpExceptions = false
-    ) {
-      const endPoint = `edit`;
-      const requestParams = {
-        method: "POST",
-        muteHttpExceptions,
-        payload: JSON.stringify(opts),
-      };
-      const request = call(endPoint, requestParams);
-      if (!request.success) {
-        throw `Request Failed. Request Response: ${request.message}`;
-      }
-      return request;
+    edit(opts) {
+      return handleRequest("edit", opts);
     },
+
     /**
      * create operation.
      *
-     * @param {createRequest} opts - The starting object container.
-     * @param {Boolean} [muteHttpExceptions] - Optional: Whether or not to mute http exceptions
-     * @return {createResponse}
+     * @param {Requests.createRequest} opts - The starting object container.
+     * @return {Promise<Requests.createResponse>}
      */
-    create(
-      opts,
-      // Apps Script Specific
-      muteHttpExceptions = false
-    ) {
-      const endPoint = `create`;
-      const requestParams = {
-        method: "POST",
-        muteHttpExceptions,
-        payload: JSON.stringify(opts),
-      };
-      const request = call(endPoint, requestParams);
-      if (!request.success) {
-        throw `Request Failed. Request Response: ${request.message}`;
-      }
-      return request;
+    create(opts) {
+      return handleRequest("create", opts);
     },
+
     /**
      * move operation.
      *
-     * @param {moveRequest} opts - The starting object container.
-     * @param {Boolean} [muteHttpExceptions] - Optional: Whether or not to mute http exceptions
-     * @return {moveResponse}
+     * @param {Requests.moveRequest} opts - The starting object container.
+     * @return {Promise<Requests.moveResponse>}
      */
-    move(
-      opts,
-      // Apps Script Specific
-      muteHttpExceptions = false
-    ) {
-      const endPoint = `move`;
-      const requestParams = {
-        method: "POST",
-        muteHttpExceptions,
-        payload: JSON.stringify(opts),
-      };
-      const request = call(endPoint, requestParams);
-      if (!request.success) {
-        throw `Request Failed. Request Response: ${request.message}`;
-      }
-      return request;
+    move(opts) {
+      return handleRequest("move", opts);
     },
+
     /**
      * search operation.
      *
-     * @param {searchRequest} opts - The starting object container.
-     * @param {Boolean} [muteHttpExceptions] - Optional: Whether or not to mute http exceptions
-     * @return {searchResponse}
+     * @param {Requests.searchRequest} opts - The starting object container.
+     * @return {Promise<Requests.searchResponse>}
      */
-    search(
-      opts,
-      // Apps Script Specific
-      muteHttpExceptions = false
-    ) {
-      const endPoint = "search";
-      const requestParams = {
-        method: "POST",
-        muteHttpExceptions,
-        payload: JSON.stringify(opts),
-      };
-      const request = call(endPoint, requestParams);
-      if (!request.success) {
-        throw `Request Failed. Request Response: ${request.message}`;
-      }
-      return request;
+    search(opts) {
+      return handleRequest("search", opts);
     },
+
     /**
      * copy operation.
      *
-     * @param {copyRequest} opts - The starting object container.
-     * @param {Boolean} [muteHttpExceptions] - Optional: Whether or not to mute http exceptions
-     * @return {copyResponse}
+     * @param {Requests.copyRequest} opts - The starting object container.
+     * @return {Promise<Requests.copyResponse>}
      */
-    copy(
-      opts,
-      // Apps Script Specific
-      muteHttpExceptions = false
-    ) {
-      const endPoint = "copy";
-      const requestParams = {
-        method: "POST",
-        muteHttpExceptions,
-        payload: JSON.stringify(opts),
-      };
-      const request = call(endPoint, requestParams);
-      if (!request.success) {
-        throw `Request Failed. Request Response: ${request.message}`;
-      }
-      return request;
+    copy(opts) {
+      return handleRequest("copy", opts);
     },
+
     /**
      * siteCopy operation.
      *
-     * @param {siteCopyRequest} opts - The starting object container.
-     * @param {Boolean} [muteHttpExceptions] - Optional: Whether or not to mute http exceptions
-     * @return {siteCopyResponse}
+     * @param {Requests.siteCopyRequest} opts - The starting object container.
+     * @return {Promise<Requests.siteCopyResponse>}
      */
-    siteCopy(
-      opts,
-      // Apps Script Specific
-      muteHttpExceptions = false
-    ) {
-      const endPoint = "siteCopy";
-      const requestParams = {
-        method: "POST",
-        muteHttpExceptions,
-        payload: JSON.stringify(opts),
-      };
-      const request = call(endPoint, requestParams);
-      if (!request.success) {
-        throw `Request Failed. Request Response: ${request.message}`;
-      }
-      return request;
+    siteCopy(opts) {
+      return handleRequest("siteCopy", opts);
     },
+
     /**
      * readAccessRights operation.
      *
-     * @param {readAccessRightsRequest} opts - The starting object container.
-     * @param {Boolean} [muteHttpExceptions] - Optional: Whether or not to mute http exceptions
-     * @return {readAccessRightsResponse}
+     * @param {Requests.readAccessRightsRequest} opts - The starting object container.
+     * @return {Promise<Requests.readAccessRightsResponse>}
      */
-    readAccessRights(
-      opts,
-      // Apps Script Specific
-      muteHttpExceptions = false
-    ) {
-      const endPoint = "readAccessRights";
-      const requestParams = {
-        method: "POST",
-        muteHttpExceptions,
-        payload: JSON.stringify(opts),
-      };
-      const request = call(endPoint, requestParams);
-      if (!request.success) {
-        throw `Request Failed. Request Response: ${request.message}`;
-      }
-      return request;
+    readAccessRights(opts) {
+      return handleRequest("readAccessRights", opts);
     },
+
     /**
      * editAccessRights operation.
      *
-     * @param {editAccessRightsRequest} opts - The starting object container.
-     * @param {Boolean} [muteHttpExceptions] - Optional: Whether or not to mute http exceptions
-     * @return {editAccessRightsResponse}
+     * @param {Requests.editAccessRightsRequest} opts - The starting object container.
+     * @return {Promise<Requests.editAccessRightsResponse>}
      */
-    editAccessRights(
-      opts,
-      // Apps Script Specific
-      muteHttpExceptions = false
-    ) {
-      const endPoint = "editAccessRights";
-      const requestParams = {
-        method: "POST",
-        muteHttpExceptions,
-        payload: JSON.stringify(opts),
-      };
-      const request = call(endPoint, requestParams);
-      if (!request.success) {
-        throw `Request Failed. Request Response: ${request.message}`;
-      }
-      return request;
+    editAccessRights(opts) {
+      return handleRequest("editAccessRights", opts);
     },
+
     /**
      * readWorkflowSettings operation.
      *
-     * @param {readWorkflowSettingsRequest} opts - The starting object container.
-     * @param {Boolean} [muteHttpExceptions] - Optional: Whether or not to mute http exceptions
-     * @return {readWorkflowSettingsResponse}
+     * @param {Requests.readWorkflowSettingsRequest} opts - The starting object container.
+     * @return {Promise<Requests.readWorkflowSettingsResponse>}
      */
-    readWorkflowSettings(
-      opts,
-      // Apps Script Specific
-      muteHttpExceptions = false
-    ) {
-      const endPoint = "readWorkflowSettings";
-      const requestParams = {
-        method: "POST",
-        muteHttpExceptions,
-        payload: JSON.stringify(opts),
-      };
-      const request = call(endPoint, requestParams);
-      if (!request.success) {
-        throw `Request Failed. Request Response: ${request.message}`;
-      }
-      return request;
+    readWorkflowSettings(opts) {
+      return handleRequest("readWorkflowSettings", opts);
     },
+
     /**
      * editWorkflowSettings operation.
      *
-     * @param {editWorkflowSettingsRequest} opts - The starting object container.
-     * @param {Boolean} [muteHttpExceptions] - Optional: Whether or not to mute http exceptions
-     * @return {editWorkflowSettingsResponse}
+     * @param {Requests.editWorkflowSettingsRequest} opts - The starting object container.
+     * @return {Promise<Requests.editWorkflowSettingsResponse>}
      */
-    editWorkflowSettings(
-      opts,
-      // Apps Script Specific
-      muteHttpExceptions = false
-    ) {
-      const endPoint = "editWorkflowSettings";
-      const requestParams = {
-        method: "POST",
-        muteHttpExceptions,
-        payload: JSON.stringify(opts),
-      };
-      const request = call(endPoint, requestParams);
-      if (!request.success) {
-        throw `Request Failed. Request Response: ${request.message}`;
-      }
-      return request;
+    editWorkflowSettings(opts) {
+      return handleRequest("editWorkflowSettings", opts);
     },
+
     /**
      * listSubscribers operation.
      *
-     * @param {listSubscribersRequest} opts - The starting object container.
-     * @param {Boolean} [muteHttpExceptions] - Optional: Whether or not to mute http exceptions
-     * @return {listSubscribersResponse}
+     * @param {Requests.listSubscribersRequest} opts - The starting object container.
+     * @return {Promise<Requests.listSubscribersResponse>}
      */
-    listSubscribers(
-      opts,
-      // Apps Script Specific
-      muteHttpExceptions = false
-    ) {
-      const endPoint = "listSubscribers";
-      const requestParams = {
-        method: "POST",
-        muteHttpExceptions,
-        payload: JSON.stringify(opts),
-      };
-      const request = call(endPoint, requestParams);
-      if (!request.success) {
-        throw `Request Failed. Request Response: ${request.message}`;
-      }
-      return request;
+    listSubscribers(opts) {
+      return handleRequest("listSubscribers", opts);
     },
+
     /**
      * listMessages operation.
      *
-     * @param {listMessagesRequest} opts - The starting object container.
-     * @param {Boolean} [muteHttpExceptions] - Optional: Whether or not to mute http exceptions
-     * @return {listMessagesResponse}
+     * @param {Requests.listMessagesRequest} opts - The starting object container.
+     * @return {Promise<Requests.listMessagesResponse>}
      */
-    listMessages(
-      opts,
-      // Apps Script Specific
-      muteHttpExceptions = false
-    ) {
-      const endPoint = "listMessages";
-      const requestParams = {
-        method: "POST",
-        muteHttpExceptions,
-        payload: JSON.stringify(opts),
-      };
-      const request = call(endPoint, requestParams);
-      if (!request.success) {
-        throw `Request Failed. Request Response: ${request.message}`;
-      }
-      return request;
+    listMessages(opts) {
+      return handleRequest("listMessages", opts);
     },
+
     /**
      * markMessage operation.
      *
-     * @param {markMessageRequest} opts - The starting object container.
-     * @param {Boolean} [muteHttpExceptions] - Optional: Whether or not to mute http exceptions
-     * @return {markMessageResponse}
+     * @param {Requests.markMessageRequest} opts - The starting object container.
+     * @return {Promise<Requests.markMessageResponse>}
      */
-    markMessage(
-      opts,
-      // Apps Script Specific
-      muteHttpExceptions = false
-    ) {
-      const endPoint = "markMessage";
-      const requestParams = {
-        method: "POST",
-        muteHttpExceptions,
-        payload: JSON.stringify(opts),
-      };
-      const request = call(endPoint, requestParams);
-      if (!request.success) {
-        throw `Request Failed. Request Response: ${request.message}`;
-      }
-      return request;
+    markMessage(opts) {
+      return handleRequest("markMessage", opts);
     },
+
     /**
      * deleteMessage operation.
      *
-     * @param {deleteMessageRequest} opts - The starting object container.
-     * @param {Boolean} [muteHttpExceptions] - Optional: Whether or not to mute http exceptions
-     * @return {deleteMessageResponse}
+     * @param {Requests.deleteMessageRequest} opts - The starting object container.
+     * @return {Promise<Requests.deleteMessageResponse>}
      */
-    deleteMessage(
-      opts,
-      // Apps Script Specific
-      muteHttpExceptions = false
-    ) {
-      const endPoint = "deleteMessage";
-      const requestParams = {
-        method: "POST",
-        muteHttpExceptions,
-        payload: JSON.stringify(opts),
-      };
-      const request = call(endPoint, requestParams);
-      if (!request.success) {
-        throw `Request Failed. Request Response: ${request.message}`;
-      }
-      return request;
+    deleteMessage(opts) {
+      return handleRequest("deleteMessage", opts);
     },
+
     /**
      * checkOut operation.
      *
-     * @param {checkOutRequest} opts - The starting object container.
-     * @param {Boolean} [muteHttpExceptions] - Optional: Whether or not to mute http exceptions
-     * @return {checkOutResponse}
+     * @param {Requests.checkOutRequest} opts - The starting object container.
+     * @return {Promise<Requests.checkOutResponse>}
      */
-    checkOut(
-      opts,
-      // Apps Script Specific
-      muteHttpExceptions = false
-    ) {
-      const endPoint = "checkOut";
-      const requestParams = {
-        method: "POST",
-        muteHttpExceptions,
-        payload: JSON.stringify(opts),
-      };
-      const request = call(endPoint, requestParams);
-      if (!request.success) {
-        throw `Request Failed. Request Response: ${request.message}`;
-      }
-      return request;
+    checkOut(opts) {
+      return handleRequest("checkOut", opts);
     },
+
     /**
      * checkIn operation.
      *
-     * @param {checkInRequest} opts - The starting object container.
-     * @param {Boolean} [muteHttpExceptions] - Optional: Whether or not to mute http exceptions
-     * @return {checkInResponse}
+     * @param {Requests.checkInRequest} opts - The starting object container.
+     * @return {Promise<Requests.checkInResponse>}
      */
-    checkIn(
-      opts,
-      // Apps Script Specific
-      muteHttpExceptions = false
-    ) {
-      const endPoint = "checkIn";
-      const requestParams = {
-        method: "POST",
-        muteHttpExceptions,
-        payload: JSON.stringify(opts),
-      };
-      const request = call(endPoint, requestParams);
-      if (!request.success) {
-        throw `Request Failed. Request Response: ${request.message}`;
-      }
-      return request;
+    checkIn(opts) {
+      return handleRequest("checkIn", opts);
     },
+
     /**
      * listSites operation.
      *
-     * @param {listSitesRequest} opts - The starting object container.
-     * @param {Boolean} [muteHttpExceptions] - Optional: Whether or not to mute http exceptions
-     * @return {listSitesResponse}
+     * @param {Requests.listSitesRequest} opts - The starting object container.
+     * @return {Promise<Requests.listSitesResponse>}
      */
-    listSites(
-      opts,
-      // Apps Script Specific
-      muteHttpExceptions = false
-    ) {
-      const endPoint = "listSites";
-      const requestParams = {
-        method: "POST",
-        muteHttpExceptions,
-        payload: JSON.stringify(opts),
-      };
-      const request = call(endPoint, requestParams);
-      if (!request.success) {
-        throw `Request Failed. Request Response: ${request.message}`;
-      }
-      return request;
+    listSites(opts) {
+      return handleRequest("listSites", opts);
     },
+
     /**
      * readAudits operation.
      *
-     * @param {readAuditsRequest} opts - The starting object container.
-     * @param {Boolean} [muteHttpExceptions] - Optional: Whether or not to mute http exceptions
-     * @return {readAuditsResponse}
+     * @param {Requests.readAuditsRequest} opts - The starting object container.
+     * @return {Promise<Requests.readAuditsResponse>}
      */
-    readAudits(
-      opts,
-      // Apps Script Specific
-      muteHttpExceptions = false
-    ) {
-      const endPoint = "readAudits";
-      const requestParams = {
-        method: "POST",
-        muteHttpExceptions,
-        payload: JSON.stringify(opts),
-      };
-      const request = call(endPoint, requestParams);
-      if (!request.success) {
-        throw `Request Failed. Request Response: ${request.message}`;
-      }
-      return request;
+    readAudits(opts) {
+      return handleRequest("readAudits", opts);
     },
+
     /**
      * readWorkflowInformation operation.
      *
-     * @param {readWorkflowInformationRequest} opts - The starting object container.
-     * @param {Boolean} [muteHttpExceptions] - Optional: Whether or not to mute http exceptions
-     * @return {readWorkflowInformationResponse}
+     * @param {Requests.readWorkflowInformationRequest} opts - The starting object container.
+     * @return {Promise<Requests.readWorkflowInformationResponse>}
      */
-    readWorkflowInformation(
-      opts,
-      // Apps Script Specific
-      muteHttpExceptions = false
-    ) {
-      const endPoint = "readWorkflowInformation";
-      const requestParams = {
-        method: "POST",
-        muteHttpExceptions,
-        payload: JSON.stringify(opts),
-      };
-      const request = call(endPoint, requestParams);
-      if (!request.success) {
-        throw `Request Failed. Request Response: ${request.message}`;
-      }
-      return request;
+    readWorkflowInformation(opts) {
+      return handleRequest("readWorkflowInformation", opts);
     },
+
     /**
      * performWorkflowTransition operation.
      *
-     * @param {performWorkflowTransitionRequest} opts - The starting object container.
-     * @param {Boolean} [muteHttpExceptions] - Optional: Whether or not to mute http exceptions
-     * @return {performWorkflowTransitionResponse}
+     * @param {Requests.performWorkflowTransitionRequest} opts - The starting object container.
+     * @return {Promise<Requests.performWorkflowTransitionResponse>}
      */
-    performWorkflowTransition(
-      opts,
-      // Apps Script Specific
-      muteHttpExceptions = false
-    ) {
-      const endPoint = "performWorkflowTransition";
-      const requestParams = {
-        method: "POST",
-        muteHttpExceptions,
-        payload: JSON.stringify(opts),
-      };
-      const request = call(endPoint, requestParams);
-      if (!request.success) {
-        throw `Request Failed. Request Response: ${request.message}`;
-      }
-      return request;
+    performWorkflowTransition(opts) {
+      return handleRequest("performWorkflowTransition", opts);
     },
+
     /**
      * readPreferences operation.
      *
-     * @param {readPreferencesRequest} opts - The starting object container.
-     * @param {Boolean} [muteHttpExceptions] - Optional: Whether or not to mute http exceptions
-     * @return {readPreferencesResponse}
+     * @param {Requests.readPreferencesRequest} opts - The starting object container.
+     * @return {Promise<Requests.readPreferencesResponse>}
      */
-    readPreferences(
-      opts,
-      // Apps Script Specific
-      muteHttpExceptions = false
-    ) {
-      const endPoint = "readPreferences";
-      const requestParams = {
-        method: "POST",
-        muteHttpExceptions,
-        payload: JSON.stringify(opts),
-      };
-      const request = call(endPoint, requestParams);
-      if (!request.success) {
-        throw `Request Failed. Request Response: ${request.message}`;
-      }
-      return request;
+    readPreferences(opts) {
+      return handleRequest("readPreferences", opts);
     },
 
     /**
      * publishUnpublish operation.
      *
-     * @param {publishUnpublishRequest} opts - The starting object container.
-     * @param {Boolean} [muteHttpExceptions] - Optional: Whether or not to mute http exceptions
-     * @return {publishUnpublishResponse}
+     * @param {Requests.publishUnpublishRequest} opts - The starting object container.
+     * @return {Promise<Requests.publishUnpublishResponse>}
      */
-    publishUnpublish(
-      opts,
-      // Apps Script Specific
-      muteHttpExceptions = false
-    ) {
-      const endPoint = "publish";
-      const requestParams = {
-        method: "POST",
-        muteHttpExceptions,
-        payload: JSON.stringify(opts),
-      };
-      const request = call(endPoint, requestParams);
-      if (!request.success) {
-        throw `Request Failed. Request Response: ${request.message}`;
-      }
-      return request;
+    publishUnpublish(opts) {
+      return handleRequest("publish", opts);
     },
   };
 }
