@@ -2469,7 +2469,7 @@ function CascadeAPI_({ apiKey, url }) {
     try {
       const requestParams = {
         method,
-        data: JSON.stringify(opts),
+        payload: JSON.stringify(opts),
       };
       const request = call(endPoint, requestParams);
       if (!request.success) {
@@ -2484,8 +2484,9 @@ function CascadeAPI_({ apiKey, url }) {
     /**
      * read operation.
      *
-     * @param {Requests.readRequest} opts - The starting object container.
-     * @return {Promise<Requests.readResponse>}
+     * @param {readRequest} opts - The starting object container.
+     * @param {Boolean} [muteHttpExceptions] - Optional: Whether or not to mute http exceptions
+     * @return {readResponse}
      */
     read(opts) {
       return handleRequest("read", opts);
@@ -2494,8 +2495,9 @@ function CascadeAPI_({ apiKey, url }) {
     /**
      * removal operation.
      *
-     * @param {Requests.removeRequest} opts - The starting object container.
-     * @return {Promise<Requests.removeResponse>}
+     * @param {removeRequest} opts - The starting object container.
+     * @param {Boolean} [muteHttpExceptions] - Optional: Whether or not to mute http exceptions
+     * @return {removeResponse}
      */
     remove(opts) {
       return handleRequest("delete", opts);
@@ -2504,8 +2506,9 @@ function CascadeAPI_({ apiKey, url }) {
     /**
      * edit operation.
      *
-     * @param {Requests.editRequest} opts - The starting object container.
-     * @return {Promise<Requests.editResponse>}
+     * @param {editRequest} opts - The starting object container.
+     * @param {Boolean} [muteHttpExceptions] - Optional: Whether or not to mute http exceptions
+     * @return {editResponse}
      */
     edit(opts) {
       return handleRequest("edit", opts);
@@ -2514,8 +2517,9 @@ function CascadeAPI_({ apiKey, url }) {
     /**
      * create operation.
      *
-     * @param {Requests.createRequest} opts - The starting object container.
-     * @return {Promise<Requests.createResponse>}
+     * @param {createRequest} opts - The starting object container.
+     * @param {Boolean} [muteHttpExceptions] - Optional: Whether or not to mute http exceptions
+     * @return {createResponse}
      */
     create(opts) {
       return handleRequest("create", opts);
@@ -2524,8 +2528,9 @@ function CascadeAPI_({ apiKey, url }) {
     /**
      * move operation.
      *
-     * @param {Requests.moveRequest} opts - The starting object container.
-     * @return {Promise<Requests.moveResponse>}
+     * @param {moveRequest} opts - The starting object container.
+     * @param {Boolean} [muteHttpExceptions] - Optional: Whether or not to mute http exceptions
+     * @return {moveResponse}
      */
     move(opts) {
       return handleRequest("move", opts);
@@ -2534,8 +2539,9 @@ function CascadeAPI_({ apiKey, url }) {
     /**
      * search operation.
      *
-     * @param {Requests.searchRequest} opts - The starting object container.
-     * @return {Promise<Requests.searchResponse>}
+     * @param {searchRequest} opts - The starting object container.
+     * @param {Boolean} [muteHttpExceptions] - Optional: Whether or not to mute http exceptions
+     * @return {searchResponse}
      */
     search(opts) {
       return handleRequest("search", opts);
@@ -2544,8 +2550,9 @@ function CascadeAPI_({ apiKey, url }) {
     /**
      * copy operation.
      *
-     * @param {Requests.copyRequest} opts - The starting object container.
-     * @return {Promise<Requests.copyResponse>}
+     * @param {copyRequest} opts - The starting object container.
+     * @param {Boolean} [muteHttpExceptions] - Optional: Whether or not to mute http exceptions
+     * @return {copyResponse}
      */
     copy(opts) {
       return handleRequest("copy", opts);
@@ -2554,8 +2561,9 @@ function CascadeAPI_({ apiKey, url }) {
     /**
      * siteCopy operation.
      *
-     * @param {Requests.siteCopyRequest} opts - The starting object container.
-     * @return {Promise<Requests.siteCopyResponse>}
+     * @param {siteCopyRequest} opts - The starting object container.
+     * @param {Boolean} [muteHttpExceptions] - Optional: Whether or not to mute http exceptions
+     * @return {siteCopyResponse}
      */
     siteCopy(opts) {
       return handleRequest("siteCopy", opts);
@@ -2564,8 +2572,9 @@ function CascadeAPI_({ apiKey, url }) {
     /**
      * readAccessRights operation.
      *
-     * @param {Requests.readAccessRightsRequest} opts - The starting object container.
-     * @return {Promise<Requests.readAccessRightsResponse>}
+     * @param {readAccessRightsRequest} opts - The starting object container.
+     * @param {Boolean} [muteHttpExceptions] - Optional: Whether or not to mute http exceptions
+     * @return {readAccessRightsResponse}
      */
     readAccessRights(opts) {
       return handleRequest("readAccessRights", opts);
@@ -2574,8 +2583,9 @@ function CascadeAPI_({ apiKey, url }) {
     /**
      * editAccessRights operation.
      *
-     * @param {Requests.editAccessRightsRequest} opts - The starting object container.
-     * @return {Promise<Requests.editAccessRightsResponse>}
+     * @param {editAccessRightsRequest} opts - The starting object container.
+     * @param {Boolean} [muteHttpExceptions] - Optional: Whether or not to mute http exceptions
+     * @return {editAccessRightsResponse}
      */
     editAccessRights(opts) {
       return handleRequest("editAccessRights", opts);
@@ -2584,8 +2594,9 @@ function CascadeAPI_({ apiKey, url }) {
     /**
      * readWorkflowSettings operation.
      *
-     * @param {Requests.readWorkflowSettingsRequest} opts - The starting object container.
-     * @return {Promise<Requests.readWorkflowSettingsResponse>}
+     * @param {readWorkflowSettingsRequest} opts - The starting object container.
+     * @param {Boolean} [muteHttpExceptions] - Optional: Whether or not to mute http exceptions
+     * @return {readWorkflowSettingsResponse}
      */
     readWorkflowSettings(opts) {
       return handleRequest("readWorkflowSettings", opts);
@@ -2594,8 +2605,9 @@ function CascadeAPI_({ apiKey, url }) {
     /**
      * editWorkflowSettings operation.
      *
-     * @param {Requests.editWorkflowSettingsRequest} opts - The starting object container.
-     * @return {Promise<Requests.editWorkflowSettingsResponse>}
+     * @param {editWorkflowSettingsRequest} opts - The starting object container.
+     * @param {Boolean} [muteHttpExceptions] - Optional: Whether or not to mute http exceptions
+     * @return {editWorkflowSettingsResponse}
      */
     editWorkflowSettings(opts) {
       return handleRequest("editWorkflowSettings", opts);
@@ -2604,8 +2616,9 @@ function CascadeAPI_({ apiKey, url }) {
     /**
      * listSubscribers operation.
      *
-     * @param {Requests.listSubscribersRequest} opts - The starting object container.
-     * @return {Promise<Requests.listSubscribersResponse>}
+     * @param {listSubscribersRequest} opts - The starting object container.
+     * @param {Boolean} [muteHttpExceptions] - Optional: Whether or not to mute http exceptions
+     * @return {listSubscribersResponse}
      */
     listSubscribers(opts) {
       return handleRequest("listSubscribers", opts);
@@ -2614,8 +2627,9 @@ function CascadeAPI_({ apiKey, url }) {
     /**
      * listMessages operation.
      *
-     * @param {Requests.listMessagesRequest} opts - The starting object container.
-     * @return {Promise<Requests.listMessagesResponse>}
+     * @param {listMessagesRequest} opts - The starting object container.
+     * @param {Boolean} [muteHttpExceptions] - Optional: Whether or not to mute http exceptions
+     * @return {listMessagesResponse}
      */
     listMessages(opts) {
       return handleRequest("listMessages", opts);
@@ -2624,8 +2638,9 @@ function CascadeAPI_({ apiKey, url }) {
     /**
      * markMessage operation.
      *
-     * @param {Requests.markMessageRequest} opts - The starting object container.
-     * @return {Promise<Requests.markMessageResponse>}
+     * @param {markMessageRequest} opts - The starting object container.
+     * @param {Boolean} [muteHttpExceptions] - Optional: Whether or not to mute http exceptions
+     * @return {markMessageResponse}
      */
     markMessage(opts) {
       return handleRequest("markMessage", opts);
@@ -2634,8 +2649,9 @@ function CascadeAPI_({ apiKey, url }) {
     /**
      * deleteMessage operation.
      *
-     * @param {Requests.deleteMessageRequest} opts - The starting object container.
-     * @return {Promise<Requests.deleteMessageResponse>}
+     * @param {deleteMessageRequest} opts - The starting object container.
+     * @param {Boolean} [muteHttpExceptions] - Optional: Whether or not to mute http exceptions
+     * @return {deleteMessageResponse}
      */
     deleteMessage(opts) {
       return handleRequest("deleteMessage", opts);
@@ -2644,8 +2660,9 @@ function CascadeAPI_({ apiKey, url }) {
     /**
      * checkOut operation.
      *
-     * @param {Requests.checkOutRequest} opts - The starting object container.
-     * @return {Promise<Requests.checkOutResponse>}
+     * @param {checkOutRequest} opts - The starting object container.
+     * @param {Boolean} [muteHttpExceptions] - Optional: Whether or not to mute http exceptions
+     * @return {checkOutResponse}
      */
     checkOut(opts) {
       return handleRequest("checkOut", opts);
@@ -2654,8 +2671,9 @@ function CascadeAPI_({ apiKey, url }) {
     /**
      * checkIn operation.
      *
-     * @param {Requests.checkInRequest} opts - The starting object container.
-     * @return {Promise<Requests.checkInResponse>}
+     * @param {checkInRequest} opts - The starting object container.
+     * @param {Boolean} [muteHttpExceptions] - Optional: Whether or not to mute http exceptions
+     * @return {checkInResponse}
      */
     checkIn(opts) {
       return handleRequest("checkIn", opts);
@@ -2664,8 +2682,9 @@ function CascadeAPI_({ apiKey, url }) {
     /**
      * listSites operation.
      *
-     * @param {Requests.listSitesRequest} opts - The starting object container.
-     * @return {Promise<Requests.listSitesResponse>}
+     * @param {listSitesRequest} opts - The starting object container.
+     * @param {Boolean} [muteHttpExceptions] - Optional: Whether or not to mute http exceptions
+     * @return {listSitesResponse}
      */
     listSites(opts) {
       return handleRequest("listSites", opts);
@@ -2674,8 +2693,9 @@ function CascadeAPI_({ apiKey, url }) {
     /**
      * readAudits operation.
      *
-     * @param {Requests.readAuditsRequest} opts - The starting object container.
-     * @return {Promise<Requests.readAuditsResponse>}
+     * @param {readAuditsRequest} opts - The starting object container.
+     * @param {Boolean} [muteHttpExceptions] - Optional: Whether or not to mute http exceptions
+     * @return {readAuditsResponse}
      */
     readAudits(opts) {
       return handleRequest("readAudits", opts);
@@ -2684,8 +2704,9 @@ function CascadeAPI_({ apiKey, url }) {
     /**
      * readWorkflowInformation operation.
      *
-     * @param {Requests.readWorkflowInformationRequest} opts - The starting object container.
-     * @return {Promise<Requests.readWorkflowInformationResponse>}
+     * @param {readWorkflowInformationRequest} opts - The starting object container.
+     * @param {Boolean} [muteHttpExceptions] - Optional: Whether or not to mute http exceptions
+     * @return {readWorkflowInformationResponse}
      */
     readWorkflowInformation(opts) {
       return handleRequest("readWorkflowInformation", opts);
@@ -2694,8 +2715,9 @@ function CascadeAPI_({ apiKey, url }) {
     /**
      * performWorkflowTransition operation.
      *
-     * @param {Requests.performWorkflowTransitionRequest} opts - The starting object container.
-     * @return {Promise<Requests.performWorkflowTransitionResponse>}
+     * @param {performWorkflowTransitionRequest} opts - The starting object container.
+     * @param {Boolean} [muteHttpExceptions] - Optional: Whether or not to mute http exceptions
+     * @return {performWorkflowTransitionResponse}
      */
     performWorkflowTransition(opts) {
       return handleRequest("performWorkflowTransition", opts);
@@ -2704,8 +2726,9 @@ function CascadeAPI_({ apiKey, url }) {
     /**
      * readPreferences operation.
      *
-     * @param {Requests.readPreferencesRequest} opts - The starting object container.
-     * @return {Promise<Requests.readPreferencesResponse>}
+     * @param {readPreferencesRequest} opts - The starting object container.
+     * @param {Boolean} [muteHttpExceptions] - Optional: Whether or not to mute http exceptions
+     * @return {readPreferencesResponse}
      */
     readPreferences(opts) {
       return handleRequest("readPreferences", opts);
@@ -2714,8 +2737,9 @@ function CascadeAPI_({ apiKey, url }) {
     /**
      * publishUnpublish operation.
      *
-     * @param {Requests.publishUnpublishRequest} opts - The starting object container.
-     * @return {Promise<Requests.publishUnpublishResponse>}
+     * @param {publishUnpublishRequest} opts - The starting object container.
+     * @param {Boolean} [muteHttpExceptions] - Optional: Whether or not to mute http exceptions
+     * @return {publishUnpublishResponse}
      */
     publishUnpublish(opts) {
       return handleRequest("publish", opts);
