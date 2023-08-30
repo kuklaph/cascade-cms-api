@@ -84,11 +84,11 @@ export default function CascadeAPI({ apiKey, url }) {
       };
       const request = await call(endPoint, requestParams);
       if (!request.success) {
-        throw `Request Failed. Request Response: ${request.message}`;
+        throw new Error(`Request Failed. Request Response: ${request.message}`);
       }
       return request;
     } catch (error) {
-      console.error(error);
+      throw error;
     }
   };
   return {
