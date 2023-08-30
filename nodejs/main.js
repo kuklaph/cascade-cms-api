@@ -1,8 +1,69 @@
-import withAxios from "./withAxios.js";
-// import withFetch from "./withFetch.js";
+import axios from "axios";
 import * as Requests from "./types.js";
 
 export default function CascadeAPI({ apiKey, url }) {
+  const timeout = 5000;
+  const withAxios = async (requestParams) => {
+    try {
+      requestParams.timeout = timeout;
+      const request = await axios(requestParams);
+      return request.data;
+    } catch (error) {
+      if (error.code === "ECONNABORTED") {
+        return {
+          success: false,
+          message: "Request timed out",
+        };
+      } else {
+        // Handle other Axios errors
+        return {
+          success: false,
+          message: error.message,
+        };
+      }
+    }
+  };
+  const withFetch = async (requestParams) => {
+    const { url, data, headers, method } = requestParams;
+
+    const fetchPromise = fetch(url, {
+      method,
+      headers,
+      body: data,
+    });
+
+    // Creating a promise that rejects in <n> milliseconds
+    const timeoutPromise = new Promise((_, reject) => {
+      const id = setTimeout(() => {
+        clearTimeout(id);
+        reject(new Error("Request timed out"));
+      }, timeout);
+    });
+
+    try {
+      const response = await Promise.race([fetchPromise, timeoutPromise]);
+
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      } else {
+        return await response.json();
+      }
+    } catch (error) {
+      if (error.message === "Request timed out") {
+        // Handle Fetch timeout specifically
+        return {
+          success: false,
+          message: "Request timed out",
+        };
+      } else {
+        // Handle other Fetch errors
+        return {
+          success: false,
+          message: error.message,
+        };
+      }
+    }
+  };
   const call = (endPoint, requestParams) => {
     if (!apiKey || !url) {
       throw `Missing API key or cascade URL`;
