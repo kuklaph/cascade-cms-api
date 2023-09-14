@@ -1,11 +1,115 @@
 openapi: 3.1.0
 info:
-  title: Cascade API
+  title: Cascade CMS API Library
   version: 1.0.0
-  description: API documentation for the Cascade REST API.
+  contact: 
+    name: Official Cascade Rest API Documentation
+    url: "https://www.hannonhill.com/cascadecms/latest/developing-in-cascade/rest-api/index.html"    
+  description: |
+    *This was created by [Kuklaph](https://github.com/kuklaph) and is not an official Cascade API document. I do not claim to own any rights of Hannon Hill or Cascade in anyway.*
+
+    The WSDL was initially converted to JSDoc types (for usage in the Cascade CMS API Library) and then converted to openAPI specs. 
+
+    This documentation is based on the [Cascade CMS API Library](https://github.com/kuklaph/cascade-cms-api) which only uses POST requests. 
+    
+    - The Authentication parameter is implied with the usage of the library.
+    - I have included the authentication parameter in the documentation, but it is not necessary when using the library.
+    - Other authentication methods are shown for completeness.    
+
+    If you come across a bug please create an [issue](https://github.com/kuklaph/cascade-cms-api/issues).
+  
+    ### Snippet From Official Cascade REST Documentation
+
+    Though the Cascade CMS v1 REST APi does not exactly follow RESTful API conventions, it is similar enough to be called so.
+    The supported methods are "GET" and "POST". The name of the operation should be included in the URL. 
+    The request and response are in JSON format that resembles format of SOAP objects from Cascade CMS's Web Services.
+    Future version of the API may adhere more closely to REST.    
+
+    **Symbols in this document**
+    
+    {identifier}
+    
+    Either:
+      - End of URL string for POST or GET requests: `{type}/{id}`. Example: `folder/2b2fd9bc7f0000010044b22e65131cd3`
+      - End of URL string for POST or GET requests: `{type}/{siteName}/{path}`. \
+        Example: `page/www.example.com/news/2003/best-of-show`
+      - The identifier can also be provided in body in JSON format for POST requests only. \
+        Example:
+        ```json
+        "identifier": {
+          "type": "page",
+          "path": {
+            "siteId": "2b2fd9a67f0000010044b22e4f6b0859",
+            "path": "news/2003/about"
+          }
+        }
+        ```
+        Notice that providing a site id for the identifier is not possible in a URL string.
+    
+    {auth}
+
+    Either:
+      - The user's API Key can be provided within the request's Authorization header as a Bearer token.      
+        Example: `Authorization: Bearer 27c03f58-7c79-45d1-aa8f-76d697bbb10d`      
+      - The user's username and password can be provided within the request's Authorization header using a Basic authentication string, which is a base64-encoded string containing `username:password`.      
+        Example: `Authorization: Basic am9obi5zbWl0aDpqb2huMTIz`
+      - Request parameters `u` and `p` for username and password, or `apiKey` for the user's API Key. \
+        Examples: `u=john.smith&p=john123` OR `apiKey=27c03f58-7c79-45d1-aa8f-76d697bbb10d`
+      - Authentication can also be provided in body in JSON format for POST requests only. \
+        Examples:
+          ```json
+          "authentication": {
+            "username": "john.smith",
+            "password": "john123"
+          }
+          ```
+          ```json
+          "authentication": {
+            "apiKey": "27c03f58-7c79-45d1-aa8f-76d697bbb10d"
+          }
+          ```
+tags: 
+  - name: Examples
+    description: Various ways to interact with the API
+  - name: POST Only
+    description: These interact with POST and a Bearer API Key
+
+servers:
+  - url: "https://{yourOrg}.cascadecms.com/api/v1"
+    variables:
+      yourOrg:
+        default: 'demo'
+        description: 'Your organization identifier in Cascade CMS'
+
+security: 
+  - BasicAuth: []
+  - ApiKeyAuth: []  
 
 components:
+  securitySchemes:
+    BasicAuth:  # HTTP Basic Authentication
+      type: http
+      scheme: basic
+    ApiKeyAuth:  # API Key Authentication
+      type: http
+      scheme: bearer
   schemas:
+    Authentication:
+      type: object
+      description: Unless an apiKey is provided, both username and password are REQUIRED.
+      properties:
+        password:
+          type: string
+          description: User's password          
+        username:
+          type: string
+          description: User's username          
+        apiKey:
+          type: string
+          description: User's API key          
+      required:
+        - username
+        - password
     BaseAsset:
       type: object
       description: |
@@ -1192,7 +1296,7 @@ components:
           type: string
           description: |
             - REQUIRED: Parameter name (not label).
-          example: "assetfactory.plugin.filelimit.param.name.size"
+          examples: ["assetfactory.plugin.filelimit.param.name.size"]
         value:
           type: string
           description: |
@@ -1214,7 +1318,7 @@ components:
           type: string
           description: |
             - REQUIRED: Name of the asset factory plugin.
-          example: "com.cms.assetfactory.DisplayToSystemNamePlugin"
+          examples: ["com.cms.assetfactory.DisplayToSystemNamePlugin"]
         parameters:
           type: array
           items:
@@ -3332,7 +3436,7 @@ components:
           description: |
             - REQUIRED
             - The directory to output the files to, for example "c:\inetfiles\wwwroot"
-          example: c:\inetfiles\wwwroot
+          examples: ["c:\\inetfiles\\wwwroot"]
       required:
         - directory
 
@@ -4275,11 +4379,14 @@ components:
     ReadRequest:
       type: object
       properties:
+        authentication:
+          $ref: "#/components/schemas/Authentication"
         identifier:
           $ref: "#/components/schemas/Identifier"
       description: |
         - REQUIRED: Parameters used when reading an asset
       required:
+        - authentication
         - identifier
 
     ReadResponseProperties:
@@ -4323,6 +4430,8 @@ components:
       description: |
         - Request object for asset removal
       properties:
+        authentication:
+          $ref: "#/components/schemas/Authentication"
         identifier:
           $ref: '#/components/schemas/Identifier'
           description: |
@@ -4336,6 +4445,7 @@ components:
           description: |
             - NOT REQUIRED: Parameters used when deleting an asset
       required:
+        - authentication
         - identifier
 
     RemoveResponse:
@@ -4344,7 +4454,14 @@ components:
         - The response received after removing an asset
 
     EditRequest:
-      $ref: '#/components/schemas/Asset'
+      type: object
+      required: 
+        -  authentication
+      properties: 
+        authentication:
+          $ref: "#/components/schemas/Authentication"
+      allOf: 
+        -  $ref: '#/components/schemas/Asset'
       description: |
         - The request object for asset editing
 
@@ -4354,7 +4471,14 @@ components:
         - The response received after editing an asset
 
     CreateRequest:
-      $ref: '#/components/schemas/Asset'
+      type: object
+      required: 
+        -  authentication
+      properties: 
+        authentication:
+          $ref: "#/components/schemas/Authentication"
+      allOf: 
+        -  $ref: '#/components/schemas/Asset'
       description: |
         - The request object for asset creating
 
@@ -4407,6 +4531,8 @@ components:
       description: |
         - Request object for moving an asset
       properties:
+        authentication:
+          $ref: "#/components/schemas/Authentication"
         identifier:
           $ref: '#/components/schemas/Identifier'
           description: |
@@ -4418,6 +4544,7 @@ components:
         moveParameters:
           $ref: '#/components/schemas/MoveParameters'
       required:
+        - authentication
         - identifier
 
     MoveResponse:
@@ -4493,8 +4620,11 @@ components:
       description: |
         - Properties for the Search Request
       required:
+        - authentication
         - searchInformation
       properties:
+        authentication:
+          $ref: "#/components/schemas/Authentication"
         searchInformation:
           $ref: '#/components/schemas/SearchInformation'
 
@@ -4548,9 +4678,12 @@ components:
       description: |
         - Properties for the Copy Request
       required:
+        - authentication
         - identifier
         - copyParameters
       properties:
+        authentication:
+          $ref: "#/components/schemas/Authentication"
         identifier:
           $ref: '#/components/schemas/Identifier'
           description: |
@@ -4571,12 +4704,15 @@ components:
       description: |
         - Properties for the SiteCopy Request
       required:
+        - authentication
         - newSiteName
       oneOf:
         - required:
             - originalSiteId
             - originalSiteName
       properties:
+        authentication:
+          $ref: "#/components/schemas/Authentication"
         originalSiteId:
           type: string
           description: |
@@ -4602,8 +4738,11 @@ components:
       description: |
         - Properties for the ReadAccessRights Request
       required:
+        - authentication
         - identifier
       properties:
+        authentication:
+          $ref: "#/components/schemas/Authentication"
         identifier:
           $ref: '#/components/schemas/Identifier'
           description: |
@@ -4624,8 +4763,11 @@ components:
     EditAccessRightsRequest:
       type: object
       required:
+        - authentication
         - accessRightsInformation
       properties:
+        authentication:
+          $ref: "#/components/schemas/Authentication"
         accessRightsInformation:
           $ref: '#/components/schemas/AccessRightsInformation'
           description: |
@@ -4645,8 +4787,11 @@ components:
     ReadWorkflowSettingsRequest:
       type: object
       required:
+        - authentication
         - identifier
       properties:
+        authentication:
+          $ref: "#/components/schemas/Authentication"
         identifier:
           $ref: '#/components/schemas/Identifier'
           description: |
@@ -4671,8 +4816,11 @@ components:
     EditWorkflowSettingsRequest:
       type: object
       required:
+        - authentication
         - workflowSettings
       properties:
+        authentication:
+          $ref: "#/components/schemas/Authentication"
         workflowSettings:
           $ref: '#/components/schemas/WorkflowSettings'
           description: |
@@ -4696,8 +4844,11 @@ components:
     ListSubscribersRequest:
       type: object
       required:
+        - authentication
         - identifier
       properties:
+        authentication:
+          $ref: "#/components/schemas/Authentication"
         identifier:
           $ref: '#/components/schemas/Identifier'
           description: |
@@ -4730,6 +4881,11 @@ components:
 
     ListMessagesRequest:
       type: object
+      required: 
+        -  authentication
+      properties: 
+        authentication:
+          $ref: "#/components/schemas/Authentication"
 
     MessageProperties:
       type: object
@@ -4797,9 +4953,12 @@ components:
     MarkMessageRequest:
       type: object
       required:
+        - authentication
         - identifier
         - markType
       properties:
+        authentication:
+          $ref: "#/components/schemas/Authentication"
         identifier:
           $ref: '#/components/schemas/Identifier'
           description: |
@@ -4818,8 +4977,11 @@ components:
     DeleteMessageRequest:
       type: object
       required:
+        - authentication
         - identifier
       properties:
+        authentication:
+          $ref: "#/components/schemas/Authentication"
         identifier:
           $ref: '#/components/schemas/Identifier'
           description: |
@@ -4833,8 +4995,11 @@ components:
     CheckOutRequest:
       type: object
       required:
+        - authentication
         - identifier
       properties:
+        authentication:
+          $ref: "#/components/schemas/Authentication"
         identifier:
           $ref: '#/components/schemas/Identifier'
           description: |
@@ -4857,8 +5022,11 @@ components:
     CheckInRequest:
       type: object
       required:
+        - authentication
         - identifier
       properties:
+        authentication:
+          $ref: "#/components/schemas/Authentication"
         identifier:
           $ref: '#/components/schemas/Identifier'
           description: |
@@ -4870,6 +5038,11 @@ components:
 
     ListSitesRequest:
       type: object
+      required: 
+        -  authentication
+      properties: 
+        authentication:
+          $ref: "#/components/schemas/Authentication"
 
     ListSitesResult:
       type: object
@@ -4948,8 +5121,11 @@ components:
     ReadAuditsRequest:
       type: object
       required:
+        - authentication
         - auditParameters
       properties:
+        authentication:
+          $ref: "#/components/schemas/Authentication"
         auditParameters:
           $ref: '#/components/schemas/AuditParameters'
           description: |
@@ -5004,8 +5180,11 @@ components:
     ReadWorkflowInformationRequest:
       type: object
       required:
+        - authentication
         - identifier
       properties:
+        authentication:
+          $ref: "#/components/schemas/Authentication"
         identifier:
           $ref: '#/components/schemas/Identifier'
           description: |
@@ -5071,9 +5250,8 @@ components:
             - NOT REQUIRED: The actions this step contains.
 
     WorkflowSteps:
-      type: array
-      items:
-        $ref: '#/components/schemas/WorkflowStep'
+      allOf: 
+        - $ref: '#/components/schemas/WorkflowStep'
 
     WorkflowProperties:
       type: object
@@ -5094,13 +5272,13 @@ components:
         orderedSteps:
           type: array
           items:
-            $ref: '#/components/schemas/WorkflowStep'
+            $ref: '#/components/schemas/WorkflowSteps'
           description: |
             - NOT REQUIRED: The ordered steps of this workflow.
         unorderedSteps:
           type: array
           items:
-            $ref: '#/components/schemas/WorkflowStep'
+            $ref: '#/components/schemas/WorkflowSteps'
           description: |
             - NOT REQUIRED: The unordered steps of this workflow.
         startDate:
@@ -5168,8 +5346,11 @@ components:
     PerformWorkflowTransitionRequest:
       type: object
       required:
+        - authentication
         - workflowTransitionInformation
       properties:
+        authentication:
+          $ref: "#/components/schemas/Authentication"
         workflowTransitionInformation:
           $ref: '#/components/schemas/WorkflowTransitionInformation'
           description: |
@@ -5181,6 +5362,11 @@ components:
 
     ReadPreferencesRequest:
       type: object
+      required: 
+        -  authentication
+      properties: 
+        authentication:
+          $ref: "#/components/schemas/Authentication"
 
     Preference:
       type: object
@@ -5256,8 +5442,11 @@ components:
     PublishUnpublishRequest:
       type: object
       required:
+        - authentication
         - publishInformation
       properties:
+        authentication:
+          $ref: "#/components/schemas/Authentication"
         publishInformation:
           $ref: '#/components/schemas/PublishInformation'
           description: |
@@ -5268,15 +5457,83 @@ components:
         - $ref: '#/components/schemas/OperationResult'
 
 paths:
+  /read/{type}/{id}:    
+    get:      
+      description: |
+        Example: `https://{yourOrg}.cascadecms.com/api/v1/read/page/www.example.com/news/2003/best-of-show?u=hill&p=hill`
+      tags: 
+        -  Examples
+      operationId: readNoPath
+      summary: Read resource by type and ID      
+      parameters:
+        - name: u
+          in: query
+          required: true
+          description: Username
+          schema: 
+            type: string
+            example: hill
+        - name: p
+          in: query
+          required: true
+          description: Password
+          schema: 
+            type: string
+            example: hill
+        - name: type
+          in: path
+          required: true
+          description: Type of the resource (e.g., "folder", "page").
+          schema:
+            type: string
+            example: folder
+        - name: id
+          in: path
+          required: true
+          description: Id of the resource.
+          schema:
+            type: string
+            example: 2b2fd9bc7f0000010044b22e65131cd3
+  /read/{type}/{siteName}/{path}:    
+    get:
+      tags: 
+        -  Examples
+      operationId: readWithPath
+      summary: Read resource by type, site name, and path
+      parameters:
+        - name: type
+          in: path
+          required: true
+          description: Type of the resource (e.g., "folder", "page").
+          schema:
+            type: string
+        - name: siteName
+          in: path
+          required: true
+          description: Name of the site.
+          schema:
+            type: string
+        - name: path
+          in: path
+          required: true
+          description: Path to the resource within the site.
+          schema:
+            type: string
   /read:
     post:
-      summary: "Read an asset"
+      tags: 
+        -  POST Only
+      operationId: read
+      summary: "Read an asset"      
       requestBody:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/Identifier'
+              $ref: '#/components/schemas/ReadRequest'
       responses:
+        '400':
+          description: |
+            - Bad Request
         '200':
           description: |
             - Successful operation
@@ -5286,6 +5543,9 @@ paths:
                 $ref: '#/components/schemas/ReadResponse'
   /delete:
     post:
+      tags: 
+        -  POST Only
+      operationId: delete
       summary: "Remove an asset"
       requestBody:
         content:
@@ -5293,6 +5553,9 @@ paths:
             schema:
               $ref: '#/components/schemas/RemoveRequest'
       responses:
+        '400':
+          description: |
+            - Bad Request
         '200':
           description: |
             - Successful operation
@@ -5303,6 +5566,9 @@ paths:
 
   /edit:
     post:
+      tags: 
+        -  POST Only
+      operationId: edit
       summary: "Edit an asset"
       requestBody:
         content:
@@ -5310,6 +5576,9 @@ paths:
             schema:
               $ref: '#/components/schemas/EditRequest'
       responses:
+        '400':
+          description: |
+            - Bad Request
         '200':
           description: |
             - Successful operation
@@ -5320,6 +5589,9 @@ paths:
 
   /create:
     post:
+      tags: 
+        -  POST Only
+      operationId: create
       summary: "Create an asset"
       requestBody:
         content:
@@ -5327,6 +5599,9 @@ paths:
             schema:
               $ref: '#/components/schemas/CreateRequest'
       responses:
+        '400':
+          description: |
+            - Bad Request
         '200':
           description: |
             - Successful operation
@@ -5337,6 +5612,9 @@ paths:
 
   /move:
     post:
+      tags: 
+        -  POST Only
+      operationId: move
       summary: "Move an asset"
       requestBody:
         content:
@@ -5344,6 +5622,9 @@ paths:
             schema:
               $ref: '#/components/schemas/MoveRequest'
       responses:
+        '400':
+          description: |
+            - Bad Request
         '200':
           description: |
             - Successful operation
@@ -5354,6 +5635,9 @@ paths:
 
   /search:
     post:
+      tags: 
+        -  POST Only
+      operationId: search
       summary: "Search for assets"
       requestBody:
         content:
@@ -5361,6 +5645,9 @@ paths:
             schema:
               $ref: '#/components/schemas/SearchRequest'
       responses:
+        '400':
+          description: |
+            - Bad Request
         '200':
           description: |
             - Successful operation
@@ -5371,6 +5658,9 @@ paths:
 
   /copy:
     post:
+      tags: 
+        -  POST Only
+      operationId: copy
       summary: "Copy an asset"
       requestBody:
         content:
@@ -5378,6 +5668,9 @@ paths:
             schema:
               $ref: '#/components/schemas/CopyRequest'
       responses:
+        '400':
+          description: |
+            - Bad Request
         '200':
           description: |
             - Successful operation
@@ -5388,6 +5681,9 @@ paths:
 
   /siteCopy:
     post:
+      tags: 
+        -  POST Only
+      operationId: siteCopy
       summary: "Copy a site"
       requestBody:
         content:
@@ -5395,6 +5691,9 @@ paths:
             schema:
               $ref: '#/components/schemas/SiteCopyRequest'
       responses:
+        '400':
+          description: |
+            - Bad Request
         '200':
           description: |
             - Successful operation
@@ -5405,6 +5704,9 @@ paths:
 
   /readAccessRights:
     post:
+      tags: 
+        -  POST Only
+      operationId: readAccessRights
       summary: "Read access rights of an asset"
       requestBody:
         content:
@@ -5412,6 +5714,9 @@ paths:
             schema:
               $ref: '#/components/schemas/ReadAccessRightsRequest'
       responses:
+        '400':
+          description: |
+            - Bad Request
         '200':
           description: |
             - Successful operation
@@ -5422,6 +5727,9 @@ paths:
 
   /editAccessRights:
     post:
+      tags: 
+        -  POST Only
+      operationId: editAccessRights
       summary: "Edit access rights of an asset"
       requestBody:
         content:
@@ -5429,6 +5737,9 @@ paths:
             schema:
               $ref: '#/components/schemas/EditAccessRightsRequest'
       responses:
+        '400':
+          description: |
+            - Bad Request
         '200':
           description: |
             - Successful operation
@@ -5439,6 +5750,9 @@ paths:
 
   /readWorkflowSettings:
     post:
+      tags: 
+        -  POST Only
+      operationId: readWorkflowSettings
       summary: "Read workflow settings of an asset"
       requestBody:
         content:
@@ -5446,6 +5760,9 @@ paths:
             schema:
               $ref: '#/components/schemas/ReadWorkflowSettingsRequest'
       responses:
+        '400':
+          description: |
+            - Bad Request
         '200':
           description: |
             - Successful operation
@@ -5456,6 +5773,9 @@ paths:
 
   /editWorkflowSettings:
     post:
+      tags: 
+        -  POST Only
+      operationId: editWorkflowSettings
       summary: "Edit workflow settings of an asset"
       requestBody:
         content:
@@ -5463,6 +5783,9 @@ paths:
             schema:
               $ref: '#/components/schemas/EditWorkflowSettingsRequest'
       responses:
+        '400':
+          description: |
+            - Bad Request
         '200':
           description: |
             - Successful operation
@@ -5473,6 +5796,9 @@ paths:
 
   /listSubscribers:
     post:
+      tags: 
+        -  POST Only
+      operationId: listSubscribers
       summary: "List subscribers of an asset"
       requestBody:
         content:
@@ -5480,6 +5806,9 @@ paths:
             schema:
               $ref: '#/components/schemas/ListSubscribersRequest'
       responses:
+        '400':
+          description: |
+            - Bad Request
         '200':
           description: |
             - Successful operation
@@ -5490,6 +5819,9 @@ paths:
 
   /listMessages:
     post:
+      tags: 
+        -  POST Only
+      operationId: listMessages
       summary: "List messages"
       requestBody:
         content:
@@ -5497,6 +5829,9 @@ paths:
             schema:
               $ref: '#/components/schemas/ListMessagesRequest'
       responses:
+        '400':
+          description: |
+            - Bad Request
         '200':
           description: |
             - Successful operation
@@ -5507,6 +5842,9 @@ paths:
 
   /markMessage:
     post:
+      tags: 
+        -  POST Only
+      operationId: markMessage
       summary: "Mark a message as read or unread"
       requestBody:
         content:
@@ -5514,6 +5852,9 @@ paths:
             schema:
               $ref: '#/components/schemas/MarkMessageRequest'
       responses:
+        '400':
+          description: |
+            - Bad Request
         '200':
           description: |
             - Successful operation
@@ -5524,6 +5865,9 @@ paths:
 
   /deleteMessage:
     post:
+      tags: 
+        -  POST Only
+      operationId: deleteMessage
       summary: "Delete a message"
       requestBody:
         content:
@@ -5531,6 +5875,9 @@ paths:
             schema:
               $ref: '#/components/schemas/DeleteMessageRequest'
       responses:
+        '400':
+          description: |
+            - Bad Request
         '200':
           description: |
             - Successful operation
@@ -5541,6 +5888,9 @@ paths:
 
   /checkOut:
     post:
+      tags: 
+        -  POST Only
+      operationId: checkOut
       summary: "Check out an asset for editing"
       requestBody:
         content:
@@ -5548,6 +5898,9 @@ paths:
             schema:
               $ref: '#/components/schemas/CheckOutRequest'
       responses:
+        '400':
+          description: |
+            - Bad Request
         '200':
           description: |
             - Successful operation
@@ -5558,6 +5911,9 @@ paths:
 
   /checkIn:
     post:
+      tags: 
+        -  POST Only
+      operationId: checkIn
       summary: "Check in an edited asset"
       requestBody:
         content:
@@ -5565,6 +5921,9 @@ paths:
             schema:
               $ref: '#/components/schemas/CheckInRequest'
       responses:
+        '400':
+          description: |
+            - Bad Request
         '200':
           description: |
             - Successful operation
@@ -5575,6 +5934,9 @@ paths:
 
   /listSites:
     post:
+      tags: 
+        -  POST Only
+      operationId: listSites
       summary: "List all sites"
       requestBody:
         content:
@@ -5582,6 +5944,9 @@ paths:
             schema:
               $ref: '#/components/schemas/ListSitesRequest'
       responses:
+        '400':
+          description: |
+            - Bad Request
         '200':
           description: |
             - Successful operation
@@ -5592,6 +5957,9 @@ paths:
 
   /readAudits:
     post:
+      tags: 
+        -  POST Only
+      operationId: readAudits
       summary: "Read audit records"
       requestBody:
         content:
@@ -5599,6 +5967,9 @@ paths:
             schema:
               $ref: '#/components/schemas/ReadAuditsRequest'
       responses:
+        '400':
+          description: |
+            - Bad Request
         '200':
           description: |
             - Successful operation
@@ -5608,7 +5979,10 @@ paths:
                 $ref: '#/components/schemas/ReadAuditsResponse'
 
   /readWorkflowInformation:
-    post:
+    post:      
+      tags: 
+        -  POST Only
+      operationId: readWorkflowInformation
       summary: "Read Workflow Information"
       requestBody:
         content:
@@ -5616,6 +5990,9 @@ paths:
             schema:
               $ref: '#/components/schemas/ReadWorkflowInformationRequest'
       responses:
+        '400':
+          description: |
+            - Bad Request
         '200':
           description: |
             - Successful operation
@@ -5626,6 +6003,9 @@ paths:
 
   /performWorkflowTransition:
     post:
+      tags: 
+        -  POST Only
+      operationId: performWorkflowTransition
       summary: "Perform Workflow Transition"
       requestBody:
         content:
@@ -5633,6 +6013,9 @@ paths:
             schema:
               $ref: '#/components/schemas/PerformWorkflowTransitionRequest'
       responses:
+        '400':
+          description: |
+            - Bad Request
         '200':
           description: |
             - Successful operation
@@ -5643,6 +6026,9 @@ paths:
 
   /readPreferences:
     post:
+      tags: 
+        -  POST Only
+      operationId: readPreferences
       summary: "Read Preferences"
       requestBody:
         content:
@@ -5650,6 +6036,9 @@ paths:
             schema:
               $ref: '#/components/schemas/ReadPreferencesRequest'
       responses:
+        '400':
+          description: |
+            - Bad Request
         '200':
           description: |
             - Successful operation
@@ -5660,6 +6049,9 @@ paths:
 
   /publish:
     post:
+      tags: 
+        -  POST Only
+      operationId: publish
       summary: "Publish or Unpublish Asset"
       requestBody:
         content:
@@ -5667,6 +6059,9 @@ paths:
             schema:
               $ref: '#/components/schemas/PublishUnpublishRequest'
       responses:
+        '400':
+          description: |
+            - Bad Request
         '200':
           description: |
             - Successful operation
