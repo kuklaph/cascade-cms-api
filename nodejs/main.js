@@ -95,8 +95,8 @@ export default function CascadeAPI({ apiKey, url }) {
     /**
      * read operation.
      *
-     * @param {Requests.readRequest} opts - The starting object container.
-     * @return {Promise<Requests.readResponse>}
+     * @param {Requests.ReadRequest} opts - The starting object container.
+     * @return {Promise<Requests.ReadResponse>}
      */
     read(opts) {
       return handleRequest("read", opts);
@@ -105,8 +105,8 @@ export default function CascadeAPI({ apiKey, url }) {
     /**
      * removal operation.
      *
-     * @param {Requests.removeRequest} opts - The starting object container.
-     * @return {Promise<Requests.removeResponse>}
+     * @param {Requests.RemoveRequest} opts - The starting object container.
+     * @return {Promise<Requests.RemoveResponse>}
      */
     remove(opts) {
       return handleRequest("delete", opts);
@@ -115,8 +115,8 @@ export default function CascadeAPI({ apiKey, url }) {
     /**
      * edit operation.
      *
-     * @param {Requests.editRequest} opts - The starting object container.
-     * @return {Promise<Requests.editResponse>}
+     * @param {Requests.EditRequest} opts - The starting object container.
+     * @return {Promise<Requests.EditResponse>}
      */
     edit(opts) {
       return handleRequest("edit", opts);
@@ -125,8 +125,8 @@ export default function CascadeAPI({ apiKey, url }) {
     /**
      * create operation.
      *
-     * @param {Requests.createRequest} opts - The starting object container.
-     * @return {Promise<Requests.createResponse>}
+     * @param {Requests.CreateRequest} opts - The starting object container.
+     * @return {Promise<Requests.CreateResponse>}
      */
     create(opts) {
       return handleRequest("create", opts);
@@ -135,8 +135,8 @@ export default function CascadeAPI({ apiKey, url }) {
     /**
      * move operation.
      *
-     * @param {Requests.moveRequest} opts - The starting object container.
-     * @return {Promise<Requests.moveResponse>}
+     * @param {Requests.MoveRequest} opts - The starting object container.
+     * @return {Promise<Requests.MoveResponse>}
      */
     move(opts) {
       return handleRequest("move", opts);
@@ -145,8 +145,8 @@ export default function CascadeAPI({ apiKey, url }) {
     /**
      * search operation.
      *
-     * @param {Requests.searchRequest} opts - The starting object container.
-     * @return {Promise<Requests.searchResponse>}
+     * @param {Requests.SearchRequest} opts - The starting object container.
+     * @return {Promise<Requests.SearchResponse>}
      */
     search(opts) {
       return handleRequest("search", opts);
@@ -155,8 +155,8 @@ export default function CascadeAPI({ apiKey, url }) {
     /**
      * copy operation.
      *
-     * @param {Requests.copyRequest} opts - The starting object container.
-     * @return {Promise<Requests.copyResponse>}
+     * @param {Requests.CopyRequest} opts - The starting object container.
+     * @return {Promise<Requests.CopyResponse>}
      */
     copy(opts) {
       return handleRequest("copy", opts);
@@ -165,8 +165,8 @@ export default function CascadeAPI({ apiKey, url }) {
     /**
      * siteCopy operation.
      *
-     * @param {Requests.siteCopyRequest} opts - The starting object container.
-     * @return {Promise<Requests.siteCopyResponse>}
+     * @param {Requests.SiteCopyRequest} opts - The starting object container.
+     * @return {Promise<Requests.SiteCopyResponse>}
      */
     siteCopy(opts) {
       return handleRequest("siteCopy", opts);
@@ -175,8 +175,8 @@ export default function CascadeAPI({ apiKey, url }) {
     /**
      * readAccessRights operation.
      *
-     * @param {Requests.readAccessRightsRequest} opts - The starting object container.
-     * @return {Promise<Requests.readAccessRightsResponse>}
+     * @param {Requests.ReadAccessRightsRequest} opts - The starting object container.
+     * @return {Promise<Requests.ReadAccessRightsResponse>}
      */
     readAccessRights(opts) {
       return handleRequest("readAccessRights", opts);
@@ -185,8 +185,8 @@ export default function CascadeAPI({ apiKey, url }) {
     /**
      * editAccessRights operation.
      *
-     * @param {Requests.editAccessRightsRequest} opts - The starting object container.
-     * @return {Promise<Requests.editAccessRightsResponse>}
+     * @param {Requests.EditAccessRightsRequest} opts - The starting object container.
+     * @return {Promise<Requests.EditAccessRightsResponse>}
      */
     editAccessRights(opts) {
       return handleRequest("editAccessRights", opts);
@@ -195,8 +195,8 @@ export default function CascadeAPI({ apiKey, url }) {
     /**
      * readWorkflowSettings operation.
      *
-     * @param {Requests.readWorkflowSettingsRequest} opts - The starting object container.
-     * @return {Promise<Requests.readWorkflowSettingsResponse>}
+     * @param {Requests.ReadWorkflowSettingsRequest} opts - The starting object container.
+     * @return {Promise<Requests.ReadWorkflowSettingsResponse>}
      */
     readWorkflowSettings(opts) {
       return handleRequest("readWorkflowSettings", opts);
@@ -205,8 +205,8 @@ export default function CascadeAPI({ apiKey, url }) {
     /**
      * editWorkflowSettings operation.
      *
-     * @param {Requests.editWorkflowSettingsRequest} opts - The starting object container.
-     * @return {Promise<Requests.editWorkflowSettingsResponse>}
+     * @param {Requests.EditWorkflowSettingsRequest} opts - The starting object container.
+     * @return {Promise<Requests.EditWorkflowSettingsResponse>}
      */
     editWorkflowSettings(opts) {
       return handleRequest("editWorkflowSettings", opts);
@@ -215,8 +215,8 @@ export default function CascadeAPI({ apiKey, url }) {
     /**
      * listSubscribers operation.
      *
-     * @param {Requests.listSubscribersRequest} opts - The starting object container.
-     * @return {Promise<Requests.listSubscribersResponse>}
+     * @param {Requests.ListSubscribersRequest} opts - The starting object container.
+     * @return {Promise<Requests.ListSubscribersResponse>}
      */
     listSubscribers(opts) {
       return handleRequest("listSubscribers", opts);
@@ -225,8 +225,8 @@ export default function CascadeAPI({ apiKey, url }) {
     /**
      * listMessages operation.
      *
-     * @param {Requests.listMessagesRequest} opts - The starting object container.
-     * @return {Promise<Requests.listMessagesResponse>}
+     * @param {Requests.ListMessagesRequest} opts - The starting object container.
+     * @return {Promise<Requests.ListMessagesResponse>}
      */
     listMessages(opts) {
       return handleRequest("listMessages", opts);
@@ -235,8 +235,8 @@ export default function CascadeAPI({ apiKey, url }) {
     /**
      * markMessage operation.
      *
-     * @param {Requests.markMessageRequest} opts - The starting object container.
-     * @return {Promise<Requests.markMessageResponse>}
+     * @param {Requests.MarkMessageRequest} opts - The starting object container.
+     * @return {Promise<Requests.MarkMessageResponse>}
      */
     markMessage(opts) {
       return handleRequest("markMessage", opts);
@@ -245,8 +245,8 @@ export default function CascadeAPI({ apiKey, url }) {
     /**
      * deleteMessage operation.
      *
-     * @param {Requests.deleteMessageRequest} opts - The starting object container.
-     * @return {Promise<Requests.deleteMessageResponse>}
+     * @param {Requests.DeleteMessageRequest} opts - The starting object container.
+     * @return {Promise<Requests.DeleteMessageResponse>}
      */
     deleteMessage(opts) {
       return handleRequest("deleteMessage", opts);
@@ -255,8 +255,8 @@ export default function CascadeAPI({ apiKey, url }) {
     /**
      * checkOut operation.
      *
-     * @param {Requests.checkOutRequest} opts - The starting object container.
-     * @return {Promise<Requests.checkOutResponse>}
+     * @param {Requests.CheckOutRequest} opts - The starting object container.
+     * @return {Promise<Requests.CheckOutResponse>}
      */
     checkOut(opts) {
       return handleRequest("checkOut", opts);
@@ -265,8 +265,8 @@ export default function CascadeAPI({ apiKey, url }) {
     /**
      * checkIn operation.
      *
-     * @param {Requests.checkInRequest} opts - The starting object container.
-     * @return {Promise<Requests.checkInResponse>}
+     * @param {Requests.CheckInRequest} opts - The starting object container.
+     * @return {Promise<Requests.CheckInResponse>}
      */
     checkIn(opts) {
       return handleRequest("checkIn", opts);
@@ -275,8 +275,8 @@ export default function CascadeAPI({ apiKey, url }) {
     /**
      * listSites operation.
      *
-     * @param {Requests.listSitesRequest} opts - The starting object container.
-     * @return {Promise<Requests.listSitesResponse>}
+     * @param {Requests.ListSitesRequest} opts - The starting object container.
+     * @return {Promise<Requests.ListSitesResponse>}
      */
     listSites(opts) {
       return handleRequest("listSites", opts);
@@ -285,8 +285,8 @@ export default function CascadeAPI({ apiKey, url }) {
     /**
      * readAudits operation.
      *
-     * @param {Requests.readAuditsRequest} opts - The starting object container.
-     * @return {Promise<Requests.readAuditsResponse>}
+     * @param {Requests.ReadAuditsRequest} opts - The starting object container.
+     * @return {Promise<Requests.ReadAuditsResponse>}
      */
     readAudits(opts) {
       return handleRequest("readAudits", opts);
@@ -295,8 +295,8 @@ export default function CascadeAPI({ apiKey, url }) {
     /**
      * readWorkflowInformation operation.
      *
-     * @param {Requests.readWorkflowInformationRequest} opts - The starting object container.
-     * @return {Promise<Requests.readWorkflowInformationResponse>}
+     * @param {Requests.ReadWorkflowInformationRequest} opts - The starting object container.
+     * @return {Promise<Requests.ReadWorkflowInformationResponse>}
      */
     readWorkflowInformation(opts) {
       return handleRequest("readWorkflowInformation", opts);
@@ -305,8 +305,8 @@ export default function CascadeAPI({ apiKey, url }) {
     /**
      * performWorkflowTransition operation.
      *
-     * @param {Requests.performWorkflowTransitionRequest} opts - The starting object container.
-     * @return {Promise<Requests.performWorkflowTransitionResponse>}
+     * @param {Requests.PerformWorkflowTransitionRequest} opts - The starting object container.
+     * @return {Promise<Requests.PerformWorkflowTransitionResponse>}
      */
     performWorkflowTransition(opts) {
       return handleRequest("performWorkflowTransition", opts);
@@ -315,8 +315,8 @@ export default function CascadeAPI({ apiKey, url }) {
     /**
      * readPreferences operation.
      *
-     * @param {Requests.readPreferencesRequest} opts - The starting object container.
-     * @return {Promise<Requests.readPreferencesResponse>}
+     * @param {Requests.ReadPreferencesRequest} opts - The starting object container.
+     * @return {Promise<Requests.ReadPreferencesResponse>}
      */
     readPreferences(opts) {
       return handleRequest("readPreferences", opts);
@@ -325,8 +325,8 @@ export default function CascadeAPI({ apiKey, url }) {
     /**
      * publishUnpublish operation.
      *
-     * @param {Requests.publishUnpublishRequest} opts - The starting object container.
-     * @return {Promise<Requests.publishUnpublishResponse>}
+     * @param {Requests.PublishUnpublishRequest} opts - The starting object container.
+     * @return {Promise<Requests.PublishUnpublishResponse>}
      */
     publishUnpublish(opts) {
       return handleRequest("publish", opts);
