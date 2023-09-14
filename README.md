@@ -1,4 +1,4 @@
-# Cascade CMS API
+# Cascade CMS API Library
 
 ### **Please note this library is a work in progress. If you come across a bug please open an issue.**
 
@@ -7,6 +7,10 @@ A JavaScript library for the Cascade CMS API. You can find more information abou
 Available for Cascade CMS v8.1.1 and later.
 
 ## Cascade Documentation
+
+You can find an openAPI representation of the Cascade library here:
+
+https://kuklaph.github.io/cascade-cms-api/swagger-ui/
 
 Cascade provides in tandem with the REST API docs listed above, a WSDL operations page. In order to access this you will need to use your organization as a subdomain followed by this url: 
 
