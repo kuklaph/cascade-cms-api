@@ -1,6 +1,6 @@
 # Cascade CMS API
 
-### **Please note this library is incomplete and a work in progress**
+### **Please note this library is a work in progress. If you come across a bug please open an issue.**
 
 A JavaScript library for the Cascade CMS API. You can find more information about their API here: https://www.hannonhill.com/cascadecms/latest/developing-in-cascade/rest-api/index.html#Operations
 
@@ -8,7 +8,9 @@ Available for Cascade CMS v8.1.1 and later.
 
 ## Cascade Documentation
 
-Cascade provides in tandem with the REST API docs listed above, a WSDL operations page. In order to access this you will need to use your organization as a subdomain followed by this url: `cascadecms.com/ws/services/AssetOperationService?wsdl`
+Cascade provides in tandem with the REST API docs listed above, a WSDL operations page. In order to access this you will need to use your organization as a subdomain followed by this url: 
+
+`cascadecms.com/ws/services/AssetOperationService?wsdl`
 
 Example: `isSandActuallySandy.cascadecms.com/ws/services/AssetOperationService?wsdl`
 
