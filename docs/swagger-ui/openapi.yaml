@@ -2,6 +2,9 @@ openapi: 3.1.0
 info:
   title: Cascade CMS API Library
   version: 1.0.0
+  license: 
+    name: MIT License
+    url: https://github.com/kuklaph/cascade-cms-api/blob/main/LICENSE    
   contact: 
     name: Official Cascade Rest API Documentation
     url: "https://www.hannonhill.com/cascadecms/latest/developing-in-cascade/rest-api/index.html"    
@@ -4392,10 +4395,8 @@ components:
     ReadResponseProperties:
       type: object
       description: |
-        - Properties for the Read Response
-      properties:
-        asset:
-          $ref: '#/components/schemas/Asset'
+        - Properties for the Read Response              
+      $ref: '#/components/schemas/Asset'
       required:
         - asset
 
@@ -5496,6 +5497,7 @@ paths:
             example: 2b2fd9bc7f0000010044b22e65131cd3
   /read/{type}/{siteName}/{path}:    
     get:
+      description: "This is an example read operation"
       tags: 
         -  Examples
       operationId: readWithPath
@@ -5519,8 +5521,9 @@ paths:
           description: Path to the resource within the site.
           schema:
             type: string
-  /read:
+  /read:    
     post:
+      description: Use this method to read an asset
       tags: 
         -  POST Only
       operationId: read
@@ -5543,6 +5546,7 @@ paths:
                 $ref: '#/components/schemas/ReadResponse'
   /delete:
     post:
+      description: Use this method to delete an asset
       tags: 
         -  POST Only
       operationId: delete
@@ -5566,6 +5570,7 @@ paths:
 
   /edit:
     post:
+      description: Use this method to edit an asset
       tags: 
         -  POST Only
       operationId: edit
@@ -5589,6 +5594,7 @@ paths:
 
   /create:
     post:
+      description: Use this method to create an asset
       tags: 
         -  POST Only
       operationId: create
@@ -5612,6 +5618,7 @@ paths:
 
   /move:
     post:
+      description: Use this method to move an asset
       tags: 
         -  POST Only
       operationId: move
@@ -5635,6 +5642,7 @@ paths:
 
   /search:
     post:
+      description: Use this method to search for assets
       tags: 
         -  POST Only
       operationId: search
@@ -5658,6 +5666,7 @@ paths:
 
   /copy:
     post:
+      description: Use this method to copy an asset
       tags: 
         -  POST Only
       operationId: copy
@@ -5681,6 +5690,7 @@ paths:
 
   /siteCopy:
     post:
+      description: Use this method to copy a site
       tags: 
         -  POST Only
       operationId: siteCopy
@@ -5704,6 +5714,7 @@ paths:
 
   /readAccessRights:
     post:
+      description: Use this method to read access rights
       tags: 
         -  POST Only
       operationId: readAccessRights
@@ -5727,6 +5738,7 @@ paths:
 
   /editAccessRights:
     post:
+      description: Use this method to edit access rights
       tags: 
         -  POST Only
       operationId: editAccessRights
@@ -5750,6 +5762,7 @@ paths:
 
   /readWorkflowSettings:
     post:
+      description: Use this method to read workflow settings
       tags: 
         -  POST Only
       operationId: readWorkflowSettings
@@ -5773,6 +5786,7 @@ paths:
 
   /editWorkflowSettings:
     post:
+      description: Use this method to edit workflow settings
       tags: 
         -  POST Only
       operationId: editWorkflowSettings
@@ -5796,6 +5810,7 @@ paths:
 
   /listSubscribers:
     post:
+      description: Use this method to list subscribers of an asset
       tags: 
         -  POST Only
       operationId: listSubscribers
@@ -5819,6 +5834,7 @@ paths:
 
   /listMessages:
     post:
+      description: Use this method to read a list of messages
       tags: 
         -  POST Only
       operationId: listMessages
@@ -5842,6 +5858,7 @@ paths:
 
   /markMessage:
     post:
+      description: Use this method to mark messages read or unread
       tags: 
         -  POST Only
       operationId: markMessage
@@ -5865,6 +5882,7 @@ paths:
 
   /deleteMessage:
     post:
+      description: Use this method to delete a message
       tags: 
         -  POST Only
       operationId: deleteMessage
@@ -5888,6 +5906,7 @@ paths:
 
   /checkOut:
     post:
+      description: Use this method to checkout an asset
       tags: 
         -  POST Only
       operationId: checkOut
@@ -5911,6 +5930,7 @@ paths:
 
   /checkIn:
     post:
+      description: Use this method to check in an asset
       tags: 
         -  POST Only
       operationId: checkIn
@@ -5934,6 +5954,7 @@ paths:
 
   /listSites:
     post:
+      description: Use this method to list existing sites
       tags: 
         -  POST Only
       operationId: listSites
@@ -5957,6 +5978,7 @@ paths:
 
   /readAudits:
     post:
+      description: Use this method to read audits of an asset
       tags: 
         -  POST Only
       operationId: readAudits
@@ -5979,7 +6001,8 @@ paths:
                 $ref: '#/components/schemas/ReadAuditsResponse'
 
   /readWorkflowInformation:
-    post:      
+    post:
+      description: Use this method to read workflow information
       tags: 
         -  POST Only
       operationId: readWorkflowInformation
@@ -6003,6 +6026,7 @@ paths:
 
   /performWorkflowTransition:
     post:
+      description: Use this method to perform a workflow
       tags: 
         -  POST Only
       operationId: performWorkflowTransition
@@ -6026,6 +6050,7 @@ paths:
 
   /readPreferences:
     post:
+      description: Use this method to view read preferences
       tags: 
         -  POST Only
       operationId: readPreferences
@@ -6049,6 +6074,7 @@ paths:
 
   /publish:
     post:
+      description: Use this method to publish or unpublish an asset
       tags: 
         -  POST Only
       operationId: publish
