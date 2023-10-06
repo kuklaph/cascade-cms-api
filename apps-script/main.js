@@ -2324,8 +2324,7 @@
 // ─── Read Response ───────────────────────────────────────────────────────────
 //#region
 /**
- * @typedef {Object} ReadResponseProperties
- * @property {Asset} asset
+ * @typedef {Asset} ReadResponseProperties
  */
 /**
  * @typedef {OperationResult & ReadResponseProperties} ReadResponse
