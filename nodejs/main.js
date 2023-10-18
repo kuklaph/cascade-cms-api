@@ -66,7 +66,7 @@ export default function CascadeAPI({ apiKey, url }) {
   };
   const call = (endPoint, requestParams) => {
     if (!apiKey || !url) {
-      throw `Missing API key or cascade URL`;
+      throw new Error(`Missing API key or cascade URL`);
     }
     const headers = {
       Authorization: `Bearer ${apiKey}`,
@@ -74,7 +74,7 @@ export default function CascadeAPI({ apiKey, url }) {
     requestParams.headers = headers;
     requestParams.url = url + endPoint;
     return withAxios(requestParams);
-    // return  withFetch(requestParams);
+    // return withFetch(requestParams);
   };
   const handleRequest = async (endPoint, opts, method = "POST") => {
     try {

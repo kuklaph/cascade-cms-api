@@ -3048,7 +3048,7 @@
 function CascadeAPI_({ apiKey, url }) {
   const call = (endPoint, requestParams) => {
     if (!apiKey || !url) {
-      throw `Missing API key or cascade URL`;
+      throw new Error(`Missing API key or cascade URL`);
     }
     const headers = {
       Authorization: `Bearer ${apiKey}`,
@@ -3066,7 +3066,7 @@ function CascadeAPI_({ apiKey, url }) {
       };
       const request = call(endPoint, requestParams);
       if (!request.success) {
-        throw `Request Failed. Request Response: ${request.message}`;
+        throw new Error(`Request Failed. Request Response: ${request.message}`);
       }
       return request;
     } catch (error) {
