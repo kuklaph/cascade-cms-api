@@ -2990,8 +2990,6 @@
 //#region
 /**
  * @typedef PublishInformation
- * @property {Identifier} identifier
- * - REQUIRED: Identifier of the asset being published
  * @property {AssetIdentifiers} [destinations]
  * - NOT REQUIRED:
  * - Destinations to which the asset should be published.
@@ -3013,6 +3011,8 @@
 
 /**
  * @typedef {Object} PublishUnpublishRequest
+ * @property {Identifier} identifier
+ * - REQUIRED: Identifier of the asset being published
  * @property {PublishInformation} publishInformation - REQUIRED:
  */
 

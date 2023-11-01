@@ -2,36 +2,36 @@ openapi: 3.1.0
 info:
   title: Cascade CMS API Library
   version: 1.0.0
-  license: 
+  license:
     name: MIT License
-    url: https://github.com/kuklaph/cascade-cms-api/blob/main/LICENSE    
-  contact: 
+    url: https://github.com/kuklaph/cascade-cms-api/blob/main/LICENSE
+  contact:
     name: Official Cascade Rest API Documentation
-    url: "https://www.hannonhill.com/cascadecms/latest/developing-in-cascade/rest-api/index.html"    
+    url: "https://www.hannonhill.com/cascadecms/latest/developing-in-cascade/rest-api/index.html"
   description: |
     *This was created by [Kuklaph](https://github.com/kuklaph) and is not an official Cascade API document. I do not claim to own any rights of Hannon Hill or Cascade in anyway.*
 
-    The WSDL was initially converted to JSDoc types (for usage in the Cascade CMS API Library) and then converted to openAPI specs. 
+    The WSDL was initially converted to JSDoc types (for usage in the Cascade CMS API Library) and then converted to openAPI specs.
 
-    This documentation is based on the [Cascade CMS API Library](https://github.com/kuklaph/cascade-cms-api) which only uses POST requests. 
-    
+    This documentation is based on the [Cascade CMS API Library](https://github.com/kuklaph/cascade-cms-api) which only uses POST requests.
+
     - The Authentication parameter is implied with the usage of the library.
     - I have included the authentication parameter in the documentation, but it is not necessary when using the library.
-    - Other authentication methods are shown for completeness.    
+    - Other authentication methods are shown for completeness.
 
     If you come across a bug please create an [issue](https://github.com/kuklaph/cascade-cms-api/issues).
-  
+
     ### Snippet From Official Cascade REST Documentation
 
     Though the Cascade CMS v1 REST APi does not exactly follow RESTful API conventions, it is similar enough to be called so.
-    The supported methods are "GET" and "POST". The name of the operation should be included in the URL. 
+    The supported methods are "GET" and "POST". The name of the operation should be included in the URL.
     The request and response are in JSON format that resembles format of SOAP objects from Cascade CMS's Web Services.
-    Future version of the API may adhere more closely to REST.    
+    Future version of the API may adhere more closely to REST.
 
     **Symbols in this document**
-    
+
     {identifier}
-    
+
     Either:
       - End of URL string for POST or GET requests: `{type}/{id}`. Example: `folder/2b2fd9bc7f0000010044b22e65131cd3`
       - End of URL string for POST or GET requests: `{type}/{siteName}/{path}`. \
@@ -48,13 +48,13 @@ info:
         }
         ```
         Notice that providing a site id for the identifier is not possible in a URL string.
-    
+
     {auth}
 
     Either:
-      - The user's API Key can be provided within the request's Authorization header as a Bearer token.      
-        Example: `Authorization: Bearer 27c03f58-7c79-45d1-aa8f-76d697bbb10d`      
-      - The user's username and password can be provided within the request's Authorization header using a Basic authentication string, which is a base64-encoded string containing `username:password`.      
+      - The user's API Key can be provided within the request's Authorization header as a Bearer token.
+        Example: `Authorization: Bearer 27c03f58-7c79-45d1-aa8f-76d697bbb10d`
+      - The user's username and password can be provided within the request's Authorization header using a Basic authentication string, which is a base64-encoded string containing `username:password`.
         Example: `Authorization: Basic am9obi5zbWl0aDpqb2huMTIz`
       - Request parameters `u` and `p` for username and password, or `apiKey` for the user's API Key. \
         Examples: `u=john.smith&p=john123` OR `apiKey=27c03f58-7c79-45d1-aa8f-76d697bbb10d`
@@ -71,7 +71,7 @@ info:
             "apiKey": "27c03f58-7c79-45d1-aa8f-76d697bbb10d"
           }
           ```
-tags: 
+tags:
   - name: Examples
     description: Various ways to interact with the API
   - name: POST Only
@@ -81,19 +81,19 @@ servers:
   - url: "https://{yourOrg}.cascadecms.com/api/v1"
     variables:
       yourOrg:
-        default: 'demo'
-        description: 'Your organization identifier in Cascade CMS'
+        default: "demo"
+        description: "Your organization identifier in Cascade CMS"
 
-security: 
+security:
   - BasicAuth: []
-  - ApiKeyAuth: []  
+  - ApiKeyAuth: []
 
 components:
   securitySchemes:
-    BasicAuth:  # HTTP Basic Authentication
+    BasicAuth: # HTTP Basic Authentication
       type: http
       scheme: basic
-    ApiKeyAuth:  # API Key Authentication
+    ApiKeyAuth: # API Key Authentication
       type: http
       scheme: bearer
   schemas:
@@ -103,13 +103,13 @@ components:
       properties:
         password:
           type: string
-          description: User's password          
+          description: User's password
         username:
           type: string
-          description: User's username          
+          description: User's username
         apiKey:
           type: string
-          description: User's API key          
+          description: User's API key
       required:
         - username
         - password
@@ -123,7 +123,7 @@ components:
           type: string
           description: |
             - The id of the asset. When creating, this should not be present as an asset does not have an id until it is created. When editing, specify this to uniquely identify an asset.
-          
+
     NamedAssetProperties:
       type: object
       properties:
@@ -133,13 +133,13 @@ components:
             - REQUIRED on create, ignored on edit. Use move operation to rename an asset.
       required:
         - name
-      
+
     NamedAsset:
       allOf:
-        - $ref: '#/components/schemas/BaseAsset'
-        - $ref: '#/components/schemas/NamedAssetProperties'
+        - $ref: "#/components/schemas/BaseAsset"
+        - $ref: "#/components/schemas/NamedAssetProperties"
       description: All assets have a name
-      
+
     Tags:
       type: object
       properties:
@@ -149,7 +149,7 @@ components:
             - REQUIRED: Value of tag string.
       required:
         - name
-      
+
     FolderContainedAssetProperties:
       type: object
       properties:
@@ -202,7 +202,7 @@ components:
         tags:
           type: array
           items:
-            $ref: '#/components/schemas/Tags'
+            $ref: "#/components/schemas/Tags"
           description: |
             - NOT REQUIRED: Content Tags assigned to the asset.
       anyOf:
@@ -211,14 +211,14 @@ components:
             - parentFolderPath
         - required:
             - siteId
-            - siteName      
+            - siteName
 
     FolderContainedAsset:
       allOf:
-        - $ref: '#/components/schemas/NamedAsset'
-        - $ref: '#/components/schemas/FolderContainedAssetProperties'
+        - $ref: "#/components/schemas/NamedAsset"
+        - $ref: "#/components/schemas/FolderContainedAssetProperties"
       description: Representing all home-area assets that are contained in a folder
-      
+
     Metadata:
       type: object
       description: |
@@ -287,14 +287,14 @@ components:
               - name
           description: |
             - NOT REQUIRED: Array
-      
+
     DublinAwareAssetProperties:
       type: object
       description: |
         - NOT REQUIRED: The individual wired metadata fields. | default: all empty.
       properties:
         metadata:
-          $ref: '#/components/schemas/Metadata'
+          $ref: "#/components/schemas/Metadata"
         metadataSetId:
           type: string
           description: |
@@ -313,10 +313,10 @@ components:
           description: NOT REQUIRED
 
     DublinAwareAsset:
-          allOf:
-            - $ref: '#/components/schemas/FolderContainedAsset'
-            - $ref: '#/components/schemas/DublinAwareAssetProperties'
-          description: End types that extend containered-asset.        
+      allOf:
+        - $ref: "#/components/schemas/FolderContainedAsset"
+        - $ref: "#/components/schemas/DublinAwareAssetProperties"
+      description: End types that extend containered-asset.
 
     ExpiringAssetProperties:
       type: object
@@ -339,8 +339,8 @@ components:
 
     ExpiringAsset:
       allOf:
-        - $ref: '#/components/schemas/DublinAwareAsset'
-        - $ref: '#/components/schemas/ExpiringAssetProperties'
+        - $ref: "#/components/schemas/DublinAwareAsset"
+        - $ref: "#/components/schemas/ExpiringAssetProperties"
       description: An asset that can expire and be moved to an expiration folder.
 
     LinkRewriting:
@@ -349,8 +349,8 @@ components:
         - inherit
         - absolute
         - relative
-        - site-relative    
-    
+        - site-relative
+
     PublishableAssetProperties:
       type: object
       description: |
@@ -383,8 +383,8 @@ components:
 
     PublishableAsset:
       allOf:
-        - $ref: '#/components/schemas/ExpiringAsset'
-        - $ref: '#/components/schemas/PublishableAssetProperties'
+        - $ref: "#/components/schemas/ExpiringAsset"
+        - $ref: "#/components/schemas/PublishableAssetProperties"
 
     EntityTypeString:
       type: string
@@ -476,9 +476,9 @@ components:
             - When editing and selected asset is recycled, it is recommended to preserve this relationship by providing selected asset's id in case if the selected asset gets restored from the recycle bin.
             - One is REQUIRED.
         path:
-          $ref: '#/components/schemas/Path'
+          $ref: "#/components/schemas/Path"
         type:
-          $ref: '#/components/schemas/EntityTypeString'
+          $ref: "#/components/schemas/EntityTypeString"
           description: |
             - REQUIRED. All asset type strings.
         recycled:
@@ -494,7 +494,7 @@ components:
 
     ContainerChildren:
       allOf:
-        - $ref: '#/components/schemas/Identifier'
+        - $ref: "#/components/schemas/Identifier"
 
     StructuredDataNode:
       type: object
@@ -514,7 +514,7 @@ components:
         structuredDataNodes:
           type: array
           items:
-            $ref: '#/components/schemas/StructuredDataNodes'
+            $ref: "#/components/schemas/StructuredDataNodes"
           description: |
             - NOT REQUIRED: An array of structured data nodes.
         text:
@@ -596,7 +596,7 @@ components:
 
     StructuredDataNodes:
       allOf:
-        - $ref: '#/components/schemas/StructuredDataNode'
+        - $ref: "#/components/schemas/StructuredDataNode"
       description: |
         - An array of structured data nodes.
 
@@ -614,7 +614,7 @@ components:
         structuredDataNodes:
           type: array
           items:
-            $ref: '#/components/schemas/StructuredDataNodes'
+            $ref: "#/components/schemas/StructuredDataNodes"
           description: |
             - The structured data nodes that make up the structured data.
       description: |
@@ -700,7 +700,7 @@ components:
           description: |
             - NOT REQUIRED: The output extension, if specified, of the page configuration.
         serializationType:
-          $ref: '#/components/schemas/SerializationType'
+          $ref: "#/components/schemas/SerializationType"
           description: |
             - NOT REQUIRED: The serialization type.
         includeXMLDeclaration:
@@ -764,30 +764,30 @@ components:
 
     PageRegion:
       allOf:
-        - $ref: '#/components/schemas/BaseAsset'
-        - $ref: '#/components/schemas/PageRegionProperties'
+        - $ref: "#/components/schemas/BaseAsset"
+        - $ref: "#/components/schemas/PageRegionProperties"
       description: |
         - An individual page region.
 
     PageRegions:
       allOf:
-        - $ref: '#/components/schemas/PageRegion'
+        - $ref: "#/components/schemas/PageRegion"
       description: |
         - Complex type wrapping a list of page regions.
 
     PageConfiguration:
       allOf:
-        - $ref: '#/components/schemas/BaseAsset'
-        - $ref: '#/components/schemas/PageConfigurationProperties'
+        - $ref: "#/components/schemas/BaseAsset"
+        - $ref: "#/components/schemas/PageConfigurationProperties"
       description: |
         - A single page configuration.
 
     PageConfigurations:
       allOf:
-        - $ref: '#/components/schemas/PageConfiguration'
+        - $ref: "#/components/schemas/PageConfiguration"
       description: |
         - A list of page configurations.
-    
+
     GlobalAbilities:
       type: object
       properties:
@@ -1287,8 +1287,8 @@ components:
 
     ContaineredAsset:
       allOf:
-        - $ref: '#/components/schemas/NamedAsset'
-        - $ref: '#/components/schemas/ContaineredAssetProperties'
+        - $ref: "#/components/schemas/NamedAsset"
+        - $ref: "#/components/schemas/ContaineredAssetProperties"
       description: |
         - All system area assets are 'containered'.
 
@@ -1310,7 +1310,7 @@ components:
 
     AssetFactoryPluginParameters:
       allOf:
-        - $ref: '#/components/schemas/AssetFactoryPluginParameter'
+        - $ref: "#/components/schemas/AssetFactoryPluginParameter"
       description: |
         - Complex type wrapping a list of asset factory plugin parameters.
 
@@ -1325,7 +1325,7 @@ components:
         parameters:
           type: array
           items:
-            $ref: '#/components/schemas/AssetFactoryPluginParameter'
+            $ref: "#/components/schemas/AssetFactoryPluginParameter"
           description: |
             - NOT REQUIRED: Parameters for the asset factory plugin.
       required:
@@ -1333,7 +1333,7 @@ components:
 
     AssetFactoryPlugins:
       allOf:
-        - $ref: '#/components/schemas/AssetFactoryPlugin'
+        - $ref: "#/components/schemas/AssetFactoryPlugin"
       description: |
         - Complex type wrapping a list of asset factory plugins.
 
@@ -1348,7 +1348,7 @@ components:
 
     DestinationList:
       allOf:
-        - $ref: '#/components/schemas/Identifier'
+        - $ref: "#/components/schemas/Identifier"
       description: |
         - A list of identifiers of publishable assets (files, folders, or pages).
 
@@ -1363,13 +1363,13 @@ components:
         pageConfigurationName:
           type: string
         publishMode:
-          $ref: '#/components/schemas/ContentTypePageConfigurationPublishMode'
+          $ref: "#/components/schemas/ContentTypePageConfigurationPublishMode"
           description: |
             - REQUIRED.
         destinations:
           type: array
           items:
-            $ref: '#/components/schemas/DestinationList'
+            $ref: "#/components/schemas/DestinationList"
           description: |
             - REQUIRED if "publishMode" is "selected-destinations", else NOT REQUIRED and ignored.
       required:
@@ -1381,7 +1381,7 @@ components:
 
     ContentTypePageConfigurations:
       allOf:
-        - $ref: '#/components/schemas/ContentTypePageConfiguration'
+        - $ref: "#/components/schemas/ContentTypePageConfiguration"
       description: |
         - Array of ContentTypePageConfiguration.
 
@@ -1402,7 +1402,7 @@ components:
             - NOT REQUIRED. This property is only applicable for data-definition type fields.
             - It holds a list of ancestor data definition groups presented in the form of a path.
         type:
-          $ref: '#/components/schemas/InlineEditableFieldType'
+          $ref: "#/components/schemas/InlineEditableFieldType"
           description: |
             - REQUIRED.
         name:
@@ -1418,7 +1418,7 @@ components:
 
     InlineEditableFields:
       allOf:
-        - $ref: '#/components/schemas/InlineEditableField'
+        - $ref: "#/components/schemas/InlineEditableField"
       description: |
         - Array of InlineEditableField.
 
@@ -1447,9 +1447,9 @@ components:
         - name
         - value
 
-    ConnectorParameterList:      
+    ConnectorParameterList:
       allOf:
-        - $ref: '#/components/schemas/ConnectorParameter'
+        - $ref: "#/components/schemas/ConnectorParameter"
       description: |
         - Array of ConnectorParameter.
 
@@ -1470,7 +1470,7 @@ components:
 
     ConnectorContentTypeLinkParamList:
       allOf:
-        - $ref: '#/components/schemas/ConnectorContentTypeLinkParam'
+        - $ref: "#/components/schemas/ConnectorContentTypeLinkParam"
       description: |
         - NOT REQUIRED: An array of connector content type link parameters.
 
@@ -1496,7 +1496,7 @@ components:
         connectorContentTypeLinkParams:
           type: array
           items:
-            $ref: '#/components/schemas/ConnectorContentTypeLinkParamList'
+            $ref: "#/components/schemas/ConnectorContentTypeLinkParamList"
           description: |
             - NOT REQUIRED: A list of connector content type link params.
       oneOf:
@@ -1506,10 +1506,10 @@ components:
 
     ConnectorContentTypeLinkList:
       allOf:
-        - $ref: '#/components/schemas/ConnectorContentTypeLink'              
+        - $ref: "#/components/schemas/ConnectorContentTypeLink"
       description: |
-        - Array of ConnectorContentTypeLink."     
-        
+        - Array of ConnectorContentTypeLink."
+
     ConnectorProperties:
       type: object
       properties:
@@ -1539,20 +1539,20 @@ components:
         connectorParameters:
           type: array
           items:
-            $ref: '#/components/schemas/ConnectorParameterList'
+            $ref: "#/components/schemas/ConnectorParameterList"
           description: |
             - NOT REQUIRED: A list of connector parameters
         connectorContentTypeLinks:
           type: array
           items:
-            $ref: '#/components/schemas/ConnectorContentTypeLinkList'
+            $ref: "#/components/schemas/ConnectorContentTypeLinkList"
           description: |
             - REQUIRED for FacebookConnector and WordPressConnector
 
     Connector:
       allOf:
-        - $ref: '#/components/schemas/ContaineredAsset'
-        - $ref: '#/components/schemas/ConnectorProperties'
+        - $ref: "#/components/schemas/ContaineredAsset"
+        - $ref: "#/components/schemas/ConnectorProperties"
 
     StatusUpdateConnectorProperties:
       type: object
@@ -1574,8 +1574,8 @@ components:
 
     StatusUpdateConnector:
       allOf:
-        - $ref: '#/components/schemas/Connector'
-        - $ref: '#/components/schemas/StatusUpdateConnectorProperties'
+        - $ref: "#/components/schemas/Connector"
+        - $ref: "#/components/schemas/StatusUpdateConnectorProperties"
 
     DynamicMetadataFieldType:
       type: string
@@ -1617,7 +1617,7 @@ components:
 
     DynamicMetadataFieldDefinitionValues:
       allOf:
-        - $ref: '#/components/schemas/DynamicMetadataFieldDefinitionValue'
+        - $ref: "#/components/schemas/DynamicMetadataFieldDefinitionValue"
 
     DynamicMetadataFieldDefinition:
       type: object
@@ -1631,19 +1631,19 @@ components:
           description: |
             - REQUIRED: The label of the dynamic metadata field.
         fieldType:
-          $ref: '#/components/schemas/DynamicMetadataFieldType'
+          $ref: "#/components/schemas/DynamicMetadataFieldType"
         required:
           type: boolean
           default: false
           description: |
             - Whether or not this field is required.
         visibility:
-          $ref: '#/components/schemas/MetadataFieldVisibility'
-          default: 'visible'
+          $ref: "#/components/schemas/MetadataFieldVisibility"
+          default: "visible"
         possibleValues:
           type: array
           items:
-            $ref: '#/components/schemas/DynamicMetadataFieldDefinitionValues'
+            $ref: "#/components/schemas/DynamicMetadataFieldDefinitionValues"
           description: |
             - REQUIRED for radio, checkbox, dropdown and multiselect types, ignored for text type.
         helpText:
@@ -1657,58 +1657,58 @@ components:
 
     DynamicMetadataFieldDefinitions:
       allOf:
-        - $ref: '#/components/schemas/DynamicMetadataFieldDefinition'
+        - $ref: "#/components/schemas/DynamicMetadataFieldDefinition"
 
     PublishableAssetList:
       allOf:
-        - $ref: '#/components/schemas/Identifier'
+        - $ref: "#/components/schemas/Identifier"
       description: |
         - A list of identifiers of publishable assets (files, folders, or pages).
 
     ScheduledDestinationMode:
       type: string
       enum:
-        - 'all-destinations'
-        - 'selected-destinations'
+        - "all-destinations"
+        - "selected-destinations"
       description: |
         - For Sites, Targets, Publish Sets scheduledPublishDestinationMode property
 
     DayOfWeek:
       type: string
       enum:
-        - 'Monday'
-        - 'Tuesday'
-        - 'Wednesday'
-        - 'Thursday'
-        - 'Friday'
-        - 'Saturday'
-        - 'Sunday'
+        - "Monday"
+        - "Tuesday"
+        - "Wednesday"
+        - "Thursday"
+        - "Friday"
+        - "Saturday"
+        - "Sunday"
 
     DaysOfWeek:
       type: object
       properties:
         dayOfWeek:
-          $ref: '#/components/schemas/DayOfWeek'
+          $ref: "#/components/schemas/DayOfWeek"
 
     AuthMode:
       type: string
       enum:
-        - 'PASSWORD'
-        - 'PUBLIC_KEY'
+        - "PASSWORD"
+        - "PUBLIC_KEY"
 
     FtpProtocolType:
       type: string
       enum:
-        - 'FTP'
-        - 'FTPS'
-        - 'SFTP'
+        - "FTP"
+        - "FTPS"
+        - "SFTP"
 
     WorkflowNamingBehavior:
       type: string
       enum:
-        - 'auto-name'
-        - 'name-of-definition'
-        - 'empty'
+        - "auto-name"
+        - "name-of-definition"
+        - "empty"
       description: |
         - The different options for naming an instance of a workflow definition
 
@@ -1734,49 +1734,49 @@ components:
 
     RoleAssignments:
       allOf:
-        - $ref: '#/components/schemas/RoleAssignment'
+        - $ref: "#/components/schemas/RoleAssignment"
 
     RecycleBinExpiration:
       type: string
       enum:
-        - '1'
-        - '15'
-        - '30'
-        - 'never'
-        
+        - "1"
+        - "15"
+        - "30"
+        - "never"
+
     NamingRuleCase:
       type: string
       enum:
-        - 'ANY'
-        - 'LOWER'
-        - 'UPPER'
+        - "ANY"
+        - "LOWER"
+        - "UPPER"
 
     NamingRuleSpacing:
       type: string
       enum:
-        - 'SPACE'
-        - 'REMOVE'
-        - 'HYPHEN'
-        - 'UNDERSCORE'
-        
+        - "SPACE"
+        - "REMOVE"
+        - "HYPHEN"
+        - "UNDERSCORE"
+
     NamingRuleAsset:
       type: object
       properties:
         namingRuleAsset:
           type: string
           enum:
-            - 'block'
-            - 'file'
-            - 'folder'
-            - 'page'
-            - 'symlink'
-            - 'template'
-            - 'reference'
-            - 'format'
+            - "block"
+            - "file"
+            - "folder"
+            - "page"
+            - "symlink"
+            - "template"
+            - "reference"
+            - "format"
 
     NamingRuleAssets:
       allOf:
-        - $ref: '#/components/schemas/NamingRuleAsset'
+        - $ref: "#/components/schemas/NamingRuleAsset"
 
     WorkflowStepConfiguration:
       type: object
@@ -1792,10 +1792,10 @@ components:
       required:
         - stepIdentifier
         - stepAssignment
-          
+
     WorkflowStepConfigurations:
       allOf:
-        - $ref: '#/components/schemas/WorkflowStepConfiguration'
+        - $ref: "#/components/schemas/WorkflowStepConfiguration"
       description: |
         - An array of workflow step configuration objects
 
@@ -1821,7 +1821,7 @@ components:
         workflowStepConfigurations:
           type: array
           items:
-            $ref: '#/components/schemas/WorkflowStepConfigurations'
+            $ref: "#/components/schemas/WorkflowStepConfigurations"
           description: |
             - NOT REQUIRED: default: the defaults as defined in the workflow definition.
         endDate:
@@ -1846,10 +1846,10 @@ components:
       required:
         - success
         - message
-          
+
     AssetIdentifiers:
       allOf:
-        - $ref: '#/components/schemas/Identifier'
+        - $ref: "#/components/schemas/Identifier"
       description: |
         - Array wrapper for multiple identifiers of assets
 
@@ -1863,35 +1863,35 @@ components:
         destinations:
           type: array
           items:
-            $ref: '#/components/schemas/AssetIdentifiers'
+            $ref: "#/components/schemas/AssetIdentifiers"
           description: |
             - NOT REQUIRED: Unpublishes the asset from the given destinations. Default: all enabled destinations in the asset's site.
 
     AclEntryLevel:
       type: string
       enum:
-        - 'read'
-        - 'write'
+        - "read"
+        - "write"
       description: |
         - The access level, either 'read' or 'write'.
 
     AclEntryType:
       type: string
       enum:
-        - 'user'
-        - 'group'
+        - "user"
+        - "group"
       description: |
         - The type of ACL entry, either 'user' or 'group'.
 
     AclEntry:
-      type: object      
+      type: object
       properties:
         level:
-          $ref: '#/components/schemas/AclEntryLevel'
+          $ref: "#/components/schemas/AclEntryLevel"
           description: |
             - REQUIRED: The access level, either 'read' or 'write'.
         type:
-          $ref: '#/components/schemas/AclEntryType'
+          $ref: "#/components/schemas/AclEntryType"
           description: |
             - REQUIRED: The type of ACL entry, either 'user' or 'group'.
         name:
@@ -1907,16 +1907,16 @@ components:
 
     AclEntries:
       allOf:
-        - $ref: '#/components/schemas/AclEntry'
+        - $ref: "#/components/schemas/AclEntry"
       description: |
         - Array wrapper for access control list entries
 
     AllLevel:
       type: string
       enum:
-        - 'none'
-        - 'read'
-        - 'write'
+        - "none"
+        - "read"
+        - "write"
       description: |
         - Defines the access level for all users.
 
@@ -1924,17 +1924,17 @@ components:
       type: object
       properties:
         identifier:
-          $ref: '#/components/schemas/Identifier'
+          $ref: "#/components/schemas/Identifier"
           description: |
             - REQUIRED: Unique identifier for the asset or component whose access rights are being defined.
         aclEntries:
           type: array
           items:
-            $ref: '#/components/schemas/AclEntries'
+            $ref: "#/components/schemas/AclEntries"
           description: |
             - Optional list of Access Control List entries.
         allLevel:
-          $ref: '#/components/schemas/AllLevel'
+          $ref: "#/components/schemas/AllLevel"
           description: |
             - REQUIRED: Defines the access level for all users.
       required:
@@ -1944,13 +1944,13 @@ components:
       type: object
       properties:
         identifier:
-          $ref: '#/components/schemas/Identifier'
+          $ref: "#/components/schemas/Identifier"
           description: |
             - REQUIRED: Identifier for the workflow settings of a folder.
         workflowDefinitions:
           type: array
           items:
-            $ref: '#/components/schemas/AssetIdentifiers'
+            $ref: "#/components/schemas/AssetIdentifiers"
           description: |
             - NOT REQUIRED: Workflow definitions associated with this folder.
         inheritWorkflows:
@@ -1964,7 +1964,7 @@ components:
         inheritedWorkflowDefinitions:
           type: array
           items:
-            $ref: '#/components/schemas/AssetIdentifiers'
+            $ref: "#/components/schemas/AssetIdentifiers"
           description: |
             - NOT REQUIRED: Inherited workflow definitions from the parent folder. Ignored on edit.
       required:
@@ -1981,11 +1981,11 @@ components:
           type: string
           description: |
             - REQUIRED: The URL of an XML feed.
-          
+
     FeedBlock:
       allOf:
-        - $ref: '#/components/schemas/FeedBlockProperties'
-        - $ref: '#/components/schemas/ExpiringAsset'
+        - $ref: "#/components/schemas/FeedBlockProperties"
+        - $ref: "#/components/schemas/ExpiringAsset"
 
     IndexBlockProperties:
       type: object
@@ -2029,7 +2029,13 @@ components:
             - REQUIRED: The folder depth to which the indexer will render assets in XML form.
         renderingBehavior:
           type: string
-          enum: ["render-normally", "hierarchy", "hierarchy-with-siblings", "hierarchy-siblings-forward"]
+          enum:
+            [
+              "render-normally",
+              "hierarchy",
+              "hierarchy-with-siblings",
+              "hierarchy-siblings-forward",
+            ]
           default: "render-normally"
           description: |
             - NOT REQUIRED: The rendering behavior of the folder index block. Default: 'render-normally'.
@@ -2095,7 +2101,13 @@ components:
             - NOT REQUIRED: When this is 'true', the page which includes this index block will have its information also included at the bottom in a 'calling-page-data' element. Default: false.
         sortMethod:
           type: string
-          enum: ["folder-order", "alphabetical", "last-modified-date", "created-date"]
+          enum:
+            [
+              "folder-order",
+              "alphabetical",
+              "last-modified-date",
+              "created-date",
+            ]
           description: |
             - NOT REQUIRED: How to sort the folder contents when rendering the XML content. Default: 'folder-order' for folder index blocks and 'alphabetical' for content type index blocks.
         sortOrder:
@@ -2113,8 +2125,8 @@ components:
 
     IndexBlock:
       allOf:
-        - $ref: '#/components/schemas/IndexBlockProperties'
-        - $ref: '#/components/schemas/ExpiringAsset'
+        - $ref: "#/components/schemas/IndexBlockProperties"
+        - $ref: "#/components/schemas/ExpiringAsset"
 
     TextBlockProperties:
       type: object
@@ -2128,24 +2140,24 @@ components:
 
     TextBlock:
       allOf:
-        - $ref: '#/components/schemas/TextBlockProperties'
-        - $ref: '#/components/schemas/ExpiringAsset'
+        - $ref: "#/components/schemas/TextBlockProperties"
+        - $ref: "#/components/schemas/ExpiringAsset"
 
     XhtmlDataDefinitionBlockProperties:
       type: object
 
     XhtmlDataDefinitionBlock:
       allOf:
-        - $ref: '#/components/schemas/XhtmlDataDefinitionBlockProperties'
-        - $ref: '#/components/schemas/ExpiringAsset'
+        - $ref: "#/components/schemas/XhtmlDataDefinitionBlockProperties"
+        - $ref: "#/components/schemas/ExpiringAsset"
 
     XmlBlockProperties:
       type: object
 
     XmlBlock:
       allOf:
-        - $ref: '#/components/schemas/XmlBlockProperties'
-        - $ref: '#/components/schemas/ExpiringAsset'
+        - $ref: "#/components/schemas/XmlBlockProperties"
+        - $ref: "#/components/schemas/ExpiringAsset"
 
     TwitterFeedBlockProperties:
       type: object
@@ -2187,8 +2199,8 @@ components:
 
     TwitterFeedBlock:
       allOf:
-        - $ref: '#/components/schemas/TwitterFeedBlockProperties'
-        - $ref: '#/components/schemas/ExpiringAsset'
+        - $ref: "#/components/schemas/TwitterFeedBlockProperties"
+        - $ref: "#/components/schemas/ExpiringAsset"
 
     FileProperties:
       type: object
@@ -2210,7 +2222,7 @@ components:
         rewriteLinks:
           type: boolean
         linkRewriting:
-          $ref: '#/components/schemas/LinkRewriting'
+          $ref: "#/components/schemas/LinkRewriting"
           default: "inherit"
           description: |
             - NOT REQUIRED: default: 'inherit'.
@@ -2221,8 +2233,8 @@ components:
 
     File:
       allOf:
-        - $ref: '#/components/schemas/FileProperties'
-        - $ref: '#/components/schemas/PublishableAsset'
+        - $ref: "#/components/schemas/FileProperties"
+        - $ref: "#/components/schemas/PublishableAsset"
 
     FolderProperties:
       type: object
@@ -2230,7 +2242,7 @@ components:
         children:
           type: array
           items:
-            $ref: '#/components/schemas/ContainerChildren'
+            $ref: "#/components/schemas/ContainerChildren"
           description: |
             - The array of children.
             - Wrapper for an array of folder children (identifiers).
@@ -2241,8 +2253,8 @@ components:
 
     Folder:
       allOf:
-        - $ref: '#/components/schemas/FolderProperties'
-        - $ref: '#/components/schemas/PublishableAsset'
+        - $ref: "#/components/schemas/FolderProperties"
+        - $ref: "#/components/schemas/PublishableAsset"
 
     PageProperties:
       type: object
@@ -2272,7 +2284,7 @@ components:
             - Priority: (contentTypeId > contentTypePath) > (configurationSetId > configurationSetPath).
             - One is REQUIRED: contentTypeId | contentTypePath | configurationSetId | configurationSetPath
         structuredData:
-          $ref: '#/components/schemas/StructuredData'
+          $ref: "#/components/schemas/StructuredData"
           description: |
             - A page either contains XHTML content (plain WYSIWYG page) or structured data content.
             - Priority: xhtml > structuredData. One is REQUIRED.
@@ -2283,13 +2295,13 @@ components:
         pageConfigurations:
           type: array
           items:
-            $ref: '#/components/schemas/PageConfigurations'
+            $ref: "#/components/schemas/PageConfigurations"
           description: |
             - The page configurations containing page-level region block/format assignments.
             - NOT REQUIRED when creating a page, but you must submit assignment information when editing
             - if you want to maintain the region assignments.
         linkRewriting:
-          $ref: '#/components/schemas/LinkRewriting'
+          $ref: "#/components/schemas/LinkRewriting"
           default: "inherit"
           description: |
             - NOT REQUIRED: default: 'inherit'.
@@ -2300,14 +2312,14 @@ components:
         - required:
             - contentTypeId
             - contentTypePath
-        - required:        
-          - structuredData
-          - xhtml
+        - required:
+            - structuredData
+            - xhtml
 
     Page:
       allOf:
-        - $ref: '#/components/schemas/PageProperties'
-        - $ref: '#/components/schemas/PublishableAsset'
+        - $ref: "#/components/schemas/PageProperties"
+        - $ref: "#/components/schemas/PublishableAsset"
 
     ReferenceProperties:
       type: object
@@ -2325,7 +2337,7 @@ components:
             - Priority: referencedAssetId > referencedAssetPath.
             - One is REQUIRED.
         referencedAssetType:
-          $ref: '#/components/schemas/EntityTypeString'
+          $ref: "#/components/schemas/EntityTypeString"
           description: |
             - The type of the referenced asset. REQUIRED.
       required:
@@ -2337,8 +2349,8 @@ components:
 
     Reference:
       allOf:
-        - $ref: '#/components/schemas/ReferenceProperties'
-        - $ref: '#/components/schemas/FolderContainedAsset'
+        - $ref: "#/components/schemas/ReferenceProperties"
+        - $ref: "#/components/schemas/FolderContainedAsset"
 
     XsltFormatProperties:
       type: object
@@ -2352,8 +2364,8 @@ components:
 
     XsltFormat:
       allOf:
-        - $ref: '#/components/schemas/XsltFormatProperties'
-        - $ref: '#/components/schemas/FolderContainedAsset'
+        - $ref: "#/components/schemas/XsltFormatProperties"
+        - $ref: "#/components/schemas/FolderContainedAsset"
 
     ScriptFormatProperties:
       type: object
@@ -2367,8 +2379,8 @@ components:
 
     ScriptFormat:
       allOf:
-        - $ref: '#/components/schemas/ScriptFormatProperties'
-        - $ref: '#/components/schemas/FolderContainedAsset'
+        - $ref: "#/components/schemas/ScriptFormatProperties"
+        - $ref: "#/components/schemas/FolderContainedAsset"
 
     TemplateProperties:
       type: object
@@ -2403,7 +2415,7 @@ components:
         pageRegions:
           type: array
           items:
-            $ref: '#/components/schemas/PageRegions'
+            $ref: "#/components/schemas/PageRegions"
           description: |
             - NOT REQUIRED: The page regions and their block/xslt format assignments for this template. Defaults to all regions empty.
       required:
@@ -2411,8 +2423,8 @@ components:
 
     Template:
       allOf:
-        - $ref: '#/components/schemas/TemplateProperties'
-        - $ref: '#/components/schemas/FolderContainedAsset'
+        - $ref: "#/components/schemas/TemplateProperties"
+        - $ref: "#/components/schemas/FolderContainedAsset"
 
     SymlinkProperties:
       type: object
@@ -2424,8 +2436,8 @@ components:
 
     Symlink:
       allOf:
-        - $ref: '#/components/schemas/SymlinkProperties'
-        - $ref: '#/components/schemas/ExpiringAsset'
+        - $ref: "#/components/schemas/SymlinkProperties"
+        - $ref: "#/components/schemas/ExpiringAsset"
 
     UserProperties:
       type: object
@@ -2488,7 +2500,7 @@ components:
 
     User:
       allOf:
-        - $ref: '#/components/schemas/UserProperties'
+        - $ref: "#/components/schemas/UserProperties"
 
     GroupProperties:
       type: object
@@ -2514,7 +2526,7 @@ components:
 
     Group:
       allOf:
-        - $ref: '#/components/schemas/GroupProperties'
+        - $ref: "#/components/schemas/GroupProperties"
 
     RoleProperties:
       type: object
@@ -2525,13 +2537,13 @@ components:
           description: |
             - NOT REQUIRED: The type of the role.
         globalAbilities:
-          $ref: '#/components/schemas/GlobalAbilities'
+          $ref: "#/components/schemas/GlobalAbilities"
           description: |
             - ONE is REQUIRED:
             - The global or site abilities for the role.
             - Use the correct one depending on the type of the role.
         siteAbilities:
-          $ref: '#/components/schemas/SiteAbilities'
+          $ref: "#/components/schemas/SiteAbilities"
           description: |
             - ONE is REQUIRED:
             - The global or site abilities for the role.
@@ -2543,8 +2555,8 @@ components:
 
     Role:
       allOf:
-        - $ref: '#/components/schemas/RoleProperties'
-        - $ref: '#/components/schemas/NamedAsset'
+        - $ref: "#/components/schemas/RoleProperties"
+        - $ref: "#/components/schemas/NamedAsset"
 
     AssetFactoryProperties:
       type: object
@@ -2623,7 +2635,7 @@ components:
         plugins:
           type: array
           items:
-            $ref: '#/components/schemas/AssetFactoryPlugins'
+            $ref: "#/components/schemas/AssetFactoryPlugins"
           description: |
             - NOT REQUIRED: An array of asset factory plugins assigned to the asset factory. Defaults to empty.
       required:
@@ -2632,8 +2644,8 @@ components:
 
     AssetFactory:
       allOf:
-        - $ref: '#/components/schemas/AssetFactoryProperties'
-        - $ref: '#/components/schemas/ContaineredAsset'
+        - $ref: "#/components/schemas/AssetFactoryProperties"
+        - $ref: "#/components/schemas/ContaineredAsset"
 
     AssetFactoryContainerProperties:
       type: object
@@ -2649,14 +2661,14 @@ components:
         children:
           type: array
           items:
-            $ref: '#/components/schemas/ContainerChildren'
+            $ref: "#/components/schemas/ContainerChildren"
           description: |
             - NOT REQUIRED: The array of children.
 
     AssetFactoryContainer:
       allOf:
-        - $ref: '#/components/schemas/AssetFactoryContainerProperties'
-        - $ref: '#/components/schemas/ContaineredAsset'
+        - $ref: "#/components/schemas/AssetFactoryContainerProperties"
+        - $ref: "#/components/schemas/ContaineredAsset"
 
     ContentTypeProperties:
       type: object
@@ -2704,27 +2716,27 @@ components:
         contentTypePageConfigurations:
           type: array
           items:
-            $ref: '#/components/schemas/ContentTypePageConfigurations'
+            $ref: "#/components/schemas/ContentTypePageConfigurations"
           description: |
             - NOT REQUIRED: if not specified, the default publish mode 'all-destinations' is used for each pageConfiguration.
         inlineEditableFields:
           type: array
           items:
-            $ref: '#/components/schemas/InlineEditableFields'
+            $ref: "#/components/schemas/InlineEditableFields"
           description: |
             - NOT REQUIRED: if not specified, none of the regions or fields will be inline editable.
       oneOf:
         - required:
-          - pageConfigurationSetId
-          - pageConfigurationSetPath          
+            - pageConfigurationSetId
+            - pageConfigurationSetPath
         - required:
             - metadataSetId
             - metadataSetPath
-      
+
     ContentType:
       allOf:
-        - $ref: '#/components/schemas/ContentTypeProperties'
-        - $ref: '#/components/schemas/ContaineredAsset'
+        - $ref: "#/components/schemas/ContentTypeProperties"
+        - $ref: "#/components/schemas/ContaineredAsset"
 
     ContentTypeContainerProperties:
       type: object
@@ -2732,14 +2744,14 @@ components:
         children:
           type: array
           items:
-            $ref: '#/components/schemas/ContainerChildren'
+            $ref: "#/components/schemas/ContainerChildren"
           description: |
             - NOT REQUIRED: The array of children (identifiers).
 
     ContentTypeContainer:
       allOf:
-        - $ref: '#/components/schemas/ContentTypeContainerProperties'
-        - $ref: '#/components/schemas/ContaineredAsset'
+        - $ref: "#/components/schemas/ContentTypeContainerProperties"
+        - $ref: "#/components/schemas/ContaineredAsset"
 
     ConnectorContainerProperties:
       type: object
@@ -2747,71 +2759,71 @@ components:
         children:
           type: array
           items:
-            $ref: '#/components/schemas/ContainerChildren'
+            $ref: "#/components/schemas/ContainerChildren"
           description: |
             - NOT REQUIRED: The array of children (identifiers).
 
     ConnectorContainer:
       allOf:
-        - $ref: '#/components/schemas/ConnectorContainerProperties'
-        - $ref: '#/components/schemas/ContaineredAsset'
+        - $ref: "#/components/schemas/ConnectorContainerProperties"
+        - $ref: "#/components/schemas/ContaineredAsset"
 
     FacebookConnectorProperties:
       type: object
-    
+
     FacebookConnector:
       allOf:
-        - $ref: '#/components/schemas/FacebookConnectorProperties'
-        - $ref: '#/components/schemas/StatusUpdateConnector'
-        
+        - $ref: "#/components/schemas/FacebookConnectorProperties"
+        - $ref: "#/components/schemas/StatusUpdateConnector"
+
     WordPressConnectorProperties:
       type: object
-    
+
     WordPressConnector:
       allOf:
-        - $ref: '#/components/schemas/WordPressConnectorProperties'
-        - $ref: '#/components/schemas/Connector'
-        
+        - $ref: "#/components/schemas/WordPressConnectorProperties"
+        - $ref: "#/components/schemas/Connector"
+
     GoogleAnalyticsConnectorProperties:
       type: object
-    
+
     GoogleAnalyticsConnector:
       allOf:
-        - $ref: '#/components/schemas/GoogleAnalyticsConnectorProperties'
-        - $ref: '#/components/schemas/Connector'
-        
+        - $ref: "#/components/schemas/GoogleAnalyticsConnectorProperties"
+        - $ref: "#/components/schemas/Connector"
+
     PageConfigurationSetProperties:
       type: object
       properties:
         pageConfigurations:
           type: array
           items:
-            $ref: '#/components/schemas/PageConfigurations'
+            $ref: "#/components/schemas/PageConfigurations"
           description: |
             - REQUIRED: The individual page configurations contained within this set.
       required:
         - pageConfigurations
-    
+
     PageConfigurationSet:
       allOf:
-        - $ref: '#/components/schemas/PageConfigurationSetProperties'
-        - $ref: '#/components/schemas/ContaineredAsset'
-        
+        - $ref: "#/components/schemas/PageConfigurationSetProperties"
+        - $ref: "#/components/schemas/ContaineredAsset"
+
     PageConfigurationSetContainerProperties:
       type: object
       properties:
         children:
           type: array
           items:
-            $ref: '#/components/schemas/ContainerChildren'
+            $ref: "#/components/schemas/ContainerChildren"
           description: |
             - NOT REQUIRED: The array of children assets.
-    
+
     PageConfigurationSetContainer:
       allOf:
-        - $ref: '#/components/schemas/PageConfigurationSetContainerProperties'
-        - $ref: '#/components/schemas/ContaineredAsset'
-        
+        - $ref: "#/components/schemas/PageConfigurationSetContainerProperties"
+        - $ref: "#/components/schemas/ContaineredAsset"
+
     DataDefinitionProperties:
       type: object
       properties:
@@ -2821,27 +2833,27 @@ components:
             - REQUIRED: The XML content of this data definition.
       required:
         - xml
-    
+
     DataDefinition:
       allOf:
-        - $ref: '#/components/schemas/DataDefinitionProperties'
-        - $ref: '#/components/schemas/ContaineredAsset'
-    
+        - $ref: "#/components/schemas/DataDefinitionProperties"
+        - $ref: "#/components/schemas/ContaineredAsset"
+
     DataDefinitionContainerProperties:
       type: object
       properties:
         children:
           type: array
           items:
-            $ref: '#/components/schemas/ContainerChildren'
+            $ref: "#/components/schemas/ContainerChildren"
           description: |
             - NOT REQUIRED: The array of children.
-    
+
     DataDefinitionContainer:
       allOf:
-        - $ref: '#/components/schemas/DataDefinitionContainerProperties'
-        - $ref: '#/components/schemas/ContaineredAsset'
-    
+        - $ref: "#/components/schemas/DataDefinitionContainerProperties"
+        - $ref: "#/components/schemas/ContaineredAsset"
+
     SharedFieldProperties:
       type: object
       properties:
@@ -2851,26 +2863,26 @@ components:
             - REQUIRED: The XML content of this shared field.
       required:
         - xml
-    
+
     SharedField:
       allOf:
-        - $ref: '#/components/schemas/SharedFieldProperties'
-        - $ref: '#/components/schemas/ContaineredAsset'
-        
+        - $ref: "#/components/schemas/SharedFieldProperties"
+        - $ref: "#/components/schemas/ContaineredAsset"
+
     SharedFieldContainerProperties:
       type: object
       properties:
         children:
           type: array
           items:
-            $ref: '#/components/schemas/ContainerChildren'
+            $ref: "#/components/schemas/ContainerChildren"
           description: |
             - NOT REQUIRED: The array of children.
-    
+
     SharedFieldContainer:
       allOf:
-        - $ref: '#/components/schemas/SharedFieldContainerProperties'
-        - $ref: '#/components/schemas/ContaineredAsset'
+        - $ref: "#/components/schemas/SharedFieldContainerProperties"
+        - $ref: "#/components/schemas/ContaineredAsset"
 
     MetadataSetProperties:
       type: object
@@ -3023,14 +3035,14 @@ components:
         dynamicMetadataFieldDefinitions:
           type: array
           items:
-            $ref: '#/components/schemas/DynamicMetadataFieldDefinitions'
+            $ref: "#/components/schemas/DynamicMetadataFieldDefinitions"
           description: |
             - NOT REQUIRED: The dynamic metadata field definitions.
 
     MetadataSet:
       allOf:
-        - $ref: '#/components/schemas/MetadataSetProperties'
-        - $ref: '#/components/schemas/ContaineredAsset'
+        - $ref: "#/components/schemas/MetadataSetProperties"
+        - $ref: "#/components/schemas/ContaineredAsset"
 
     MetadataSetContainerProperties:
       type: object
@@ -3038,14 +3050,14 @@ components:
         children:
           type: array
           items:
-            $ref: '#/components/schemas/ContainerChildren'
+            $ref: "#/components/schemas/ContainerChildren"
           description: |
             - NOT REQUIRED: The array of children.
-          
+
     MetadataSetContainer:
       allOf:
-        - $ref: '#/components/schemas/MetadataSetContainerProperties'
-        - $ref: '#/components/schemas/ContaineredAsset'
+        - $ref: "#/components/schemas/MetadataSetContainerProperties"
+        - $ref: "#/components/schemas/ContaineredAsset"
 
     PublishSetProperties:
       type: object
@@ -3055,19 +3067,19 @@ components:
         files:
           type: array
           items:
-            $ref: '#/components/schemas/PublishableAssetList'
+            $ref: "#/components/schemas/PublishableAssetList"
           description: |
             - NOT REQUIRED: A list of files that is included in this publish set. Default is empty.
         folders:
           type: array
           items:
-            $ref: '#/components/schemas/PublishableAssetList'
+            $ref: "#/components/schemas/PublishableAssetList"
           description: |
             - NOT REQUIRED: A list of folders that is included in this publish set. Default is empty.
         pages:
           type: array
           items:
-            $ref: '#/components/schemas/PublishableAssetList'
+            $ref: "#/components/schemas/PublishableAssetList"
           description: |
             - NOT REQUIRED: A list of pages that is included in this publish set. Default is empty.
         usesScheduledPublishing:
@@ -3076,18 +3088,18 @@ components:
           description: |
             - NOT REQUIRED: Whether or not to publish this set on a schedule. Default is false.
         scheduledPublishDestinationMode:
-          $ref: '#/components/schemas/ScheduledDestinationMode'
+          $ref: "#/components/schemas/ScheduledDestinationMode"
           description: |
             - NOT REQUIRED: Scheduled publish destination selection mode.
         scheduledPublishDestinations:
           type: array
           items:
-            $ref: '#/components/schemas/DestinationList'
+            $ref: "#/components/schemas/DestinationList"
           description: |
             - NOT REQUIRED: Used in conjunction with scheduledPublishDestinationMode when destinations are to be specified explicitly.
         timeToPublish:
           type: string
-          default: '00:00'
+          default: "00:00"
           description: |
             - NOT REQUIRED: The base time this set will be published. Default is 00:00 (midnight).
         publishIntervalHours:
@@ -3097,7 +3109,7 @@ components:
         publishDaysOfWeek:
           type: array
           items:
-            $ref: '#/components/schemas/DaysOfWeek'
+            $ref: "#/components/schemas/DaysOfWeek"
           description: |
             - NOT REQUIRED: Which days of the week the job should publish on.
         cronExpression:
@@ -3120,8 +3132,8 @@ components:
 
     PublishSet:
       allOf:
-        - $ref: '#/components/schemas/PublishSetProperties'
-        - $ref: '#/components/schemas/ContaineredAsset'
+        - $ref: "#/components/schemas/PublishSetProperties"
+        - $ref: "#/components/schemas/ContaineredAsset"
 
     PublishSetContainerProperties:
       type: object
@@ -3129,9 +3141,9 @@ components:
         - This schema represents the properties for a Publish Set Container.
 
     PublishSetContainer:
-      allOf:        
-        - $ref: '#/components/schemas/PublishSetContainerProperties'
-        - $ref: '#/components/schemas/ContaineredAsset'
+      allOf:
+        - $ref: "#/components/schemas/PublishSetContainerProperties"
+        - $ref: "#/components/schemas/ContaineredAsset"
 
     TargetProperties:
       type: object
@@ -3168,7 +3180,7 @@ components:
             - REQUIRED: The output file extension, for example".html\"
         cssClasses:
           type: string
-          default: ''
+          default: ""
           description: |
             - The CSS classes that pages using this target will have available to them in the WYSIWYG editor (comma-delimited list). NOT REQUIRED default: empty
         cssFileId:
@@ -3184,7 +3196,7 @@ components:
           description: |
             - For reading purposes only. Ignored when editing, copying etc.
         serializationType:
-          $ref: '#/components/schemas/SerializationType'
+          $ref: "#/components/schemas/SerializationType"
           description: |
             - REQUIRED: The content type this target serializes its output as
         includeXMLDeclaration:
@@ -3214,12 +3226,12 @@ components:
         scheduledPublishDestinations:
           type: array
           items:
-            $ref: '#/components/schemas/DestinationList'
+            $ref: "#/components/schemas/DestinationList"
           description: |
             - Used in conjunction with scheduledPublishDestinationMode when destinations are to be specified explicitly. NOT REQUIRED
         timeToPublish:
           type: string
-          default: '00:00'
+          default: "00:00"
           description: |
             - The base time this set will be published. For example, if one wanted this set to publish at 0100, 0500, 0900, 1300, 1700, 2100, I would enter one of those times here and set the"publishInterval\" to 4, and the"publishIntervalUnits\" to"hours\". NOT REQUIRED default: 00:00 (midnight), if cronExpression provided or usesScheduledPublishing is false, ignored
         publishIntervalHours:
@@ -3229,7 +3241,7 @@ components:
         publishDaysOfWeek:
           type: array
           items:
-            $ref: '#/components/schemas/DaysOfWeek'
+            $ref: "#/components/schemas/DaysOfWeek"
           description: |
             - Which days of the week the job should publish on - select all days to have a daily publish. One of the following 3 is REQUIRED if usesScheduledPublishing is true, else NOT REQUIRED and ignored
         cronExpression:
@@ -3252,7 +3264,7 @@ components:
         children:
           type: array
           items:
-            $ref: '#/components/schemas/ContainerChildren'
+            $ref: "#/components/schemas/ContainerChildren"
           description: |
             - NOT REQUIRED: The array of children
       required:
@@ -3268,8 +3280,8 @@ components:
 
     Target:
       allOf:
-        - $ref: '#/components/schemas/TargetProperties'
-        - $ref: '#/components/schemas/NamedAsset'
+        - $ref: "#/components/schemas/TargetProperties"
+        - $ref: "#/components/schemas/NamedAsset"
 
     SiteDestinationContainerProperties:
       type: object
@@ -3277,15 +3289,15 @@ components:
         children:
           type: array
           items:
-            $ref: '#/components/schemas/ContainerChildren'
+            $ref: "#/components/schemas/ContainerChildren"
           description: |
             - NOT REQUIRED: The array of children assets.
 
     SiteDestinationContainer:
       type: object
       allOf:
-        - $ref: '#/components/schemas/SiteDestinationContainerProperties'
-        - $ref: '#/components/schemas/ContaineredAsset'
+        - $ref: "#/components/schemas/SiteDestinationContainerProperties"
+        - $ref: "#/components/schemas/ContaineredAsset"
 
     DestinationProperties:
       type: object
@@ -3307,51 +3319,51 @@ components:
         transportId:
           type: string
           description: |
-            - Priority: transportId > transportPath 
+            - Priority: transportId > transportPath
             - One is REQUIRED
         transportPath:
           type: string
           description: |
-            - Priority: transportId > transportPath 
+            - Priority: transportId > transportPath
             - One is REQUIRED
         applicableGroups:
           type: string
           description: |
-            - Semicolon-delimited list of string group names 
+            - Semicolon-delimited list of string group names
             - NOT REQUIRED
         directory:
           type: string
           description: |
-            - The directory to place the published files in 
+            - The directory to place the published files in
             - NOT REQUIRED
         enabled:
           type: boolean
           description: |
-            - Whether or not this destination is enabled for publishing 
+            - Whether or not this destination is enabled for publishing
             - NOT REQUIRED
         checkedByDefault:
           type: boolean
           description: |
-            - Whether or not this destination is checked by default 
+            - Whether or not this destination is checked by default
             - NOT REQUIRED
         publishASCII:
           type: boolean
           description: |
-            - Whether or not to only publish ASCII characters 
+            - Whether or not to only publish ASCII characters
             - NOT REQUIRED
         usesScheduledPublishing:
           type: boolean
           description: |
-            - Whether or not to publish this set on a schedule 
+            - Whether or not to publish this set on a schedule
             - NOT REQUIRED
         scheduledPublishDestinationMode:
-          $ref: '#/components/schemas/ScheduledDestinationMode'
+          $ref: "#/components/schemas/ScheduledDestinationMode"
           description: |
             - Not used, will be ignored if any value is set
         scheduledPublishDestinations:
           type: array
           items:
-            $ref: '#/components/schemas/DestinationList'
+            $ref: "#/components/schemas/DestinationList"
           description: |
             - Not used, will be ignored if any value is set
         timeToPublish:
@@ -3380,54 +3392,54 @@ components:
         sendReportToUsers:
           type: string
           description: |
-            - Semicolon-delimited list of string user names 
+            - Semicolon-delimited list of string user names
             - NOT REQUIRED
         sendReportToGroups:
           type: string
           description: |
-            - Semicolon-delimited list of string group names 
+            - Semicolon-delimited list of string group names
             - NOT REQUIRED
         sendReportOnErrorOnly:
           type: boolean
           description: |
-            - Whether or not to send a report when there are no errors 
+            - Whether or not to send a report when there are no errors
             - NOT REQUIRED default: false
         webUrl:
           type: string
           description: |
-            - The base URL for linking to a given configuration during publishing 
+            - The base URL for linking to a given configuration during publishing
             - NOT REQUIRED
         extensionsToStrip:
           type: string
           description: |
-            - Comma-separated list of extensions to strip from links 
+            - Comma-separated list of extensions to strip from links
             - NOT REQUIRED
         siteId:
           type: string
           description: |
-            - Priority: siteId > siteName 
+            - Priority: siteId > siteName
             - One is REQUIRED
         siteName:
           type: string
           description: |
-            - Priority: siteId > siteName 
+            - Priority: siteId > siteName
             - One is REQUIRED
-      oneOf:        
+      oneOf:
         - required:
-          - parentContainerId
-          - parentContainerPath
+            - parentContainerId
+            - parentContainerPath
         - required:
-          - transportId
-          - transportPath
+            - transportId
+            - transportPath
         - required:
-          - siteId
-          - siteName
+            - siteId
+            - siteName
 
     Destination:
       type: object
       allOf:
-        - $ref: '#/components/schemas/DestinationProperties'
-        - $ref: '#/components/schemas/NamedAsset'
+        - $ref: "#/components/schemas/DestinationProperties"
+        - $ref: "#/components/schemas/NamedAsset"
 
     FileSystemTransportProperties:
       type: object
@@ -3446,8 +3458,8 @@ components:
     FileSystemTransport:
       type: object
       allOf:
-        - $ref: '#/components/schemas/FileSystemTransportProperties'
-        - $ref: '#/components/schemas/ContaineredAsset'
+        - $ref: "#/components/schemas/FileSystemTransportProperties"
+        - $ref: "#/components/schemas/ContaineredAsset"
 
     FtpTransportProperties:
       type: object
@@ -3476,7 +3488,7 @@ components:
             - REQUIRED
             - The username to use when connecting to the server
         authMode:
-          $ref: '#/components/schemas/AuthMode'
+          $ref: "#/components/schemas/AuthMode"
           description: |
             - REQUIRED when ftpProtocolType is SFTP
             - The authentication mode to use when connecting to the server. Applicable only when ftpProtocolType is SFTP
@@ -3498,7 +3510,7 @@ components:
             - NOT REQUIRED
             - The directory to place the files in
         ftpProtocolType:
-          $ref: '#/components/schemas/FtpProtocolType'
+          $ref: "#/components/schemas/FtpProtocolType"
           default: "ftp"
           description: |
             - REQUIRED
@@ -3512,8 +3524,8 @@ components:
     FtpTransport:
       type: object
       allOf:
-        - $ref: '#/components/schemas/FtpTransportProperties'
-        - $ref: '#/components/schemas/ContaineredAsset'
+        - $ref: "#/components/schemas/FtpTransportProperties"
+        - $ref: "#/components/schemas/ContaineredAsset"
 
     DatabaseTransportProperties:
       type: object
@@ -3561,8 +3573,8 @@ components:
     DatabaseTransport:
       type: object
       allOf:
-        - $ref: '#/components/schemas/DatabaseTransportProperties'
-        - $ref: '#/components/schemas/ContaineredAsset'
+        - $ref: "#/components/schemas/DatabaseTransportProperties"
+        - $ref: "#/components/schemas/ContaineredAsset"
 
     CloudTransportProperties:
       type: object
@@ -3598,8 +3610,8 @@ components:
     CloudTransport:
       type: object
       allOf:
-        - $ref: '#/components/schemas/CloudTransportProperties'
-        - $ref: '#/components/schemas/ContaineredAsset'
+        - $ref: "#/components/schemas/CloudTransportProperties"
+        - $ref: "#/components/schemas/ContaineredAsset"
 
     TransportContainerProperties:
       type: object
@@ -3609,7 +3621,7 @@ components:
         children:
           type: array
           items:
-            $ref: '#/components/schemas/ContainerChildren'
+            $ref: "#/components/schemas/ContainerChildren"
           description: |
             - NOT REQUIRED
             - The array of children assets.
@@ -3617,8 +3629,8 @@ components:
     TransportContainer:
       type: object
       allOf:
-        - $ref: '#/components/schemas/TransportContainerProperties'
-        - $ref: '#/components/schemas/ContaineredAsset'
+        - $ref: "#/components/schemas/TransportContainerProperties"
+        - $ref: "#/components/schemas/ContaineredAsset"
 
     WorkflowDefinitionProperties:
       type: object
@@ -3661,7 +3673,7 @@ components:
             - NOT REQUIRED
             - Whether or not this is a move type workflow
         namingBehavior:
-          $ref: '#/components/schemas/WorkflowNamingBehavior'
+          $ref: "#/components/schemas/WorkflowNamingBehavior"
           description: |
             - REQUIRED
             - The naming behavior when an instance of this workflow is created
@@ -3695,8 +3707,8 @@ components:
     WorkflowDefinition:
       type: object
       allOf:
-        - $ref: '#/components/schemas/WorkflowDefinitionProperties'
-        - $ref: '#/components/schemas/ContaineredAsset'
+        - $ref: "#/components/schemas/WorkflowDefinitionProperties"
+        - $ref: "#/components/schemas/ContaineredAsset"
 
     WorkflowDefinitionContainerProperties:
       type: object
@@ -3706,7 +3718,7 @@ components:
         children:
           type: array
           items:
-            $ref: '#/components/schemas/ContainerChildren'
+            $ref: "#/components/schemas/ContainerChildren"
           description: |
             - NOT REQUIRED
             - The array of children assets.
@@ -3714,8 +3726,8 @@ components:
     WorkflowDefinitionContainer:
       type: object
       allOf:
-        - $ref: '#/components/schemas/WorkflowDefinitionContainerProperties'
-        - $ref: '#/components/schemas/ContaineredAsset'
+        - $ref: "#/components/schemas/WorkflowDefinitionContainerProperties"
+        - $ref: "#/components/schemas/ContaineredAsset"
 
     WorkflowEmailProperties:
       type: object
@@ -3739,8 +3751,8 @@ components:
     WorkflowEmail:
       type: object
       allOf:
-        - $ref: '#/components/schemas/WorkflowEmailProperties'
-        - $ref: '#/components/schemas/ContaineredAsset'
+        - $ref: "#/components/schemas/WorkflowEmailProperties"
+        - $ref: "#/components/schemas/ContaineredAsset"
 
     WorkflowEmailContainerProperties:
       type: object
@@ -3750,7 +3762,7 @@ components:
         children:
           type: array
           items:
-            $ref: '#/components/schemas/ContainerChildren'
+            $ref: "#/components/schemas/ContainerChildren"
           description: |
             - NOT REQUIRED
             - The array of children assets.
@@ -3758,8 +3770,8 @@ components:
     WorkflowEmailContainer:
       type: object
       allOf:
-        - $ref: '#/components/schemas/WorkflowEmailContainerProperties'
-        - $ref: '#/components/schemas/ContaineredAsset'
+        - $ref: "#/components/schemas/WorkflowEmailContainerProperties"
+        - $ref: "#/components/schemas/ContaineredAsset"
 
     SiteProperties:
       type: object
@@ -3825,7 +3837,7 @@ components:
         roleAssignments:
           type: array
           items:
-            $ref: '#/components/schemas/RoleAssignments'
+            $ref: "#/components/schemas/RoleAssignments"
           description: |
             - NOT REQUIRED: Role assignments for the site.
         usesScheduledPublishing:
@@ -3840,7 +3852,7 @@ components:
         scheduledPublishDestinations:
           type: array
           items:
-            $ref: '#/components/schemas/DestinationList'
+            $ref: "#/components/schemas/DestinationList"
           description: |
             - NOT REQUIRED: Destinations to be explicitly specified for scheduled publish.
             - Used in conjunction with scheduledPublishDestinationMode when destinations are to be specified explicitly
@@ -3860,7 +3872,7 @@ components:
         publishDaysOfWeek:
           type: array
           items:
-            $ref: '#/components/schemas/DaysOfWeek'
+            $ref: "#/components/schemas/DaysOfWeek"
           description: |
             - Optional: Days of the week for publishing. One of the choices for scheduled publishing.
             - Which days of the which the job should publish on - select all days to have a daily publish
@@ -3883,7 +3895,7 @@ components:
           description: |
             - NOT REQUIRED: Whether to send a report only when there are errors. Default: false
         recycleBinExpiration:
-          $ref: '#/components/schemas/RecycleBinExpiration'
+          $ref: "#/components/schemas/RecycleBinExpiration"
           description: |
             - REQUIRED: The recycle bin expiration time.
         unpublishOnExpiration:
@@ -3922,15 +3934,15 @@ components:
             - Otherwise, null values will be defaulted to appropriate values when saving.
             - Naming rules read from a site may be null.
         namingRuleCase:
-          $ref: '#/components/schemas/NamingRuleCase'
+          $ref: "#/components/schemas/NamingRuleCase"
           description: |
             - Optional: Defines what case a name can be. Depends on inheritNamingRules.
         namingRuleSpacing:
-          $ref: '#/components/schemas/NamingRuleSpacing'
+          $ref: "#/components/schemas/NamingRuleSpacing"
           description: |
             - Optional: Defines how spaces are handled for names. Depends on inheritNamingRules.
         namingRuleAssets:
-          $ref: '#/components/schemas/NamingRuleAssets'
+          $ref: "#/components/schemas/NamingRuleAssets"
           description: |
             - Optional: Defines the asset types that enforce naming rules. Depends on inheritNamingRules.
         accessibilityCheckerEnabled:
@@ -4010,7 +4022,7 @@ components:
           description: |
             - NOT REQUIRED: Used only when reading a site. Ignored in other cases.
         linkRewriting:
-          $ref: '#/components/schemas/LinkRewriting'
+          $ref: "#/components/schemas/LinkRewriting"
           default: "absolute"
           description: |
             - NOT REQUIRED: Default is "absolute".
@@ -4030,8 +4042,8 @@ components:
     Site:
       type: object
       allOf:
-        - $ref: '#/components/schemas/SiteProperties'
-        - $ref: '#/components/schemas/NamedAsset'
+        - $ref: "#/components/schemas/SiteProperties"
+        - $ref: "#/components/schemas/NamedAsset"
 
     EditorConfigurationProperties:
       type: object
@@ -4073,8 +4085,8 @@ components:
 
     EditorConfiguration:
       allOf:
-        - $ref: '#/components/schemas/EditorConfigurationProperties'
-        - $ref: '#/components/schemas/NamedAsset'
+        - $ref: "#/components/schemas/EditorConfigurationProperties"
+        - $ref: "#/components/schemas/NamedAsset"
       description: |
         - Composite type combining EditorConfigurationProperties and NamedAsset
 
@@ -4085,297 +4097,297 @@ components:
         - Admin area assets require managerial or higher access, and no workflowConfiguration is needed for them.
       properties:
         workflowConfiguration:
-          $ref: '#/components/schemas/WorkflowConfiguration'
+          $ref: "#/components/schemas/WorkflowConfiguration"
           description: |
             - NOT REQUIRED
         feedBlock:
-          $ref: '#/components/schemas/FeedBlock'
+          $ref: "#/components/schemas/FeedBlock"
           description: |
             - One is REQUIRED
         indexBlock:
-          $ref: '#/components/schemas/IndexBlock'
+          $ref: "#/components/schemas/IndexBlock"
           description: |
             - One is REQUIRED
         textBlock:
-          $ref: '#/components/schemas/TextBlock'
+          $ref: "#/components/schemas/TextBlock"
           description: |
             - One is REQUIRED
         xhtmlDataDefinitionBlock:
-          $ref: '#/components/schemas/XhtmlDataDefinitionBlock'
+          $ref: "#/components/schemas/XhtmlDataDefinitionBlock"
           description: |
             - One is REQUIRED
         xmlBlock:
-          $ref: '#/components/schemas/XmlBlock'
+          $ref: "#/components/schemas/XmlBlock"
           description: |
             - One is REQUIRED
         file:
-          $ref: '#/components/schemas/File'
+          $ref: "#/components/schemas/File"
           description: |
             - One is REQUIRED
         folder:
-          $ref: '#/components/schemas/Folder'
+          $ref: "#/components/schemas/Folder"
           description: |
             - One is REQUIRED
         page:
-          $ref: '#/components/schemas/Page'
+          $ref: "#/components/schemas/Page"
           description: |
             - One is REQUIRED
         reference:
-          $ref: '#/components/schemas/Reference'
+          $ref: "#/components/schemas/Reference"
           description: |
             - One is REQUIRED
         xsltFormat:
-          $ref: '#/components/schemas/XsltFormat'
+          $ref: "#/components/schemas/XsltFormat"
           description: |
             - One is REQUIRED
         scriptFormat:
-          $ref: '#/components/schemas/ScriptFormat'
+          $ref: "#/components/schemas/ScriptFormat"
           description: |
             - One is REQUIRED
         symlink:
-          $ref: '#/components/schemas/Symlink'
+          $ref: "#/components/schemas/Symlink"
           description: |
             - One is REQUIRED
         template:
-          $ref: '#/components/schemas/Template'
+          $ref: "#/components/schemas/Template"
           description: |
             - One is REQUIRED
         user:
-          $ref: '#/components/schemas/User'
+          $ref: "#/components/schemas/User"
           description: |
             - One is REQUIRED
         group:
-          $ref: '#/components/schemas/Group'
+          $ref: "#/components/schemas/Group"
           description: |
             - One is REQUIRED
             - Admin area assets (must be manager or higher to access, no workflowConfiguration needed)
         role:
-          $ref: '#/components/schemas/Role'
+          $ref: "#/components/schemas/Role"
           description: |
             - One is REQUIRED
             - Admin area assets (must be manager or higher to access, no workflowConfiguration needed)
         assetFactory:
-          $ref: '#/components/schemas/AssetFactory'
+          $ref: "#/components/schemas/AssetFactory"
           description: |
             - One is REQUIRED
             - Admin area assets (must be manager or higher to access, no workflowConfiguration needed)
         assetFactoryContainer:
-          $ref: '#/components/schemas/AssetFactoryContainer'
+          $ref: "#/components/schemas/AssetFactoryContainer"
           description: |
             - One is REQUIRED
             - Admin area assets (must be manager or higher to access, no workflowConfiguration needed)
         contentType:
-          $ref: '#/components/schemas/ContentType'
+          $ref: "#/components/schemas/ContentType"
           description: |
             - One is REQUIRED
             - Admin area assets (must be manager or higher to access, no workflowConfiguration needed)
         contentTypeContainer:
-          $ref: '#/components/schemas/ContentTypeContainer'
+          $ref: "#/components/schemas/ContentTypeContainer"
           description: |
             - One is REQUIRED
             - Admin area assets (must be manager or higher to access, no workflowConfiguration needed)
         connectorContainer:
-          $ref: '#/components/schemas/ConnectorContainer'
+          $ref: "#/components/schemas/ConnectorContainer"
           description: |
             - One is REQUIRED
             - Admin area assets (must be manager or higher to access, no workflowConfiguration needed)
         facebookConnector:
-          $ref: '#/components/schemas/FacebookConnector'
+          $ref: "#/components/schemas/FacebookConnector"
           description: |
             - One is REQUIRED
             - Admin area assets (must be manager or higher to access, no workflowConfiguration needed)
         wordPressConnector:
-          $ref: '#/components/schemas/WordPressConnector'
+          $ref: "#/components/schemas/WordPressConnector"
           description: |
             - One is REQUIRED
             - Admin area assets (must be manager or higher to access, no workflowConfiguration needed)
         googleAnalyticsConnector:
-          $ref: '#/components/schemas/GoogleAnalyticsConnector'
+          $ref: "#/components/schemas/GoogleAnalyticsConnector"
           description: |
             - One is REQUIRED
             - Admin area assets (must be manager or higher to access, no workflowConfiguration needed)
         pageConfigurationSet:
-          $ref: '#/components/schemas/PageConfigurationSet'
+          $ref: "#/components/schemas/PageConfigurationSet"
           description: |
             - One is REQUIRED
             - Admin area assets (must be manager or higher to access, no workflowConfiguration needed)
         pageConfigurationSetContainer:
-          $ref: '#/components/schemas/PageConfigurationSetContainer'
+          $ref: "#/components/schemas/PageConfigurationSetContainer"
           description: |
             - One is REQUIRED
             - Admin area assets (must be manager or higher to access, no workflowConfiguration needed)
         dataDefinition:
-          $ref: '#/components/schemas/DataDefinition'
+          $ref: "#/components/schemas/DataDefinition"
           description: |
             - One is REQUIRED
             - Admin area assets (must be manager or higher to access, no workflowConfiguration needed)
         dataDefinitionContainer:
-          $ref: '#/components/schemas/DataDefinitionContainer'
+          $ref: "#/components/schemas/DataDefinitionContainer"
           description: |
             - One is REQUIRED
             - Admin area assets (must be manager or higher to access, no workflowConfiguration needed)
         sharedField:
-          $ref: '#/components/schemas/SharedField'
+          $ref: "#/components/schemas/SharedField"
           description: |
             - One is REQUIRED
             - Admin area assets (must be manager or higher to access, no workflowConfiguration needed)
         sharedFieldContainer:
-          $ref: '#/components/schemas/SharedFieldContainer'
+          $ref: "#/components/schemas/SharedFieldContainer"
           description: |
             - One is REQUIRED
             - Admin area assets (must be manager or higher to access, no workflowConfiguration needed)
         metadataSet:
-          $ref: '#/components/schemas/MetadataSet'
+          $ref: "#/components/schemas/MetadataSet"
           description: |
             - One is REQUIRED
             - Admin area assets (must be manager or higher to access, no workflowConfiguration needed)
         metadataSetContainer:
-          $ref: '#/components/schemas/MetadataSetContainer'
+          $ref: "#/components/schemas/MetadataSetContainer"
           description: |
             - One is REQUIRED
-            - Admin area assets (must be manager or higher to access, no workflowConfiguration needed)        
+            - Admin area assets (must be manager or higher to access, no workflowConfiguration needed)
         publishSet:
-          $ref: '#/components/schemas/PublishSet'
+          $ref: "#/components/schemas/PublishSet"
           description: |
             - One is REQUIRED
             - Admin area assets (must be manager or higher to access, no workflowConfiguration needed)
         publishSetContainer:
-          $ref: '#/components/schemas/PublishSetContainer'
+          $ref: "#/components/schemas/PublishSetContainer"
           description: |
             - One is REQUIRED
             - Admin area assets (must be manager or higher to access, no workflowConfiguration needed)
         target:
-          $ref: '#/components/schemas/Target'
+          $ref: "#/components/schemas/Target"
           description: |
             - One is REQUIRED
             - Admin area assets (must be manager or higher to access, no workflowConfiguration needed)
         siteDestinationContainer:
-          $ref: '#/components/schemas/SiteDestinationContainer'
+          $ref: "#/components/schemas/SiteDestinationContainer"
           description: |
             - One is REQUIRED
             - Admin area assets (must be manager or higher to access, no workflowConfiguration needed)
         destination:
-          $ref: '#/components/schemas/Destination'
+          $ref: "#/components/schemas/Destination"
           description: |
             - One is REQUIRED
             - Admin area assets (must be manager or higher to access, no workflowConfiguration needed)
         fileSystemTransport:
-          $ref: '#/components/schemas/FileSystemTransport'
+          $ref: "#/components/schemas/FileSystemTransport"
           description: |
             - One is REQUIRED
             - Admin area assets (must be manager or higher to access, no workflowConfiguration needed)
         ftpTransport:
-          $ref: '#/components/schemas/FtpTransport'
+          $ref: "#/components/schemas/FtpTransport"
           description: |
             - One is REQUIRED
             - Admin area assets (must be manager or higher to access, no workflowConfiguration needed)
         databaseTransport:
-          $ref: '#/components/schemas/DatabaseTransport'
+          $ref: "#/components/schemas/DatabaseTransport"
           description: |
             - One is REQUIRED
-            - Admin area assets (must be manager or higher to access, no workflowConfiguration needed)        
+            - Admin area assets (must be manager or higher to access, no workflowConfiguration needed)
         cloudTransport:
-          $ref: '#/components/schemas/CloudTransport'
+          $ref: "#/components/schemas/CloudTransport"
           description: |
             - One is REQUIRED
             - Admin area assets (must be manager or higher to access, no workflowConfiguration needed)
         transportContainer:
-          $ref: '#/components/schemas/TransportContainer'
+          $ref: "#/components/schemas/TransportContainer"
           description: |
             - One is REQUIRED
             - Admin area assets (must be manager or higher to access, no workflowConfiguration needed)
         workflowDefinition:
-          $ref: '#/components/schemas/WorkflowDefinition'
+          $ref: "#/components/schemas/WorkflowDefinition"
           description: |
             - One is REQUIRED
             - Admin area assets (must be manager or higher to access, no workflowConfiguration needed)
         workflowDefinitionContainer:
-          $ref: '#/components/schemas/WorkflowDefinitionContainer'
+          $ref: "#/components/schemas/WorkflowDefinitionContainer"
           description: |
             - One is REQUIRED
             - Admin area assets (must be manager or higher to access, no workflowConfiguration needed)
         workflowEmail:
-          $ref: '#/components/schemas/WorkflowEmail'
+          $ref: "#/components/schemas/WorkflowEmail"
           description: |
             - One is REQUIRED
             - Admin area assets (must be manager or higher to access, no workflowConfiguration needed)
         workflowEmailContainer:
-          $ref: '#/components/schemas/WorkflowEmailContainer'
+          $ref: "#/components/schemas/WorkflowEmailContainer"
           description: |
             - One is REQUIRED
             - Admin area assets (must be manager or higher to access, no workflowConfiguration needed)
         twitterFeedBlock:
-          $ref: '#/components/schemas/TwitterFeedBlock'
+          $ref: "#/components/schemas/TwitterFeedBlock"
           description: |
             - One is REQUIRED
             - Admin area assets (must be manager or higher to access, no workflowConfiguration needed)
         site:
-          $ref: '#/components/schemas/Site'
+          $ref: "#/components/schemas/Site"
           description: |
             - One is REQUIRED
             - Admin area assets (must be manager or higher to access, no workflowConfiguration needed)
         editorConfiguration:
-          $ref: '#/components/schemas/EditorConfiguration'
+          $ref: "#/components/schemas/EditorConfiguration"
           description: |
             - One is REQUIRED
             - Admin area assets (must be manager or higher to access, no workflowConfiguration needed)
       oneOf:
-        - required:          
-          - feedBlock
-          - indexBlock
-          - textBlock
-          - xhtmlDataDefinitionBlock
-          - xmlBlock
-          - file
-          - folder
-          - page
-          - reference
-          - xsltFormat
-          - scriptFormat
-          - symlink
-          - template
-          - user
-          - group
-          - role
-          - assetFactory
-          - assetFactoryContainer
-          - contentType
-          - contentTypeContainer
-          - connectorContainer
-          - facebookConnector
-          - wordPressConnector
-          - googleAnalyticsConnector
-          - pageConfigurationSet
-          - pageConfigurationSetContainer
-          - dataDefinition
-          - dataDefinitionContainer
-          - sharedField
-          - sharedFieldContainer
-          - metadataSet
-          - metadataSetContainer
-          - publishSet
-          - publishSetContainer
-          - target
-          - siteDestinationContainer
-          - destination
-          - fileSystemTransport
-          - ftpTransport
-          - databaseTransport
-          - cloudTransport
-          - transportContainer
-          - workflowDefinition
-          - workflowDefinitionContainer
-          - workflowEmail
-          - workflowEmailContainer
-          - twitterFeedBlock
-          - site
-          - editorConfiguration
+        - required:
+            - feedBlock
+            - indexBlock
+            - textBlock
+            - xhtmlDataDefinitionBlock
+            - xmlBlock
+            - file
+            - folder
+            - page
+            - reference
+            - xsltFormat
+            - scriptFormat
+            - symlink
+            - template
+            - user
+            - group
+            - role
+            - assetFactory
+            - assetFactoryContainer
+            - contentType
+            - contentTypeContainer
+            - connectorContainer
+            - facebookConnector
+            - wordPressConnector
+            - googleAnalyticsConnector
+            - pageConfigurationSet
+            - pageConfigurationSetContainer
+            - dataDefinition
+            - dataDefinitionContainer
+            - sharedField
+            - sharedFieldContainer
+            - metadataSet
+            - metadataSetContainer
+            - publishSet
+            - publishSetContainer
+            - target
+            - siteDestinationContainer
+            - destination
+            - fileSystemTransport
+            - ftpTransport
+            - databaseTransport
+            - cloudTransport
+            - transportContainer
+            - workflowDefinition
+            - workflowDefinitionContainer
+            - workflowEmail
+            - workflowEmailContainer
+            - twitterFeedBlock
+            - site
+            - editorConfiguration
 
     Asset:
       type: object
       properties:
         asset:
-          $ref: '#/components/schemas/AssetProperties'
+          $ref: "#/components/schemas/AssetProperties"
       required:
         - asset
 
@@ -4395,8 +4407,8 @@ components:
     ReadResponseProperties:
       type: object
       description: |
-        - Properties for the Read Response              
-      $ref: '#/components/schemas/Asset'
+        - Properties for the Read Response
+      $ref: "#/components/schemas/Asset"
       required:
         - asset
 
@@ -4405,8 +4417,8 @@ components:
       description: |
         - Combines OperationResult with ReadResponseProperties
       allOf:
-        - $ref: '#/components/schemas/OperationResult'
-        - $ref: '#/components/schemas/ReadResponseProperties'
+        - $ref: "#/components/schemas/OperationResult"
+        - $ref: "#/components/schemas/ReadResponseProperties"
 
     DeleteParametersProperties:
       type: object
@@ -4423,8 +4435,8 @@ components:
       description: |
         - Parameters used when deleting an asset
       allOf:
-        - $ref: '#/components/schemas/UnpublishParameters'
-        - $ref: '#/components/schemas/DeleteParametersProperties'
+        - $ref: "#/components/schemas/UnpublishParameters"
+        - $ref: "#/components/schemas/DeleteParametersProperties"
 
     RemoveRequest:
       type: object
@@ -4434,15 +4446,15 @@ components:
         authentication:
           $ref: "#/components/schemas/Authentication"
         identifier:
-          $ref: '#/components/schemas/Identifier'
+          $ref: "#/components/schemas/Identifier"
           description: |
             - REQUIRED: Parameters used when reading an asset
         workflowConfiguration:
-          $ref: '#/components/schemas/WorkflowConfiguration'
+          $ref: "#/components/schemas/WorkflowConfiguration"
           description: |
             - NOT REQUIRED: For configuring workflow
         deleteParameters:
-          $ref: '#/components/schemas/DeleteParameters'
+          $ref: "#/components/schemas/DeleteParameters"
           description: |
             - NOT REQUIRED: Parameters used when deleting an asset
       required:
@@ -4450,36 +4462,36 @@ components:
         - identifier
 
     RemoveResponse:
-      $ref: '#/components/schemas/OperationResult'
+      $ref: "#/components/schemas/OperationResult"
       description: |
         - The response received after removing an asset
 
     EditRequest:
       type: object
-      required: 
-        -  authentication
-      properties: 
+      required:
+        - authentication
+      properties:
         authentication:
           $ref: "#/components/schemas/Authentication"
-      allOf: 
-        -  $ref: '#/components/schemas/Asset'
+      allOf:
+        - $ref: "#/components/schemas/Asset"
       description: |
         - The request object for asset editing
 
     EditResponse:
-      $ref: '#/components/schemas/OperationResult'
+      $ref: "#/components/schemas/OperationResult"
       description: |
         - The response received after editing an asset
 
     CreateRequest:
       type: object
-      required: 
-        -  authentication
-      properties: 
+      required:
+        - authentication
+      properties:
         authentication:
           $ref: "#/components/schemas/Authentication"
-      allOf: 
-        -  $ref: '#/components/schemas/Asset'
+      allOf:
+        - $ref: "#/components/schemas/Asset"
       description: |
         - The request object for asset creating
 
@@ -4498,8 +4510,8 @@ components:
       description: |
         - Combines OperationResult with CreateResponseProperties
       allOf:
-        - $ref: '#/components/schemas/OperationResult'
-        - $ref: '#/components/schemas/CreateResponseProperties'
+        - $ref: "#/components/schemas/OperationResult"
+        - $ref: "#/components/schemas/CreateResponseProperties"
 
     MoveParametersProperties:
       type: object
@@ -4507,7 +4519,7 @@ components:
         - Properties for Move Parameters
       properties:
         destinationContainerIdentifier:
-          $ref: '#/components/schemas/Identifier'
+          $ref: "#/components/schemas/Identifier"
           description: |
             - NOT REQUIRED: The container into which the asset will be moved. If left empty, the asset will remain in its current container
         doWorkflow:
@@ -4524,8 +4536,8 @@ components:
       description: |
         - Combines UnpublishParameters with MoveParametersProperties
       allOf:
-        - $ref: '#/components/schemas/UnpublishParameters'
-        - $ref: '#/components/schemas/MoveParametersProperties'
+        - $ref: "#/components/schemas/UnpublishParameters"
+        - $ref: "#/components/schemas/MoveParametersProperties"
 
     MoveRequest:
       type: object
@@ -4535,21 +4547,21 @@ components:
         authentication:
           $ref: "#/components/schemas/Authentication"
         identifier:
-          $ref: '#/components/schemas/Identifier'
+          $ref: "#/components/schemas/Identifier"
           description: |
             - REQUIRED: Parameters used when reading an asset
         workflowConfiguration:
-          $ref: '#/components/schemas/WorkflowConfiguration'
+          $ref: "#/components/schemas/WorkflowConfiguration"
           description: |
             - NOT REQUIRED: For configuring workflow
         moveParameters:
-          $ref: '#/components/schemas/MoveParameters'
+          $ref: "#/components/schemas/MoveParameters"
       required:
         - authentication
         - identifier
 
     MoveResponse:
-      $ref: '#/components/schemas/OperationResult'
+      $ref: "#/components/schemas/OperationResult"
       description: |
         - The response received after moving an asset
 
@@ -4575,10 +4587,10 @@ components:
         - Asset fields to search (e.g. name, title, content), see searchField simpleType for valid values
 
     SearchFields:
-      $ref: '#/components/schemas/SearchFieldString'
+      $ref: "#/components/schemas/SearchFieldString"
 
     SearchTypes:
-      $ref: '#/components/schemas/EntityTypeString'
+      $ref: "#/components/schemas/EntityTypeString"
 
     SearchInformation:
       type: object
@@ -4604,14 +4616,14 @@ components:
         searchFields:
           type: array
           items:
-            $ref: '#/components/schemas/SearchFields'
+            $ref: "#/components/schemas/SearchFields"
           description: |
             - NOT REQUIRED
             - Asset fields to search (e.g. name, title, content).
         searchTypes:
           type: array
           items:
-            $ref: '#/components/schemas/SearchTypes'
+            $ref: "#/components/schemas/SearchTypes"
           description: |
             - NOT REQUIRED
             - Asset types to search (e.g. page, folder, site). If left blank, all asset types will be searched.
@@ -4627,10 +4639,10 @@ components:
         authentication:
           $ref: "#/components/schemas/Authentication"
         searchInformation:
-          $ref: '#/components/schemas/SearchInformation'
+          $ref: "#/components/schemas/SearchInformation"
 
     SearchMatches:
-      $ref: '#/components/schemas/Identifier'
+      $ref: "#/components/schemas/Identifier"
 
     SearchResult:
       type: object
@@ -4642,15 +4654,15 @@ components:
         matches:
           type: array
           items:
-            $ref: '#/components/schemas/SearchMatches'
+            $ref: "#/components/schemas/SearchMatches"
           description: |
             - The resulting found asset identifiers
 
     SearchResponse:
       type: object
       allOf:
-        - $ref: '#/components/schemas/OperationResult'
-        - $ref: '#/components/schemas/SearchResult'
+        - $ref: "#/components/schemas/OperationResult"
+        - $ref: "#/components/schemas/SearchResult"
 
     CopyParameters:
       type: object
@@ -4662,7 +4674,7 @@ components:
         - newName
       properties:
         destinationContainerIdentifier:
-          $ref: '#/components/schemas/Identifier'
+          $ref: "#/components/schemas/Identifier"
           description: |
             - The identifier for the destination container where the asset will be copied to.
         doWorkflow:
@@ -4686,19 +4698,19 @@ components:
         authentication:
           $ref: "#/components/schemas/Authentication"
         identifier:
-          $ref: '#/components/schemas/Identifier'
+          $ref: "#/components/schemas/Identifier"
           description: |
             - The identifier of the asset to be copied.
         copyParameters:
-          $ref: '#/components/schemas/CopyParameters'
+          $ref: "#/components/schemas/CopyParameters"
         workflowConfiguration:
-          $ref: '#/components/schemas/WorkflowConfiguration'
+          $ref: "#/components/schemas/WorkflowConfiguration"
           description: |
             - NOT REQUIRED
             - The configuration for any workflow that needs to be applied after the copy.
 
     CopyResponse:
-      $ref: '#/components/schemas/OperationResult'
+      $ref: "#/components/schemas/OperationResult"
 
     SiteCopyRequest:
       type: object
@@ -4732,7 +4744,7 @@ components:
             - REQUIRED: The name for the new site that will be created from the copy.
 
     SiteCopyResponse:
-      $ref: '#/components/schemas/OperationResult'
+      $ref: "#/components/schemas/OperationResult"
 
     ReadAccessRightsRequest:
       type: object
@@ -4745,7 +4757,7 @@ components:
         authentication:
           $ref: "#/components/schemas/Authentication"
         identifier:
-          $ref: '#/components/schemas/Identifier'
+          $ref: "#/components/schemas/Identifier"
           description: |
             - REQUIRED: Parameters used when reading an asset
 
@@ -4753,13 +4765,13 @@ components:
       type: object
       properties:
         accessRightsInformation:
-          $ref: '#/components/schemas/AccessRightsInformation'
+          $ref: "#/components/schemas/AccessRightsInformation"
 
     ReadAccessRightsResponse:
       type: object
       allOf:
-        - $ref: '#/components/schemas/OperationResult'
-        - $ref: '#/components/schemas/ReadAccessRightsResult'
+        - $ref: "#/components/schemas/OperationResult"
+        - $ref: "#/components/schemas/ReadAccessRightsResult"
 
     EditAccessRightsRequest:
       type: object
@@ -4770,20 +4782,20 @@ components:
         authentication:
           $ref: "#/components/schemas/Authentication"
         accessRightsInformation:
-          $ref: '#/components/schemas/AccessRightsInformation'
+          $ref: "#/components/schemas/AccessRightsInformation"
           description: |
             - REQUIRED: Complete information about the access rights of an asset or component.
         applyToChildren:
           type: boolean
           default: false
           description: |
-            - NOT REQUIRED: Indicates whether to apply the access rights to children. 
+            - NOT REQUIRED: Indicates whether to apply the access rights to children.
             - This property is not required for non-folders and non-containers.
 
     EditAccessRightsResponse:
       type: object
       allOf:
-        - $ref: '#/components/schemas/OperationResult'
+        - $ref: "#/components/schemas/OperationResult"
 
     ReadWorkflowSettingsRequest:
       type: object
@@ -4794,7 +4806,7 @@ components:
         authentication:
           $ref: "#/components/schemas/Authentication"
         identifier:
-          $ref: '#/components/schemas/Identifier'
+          $ref: "#/components/schemas/Identifier"
           description: |
             - REQUIRED: Parameters used when reading an asset.
 
@@ -4804,15 +4816,15 @@ components:
         - workflowSettings
       properties:
         workflowSettings:
-          $ref: '#/components/schemas/WorkflowSettings'
+          $ref: "#/components/schemas/WorkflowSettings"
           description: |
             - REQUIRED: A result of reading the workflow information of a folder.
 
     ReadWorkflowSettingsResponse:
       type: object
       allOf:
-        - $ref: '#/components/schemas/OperationResult'
-        - $ref: '#/components/schemas/ReadWorkflowSettingsResult'
+        - $ref: "#/components/schemas/OperationResult"
+        - $ref: "#/components/schemas/ReadWorkflowSettingsResult"
 
     EditWorkflowSettingsRequest:
       type: object
@@ -4823,7 +4835,7 @@ components:
         authentication:
           $ref: "#/components/schemas/Authentication"
         workflowSettings:
-          $ref: '#/components/schemas/WorkflowSettings'
+          $ref: "#/components/schemas/WorkflowSettings"
           description: |
             - REQUIRED: The workflow settings to be edited.
         applyInheritWorkflowsToChildren:
@@ -4840,7 +4852,7 @@ components:
     EditWorkflowSettingsResponse:
       type: object
       allOf:
-        - $ref: '#/components/schemas/OperationResult'
+        - $ref: "#/components/schemas/OperationResult"
 
     ListSubscribersRequest:
       type: object
@@ -4851,7 +4863,7 @@ components:
         authentication:
           $ref: "#/components/schemas/Authentication"
         identifier:
-          $ref: '#/components/schemas/Identifier'
+          $ref: "#/components/schemas/Identifier"
           description: |
             - REQUIRED: Parameters used when reading an asset.
 
@@ -4864,27 +4876,27 @@ components:
         subscribers:
           type: array
           items:
-            $ref: '#/components/schemas/AssetIdentifiers'
+            $ref: "#/components/schemas/AssetIdentifiers"
           description: |
             - REQUIRED: A list of asset identifiers that are subscribed.
         manualSubscribers:
           type: array
           items:
-            $ref: '#/components/schemas/AssetIdentifiers'
+            $ref: "#/components/schemas/AssetIdentifiers"
           description: |
             - REQUIRED: A list of asset identifiers that are manually subscribed.
 
     ListSubscribersResponse:
       type: object
       allOf:
-        - $ref: '#/components/schemas/OperationResult'
-        - $ref: '#/components/schemas/ListSubscribersResult'
+        - $ref: "#/components/schemas/OperationResult"
+        - $ref: "#/components/schemas/ListSubscribersResult"
 
     ListMessagesRequest:
       type: object
-      required: 
-        -  authentication
-      properties: 
+      required:
+        - authentication
+      properties:
         authentication:
           $ref: "#/components/schemas/Authentication"
 
@@ -4919,15 +4931,15 @@ components:
     Message:
       type: object
       allOf:
-        - $ref: '#/components/schemas/BaseAsset'
-        - $ref: '#/components/schemas/MessageProperties'
+        - $ref: "#/components/schemas/BaseAsset"
+        - $ref: "#/components/schemas/MessageProperties"
       description: |
         - Represents a message within the system
 
     MessagesList:
       type: object
       allOf:
-        - $ref: '#/components/schemas/Message'
+        - $ref: "#/components/schemas/Message"
 
     ListMessagesResult:
       type: object
@@ -4935,15 +4947,15 @@ components:
         messages:
           type: array
           items:
-            $ref: '#/components/schemas/MessagesList'
+            $ref: "#/components/schemas/MessagesList"
           description: |
             - NOT REQUIRED: A list of messages.
 
     ListMessagesResponse:
       type: object
       allOf:
-        - $ref: '#/components/schemas/OperationResult'
-        - $ref: '#/components/schemas/ListMessagesResult'
+        - $ref: "#/components/schemas/OperationResult"
+        - $ref: "#/components/schemas/ListMessagesResult"
 
     MessageMarkType:
       type: string
@@ -4961,11 +4973,11 @@ components:
         authentication:
           $ref: "#/components/schemas/Authentication"
         identifier:
-          $ref: '#/components/schemas/Identifier'
+          $ref: "#/components/schemas/Identifier"
           description: |
             - REQUIRED: Identifier for the message.
         markType:
-          $ref: '#/components/schemas/MessageMarkType'
+          $ref: "#/components/schemas/MessageMarkType"
           description: |
             - REQUIRED: The type of mark to apply to the message.
             - For marking messages - read or unread
@@ -4973,7 +4985,7 @@ components:
     MarkMessageResponse:
       type: object
       allOf:
-        - $ref: '#/components/schemas/OperationResult'
+        - $ref: "#/components/schemas/OperationResult"
 
     DeleteMessageRequest:
       type: object
@@ -4984,14 +4996,14 @@ components:
         authentication:
           $ref: "#/components/schemas/Authentication"
         identifier:
-          $ref: '#/components/schemas/Identifier'
+          $ref: "#/components/schemas/Identifier"
           description: |
             - REQUIRED: Identifier for the message.
 
     DeleteMessageResponse:
       type: object
       allOf:
-        - $ref: '#/components/schemas/OperationResult'
+        - $ref: "#/components/schemas/OperationResult"
 
     CheckOutRequest:
       type: object
@@ -5002,7 +5014,7 @@ components:
         authentication:
           $ref: "#/components/schemas/Authentication"
         identifier:
-          $ref: '#/components/schemas/Identifier'
+          $ref: "#/components/schemas/Identifier"
           description: |
             - REQUIRED: Identifier for the message.
 
@@ -5010,15 +5022,15 @@ components:
       type: object
       properties:
         workingCopyIdentifier:
-          $ref: '#/components/schemas/Identifier'
+          $ref: "#/components/schemas/Identifier"
           description: |
             - NOT REQUIRED: Identifier for the working copy.
 
     CheckOutResponse:
       type: object
       allOf:
-        - $ref: '#/components/schemas/OperationResult'
-        - $ref: '#/components/schemas/CheckOutResult'
+        - $ref: "#/components/schemas/OperationResult"
+        - $ref: "#/components/schemas/CheckOutResult"
 
     CheckInRequest:
       type: object
@@ -5029,19 +5041,19 @@ components:
         authentication:
           $ref: "#/components/schemas/Authentication"
         identifier:
-          $ref: '#/components/schemas/Identifier'
+          $ref: "#/components/schemas/Identifier"
           description: |
             - REQUIRED: Identifier for the message.
 
     CheckInResponse:
       allOf:
-        - $ref: '#/components/schemas/OperationResult'
+        - $ref: "#/components/schemas/OperationResult"
 
     ListSitesRequest:
       type: object
-      required: 
-        -  authentication
-      properties: 
+      required:
+        - authentication
+      properties:
         authentication:
           $ref: "#/components/schemas/Authentication"
 
@@ -5053,14 +5065,14 @@ components:
         sites:
           type: array
           items:
-            $ref: '#/components/schemas/AssetIdentifiers'
+            $ref: "#/components/schemas/AssetIdentifiers"
           description: |
             - REQUIRED: The identifiers for the sites.
 
     ListSitesResponse:
       allOf:
-        - $ref: '#/components/schemas/OperationResult'
-        - $ref: '#/components/schemas/ListSitesResult'
+        - $ref: "#/components/schemas/OperationResult"
+        - $ref: "#/components/schemas/ListSitesResult"
 
     AuditTypes:
       type: string
@@ -5091,7 +5103,7 @@ components:
       type: object
       properties:
         identifier:
-          $ref: '#/components/schemas/Identifier'
+          $ref: "#/components/schemas/Identifier"
           description: |
             - NOT REQUIRED: Filter the assets by a certain entity.
         username:
@@ -5115,7 +5127,7 @@ components:
           description: |
             - NOT REQUIRED: Filter the audits by an end time. Only audits for events that happened before this time will be included.
         auditType:
-          $ref: '#/components/schemas/AuditTypes'
+          $ref: "#/components/schemas/AuditTypes"
           description: |
             - NOT REQUIRED: Filter the audits by an audit type. Only audits of this type will be returned in the response.
 
@@ -5128,7 +5140,7 @@ components:
         authentication:
           $ref: "#/components/schemas/Authentication"
         auditParameters:
-          $ref: '#/components/schemas/AuditParameters'
+          $ref: "#/components/schemas/AuditParameters"
           description: |
             - REQUIRED: The parameters for the audit.
 
@@ -5144,11 +5156,11 @@ components:
           description: |
             - REQUIRED: The user that performed the audited action.
         action:
-          $ref: '#/components/schemas/AuditTypes'
+          $ref: "#/components/schemas/AuditTypes"
           description: |
             - REQUIRED: The type of action the user performed.
         identifier:
-          $ref: '#/components/schemas/Identifier'
+          $ref: "#/components/schemas/Identifier"
           description: |
             - NOT REQUIRED: The identifier identifying the asset the action was performed on, if any.
         date:
@@ -5159,7 +5171,7 @@ components:
     Audits:
       type: array
       items:
-        $ref: '#/components/schemas/Audit'
+        $ref: "#/components/schemas/Audit"
 
     ReadAuditsResult:
       type: object
@@ -5169,14 +5181,14 @@ components:
         audits:
           type: array
           items:
-            $ref: '#/components/schemas/Audits'
+            $ref: "#/components/schemas/Audits"
           description: |
             - REQUIRED: Represents the audits in the system.
 
     ReadAuditsResponse:
       allOf:
-        - $ref: '#/components/schemas/OperationResult'
-        - $ref: '#/components/schemas/ReadAuditsResult'
+        - $ref: "#/components/schemas/OperationResult"
+        - $ref: "#/components/schemas/ReadAuditsResult"
 
     ReadWorkflowInformationRequest:
       type: object
@@ -5187,7 +5199,7 @@ components:
         authentication:
           $ref: "#/components/schemas/Authentication"
         identifier:
-          $ref: '#/components/schemas/Identifier'
+          $ref: "#/components/schemas/Identifier"
           description: |
             - REQUIRED: Identifier for the message.
 
@@ -5219,7 +5231,7 @@ components:
     WorkflowActions:
       type: array
       items:
-        $ref: '#/components/schemas/WorkflowAction'
+        $ref: "#/components/schemas/WorkflowAction"
 
     WorkflowStep:
       type: object
@@ -5246,13 +5258,13 @@ components:
           description: |
             - REQUIRED: The owner (user or group name) of this step.
         actions:
-          $ref: '#/components/schemas/WorkflowActions'
+          $ref: "#/components/schemas/WorkflowActions"
           description: |
             - NOT REQUIRED: The actions this step contains.
 
     WorkflowSteps:
-      allOf: 
-        - $ref: '#/components/schemas/WorkflowStep'
+      allOf:
+        - $ref: "#/components/schemas/WorkflowStep"
 
     WorkflowProperties:
       type: object
@@ -5273,13 +5285,13 @@ components:
         orderedSteps:
           type: array
           items:
-            $ref: '#/components/schemas/WorkflowSteps'
+            $ref: "#/components/schemas/WorkflowSteps"
           description: |
             - NOT REQUIRED: The ordered steps of this workflow.
         unorderedSteps:
           type: array
           items:
-            $ref: '#/components/schemas/WorkflowSteps'
+            $ref: "#/components/schemas/WorkflowSteps"
           description: |
             - NOT REQUIRED: The unordered steps of this workflow.
         startDate:
@@ -5309,21 +5321,21 @@ components:
 
     Workflow:
       allOf:
-        - $ref: '#/components/schemas/NamedAsset'
-        - $ref: '#/components/schemas/WorkflowProperties'
+        - $ref: "#/components/schemas/NamedAsset"
+        - $ref: "#/components/schemas/WorkflowProperties"
 
     ReadWorkflowInformationResult:
       type: object
       properties:
         workflow:
-          $ref: '#/components/schemas/Workflow'
+          $ref: "#/components/schemas/Workflow"
           description: |
             - NOT REQUIRED: The workflow information.
 
     ReadWorkflowInformationResponse:
       allOf:
-        - $ref: '#/components/schemas/OperationResult'
-        - $ref: '#/components/schemas/ReadWorkflowInformationResult'
+        - $ref: "#/components/schemas/OperationResult"
+        - $ref: "#/components/schemas/ReadWorkflowInformationResult"
 
     WorkflowTransitionInformation:
       type: object
@@ -5353,19 +5365,19 @@ components:
         authentication:
           $ref: "#/components/schemas/Authentication"
         workflowTransitionInformation:
-          $ref: '#/components/schemas/WorkflowTransitionInformation'
+          $ref: "#/components/schemas/WorkflowTransitionInformation"
           description: |
             - REQUIRED: Information related to the workflow transition.
 
     PerformWorkflowTransitionResponse:
       allOf:
-        - $ref: '#/components/schemas/OperationResult'
+        - $ref: "#/components/schemas/OperationResult"
 
     ReadPreferencesRequest:
       type: object
-      required: 
-        -  authentication
-      properties: 
+      required:
+        - authentication
+      properties:
         authentication:
           $ref: "#/components/schemas/Authentication"
 
@@ -5386,7 +5398,7 @@ components:
 
     PreferencesList:
       allOf:
-        - $ref: '#/components/schemas/Preference'
+        - $ref: "#/components/schemas/Preference"
 
     ReadPreferencesResult:
       type: object
@@ -5394,28 +5406,22 @@ components:
         preferences:
           type: array
           items:
-            $ref: '#/components/schemas/PreferencesList'
+            $ref: "#/components/schemas/PreferencesList"
       required:
         - preferences
-    
+
     ReadPreferencesResponse:
       allOf:
-        - $ref: '#/components/schemas/OperationResult'
-        - $ref: '#/components/schemas/ReadPreferencesResult'
+        - $ref: "#/components/schemas/OperationResult"
+        - $ref: "#/components/schemas/ReadPreferencesResult"
 
     PublishInformation:
       type: object
-      required:
-        - identifier
       properties:
-        identifier:
-          type: string
-          description: |
-            - REQUIRED: Identifier of the asset being published.
         destinations:
           type: array
           items:
-            $ref: '#/components/schemas/AssetIdentifiers'
+            $ref: "#/components/schemas/AssetIdentifiers"
           description: |
             - NOT REQUIRED: Destinations to which the asset should be published.
             - This field is ignored when identifier points to a Destination.
@@ -5444,41 +5450,46 @@ components:
       type: object
       required:
         - authentication
+        - identifier
         - publishInformation
       properties:
         authentication:
           $ref: "#/components/schemas/Authentication"
+        identifier:
+          $ref: "#/components/schemas/Identifier"
+          description: |
+            - REQUIRED: Identifier of the asset being published.
         publishInformation:
-          $ref: '#/components/schemas/PublishInformation'
+          $ref: "#/components/schemas/PublishInformation"
           description: |
             - REQUIRED: Information related to the publishing or unpublishing.
 
     PublishUnpublishResponse:
       allOf:
-        - $ref: '#/components/schemas/OperationResult'
+        - $ref: "#/components/schemas/OperationResult"
 
 paths:
-  /read/{type}/{id}:    
-    get:      
+  /read/{type}/{id}:
+    get:
       description: |
         Example: `https://{yourOrg}.cascadecms.com/api/v1/read/page/www.example.com/news/2003/best-of-show?u=hill&p=hill`
-      tags: 
-        -  Examples
+      tags:
+        - Examples
       operationId: readNoPath
-      summary: Read resource by type and ID      
+      summary: Read resource by type and ID
       parameters:
         - name: u
           in: query
           required: true
           description: Username
-          schema: 
+          schema:
             type: string
             example: hill
         - name: p
           in: query
           required: true
           description: Password
-          schema: 
+          schema:
             type: string
             example: hill
         - name: type
@@ -5495,11 +5506,11 @@ paths:
           schema:
             type: string
             example: 2b2fd9bc7f0000010044b22e65131cd3
-  /read/{type}/{siteName}/{path}:    
+  /read/{type}/{siteName}/{path}:
     get:
       description: "This is an example read operation"
-      tags: 
-        -  Examples
+      tags:
+        - Examples
       operationId: readWithPath
       summary: Read resource by type, site name, and path
       parameters:
@@ -5521,577 +5532,577 @@ paths:
           description: Path to the resource within the site.
           schema:
             type: string
-  /read:    
+  /read:
     post:
       description: Use this method to read an asset
-      tags: 
-        -  POST Only
+      tags:
+        - POST Only
       operationId: read
-      summary: "Read an asset"      
+      summary: "Read an asset"
       requestBody:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/ReadRequest'
+              $ref: "#/components/schemas/ReadRequest"
       responses:
-        '400':
+        "400":
           description: |
             - Bad Request
-        '200':
+        "200":
           description: |
             - Successful operation
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ReadResponse'
+                $ref: "#/components/schemas/ReadResponse"
   /delete:
     post:
       description: Use this method to delete an asset
-      tags: 
-        -  POST Only
+      tags:
+        - POST Only
       operationId: delete
       summary: "Remove an asset"
       requestBody:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/RemoveRequest'
+              $ref: "#/components/schemas/RemoveRequest"
       responses:
-        '400':
+        "400":
           description: |
             - Bad Request
-        '200':
+        "200":
           description: |
             - Successful operation
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/RemoveResponse'
+                $ref: "#/components/schemas/RemoveResponse"
 
   /edit:
     post:
       description: Use this method to edit an asset
-      tags: 
-        -  POST Only
+      tags:
+        - POST Only
       operationId: edit
       summary: "Edit an asset"
       requestBody:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/EditRequest'
+              $ref: "#/components/schemas/EditRequest"
       responses:
-        '400':
+        "400":
           description: |
             - Bad Request
-        '200':
+        "200":
           description: |
             - Successful operation
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/EditResponse'
+                $ref: "#/components/schemas/EditResponse"
 
   /create:
     post:
       description: Use this method to create an asset
-      tags: 
-        -  POST Only
+      tags:
+        - POST Only
       operationId: create
       summary: "Create an asset"
       requestBody:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/CreateRequest'
+              $ref: "#/components/schemas/CreateRequest"
       responses:
-        '400':
+        "400":
           description: |
             - Bad Request
-        '200':
+        "200":
           description: |
             - Successful operation
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/CreateResponse'
+                $ref: "#/components/schemas/CreateResponse"
 
   /move:
     post:
       description: Use this method to move an asset
-      tags: 
-        -  POST Only
+      tags:
+        - POST Only
       operationId: move
       summary: "Move an asset"
       requestBody:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/MoveRequest'
+              $ref: "#/components/schemas/MoveRequest"
       responses:
-        '400':
+        "400":
           description: |
             - Bad Request
-        '200':
+        "200":
           description: |
             - Successful operation
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/MoveResponse'
+                $ref: "#/components/schemas/MoveResponse"
 
   /search:
     post:
       description: Use this method to search for assets
-      tags: 
-        -  POST Only
+      tags:
+        - POST Only
       operationId: search
       summary: "Search for assets"
       requestBody:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/SearchRequest'
+              $ref: "#/components/schemas/SearchRequest"
       responses:
-        '400':
+        "400":
           description: |
             - Bad Request
-        '200':
+        "200":
           description: |
             - Successful operation
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/SearchResponse'
+                $ref: "#/components/schemas/SearchResponse"
 
   /copy:
     post:
       description: Use this method to copy an asset
-      tags: 
-        -  POST Only
+      tags:
+        - POST Only
       operationId: copy
       summary: "Copy an asset"
       requestBody:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/CopyRequest'
+              $ref: "#/components/schemas/CopyRequest"
       responses:
-        '400':
+        "400":
           description: |
             - Bad Request
-        '200':
+        "200":
           description: |
             - Successful operation
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/CopyResponse'
+                $ref: "#/components/schemas/CopyResponse"
 
   /siteCopy:
     post:
       description: Use this method to copy a site
-      tags: 
-        -  POST Only
+      tags:
+        - POST Only
       operationId: siteCopy
       summary: "Copy a site"
       requestBody:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/SiteCopyRequest'
+              $ref: "#/components/schemas/SiteCopyRequest"
       responses:
-        '400':
+        "400":
           description: |
             - Bad Request
-        '200':
+        "200":
           description: |
             - Successful operation
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/SiteCopyResponse'
+                $ref: "#/components/schemas/SiteCopyResponse"
 
   /readAccessRights:
     post:
       description: Use this method to read access rights
-      tags: 
-        -  POST Only
+      tags:
+        - POST Only
       operationId: readAccessRights
       summary: "Read access rights of an asset"
       requestBody:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/ReadAccessRightsRequest'
+              $ref: "#/components/schemas/ReadAccessRightsRequest"
       responses:
-        '400':
+        "400":
           description: |
             - Bad Request
-        '200':
+        "200":
           description: |
             - Successful operation
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ReadAccessRightsResponse'
+                $ref: "#/components/schemas/ReadAccessRightsResponse"
 
   /editAccessRights:
     post:
       description: Use this method to edit access rights
-      tags: 
-        -  POST Only
+      tags:
+        - POST Only
       operationId: editAccessRights
       summary: "Edit access rights of an asset"
       requestBody:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/EditAccessRightsRequest'
+              $ref: "#/components/schemas/EditAccessRightsRequest"
       responses:
-        '400':
+        "400":
           description: |
             - Bad Request
-        '200':
+        "200":
           description: |
             - Successful operation
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/EditAccessRightsResponse'
+                $ref: "#/components/schemas/EditAccessRightsResponse"
 
   /readWorkflowSettings:
     post:
       description: Use this method to read workflow settings
-      tags: 
-        -  POST Only
+      tags:
+        - POST Only
       operationId: readWorkflowSettings
       summary: "Read workflow settings of an asset"
       requestBody:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/ReadWorkflowSettingsRequest'
+              $ref: "#/components/schemas/ReadWorkflowSettingsRequest"
       responses:
-        '400':
+        "400":
           description: |
             - Bad Request
-        '200':
+        "200":
           description: |
             - Successful operation
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ReadWorkflowSettingsResponse'
+                $ref: "#/components/schemas/ReadWorkflowSettingsResponse"
 
   /editWorkflowSettings:
     post:
       description: Use this method to edit workflow settings
-      tags: 
-        -  POST Only
+      tags:
+        - POST Only
       operationId: editWorkflowSettings
       summary: "Edit workflow settings of an asset"
       requestBody:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/EditWorkflowSettingsRequest'
+              $ref: "#/components/schemas/EditWorkflowSettingsRequest"
       responses:
-        '400':
+        "400":
           description: |
             - Bad Request
-        '200':
+        "200":
           description: |
             - Successful operation
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/EditWorkflowSettingsResponse'
+                $ref: "#/components/schemas/EditWorkflowSettingsResponse"
 
   /listSubscribers:
     post:
       description: Use this method to list subscribers of an asset
-      tags: 
-        -  POST Only
+      tags:
+        - POST Only
       operationId: listSubscribers
       summary: "List subscribers of an asset"
       requestBody:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/ListSubscribersRequest'
+              $ref: "#/components/schemas/ListSubscribersRequest"
       responses:
-        '400':
+        "400":
           description: |
             - Bad Request
-        '200':
+        "200":
           description: |
             - Successful operation
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ListSubscribersResponse'
+                $ref: "#/components/schemas/ListSubscribersResponse"
 
   /listMessages:
     post:
       description: Use this method to read a list of messages
-      tags: 
-        -  POST Only
+      tags:
+        - POST Only
       operationId: listMessages
       summary: "List messages"
       requestBody:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/ListMessagesRequest'
+              $ref: "#/components/schemas/ListMessagesRequest"
       responses:
-        '400':
+        "400":
           description: |
             - Bad Request
-        '200':
+        "200":
           description: |
             - Successful operation
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ListMessagesResponse'
+                $ref: "#/components/schemas/ListMessagesResponse"
 
   /markMessage:
     post:
       description: Use this method to mark messages read or unread
-      tags: 
-        -  POST Only
+      tags:
+        - POST Only
       operationId: markMessage
       summary: "Mark a message as read or unread"
       requestBody:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/MarkMessageRequest'
+              $ref: "#/components/schemas/MarkMessageRequest"
       responses:
-        '400':
+        "400":
           description: |
             - Bad Request
-        '200':
+        "200":
           description: |
             - Successful operation
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/MarkMessageResponse'
+                $ref: "#/components/schemas/MarkMessageResponse"
 
   /deleteMessage:
     post:
       description: Use this method to delete a message
-      tags: 
-        -  POST Only
+      tags:
+        - POST Only
       operationId: deleteMessage
       summary: "Delete a message"
       requestBody:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/DeleteMessageRequest'
+              $ref: "#/components/schemas/DeleteMessageRequest"
       responses:
-        '400':
+        "400":
           description: |
             - Bad Request
-        '200':
+        "200":
           description: |
             - Successful operation
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/DeleteMessageResponse'
+                $ref: "#/components/schemas/DeleteMessageResponse"
 
   /checkOut:
     post:
       description: Use this method to checkout an asset
-      tags: 
-        -  POST Only
+      tags:
+        - POST Only
       operationId: checkOut
       summary: "Check out an asset for editing"
       requestBody:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/CheckOutRequest'
+              $ref: "#/components/schemas/CheckOutRequest"
       responses:
-        '400':
+        "400":
           description: |
             - Bad Request
-        '200':
+        "200":
           description: |
             - Successful operation
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/CheckOutResponse'
+                $ref: "#/components/schemas/CheckOutResponse"
 
   /checkIn:
     post:
       description: Use this method to check in an asset
-      tags: 
-        -  POST Only
+      tags:
+        - POST Only
       operationId: checkIn
       summary: "Check in an edited asset"
       requestBody:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/CheckInRequest'
+              $ref: "#/components/schemas/CheckInRequest"
       responses:
-        '400':
+        "400":
           description: |
             - Bad Request
-        '200':
+        "200":
           description: |
             - Successful operation
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/CheckInResponse'
+                $ref: "#/components/schemas/CheckInResponse"
 
   /listSites:
     post:
       description: Use this method to list existing sites
-      tags: 
-        -  POST Only
+      tags:
+        - POST Only
       operationId: listSites
       summary: "List all sites"
       requestBody:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/ListSitesRequest'
+              $ref: "#/components/schemas/ListSitesRequest"
       responses:
-        '400':
+        "400":
           description: |
             - Bad Request
-        '200':
+        "200":
           description: |
             - Successful operation
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ListSitesResponse'
+                $ref: "#/components/schemas/ListSitesResponse"
 
   /readAudits:
     post:
       description: Use this method to read audits of an asset
-      tags: 
-        -  POST Only
+      tags:
+        - POST Only
       operationId: readAudits
       summary: "Read audit records"
       requestBody:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/ReadAuditsRequest'
+              $ref: "#/components/schemas/ReadAuditsRequest"
       responses:
-        '400':
+        "400":
           description: |
             - Bad Request
-        '200':
+        "200":
           description: |
             - Successful operation
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ReadAuditsResponse'
+                $ref: "#/components/schemas/ReadAuditsResponse"
 
   /readWorkflowInformation:
     post:
       description: Use this method to read workflow information
-      tags: 
-        -  POST Only
+      tags:
+        - POST Only
       operationId: readWorkflowInformation
       summary: "Read Workflow Information"
       requestBody:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/ReadWorkflowInformationRequest'
+              $ref: "#/components/schemas/ReadWorkflowInformationRequest"
       responses:
-        '400':
+        "400":
           description: |
             - Bad Request
-        '200':
+        "200":
           description: |
             - Successful operation
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ReadWorkflowInformationResponse'
+                $ref: "#/components/schemas/ReadWorkflowInformationResponse"
 
   /performWorkflowTransition:
     post:
       description: Use this method to perform a workflow
-      tags: 
-        -  POST Only
+      tags:
+        - POST Only
       operationId: performWorkflowTransition
       summary: "Perform Workflow Transition"
       requestBody:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/PerformWorkflowTransitionRequest'
+              $ref: "#/components/schemas/PerformWorkflowTransitionRequest"
       responses:
-        '400':
+        "400":
           description: |
             - Bad Request
-        '200':
+        "200":
           description: |
             - Successful operation
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/PerformWorkflowTransitionResponse'
+                $ref: "#/components/schemas/PerformWorkflowTransitionResponse"
 
   /readPreferences:
     post:
       description: Use this method to view read preferences
-      tags: 
-        -  POST Only
+      tags:
+        - POST Only
       operationId: readPreferences
       summary: "Read Preferences"
       requestBody:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/ReadPreferencesRequest'
+              $ref: "#/components/schemas/ReadPreferencesRequest"
       responses:
-        '400':
+        "400":
           description: |
             - Bad Request
-        '200':
+        "200":
           description: |
             - Successful operation
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ReadPreferencesResponse'
+                $ref: "#/components/schemas/ReadPreferencesResponse"
 
   /publish:
     post:
       description: Use this method to publish or unpublish an asset
-      tags: 
-        -  POST Only
+      tags:
+        - POST Only
       operationId: publish
       summary: "Publish or Unpublish Asset"
       requestBody:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/PublishUnpublishRequest'
+              $ref: "#/components/schemas/PublishUnpublishRequest"
       responses:
-        '400':
+        "400":
           description: |
             - Bad Request
-        '200':
+        "200":
           description: |
             - Successful operation
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/PublishUnpublishResponse'
+                $ref: "#/components/schemas/PublishUnpublishResponse"
