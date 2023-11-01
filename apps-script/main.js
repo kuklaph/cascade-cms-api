@@ -973,9 +973,7 @@
  */
 
 /**
- * @typedef {XhtmlDataDefinitionBlockProperties &
- * ExpiringAsset
- * } XhtmlDataDefinitionBlock - A block containing plain XHTML or Structured Data
+ * @typedef {ExpiringAsset} XhtmlDataDefinitionBlock - A block containing plain XHTML or Structured Data
  */
 
 //#endregion
@@ -986,9 +984,7 @@
  */
 
 /**
- * @typedef {XmlBlockProperties &
- * ExpiringAsset
- * } XmlBlock - A block containing plain XML
+ * @typedef {ExpiringAsset} XmlBlock - A block containing plain XML
  */
 
 //#endregion
@@ -1402,9 +1398,7 @@
  */
 
 /**
- * @typedef {FacebookConnectorProperties &
- * StatusUpdateConnector
- * } FacebookConnector
+ * @typedef {StatusUpdateConnector} FacebookConnector
  */
 
 //#endregion
@@ -1415,9 +1409,7 @@
  */
 
 /**
- * @typedef {WordPressConnectorProperties &
- * Connector
- * } WordPressConnector
+ * @typedef {Connector} WordPressConnector
  */
 
 //#endregion
@@ -1428,9 +1420,7 @@
  */
 
 /**
- * @typedef {GoogleAnalyticsConnectorProperties &
- * Connector
- * } GoogleAnalyticsConnector
+ * @typedef {Connector} GoogleAnalyticsConnector
  */
 
 //#endregion
@@ -1619,9 +1609,7 @@
  */
 
 /**
- * @typedef {PublishSetContainerProperties &
- * ContaineredAsset
- * } PublishSetContainer
+ * @typedef {ContaineredAsset} PublishSetContainer
  */
 
 //#endregion
