@@ -12,7 +12,7 @@ You can find an openAPI representation of the Cascade library here:
 
 https://kuklaph.github.io/cascade-cms-api/swagger-ui/
 
-Cascade provides in tandem with the REST API docs listed above, a WSDL operations page. In order to access this you will need to use your organization as a subdomain followed by this url: 
+Cascade provides in tandem with the REST API docs listed above, a WSDL operations page. In order to access this you will need to use your organization as a subdomain followed by this url:
 
 `cascadecms.com/ws/services/AssetOperationService?wsdl`
 
@@ -29,7 +29,7 @@ Download/Copy the files and extract the zip. Once extracted to your project, use
 In your project file import the Cascade API.
 
 ```js
-import CascadeAPI from "../cascade-cms-api/nodejs/main.mjs";
+import { CascadeAPI, Types } from "../cascade-cms-api/nodejs/main.mjs";
 ```
 
 ### Google Apps Script
@@ -62,9 +62,29 @@ const cascadeAPI = CascadeAPI({
 
 const readFiles = async () => {
   const results = await cascadeAPI.read({
-    type: "page",
-    id: "d3631e59ac1easd2434bd70be3fbfe8148abc",
+    identifier: {
+      type: "page",
+      id: "d3631e59ac1easd2434bd70be3fbfe8148abc",
+    },
   });
   //...
 };
+```
+
+Types are optional. You can add type definitions which may be helpful depending on the situation:
+
+```js
+/**
+ * @type {Types.EntityTypeString}
+ */
+const type = "page";
+
+const read = await cascadeAPI({
+  identifier: {
+    type: "page", // inline gives you intellisense
+    type, // uses type from above and you get intellisense within the variable above
+    id: "d3631e59ac1easd2434bd70be3fbfe8148abc",
+    //...
+  },
+});
 ```
