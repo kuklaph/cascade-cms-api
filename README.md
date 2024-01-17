@@ -60,7 +60,7 @@ const cascadeAPI = CascadeAPI({
   url: "https://isSandActuallySandy.cascadecms.com/api/v1/",
 });
 
-const readFiles = async () => {
+const readFile = async () => {
   const results = await cascadeAPI.read({
     identifier: {
       type: "page",
