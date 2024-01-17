@@ -79,7 +79,7 @@ Types are optional. You can add type definitions which may be helpful depending 
  */
 const type = "page";
 
-const read = await cascadeAPI({
+const read = await cascadeAPI.read({
   identifier: {
     type: "page", // inline gives you intellisense
     type, // uses type from above and you get intellisense within the variable above
