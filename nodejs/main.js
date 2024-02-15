@@ -2,7 +2,7 @@ import axios from "axios";
 import * as Requests from "./types.js";
 export * as Types from "./types.js";
 export function CascadeAPI({ apiKey, url }) {
-  const timeout = 5000;
+  const timeout = 30000;
   const withAxios = async (requestParams) => {
     try {
       requestParams.timeout = timeout;
