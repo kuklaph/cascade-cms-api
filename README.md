@@ -2,11 +2,11 @@
 
 ## Other Resources
 
-**Cascade Conference 2024**  
+**Cascade Conference 2024**
 Click [here](https://github.com/kuklaph/cascade-cms-tools/tree/main/cascade-conference-2024) if you're looking for UNCW's presentation (`The API Awakens: Unleashing Effeciency with Cascade`) resources from the 2024 Cascade Conference.
 
-**Cascade CMS Tools**  
-Check out my other library [cascade-cms-tools](https://github.com/kuklaph/cascade-cms-tools)  
+**Cascade CMS Tools**
+Check out my other library [cascade-cms-tools](https://github.com/kuklaph/cascade-cms-tools)
 
 ## Cascade Documentation
 
@@ -62,7 +62,9 @@ The `apiKey` is generated in your Cascade dashboard. The `url` is `yourOrg.casca
 If you are using this in Google Apps Script the async/await pattern is not used/required. GAS does not follow this pattern.
 
 ```js
-//Nodejs
+// Apps Script => CascadeAPI_()
+
+// Nodejs
 const cascadeAPI = CascadeAPI({
   apiKey: "",
   url: "https://isSandActuallySandy.cascadecms.com/api/v1/",
