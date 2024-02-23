@@ -1,12 +1,20 @@
 # Cascade CMS API Library
 
+## Other Resources
+
+**Cascade Conference 2024**  
+Click [here](https://github.com/kuklaph/cascade-cms-tools/tree/main/cascade-conference-2024) if you're looking for UNCW's presentation (`The API Awakens: Unleashing Effeciency with Cascade`) resources from the 2024 Cascade Conference.
+
+**Cascade CMS Tools**  
+Check out my other library [cascade-cms-tools](https://github.com/kuklaph/cascade-cms-tools)  
+
+## Cascade Documentation
+
 ### **Please note this library is a work in progress. If you come across a bug please open an issue.**
 
 A JavaScript library for the Cascade CMS API. You can find more information about their API here: https://www.hannonhill.com/cascadecms/latest/developing-in-cascade/rest-api/index.html#Operations
 
 Available for Cascade CMS v8.1.1 and later.
-
-## Cascade Documentation
 
 You can find an openAPI representation of the Cascade library here:
 
