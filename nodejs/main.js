@@ -1,3 +1,5 @@
+// https://github.com/kuklaph/cascade-cms-api
+
 import axios from "axios";
 import * as Requests from "./types.js";
 export * as Types from "./types.js";
