@@ -3036,7 +3036,48 @@
 //#endregion
 
 function CascadeAPI_({ apiKey, url }) {
-  const call = (endPoint, requestParams) => {
+  const withRetry = (
+    callback,
+    {
+      callbackOpts = [],
+      initialDelay = 1000,
+      triesLeft = 2,
+      isExpo = true,
+      factor = 2,
+    } = {}
+  ) => {
+    let attempt = 1;
+    let currentDelay = initialDelay;
+    let lastResult;
+
+    const retry = () => {
+      if (triesLeft <= 0) {
+        return lastResult;
+      }
+
+      lastResult = callback(...callbackOpts);
+      if (lastResult?.timeout) {
+        console.log(
+          `Attempt ${attempt} timeout, retrying in ${currentDelay}ms...`
+        );
+
+        Utilites.sleep(currentDelay);
+        retry();
+
+        if (isExpo) {
+          currentDelay *= factor;
+        }
+
+        triesLeft--;
+        attempt++;
+      } else {
+        return lastResult;
+      }
+    };
+
+    retry();
+  };
+  const sendRequest = (endPoint, requestParams) => {
     if (!apiKey || !url) {
       throw new Error(`Missing API key or cascade URL`);
     }
@@ -3048,13 +3089,16 @@ function CascadeAPI_({ apiKey, url }) {
     const parsed = JSON.parse(request);
     return parsed;
   };
-  const handleRequest = (endPoint, opts, method = "POST") => {
+  const handleRequest = (endPoint, opts, retryOnTimeout) => {
     try {
       const requestParams = {
-        method,
+        method: "POST",
         payload: JSON.stringify(opts),
       };
-      const request = call(endPoint, requestParams);
+      const request = withRetry(sendRequest, {
+        callbackOpts: [endPoint, requestParams],
+        triesLeft: retryOnTimeout ? 3 : 1,
+      });
       if (!request.success) {
         throw new Error(`Request Failed. Request Response: ${request.message}`);
       }
@@ -3068,264 +3112,288 @@ function CascadeAPI_({ apiKey, url }) {
      * read operation.
      *
      * @param {ReadRequest} opts - The starting object container.
-     * @param {Boolean} [muteHttpExceptions] - Optional: Whether or not to mute http exceptions
+     * @param {boolean} [opts.muteHttpExceptions] - Optional: Whether or not to mute http exceptions
+     * @param {boolean} [retryOnTimeout] - Whether or not to retry on timeout
      * @return {ReadResponse}
      */
-    read(opts) {
-      return handleRequest("read", opts);
+    read(opts, retryOnTimeout = true) {
+      return handleRequest("read", opts, retryOnTimeout);
     },
 
     /**
      * removal operation.
      *
      * @param {RemoveRequest} opts - The starting object container.
-     * @param {Boolean} [muteHttpExceptions] - Optional: Whether or not to mute http exceptions
+     * @param {boolean} [opts.muteHttpExceptions] - Optional: Whether or not to mute http exceptions
+     * @param {boolean} [retryOnTimeout] - Whether or not to retry on timeout
      * @return {RemoveResponse}
      */
-    remove(opts) {
-      return handleRequest("delete", opts);
+    remove(opts, retryOnTimeout = true) {
+      return handleRequest("delete", opts, retryOnTimeout);
     },
 
     /**
      * edit operation.
      *
      * @param {EditRequest} opts - The starting object container.
-     * @param {Boolean} [muteHttpExceptions] - Optional: Whether or not to mute http exceptions
+     * @param {boolean} [opts.muteHttpExceptions] - Optional: Whether or not to mute http exceptions
+     * @param {boolean} [retryOnTimeout] - Whether or not to retry on timeout
      * @return {EditResponse}
      */
-    edit(opts) {
-      return handleRequest("edit", opts);
+    edit(opts, retryOnTimeout = true) {
+      return handleRequest("edit", opts, retryOnTimeout);
     },
 
     /**
      * create operation.
      *
      * @param {CreateRequest} opts - The starting object container.
-     * @param {Boolean} [muteHttpExceptions] - Optional: Whether or not to mute http exceptions
+     * @param {boolean} [opts.muteHttpExceptions] - Optional: Whether or not to mute http exceptions
+     * @param {boolean} [retryOnTimeout] - Whether or not to retry on timeout
      * @return {CreateResponse}
      */
-    create(opts) {
-      return handleRequest("create", opts);
+    create(opts, retryOnTimeout = true) {
+      return handleRequest("create", opts, retryOnTimeout);
     },
 
     /**
      * move operation.
      *
      * @param {MoveRequest} opts - The starting object container.
-     * @param {Boolean} [muteHttpExceptions] - Optional: Whether or not to mute http exceptions
+     * @param {boolean} [opts.muteHttpExceptions] - Optional: Whether or not to mute http exceptions
+     * @param {boolean} [retryOnTimeout] - Whether or not to retry on timeout
      * @return {MoveResponse}
      */
-    move(opts) {
-      return handleRequest("move", opts);
+    move(opts, retryOnTimeout = true) {
+      return handleRequest("move", opts, retryOnTimeout);
     },
 
     /**
      * search operation.
      *
      * @param {SearchRequest} opts - The starting object container.
-     * @param {Boolean} [muteHttpExceptions] - Optional: Whether or not to mute http exceptions
+     * @param {boolean} [opts.muteHttpExceptions] - Optional: Whether or not to mute http exceptions
+     * @param {boolean} [retryOnTimeout] - Whether or not to retry on timeout
      * @return {SearchResponse}
      */
-    search(opts) {
-      return handleRequest("search", opts);
+    search(opts, retryOnTimeout = true) {
+      return handleRequest("search", opts, retryOnTimeout);
     },
 
     /**
      * copy operation.
      *
      * @param {CopyRequest} opts - The starting object container.
-     * @param {Boolean} [muteHttpExceptions] - Optional: Whether or not to mute http exceptions
+     * @param {boolean} [opts.muteHttpExceptions] - Optional: Whether or not to mute http exceptions
+     * @param {boolean} [retryOnTimeout] - Whether or not to retry on timeout
      * @return {CopyResponse}
      */
-    copy(opts) {
-      return handleRequest("copy", opts);
+    copy(opts, retryOnTimeout = true) {
+      return handleRequest("copy", opts, retryOnTimeout);
     },
 
     /**
      * siteCopy operation.
      *
      * @param {SiteCopyRequest} opts - The starting object container.
-     * @param {Boolean} [muteHttpExceptions] - Optional: Whether or not to mute http exceptions
+     * @param {boolean} [opts.muteHttpExceptions] - Optional: Whether or not to mute http exceptions
+     * @param {boolean} [retryOnTimeout] - Whether or not to retry on timeout
      * @return {SiteCopyResponse}
      */
-    siteCopy(opts) {
-      return handleRequest("siteCopy", opts);
+    siteCopy(opts, retryOnTimeout = true) {
+      return handleRequest("siteCopy", opts, retryOnTimeout);
     },
 
     /**
      * readAccessRights operation.
      *
      * @param {ReadAccessRightsRequest} opts - The starting object container.
-     * @param {Boolean} [muteHttpExceptions] - Optional: Whether or not to mute http exceptions
+     * @param {boolean} [opts.muteHttpExceptions] - Optional: Whether or not to mute http exceptions
+     * @param {boolean} [retryOnTimeout] - Whether or not to retry on timeout
      * @return {ReadAccessRightsResponse}
      */
-    readAccessRights(opts) {
-      return handleRequest("readAccessRights", opts);
+    readAccessRights(opts, retryOnTimeout = true) {
+      return handleRequest("readAccessRights", opts, retryOnTimeout);
     },
 
     /**
      * editAccessRights operation.
      *
      * @param {EditAccessRightsRequest} opts - The starting object container.
-     * @param {Boolean} [muteHttpExceptions] - Optional: Whether or not to mute http exceptions
+     * @param {boolean} [opts.muteHttpExceptions] - Optional: Whether or not to mute http exceptions
+     * @param {boolean} [retryOnTimeout] - Whether or not to retry on timeout
      * @return {EditAccessRightsResponse}
      */
-    editAccessRights(opts) {
-      return handleRequest("editAccessRights", opts);
+    editAccessRights(opts, retryOnTimeout = true) {
+      return handleRequest("editAccessRights", opts, retryOnTimeout);
     },
 
     /**
      * readWorkflowSettings operation.
      *
      * @param {ReadWorkflowSettingsRequest} opts - The starting object container.
-     * @param {Boolean} [muteHttpExceptions] - Optional: Whether or not to mute http exceptions
+     * @param {boolean} [opts.muteHttpExceptions] - Optional: Whether or not to mute http exceptions
+     * @param {boolean} [retryOnTimeout] - Whether or not to retry on timeout
      * @return {ReadWorkflowSettingsResponse}
      */
-    readWorkflowSettings(opts) {
-      return handleRequest("readWorkflowSettings", opts);
+    readWorkflowSettings(opts, retryOnTimeout = true) {
+      return handleRequest("readWorkflowSettings", opts, retryOnTimeout);
     },
 
     /**
      * editWorkflowSettings operation.
      *
      * @param {EditWorkflowSettingsRequest} opts - The starting object container.
-     * @param {Boolean} [muteHttpExceptions] - Optional: Whether or not to mute http exceptions
+     * @param {boolean} [opts.muteHttpExceptions] - Optional: Whether or not to mute http exceptions
+     * @param {boolean} [retryOnTimeout] - Whether or not to retry on timeout
      * @return {EditWorkflowSettingsResponse}
      */
-    editWorkflowSettings(opts) {
-      return handleRequest("editWorkflowSettings", opts);
+    editWorkflowSettings(opts, retryOnTimeout = true) {
+      return handleRequest("editWorkflowSettings", opts, retryOnTimeout);
     },
 
     /**
      * listSubscribers operation.
      *
      * @param {ListSubscribersRequest} opts - The starting object container.
-     * @param {Boolean} [muteHttpExceptions] - Optional: Whether or not to mute http exceptions
+     * @param {boolean} [opts.muteHttpExceptions] - Optional: Whether or not to mute http exceptions
+     * @param {boolean} [retryOnTimeout] - Whether or not to retry on timeout
      * @return {ListSubscribersResponse}
      */
-    listSubscribers(opts) {
-      return handleRequest("listSubscribers", opts);
+    listSubscribers(opts, retryOnTimeout = true) {
+      return handleRequest("listSubscribers", opts, retryOnTimeout);
     },
 
     /**
      * listMessages operation.
      *
      * @param {ListMessagesRequest} opts - The starting object container.
-     * @param {Boolean} [muteHttpExceptions] - Optional: Whether or not to mute http exceptions
+     * @param {boolean} [opts.muteHttpExceptions] - Optional: Whether or not to mute http exceptions
+     * @param {boolean} [retryOnTimeout] - Whether or not to retry on timeout
      * @return {ListMessagesResponse}
      */
-    listMessages(opts) {
-      return handleRequest("listMessages", opts);
+    listMessages(opts, retryOnTimeout = true) {
+      return handleRequest("listMessages", opts, retryOnTimeout);
     },
 
     /**
      * markMessage operation.
      *
      * @param {MarkMessageRequest} opts - The starting object container.
-     * @param {Boolean} [muteHttpExceptions] - Optional: Whether or not to mute http exceptions
+     * @param {boolean} [opts.muteHttpExceptions] - Optional: Whether or not to mute http exceptions
+     * @param {boolean} [retryOnTimeout] - Whether or not to retry on timeout
      * @return {MarkMessageResponse}
      */
-    markMessage(opts) {
-      return handleRequest("markMessage", opts);
+    markMessage(opts, retryOnTimeout = true) {
+      return handleRequest("markMessage", opts, retryOnTimeout);
     },
 
     /**
      * deleteMessage operation.
      *
      * @param {DeleteMessageRequest} opts - The starting object container.
-     * @param {Boolean} [muteHttpExceptions] - Optional: Whether or not to mute http exceptions
+     * @param {boolean} [opts.muteHttpExceptions] - Optional: Whether or not to mute http exceptions
+     * @param {boolean} [retryOnTimeout] - Whether or not to retry on timeout
      * @return {DeleteMessageResponse}
      */
-    deleteMessage(opts) {
-      return handleRequest("deleteMessage", opts);
+    deleteMessage(opts, retryOnTimeout = true) {
+      return handleRequest("deleteMessage", opts, retryOnTimeout);
     },
 
     /**
      * checkOut operation.
      *
      * @param {CheckOutRequest} opts - The starting object container.
-     * @param {Boolean} [muteHttpExceptions] - Optional: Whether or not to mute http exceptions
+     * @param {boolean} [opts.muteHttpExceptions] - Optional: Whether or not to mute http exceptions
+     * @param {boolean} [retryOnTimeout] - Whether or not to retry on timeout
      * @return {CheckOutResponse}
      */
-    checkOut(opts) {
-      return handleRequest("checkOut", opts);
+    checkOut(opts, retryOnTimeout = true) {
+      return handleRequest("checkOut", opts, retryOnTimeout);
     },
 
     /**
      * checkIn operation.
      *
      * @param {CheckInRequest} opts - The starting object container.
-     * @param {Boolean} [muteHttpExceptions] - Optional: Whether or not to mute http exceptions
+     * @param {boolean} [opts.muteHttpExceptions] - Optional: Whether or not to mute http exceptions
+     * @param {boolean} [retryOnTimeout] - Whether or not to retry on timeout
      * @return {CheckInResponse}
      */
-    checkIn(opts) {
-      return handleRequest("checkIn", opts);
+    checkIn(opts, retryOnTimeout = true) {
+      return handleRequest("checkIn", opts, retryOnTimeout);
     },
 
     /**
      * listSites operation.
      *
      * @param {ListSitesRequest} opts - The starting object container.
-     * @param {Boolean} [muteHttpExceptions] - Optional: Whether or not to mute http exceptions
+     * @param {boolean} [opts.muteHttpExceptions] - Optional: Whether or not to mute http exceptions
+     * @param {boolean} [retryOnTimeout] - Whether or not to retry on timeout
      * @return {ListSitesResponse}
      */
-    listSites(opts) {
-      return handleRequest("listSites", opts);
+    listSites(opts, retryOnTimeout = true) {
+      return handleRequest("listSites", opts, retryOnTimeout);
     },
 
     /**
      * readAudits operation.
      *
      * @param {ReadAuditsRequest} opts - The starting object container.
-     * @param {Boolean} [muteHttpExceptions] - Optional: Whether or not to mute http exceptions
+     * @param {boolean} [opts.muteHttpExceptions] - Optional: Whether or not to mute http exceptions
+     * @param {boolean} [retryOnTimeout] - Whether or not to retry on timeout
      * @return {ReadAuditsResponse}
      */
-    readAudits(opts) {
-      return handleRequest("readAudits", opts);
+    readAudits(opts, retryOnTimeout = true) {
+      return handleRequest("readAudits", opts, retryOnTimeout);
     },
 
     /**
      * readWorkflowInformation operation.
      *
      * @param {ReadWorkflowInformationRequest} opts - The starting object container.
-     * @param {Boolean} [muteHttpExceptions] - Optional: Whether or not to mute http exceptions
+     * @param {boolean} [opts.muteHttpExceptions] - Optional: Whether or not to mute http exceptions
+     * @param {boolean} [retryOnTimeout] - Whether or not to retry on timeout
      * @return {ReadWorkflowInformationResponse}
      */
-    readWorkflowInformation(opts) {
-      return handleRequest("readWorkflowInformation", opts);
+    readWorkflowInformation(opts, retryOnTimeout = true) {
+      return handleRequest("readWorkflowInformation", opts, retryOnTimeout);
     },
 
     /**
      * performWorkflowTransition operation.
      *
      * @param {PerformWorkflowTransitionRequest} opts - The starting object container.
-     * @param {Boolean} [muteHttpExceptions] - Optional: Whether or not to mute http exceptions
+     * @param {boolean} [opts.muteHttpExceptions] - Optional: Whether or not to mute http exceptions
+     * @param {boolean} [retryOnTimeout] - Whether or not to retry on timeout
      * @return {PerformWorkflowTransitionResponse}
      */
-    performWorkflowTransition(opts) {
-      return handleRequest("performWorkflowTransition", opts);
+    performWorkflowTransition(opts, retryOnTimeout = true) {
+      return handleRequest("performWorkflowTransition", opts, retryOnTimeout);
     },
 
     /**
      * readPreferences operation.
      *
      * @param {ReadPreferencesRequest} opts - The starting object container.
-     * @param {Boolean} [muteHttpExceptions] - Optional: Whether or not to mute http exceptions
+     * @param {boolean} [opts.muteHttpExceptions] - Optional: Whether or not to mute http exceptions
+     * @param {boolean} [retryOnTimeout] - Whether or not to retry on timeout
      * @return {ReadPreferencesResponse}
      */
-    readPreferences(opts) {
-      return handleRequest("readPreferences", opts);
+    readPreferences(opts, retryOnTimeout = true) {
+      return handleRequest("readPreferences", opts, retryOnTimeout);
     },
 
     /**
      * publishUnpublish operation.
      *
      * @param {PublishUnpublishRequest} opts - The starting object container.
-     * @param {Boolean} [muteHttpExceptions] - Optional: Whether or not to mute http exceptions
+     * @param {boolean} [opts.muteHttpExceptions] - Optional: Whether or not to mute http exceptions
+     * @param {boolean} [retryOnTimeout] - Whether or not to retry on timeout
      * @return {PublishUnpublishResponse}
      */
-    publishUnpublish(opts) {
-      return handleRequest("publish", opts);
+    publishUnpublish(opts, retryOnTimeout = true) {
+      return handleRequest("publish", opts, retryOnTimeout);
     },
   };
 }

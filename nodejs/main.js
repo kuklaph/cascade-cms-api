@@ -5,6 +5,49 @@ import * as Requests from "./types.js";
 export * as Types from "./types.js";
 export function CascadeAPI({ apiKey, url }) {
   const timeout = 30000;
+
+  const withRetry = async (
+    callback,
+    {
+      callbackOpts = [],
+      initialDelay = 1000,
+      triesLeft = 2,
+      isExpo = true,
+      factor = 2,
+    } = {}
+  ) => {
+    return new Promise((resolve, reject) => {
+      let attempt = 1;
+      let currentDelay = initialDelay;
+      let lastResult;
+
+      const retry = async () => {
+        if (triesLeft <= 0) {
+          return reject(lastResult);
+        }
+
+        lastResult = await callback(...callbackOpts);
+        if (lastResult?.timeout) {
+          console.log(
+            `Attempt ${attempt} timeout, retrying in ${currentDelay}ms...`
+          );
+
+          setTimeout(retry, currentDelay);
+
+          if (isExpo) {
+            currentDelay *= factor;
+          }
+
+          triesLeft--;
+          attempt++;
+        } else {
+          return resolve(lastResult);
+        }
+      };
+
+      retry();
+    });
+  };
   const withAxios = async (requestParams) => {
     try {
       requestParams.timeout = timeout;
@@ -15,12 +58,14 @@ export function CascadeAPI({ apiKey, url }) {
         return {
           success: false,
           message: "Request timed out",
+          timeout: true,
         };
       } else {
         // Handle other Axios errors
         return {
           success: false,
           message: error.message,
+          timeout: false,
         };
       }
     }
@@ -56,17 +101,19 @@ export function CascadeAPI({ apiKey, url }) {
         return {
           success: false,
           message: "Request timed out",
+          timeout: true,
         };
       } else {
         // Handle other Fetch errors
         return {
           success: false,
           message: error.message,
+          timeout: false,
         };
       }
     }
   };
-  const call = (endPoint, requestParams) => {
+  const sendRequest = async (endPoint, requestParams) => {
     if (!apiKey || !url) {
       throw new Error(`Missing API key or cascade URL`);
     }
@@ -78,13 +125,16 @@ export function CascadeAPI({ apiKey, url }) {
     return withAxios(requestParams);
     // return withFetch(requestParams);
   };
-  const handleRequest = async (endPoint, opts, method = "POST") => {
+  const handleRequest = async (endPoint, opts, retryOnTimeout) => {
     try {
       const requestParams = {
-        method,
+        method: "POST",
         data: JSON.stringify(opts),
       };
-      const request = await call(endPoint, requestParams);
+      const request = await withRetry(sendRequest, {
+        callbackOpts: [endPoint, requestParams],
+        triesLeft: retryOnTimeout ? 3 : 1,
+      });
       if (!request.success) {
         throw new Error(`Request Failed. Request Response: ${request.message}`);
       }
@@ -98,240 +148,264 @@ export function CascadeAPI({ apiKey, url }) {
      * read operation.
      *
      * @param {Requests.ReadRequest} opts - The starting object container.
+     * @param {boolean} retryOnTimeout - Should the request retry on timeout
      * @return {Promise<Requests.ReadResponse>}
      */
-    read(opts) {
-      return handleRequest("read", opts);
+    read(opts, retryOnTimeout = true) {
+      return handleRequest("read", opts, retryOnTimeout);
     },
 
     /**
      * removal operation.
      *
      * @param {Requests.RemoveRequest} opts - The starting object container.
+     * @param {boolean} retryOnTimeout - Should the request retry on timeout
      * @return {Promise<Requests.RemoveResponse>}
      */
-    remove(opts) {
-      return handleRequest("delete", opts);
+    remove(opts, retryOnTimeout = true) {
+      return handleRequest("delete", opts, retryOnTimeout);
     },
 
     /**
      * edit operation.
      *
      * @param {Requests.EditRequest} opts - The starting object container.
+     * @param {boolean} retryOnTimeout - Should the request retry on timeout
      * @return {Promise<Requests.EditResponse>}
      */
-    edit(opts) {
-      return handleRequest("edit", opts);
+    edit(opts, retryOnTimeout = true) {
+      return handleRequest("edit", opts, retryOnTimeout);
     },
 
     /**
      * create operation.
      *
      * @param {Requests.CreateRequest} opts - The starting object container.
+     * @param {boolean} retryOnTimeout - Should the request retry on timeout
      * @return {Promise<Requests.CreateResponse>}
      */
-    create(opts) {
-      return handleRequest("create", opts);
+    create(opts, retryOnTimeout = true) {
+      return handleRequest("create", opts, retryOnTimeout);
     },
 
     /**
      * move operation.
      *
      * @param {Requests.MoveRequest} opts - The starting object container.
+     * @param {boolean} retryOnTimeout - Should the request retry on timeout
      * @return {Promise<Requests.MoveResponse>}
      */
-    move(opts) {
-      return handleRequest("move", opts);
+    move(opts, retryOnTimeout = true) {
+      return handleRequest("move", opts, retryOnTimeout);
     },
 
     /**
      * search operation.
      *
      * @param {Requests.SearchRequest} opts - The starting object container.
+     * @param {boolean} retryOnTimeout - Should the request retry on timeout
      * @return {Promise<Requests.SearchResponse>}
      */
-    search(opts) {
-      return handleRequest("search", opts);
+    search(opts, retryOnTimeout = true) {
+      return handleRequest("search", opts, retryOnTimeout);
     },
 
     /**
      * copy operation.
      *
      * @param {Requests.CopyRequest} opts - The starting object container.
+     * @param {boolean} retryOnTimeout - Should the request retry on timeout
      * @return {Promise<Requests.CopyResponse>}
      */
-    copy(opts) {
-      return handleRequest("copy", opts);
+    copy(opts, retryOnTimeout = true) {
+      return handleRequest("copy", opts, retryOnTimeout);
     },
 
     /**
      * siteCopy operation.
      *
      * @param {Requests.SiteCopyRequest} opts - The starting object container.
+     * @param {boolean} retryOnTimeout - Should the request retry on timeout
      * @return {Promise<Requests.SiteCopyResponse>}
      */
-    siteCopy(opts) {
-      return handleRequest("siteCopy", opts);
+    siteCopy(opts, retryOnTimeout = true) {
+      return handleRequest("siteCopy", opts, retryOnTimeout);
     },
 
     /**
      * readAccessRights operation.
      *
      * @param {Requests.ReadAccessRightsRequest} opts - The starting object container.
+     * @param {boolean} retryOnTimeout - Should the request retry on timeout
      * @return {Promise<Requests.ReadAccessRightsResponse>}
      */
-    readAccessRights(opts) {
-      return handleRequest("readAccessRights", opts);
+    readAccessRights(opts, retryOnTimeout = true) {
+      return handleRequest("readAccessRights", opts, retryOnTimeout);
     },
 
     /**
      * editAccessRights operation.
      *
      * @param {Requests.EditAccessRightsRequest} opts - The starting object container.
+     * @param {boolean} retryOnTimeout - Should the request retry on timeout
      * @return {Promise<Requests.EditAccessRightsResponse>}
      */
-    editAccessRights(opts) {
-      return handleRequest("editAccessRights", opts);
+    editAccessRights(opts, retryOnTimeout = true) {
+      return handleRequest("editAccessRights", opts, retryOnTimeout);
     },
 
     /**
      * readWorkflowSettings operation.
      *
      * @param {Requests.ReadWorkflowSettingsRequest} opts - The starting object container.
+     * @param {boolean} retryOnTimeout - Should the request retry on timeout
      * @return {Promise<Requests.ReadWorkflowSettingsResponse>}
      */
-    readWorkflowSettings(opts) {
-      return handleRequest("readWorkflowSettings", opts);
+    readWorkflowSettings(opts, retryOnTimeout = true) {
+      return handleRequest("readWorkflowSettings", opts, retryOnTimeout);
     },
 
     /**
      * editWorkflowSettings operation.
      *
      * @param {Requests.EditWorkflowSettingsRequest} opts - The starting object container.
+     * @param {boolean} retryOnTimeout - Should the request retry on timeout
      * @return {Promise<Requests.EditWorkflowSettingsResponse>}
      */
-    editWorkflowSettings(opts) {
-      return handleRequest("editWorkflowSettings", opts);
+    editWorkflowSettings(opts, retryOnTimeout = true) {
+      return handleRequest("editWorkflowSettings", opts, retryOnTimeout);
     },
 
     /**
      * listSubscribers operation.
      *
      * @param {Requests.ListSubscribersRequest} opts - The starting object container.
+     * @param {boolean} retryOnTimeout - Should the request retry on timeout
      * @return {Promise<Requests.ListSubscribersResponse>}
      */
-    listSubscribers(opts) {
-      return handleRequest("listSubscribers", opts);
+    listSubscribers(opts, retryOnTimeout = true) {
+      return handleRequest("listSubscribers", opts, retryOnTimeout);
     },
 
     /**
      * listMessages operation.
      *
      * @param {Requests.ListMessagesRequest} opts - The starting object container.
+     * @param {boolean} retryOnTimeout - Should the request retry on timeout
      * @return {Promise<Requests.ListMessagesResponse>}
      */
-    listMessages(opts) {
-      return handleRequest("listMessages", opts);
+    listMessages(opts, retryOnTimeout = true) {
+      return handleRequest("listMessages", opts, retryOnTimeout);
     },
 
     /**
      * markMessage operation.
      *
      * @param {Requests.MarkMessageRequest} opts - The starting object container.
+     * @param {boolean} retryOnTimeout - Should the request retry on timeout
      * @return {Promise<Requests.MarkMessageResponse>}
      */
-    markMessage(opts) {
-      return handleRequest("markMessage", opts);
+    markMessage(opts, retryOnTimeout = true) {
+      return handleRequest("markMessage", opts, retryOnTimeout);
     },
 
     /**
      * deleteMessage operation.
      *
      * @param {Requests.DeleteMessageRequest} opts - The starting object container.
+     * @param {boolean} retryOnTimeout - Should the request retry on timeout
      * @return {Promise<Requests.DeleteMessageResponse>}
      */
-    deleteMessage(opts) {
-      return handleRequest("deleteMessage", opts);
+    deleteMessage(opts, retryOnTimeout = true) {
+      return handleRequest("deleteMessage", opts, retryOnTimeout);
     },
 
     /**
      * checkOut operation.
      *
      * @param {Requests.CheckOutRequest} opts - The starting object container.
+     * @param {boolean} retryOnTimeout - Should the request retry on timeout
      * @return {Promise<Requests.CheckOutResponse>}
      */
-    checkOut(opts) {
-      return handleRequest("checkOut", opts);
+    checkOut(opts, retryOnTimeout = true) {
+      return handleRequest("checkOut", opts, retryOnTimeout);
     },
 
     /**
      * checkIn operation.
      *
      * @param {Requests.CheckInRequest} opts - The starting object container.
+     * @param {boolean} retryOnTimeout - Should the request retry on timeout
      * @return {Promise<Requests.CheckInResponse>}
      */
-    checkIn(opts) {
-      return handleRequest("checkIn", opts);
+    checkIn(opts, retryOnTimeout = true) {
+      return handleRequest("checkIn", opts, retryOnTimeout);
     },
 
     /**
      * listSites operation.
      *
      * @param {Requests.ListSitesRequest} opts - The starting object container.
+     * @param {boolean} retryOnTimeout - Should the request retry on timeout
      * @return {Promise<Requests.ListSitesResponse>}
      */
-    listSites(opts) {
-      return handleRequest("listSites", opts);
+    listSites(opts, retryOnTimeout = true) {
+      return handleRequest("listSites", opts, retryOnTimeout);
     },
 
     /**
      * readAudits operation.
      *
      * @param {Requests.ReadAuditsRequest} opts - The starting object container.
+     * @param {boolean} retryOnTimeout - Should the request retry on timeout
      * @return {Promise<Requests.ReadAuditsResponse>}
      */
-    readAudits(opts) {
-      return handleRequest("readAudits", opts);
+    readAudits(opts, retryOnTimeout = true) {
+      return handleRequest("readAudits", opts, retryOnTimeout);
     },
 
     /**
      * readWorkflowInformation operation.
      *
      * @param {Requests.ReadWorkflowInformationRequest} opts - The starting object container.
+     * @param {boolean} retryOnTimeout - Should the request retry on timeout
      * @return {Promise<Requests.ReadWorkflowInformationResponse>}
      */
-    readWorkflowInformation(opts) {
-      return handleRequest("readWorkflowInformation", opts);
+    readWorkflowInformation(opts, retryOnTimeout = true) {
+      return handleRequest("readWorkflowInformation", opts, retryOnTimeout);
     },
 
     /**
      * performWorkflowTransition operation.
      *
      * @param {Requests.PerformWorkflowTransitionRequest} opts - The starting object container.
+     * @param {boolean} retryOnTimeout - Should the request retry on timeout
      * @return {Promise<Requests.PerformWorkflowTransitionResponse>}
      */
-    performWorkflowTransition(opts) {
-      return handleRequest("performWorkflowTransition", opts);
+    performWorkflowTransition(opts, retryOnTimeout = true) {
+      return handleRequest("performWorkflowTransition", opts, retryOnTimeout);
     },
 
     /**
      * readPreferences operation.
      *
      * @param {Requests.ReadPreferencesRequest} opts - The starting object container.
+     * @param {boolean} retryOnTimeout - Should the request retry on timeout
      * @return {Promise<Requests.ReadPreferencesResponse>}
      */
-    readPreferences(opts) {
-      return handleRequest("readPreferences", opts);
+    readPreferences(opts, retryOnTimeout = true) {
+      return handleRequest("readPreferences", opts, retryOnTimeout);
     },
 
     /**
      * publishUnpublish operation.
      *
      * @param {Requests.PublishUnpublishRequest} opts - The starting object container.
+     * @param {boolean} retryOnTimeout - Should the request retry on timeout
      * @return {Promise<Requests.PublishUnpublishResponse>}
      */
-    publishUnpublish(opts) {
-      return handleRequest("publish", opts);
+    publishUnpublish(opts, retryOnTimeout = true) {
+      return handleRequest("publish", opts, retryOnTimeout);
     },
   };
 }
