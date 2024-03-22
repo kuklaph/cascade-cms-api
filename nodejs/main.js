@@ -62,7 +62,6 @@ export function CascadeAPI({ apiKey, url }) {
         };
       } else {
         // Handle other Axios errors
-        console.log("test retry", error.message);
         return {
           success: false,
           message: error.message,
