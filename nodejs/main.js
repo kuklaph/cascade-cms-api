@@ -54,7 +54,7 @@ export function CascadeAPI({ apiKey, url }) {
       const request = await axios(requestParams);
       return request.data;
     } catch (error) {
-      if (error.code === "ECONNABORTED") {
+      if (error.code === "ETIMEDOUT") {
         return {
           success: false,
           message: "Request timed out",
@@ -62,6 +62,7 @@ export function CascadeAPI({ apiKey, url }) {
         };
       } else {
         // Handle other Axios errors
+        console.log("test retry", error.message);
         return {
           success: false,
           message: error.message,

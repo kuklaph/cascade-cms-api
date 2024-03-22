@@ -214,7 +214,8 @@
  * "workflowdefinition" |
  * "workflowdefinitioncontainer" |
  * "workflowemail" |
- * "workflowemailcontainer"} EntityTypeString - All asset type strings
+ * "workflowemailcontainer" |
+ * "xhtmlDataDefinitionBlock"} EntityTypeString - All asset type strings
  */
 
 /**
