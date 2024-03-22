@@ -218,7 +218,8 @@
  * "workflowdefinition" |
  * "workflowdefinitioncontainer" |
  * "workflowemail" |
- * "workflowemailcontainer"} EntityTypeString - All asset type strings
+ * "workflowemailcontainer" |
+ * "xhtmlDataDefinitionBlock"} EntityTypeString - All asset type strings
  */
 
 /**
@@ -3030,8 +3031,6 @@
  * @typedef {OperationResult} PublishUnpublishResponse
  */
 //#endregion
-
-// export default {};
 
 //#endregion
 
