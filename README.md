@@ -2,10 +2,10 @@
 
 ## Other Resources
 
-**Cascade Conference 2024**
+**Cascade Conference 2024** \
 Click [here](https://github.com/kuklaph/cascade-cms-tools/tree/main/cascade-conference-2024) if you're looking for UNCW's presentation (`The API Awakens: Unleashing Effeciency with Cascade`) resources from the 2024 Cascade Conference.
 
-**Cascade CMS Tools**
+**Cascade CMS Tools** \
 Check out my other library [cascade-cms-tools](https://github.com/kuklaph/cascade-cms-tools)
 
 ## Cascade Documentation

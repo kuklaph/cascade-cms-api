@@ -1,7 +1,7 @@
 {
   "name": "cascade-cms-api",
-  "version": "1.0.0",
-  "description": "A library for the Cascade API",
+  "version": "1.0.1",
+  "description": "A Javascript library for the Cascade CMS API",
   "main": "main.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
@@ -13,6 +13,7 @@
   "keywords": [
     "cascade",
     "cms",
+    "javascript",
     "api"
   ],
   "author": "Philip Kukla",
