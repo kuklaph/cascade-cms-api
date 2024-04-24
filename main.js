@@ -3,9 +3,15 @@
 import axios from "axios";
 import * as Requests from "./types.js";
 export * as Types from "./types.js";
-export function CascadeAPI({ apiKey, url }) {
-  const timeout = 30000;
 
+/**
+ * Creates a configured instance of the Cascade API with methods to perform API requests.
+ * @param {Object} config
+ * @param {string} config.apiKey - Your generated API key from Cascade
+ * @param {string} config.url - Your domain specific Cascade API URL
+ * @param {number} [timeout=30000] - Optional. Default is 30000 eg 30 seconds. Make sure to use milliseconds
+ */
+export function CascadeAPI({ apiKey, url }, timeout = 30000) {
   const withRetry = async (
     callback,
     {

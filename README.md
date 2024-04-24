@@ -30,7 +30,9 @@ Example: `isSandActuallySandy.cascadecms.com/ws/services/AssetOperationService?w
 
 This can be used either via NodeJS or Google Apps Script.
 
-Download/Copy the files and extract the zip. Once extracted to your project, use `npm ci` to install dependencies.
+Either download/Copy the files and extract the zip or use npm `npm i cascade-cms-api` or `npm ci cascade-cms-api` depending on what you prefer.
+
+## General Usage
 
 ### NodeJS
 
@@ -44,9 +46,7 @@ import { CascadeAPI, Types } from "../cascade-cms-api/nodejs/main.mjs";
 
 In order to use this library within a Google Apps Script (GAS) project you will need to copy the `main.js` and paste the contents as a new `.gs` file in your project.
 
-## General Usage
-
-To use the library you will need to instantiate the `CascadeAPI` function and pass it an object:
+To use the library you will need to instantiate the `CascadeAPI` function and pass it a config object with your apiKey and a Cascade CMS API URL with your custom domain:
 
 `{ apiKey: "", url: "" }`
 
@@ -62,7 +62,8 @@ The `apiKey` is generated in your Cascade dashboard. The `url` is `yourOrg.casca
 If you are using this in Google Apps Script the async/await pattern is not used/required. GAS does not follow this pattern.
 
 ```js
-// Apps Script => CascadeAPI_()
+// Apps Script
+// const cascadeAPI = CascadeAPI_({apiKey: "", url: ""})
 
 // Nodejs
 const cascadeAPI = CascadeAPI({
@@ -84,17 +85,29 @@ const readFile = async () => {
 Types are optional. You can add type definitions which may be helpful depending on the situation:
 
 ```js
+// Opt1 - inline
+const read = await cascadeAPI.read({
+  identifier: {
+    type: "page", // inline gives you intellisense
+    id: "d3631e59ac1easd2434bd70be3fbfe8148abc",
+    //...
+  },
+});
+
+// Opt2 - add external type
 /**
  * @type {Types.EntityTypeString}
  */
 const type = "page";
-
 const read = await cascadeAPI.read({
   identifier: {
-    type: "page", // inline gives you intellisense
     type, // uses type from above and you get intellisense within the variable above
     id: "d3631e59ac1easd2434bd70be3fbfe8148abc",
     //...
   },
 });
 ```
+
+A built in retry is offered for the Nodejs version. The default allotted timeout time is `30` seconds. You can adjust whether or not to use a retry (the default is `true`) per request method as an optional parameter. If you want to update the timeout time, you can pass in an optional `timeout` parameter when initiating `CascadeAPI`.
+
+The Nodejs version also comes with an option to use `fetch` rather than `axios` in case you want to use this in something like a Chrome Extension. You would just need to swap the commented lines in `main.js`.

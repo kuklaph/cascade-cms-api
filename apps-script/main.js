@@ -3033,7 +3033,12 @@
 //#endregion
 
 //#endregion
-
+/**
+ * Creates a configured instance of the Cascade API with methods to perform API requests.
+ * @param {Object} config
+ * @param {string} config.apiKey - Your generated API key from Cascade
+ * @param {string} config.url - Your domain specific Cascade API URL
+ */
 function CascadeAPI_({ apiKey, url }) {
   const withRetry = (
     callback,
