@@ -39,7 +39,7 @@ Either download/Copy the files and extract the zip or use npm `npm i cascade-cms
 In your project file import the Cascade API.
 
 ```js
-import { CascadeAPI, Types } from "../cascade-cms-api/nodejs/main.mjs";
+import { CascadeAPI, Types } from "cascade-cms-api";
 ```
 
 ### Google Apps Script
