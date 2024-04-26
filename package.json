@@ -3,6 +3,7 @@
   "version": "1.0.2",
   "description": "A Javascript library for the Cascade CMS API",
   "main": "main.js",
+  "types": "./types/main.d.ts",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },

@@ -1,8 +1,8 @@
 // https://github.com/kuklaph/cascade-cms-api
 
 import axios from "axios";
-import * as Requests from "./types.js";
-export * as Types from "./types.js";
+import * as Requests from "./types/types.js";
+export * as Types from "./types/types.js";
 
 /**
  * Creates a configured instance of the Cascade API with methods to perform API requests.
