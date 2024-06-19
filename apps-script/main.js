@@ -973,10 +973,15 @@
 //#region XhtmlDataDefinitionBlockProperties DONE
 /**
  * @typedef {Object} XhtmlDataDefinitionBlockProperties
+ * @property {StructuredData} [structuredData]
+ * - A page either contains XHTML content (plain WYSIWYG page) or structured data content.
+ * Priority: xhtml > structuredData. One is REQUIRED.
  */
 
 /**
- * @typedef {ExpiringAsset} XhtmlDataDefinitionBlock - A block containing plain XHTML or Structured Data
+ * @typedef {XhtmlDataDefinitionBlockProperties &
+ * ExpiringAsset
+ * } XhtmlDataDefinitionBlock - A block containing plain XHTML or Structured Data
  */
 
 //#endregion
@@ -3031,8 +3036,8 @@
  * @typedef {OperationResult} PublishUnpublishResponse
  */
 //#endregion
-
 //#endregion
+
 /**
  * Creates a configured instance of the Cascade API with methods to perform API requests.
  * @param {Object} config
@@ -3079,7 +3084,7 @@ function CascadeAPI_({ apiKey, url }) {
       }
     };
 
-    retry();
+    return retry();
   };
   const sendRequest = (endPoint, requestParams) => {
     if (!apiKey || !url) {
