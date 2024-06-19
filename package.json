@@ -1,6 +1,6 @@
 {
   "name": "cascade-cms-api",
-  "version": "1.0.4",
+  "version": "1.0.3",
   "description": "A Javascript library for the Cascade CMS API",
   "main": "main.js",
   "types": "./types/main.d.ts",
