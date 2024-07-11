@@ -3064,23 +3064,27 @@ function CascadeAPI_({ apiKey, url }) {
         return lastResult;
       }
 
-      lastResult = callback(...callbackOpts);
-      if (lastResult?.timeout) {
-        console.log(
-          `Attempt ${attempt} timeout, retrying in ${currentDelay}ms...`
-        );
+      try {
+        lastResult = callback(...callbackOpts);
+        if (lastResult?.timeout) {
+          console.log(
+            `Attempt ${attempt} timeout, retrying in ${currentDelay}ms...`
+          );
 
-        Utilites.sleep(currentDelay);
-        retry();
+          Utilites.sleep(currentDelay);
+          retry();
 
-        if (isExpo) {
-          currentDelay *= factor;
+          if (isExpo) {
+            currentDelay *= factor;
+          }
+
+          triesLeft--;
+          attempt++;
+        } else {
+          return lastResult;
         }
-
-        triesLeft--;
-        attempt++;
-      } else {
-        return lastResult;
+      } catch (error) {
+        return error;
       }
     };
 

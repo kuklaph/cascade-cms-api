@@ -1,6 +1,5 @@
 // https://github.com/kuklaph/cascade-cms-api
 
-import axios from "axios";
 import * as Requests from "./types/types.js";
 export * as Types from "./types/types.js";
 
@@ -32,50 +31,33 @@ export function CascadeAPI({ apiKey, url }, timeout = 30000) {
           return reject(lastResult);
         }
 
-        lastResult = await callback(...callbackOpts);
-        if (lastResult?.timeout) {
-          console.log(
-            `Attempt ${attempt} timeout, retrying in ${currentDelay}ms...`
-          );
+        try {
+          lastResult = await callback(...callbackOpts);
+          if (lastResult?.timeout) {
+            console.log(
+              `Attempt ${attempt} timeout, retrying in ${currentDelay}ms...`
+            );
 
-          setTimeout(retry, currentDelay);
+            setTimeout(retry, currentDelay);
 
-          if (isExpo) {
-            currentDelay *= factor;
+            if (isExpo) {
+              currentDelay *= factor;
+            }
+
+            triesLeft--;
+            attempt++;
+          } else {
+            return resolve(lastResult);
           }
-
-          triesLeft--;
-          attempt++;
-        } else {
-          return resolve(lastResult);
+        } catch (error) {
+          return reject(error);
         }
       };
 
       retry();
     });
   };
-  const withAxios = async (requestParams) => {
-    try {
-      requestParams.timeout = timeout;
-      const request = await axios(requestParams);
-      return request.data;
-    } catch (error) {
-      if (error.code === "ETIMEDOUT") {
-        return {
-          success: false,
-          message: "Request timed out",
-          timeout: true,
-        };
-      } else {
-        // Handle other Axios errors
-        return {
-          success: false,
-          message: error.message,
-          timeout: false,
-        };
-      }
-    }
-  };
+
   const withFetch = async (requestParams) => {
     const { url, data, headers, method } = requestParams;
 
@@ -128,8 +110,8 @@ export function CascadeAPI({ apiKey, url }, timeout = 30000) {
     };
     requestParams.headers = headers;
     requestParams.url = url + endPoint;
-    return withAxios(requestParams);
-    // return withFetch(requestParams);
+
+    return withFetch(requestParams);
   };
   const handleRequest = async (endPoint, opts, retryOnTimeout) => {
     try {
