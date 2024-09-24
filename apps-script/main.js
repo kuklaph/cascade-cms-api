@@ -888,7 +888,20 @@
  */
 
 /**
- * @typedef {Object} WorkflowSettings
+ * @typedef {Object} WorkflowSettingsSend
+ * - Complete data with the workflow settings of a folder
+ * @property {AssetIdentifiers[]} [workflowDefinitions]
+ * - NOT REQUIRED: Workflow definitions associated with this folder.
+ * @property {boolean} [inheritWorkflows]
+ * - NOT REQUIRED: Determines whether the workflow settings are inherited from the parent folder.
+ * @property {boolean} [requireWorkflow]
+ * - NOT REQUIRED: Indicates whether a workflow is required for this folder.
+ * @property {AssetIdentifiers[]} [inheritedWorkflowDefinitions]
+ * - NOT REQUIRED: Inherited workflow definitions from the parent folder. Ignored on edit.
+ */
+
+/**
+ * @typedef {Object} WorkflowSettingsReceive
  * - Complete data with the workflow settings of a folder
  * @property {Identifier} identifier
  * - REQUIRED: Identifier for the workflow settings of a folder.
@@ -2575,7 +2588,7 @@
 //#region
 /**
  * @typedef {Object} ReadWorkflowSettingsResult
- * @property {WorkflowSettings} workflowSettings
+ * @property {WorkflowSettingsReceive} workflowSettings
  * - REQUIRED: A result of reading the workflow information of a folder.
  */
 
@@ -2588,7 +2601,9 @@
 //#region
 /**
  * @typedef {Object} EditWorkflowSettingsRequest
- * @property {WorkflowSettings} workflowSettings
+ * @property {Identifier} identifier
+ * - REQUIRED: Identifier for the workflow settings of a folder.
+ * @property {WorkflowSettingsSend} workflowSettings
  * - REQUIRED: The workflow settings to be edited.
  * @property {boolean} [applyInheritWorkflowsToChildren]
  * - NOT REQUIRED: Determines whether to apply the 'inheritWorkflows' settings to children folders. Default is false.
@@ -3036,6 +3051,7 @@
  * @typedef {OperationResult} PublishUnpublishResponse
  */
 //#endregion
+
 //#endregion
 
 /**

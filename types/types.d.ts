@@ -1348,7 +1348,17 @@ export type AclEntry = {
  */
 export type AclEntries = AclEntry;
 export type AllLevel = "none" | "read" | "write";
-export type AccessRightsInformation = {
+export type AccessRightsInformationSend = {
+  /**
+   * - Optional list of Access Control List entries.
+   */
+  aclEntries?: AclEntries[];
+  /**
+   * - REQUIRED: Defines the access level for all users.
+   */
+  allLevel: AllLevel;
+};
+export type AccessRightsInformationReceive = {
   /**
    * - REQUIRED: Unique identifier for the asset or component whose access rights are being defined.
    */
@@ -1365,7 +1375,28 @@ export type AccessRightsInformation = {
 /**
  * - Complete data with the workflow settings of a folder
  */
-export type WorkflowSettings = {
+export type WorkflowSettingsSend = {
+  /**
+   * - NOT REQUIRED: Workflow definitions associated with this folder.
+   */
+  workflowDefinitions?: AssetIdentifiers[];
+  /**
+   * - NOT REQUIRED: Determines whether the workflow settings are inherited from the parent folder.
+   */
+  inheritWorkflows?: boolean;
+  /**
+   * - NOT REQUIRED: Indicates whether a workflow is required for this folder.
+   */
+  requireWorkflow?: boolean;
+  /**
+   * - NOT REQUIRED: Inherited workflow definitions from the parent folder. Ignored on edit.
+   */
+  inheritedWorkflowDefinitions?: AssetIdentifiers[];
+};
+/**
+ * - Complete data with the workflow settings of a folder
+ */
+export type WorkflowSettingsReceive = {
   /**
    * - REQUIRED: Identifier for the workflow settings of a folder.
    */
@@ -3362,14 +3393,18 @@ export type ReadAccessRightsRequest = {
   identifier: Identifier;
 };
 export type ReadAccessRightsResult = {
-  accessRightsInformation: AccessRightsInformation;
+  accessRightsInformation: AccessRightsInformationReceive;
 };
 export type readAccessRightsResponse = OperationResult & ReadAccessRightsResult;
 export type EditAccessRightsRequest = {
   /**
+   * - REQUIRED: Unique identifier for the asset or component whose access rights are being defined.
+   */
+  identifier: Identifier;
+  /**
    * - REQUIRED: Complete information about the access rights of an asset or component.
    */
-  accessRightsInformation: AccessRightsInformation;
+  accessRightsInformation: AccessRightsInformationSend;
   /**
    * - NOT REQUIRED: Indicates whether to apply the access rights to children. Default is false.
    * This property is not required for non-folders and non-containers.
@@ -3387,15 +3422,19 @@ export type ReadWorkflowSettingsResult = {
   /**
    * - REQUIRED: A result of reading the workflow information of a folder.
    */
-  workflowSettings: WorkflowSettings;
+  workflowSettings: WorkflowSettingsReceive;
 };
 export type ReadWorkflowSettingsResponse = OperationResult &
   ReadWorkflowSettingsResult;
 export type EditWorkflowSettingsRequest = {
   /**
+   * - REQUIRED: Identifier for the workflow settings of a folder.
+   */
+  identifier: Identifier;
+  /**
    * - REQUIRED: The workflow settings to be edited.
    */
-  workflowSettings: WorkflowSettings;
+  workflowSettings: WorkflowSettingsSend;
   /**
    * - NOT REQUIRED: Determines whether to apply the 'inheritWorkflows' settings to children folders. Default is false.
    */

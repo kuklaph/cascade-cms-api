@@ -77,7 +77,6 @@ export function CascadeAPI({ apiKey, url }, timeout = 30000) {
 
     try {
       const response = await Promise.race([fetchPromise, timeoutPromise]);
-
       if (!response.ok) {
         throw new Error(`HTTP error! status: ${response.status}`);
       } else {
@@ -123,6 +122,7 @@ export function CascadeAPI({ apiKey, url }, timeout = 30000) {
         callbackOpts: [endPoint, requestParams],
         triesLeft: retryOnTimeout ? 3 : 1,
       });
+      
       if (!request.success) {
         throw new Error(`Request Failed. Request Response: ${request.message}`);
       }

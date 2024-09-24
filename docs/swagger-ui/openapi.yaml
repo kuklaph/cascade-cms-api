@@ -1920,7 +1920,23 @@ components:
       description: |
         - Defines the access level for all users.
 
-    AccessRightsInformation:
+    AccessRightsInformationSend:
+      type: object
+      properties:
+        aclEntries:
+          type: array
+          items:
+            $ref: "#/components/schemas/AclEntries"
+          description: |
+            - Optional list of Access Control List entries.
+        allLevel:
+          $ref: "#/components/schemas/AllLevel"
+          description: |
+            - REQUIRED: Defines the access level for all users.
+      required:
+        - identifier
+
+    AccessRightsInformationReceive:
       type: object
       properties:
         identifier:
@@ -1940,7 +1956,35 @@ components:
       required:
         - identifier
 
-    WorkflowSettings:
+    WorkflowSettingsSend:
+      type: object
+      properties:
+        workflowDefinitions:
+          type: array
+          items:
+            $ref: "#/components/schemas/AssetIdentifiers"
+          description: |
+            - NOT REQUIRED: Workflow definitions associated with this folder.
+        inheritWorkflows:
+          type: boolean
+          description: |
+            - NOT REQUIRED: Determines whether the workflow settings are inherited from the parent folder.
+        requireWorkflow:
+          type: boolean
+          description: |
+            - NOT REQUIRED: Indicates whether a workflow is required for this folder.
+        inheritedWorkflowDefinitions:
+          type: array
+          items:
+            $ref: "#/components/schemas/AssetIdentifiers"
+          description: |
+            - NOT REQUIRED: Inherited workflow definitions from the parent folder. Ignored on edit.
+      required:
+        - identifier
+      description: |
+        - Complete data with the workflow settings of a folder
+
+    WorkflowSettingsReceive:
       type: object
       properties:
         identifier:
@@ -4765,7 +4809,7 @@ components:
       type: object
       properties:
         accessRightsInformation:
-          $ref: "#/components/schemas/AccessRightsInformation"
+          $ref: "#/components/schemas/AccessRightsInformationReceive"
 
     ReadAccessRightsResponse:
       type: object
@@ -4781,8 +4825,12 @@ components:
       properties:
         authentication:
           $ref: "#/components/schemas/Authentication"
+        identifier:
+          $ref: "#/components/schemas/Identifier"
+          description: |
+            - REQUIRED: Unique identifier for the asset or component whose access rights are being defined.
         accessRightsInformation:
-          $ref: "#/components/schemas/AccessRightsInformation"
+          $ref: "#/components/schemas/AccessRightsInformationSend"
           description: |
             - REQUIRED: Complete information about the access rights of an asset or component.
         applyToChildren:
@@ -4816,7 +4864,7 @@ components:
         - workflowSettings
       properties:
         workflowSettings:
-          $ref: "#/components/schemas/WorkflowSettings"
+          $ref: "#/components/schemas/WorkflowSettingsReceive"
           description: |
             - REQUIRED: A result of reading the workflow information of a folder.
 
@@ -4835,7 +4883,7 @@ components:
         authentication:
           $ref: "#/components/schemas/Authentication"
         workflowSettings:
-          $ref: "#/components/schemas/WorkflowSettings"
+          $ref: "#/components/schemas/WorkflowSettingsSend"
           description: |
             - REQUIRED: The workflow settings to be edited.
         applyInheritWorkflowsToChildren:

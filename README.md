@@ -108,6 +108,4 @@ const read = await cascadeAPI.read({
 });
 ```
 
-A built in retry is offered for the Nodejs version. The default allotted timeout time is `30` seconds. You can adjust whether or not to use a retry (the default is `true`) per request method as an optional parameter. If you want to update the timeout time, you can pass in an optional `timeout` parameter when initiating `CascadeAPI`.
-
-The Nodejs version also comes with an option to use `fetch` rather than `axios` in case you want to use this in something like a Chrome Extension. You would just need to swap the commented lines in `main.js`.
+A built in retry is offered for the Nodejs version. The default allotted timeout time is `30` seconds. You can adjust whether or not to use a retry (the default is `true`) per request method as an optional parameter. If you want to update the timeout time, you can pass in an optional `timeout` parameter when instantiating `CascadeAPI`.
