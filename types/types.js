@@ -880,6 +880,7 @@
  * @property {AllLevel} allLevel
  * - REQUIRED: Defines the access level for all users.
  */
+
 /**
  * @typedef {Object} AccessRightsInformationReceive
  * @property {Identifier} identifier
@@ -2552,10 +2553,11 @@
 /**
  * @typedef {Object} ReadAccessRightsResult
  * @property {AccessRightsInformationReceive} accessRightsInformation
+ * - REQUIRED: Complete information about the access rights of an asset or component.
  */
 
 /**
- * @typedef {OperationResult & ReadAccessRightsResult} readAccessRightsResponse
+ * @typedef {OperationResult & ReadAccessRightsResult} ReadAccessRightsResponse
  */
 //#endregion
 

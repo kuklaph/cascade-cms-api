@@ -878,7 +878,15 @@
  */
 
 /**
- * @typedef {Object} AccessRightsInformation
+ * @typedef {Object} AccessRightsInformationSend
+ * @property {AclEntries[]} [aclEntries]
+ * - Optional list of Access Control List entries.
+ * @property {AllLevel} allLevel
+ * - REQUIRED: Defines the access level for all users.
+ */
+
+/**
+ * @typedef {Object} AccessRightsInformationReceive
  * @property {Identifier} identifier
  * - REQUIRED: Unique identifier for the asset or component whose access rights are being defined.
  * @property {AclEntries[]} [aclEntries]
@@ -2548,11 +2556,12 @@
 
 /**
  * @typedef {Object} ReadAccessRightsResult
- * @property {AccessRightsInformation} accessRightsInformation
+ * @property {AccessRightsInformationReceive} accessRightsInformation
+ * - REQUIRED: Complete information about the access rights of an asset or component.
  */
 
 /**
- * @typedef {OperationResult & ReadAccessRightsResult} readAccessRightsResponse
+ * @typedef {OperationResult & ReadAccessRightsResult} ReadAccessRightsResponse
  */
 //#endregion
 
@@ -2560,7 +2569,9 @@
 //#region
 /**
  * @typedef {Object} EditAccessRightsRequest
- * @property {AccessRightsInformation} accessRightsInformation
+ * @property {Identifier} identifier
+ * - REQUIRED: Unique identifier for the asset or component whose access rights are being defined.
+ * @property {AccessRightsInformationSend} accessRightsInformation
  * - REQUIRED: Complete information about the access rights of an asset or component.
  * @property {boolean} [applyToChildren]
  * - NOT REQUIRED: Indicates whether to apply the access rights to children. Default is false.

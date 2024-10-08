@@ -3395,7 +3395,7 @@ export type ReadAccessRightsRequest = {
 export type ReadAccessRightsResult = {
   accessRightsInformation: AccessRightsInformationReceive;
 };
-export type readAccessRightsResponse = OperationResult & ReadAccessRightsResult;
+export type ReadAccessRightsResponse = OperationResult & ReadAccessRightsResult;
 export type EditAccessRightsRequest = {
   /**
    * - REQUIRED: Unique identifier for the asset or component whose access rights are being defined.
