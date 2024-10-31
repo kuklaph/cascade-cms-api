@@ -83,7 +83,10 @@ export function CascadeAPI({ apiKey, url }, timeout = 30000) {
         return await response.json();
       }
     } catch (error) {
-      if (error.message === "Request timed out") {
+      if (
+        error.message === "Request timed out" ||
+        error.message.includes("Unable to connect")
+      ) {
         // Handle Fetch timeout specifically
         return {
           success: false,
@@ -122,7 +125,7 @@ export function CascadeAPI({ apiKey, url }, timeout = 30000) {
         callbackOpts: [endPoint, requestParams],
         triesLeft: retryOnTimeout ? 3 : 1,
       });
-      
+
       if (!request.success) {
         throw new Error(`Request Failed. Request Response: ${request.message}`);
       }
