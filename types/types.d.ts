@@ -129,7 +129,7 @@ export type Metadata = {
     name: string;
     fieldValues?: {
       value?: string;
-    };
+    }[];
   }[];
 };
 export type DublinAwareAssetProperties = {
@@ -189,6 +189,7 @@ export type LinkRewriting =
   | "absolute"
   | "relative"
   | "site-relative";
+export type SiteLinkRewriting = "absolute" | "relative" | "site-relative";
 export type PublishableAssetProperties = {
   /**
    * - NOT REQUIRED: default: true
@@ -400,7 +401,7 @@ export type StructuredDataNode = {
    * - When editing or creating and selecting a recycled asset, id of the asset should be provided (blockId instead of blockPath, fileId instead of filePath etc.).
    * - If path is provided, Cascade will look only for a non-recycled asset with given path even if 'recycled=true' is provided.
    */
-  recycled?: string;
+  recycled?: boolean;
 };
 /**
  * - An array of structured data nodes
@@ -1304,8 +1305,8 @@ export type WorkflowConfiguration = {
   endDate?: string;
 };
 export type OperationResult = {
-  success: string;
-  message: string;
+  success: boolean;
+  message?: string;
 };
 /**
  * - Array wrapper for multiple identifiers of assets
@@ -1342,6 +1343,10 @@ export type AclEntry = {
    * - REQUIRED: The name of the user or group for which this ACL entry applies.
    */
   name: string;
+  /**
+   * - NOT REQUIRED: The id of the group.
+   */
+  id?: string;
 };
 /**
  * - Array wrapper for access control list entries
@@ -1548,17 +1553,26 @@ export type XhtmlDataDefinitionBlockProperties = {
    * Priority: xhtml > structuredData. One is REQUIRED.
    */
   structuredData?: StructuredData;
+  /**
+   * - XHTML content for a plain WYSIWYG block. Priority: xhtml > structuredData. One is REQUIRED.
+   */
+  xhtml?: string;
 };
 /**
  * - A block containing plain XHTML or Structured Data
  */
 export type XhtmlDataDefinitionBlock = XhtmlDataDefinitionBlockProperties &
   ExpiringAsset;
-export type XmlBlockProperties = any;
+export type XmlBlockProperties = {
+  /**
+   * - The XML content of the block.
+   */
+  xml?: string;
+};
 /**
  * - A block containing plain XML
  */
-export type XmlBlock = ExpiringAsset;
+export type XmlBlock = XmlBlockProperties & ExpiringAsset;
 export type TwitterFeedBlockProperties = {
   /**
    * - NOT REQUIRED: The Account Name of the block. REQUIRED for Tweets Only and Tweets and Mentions query types.
@@ -1598,7 +1612,7 @@ export type FileProperties = {
    * - Priority: text > data
    * - A file either contains plaintext content or binary content (base64 encoded)
    */
-  data?: any[];
+  data?: number[];
   rewriteLinks?: boolean;
   /**
    * - NOT REQUIRED: default: "inherit"
@@ -1804,7 +1818,7 @@ export type GroupProperties = {
    */
   role: string;
 };
-export type Group = GroupProperties;
+export type Group = GroupProperties & BaseAsset;
 export type RoleProperties = {
   /**
    * - NOT REQUIRED: The type of the role.
@@ -1828,7 +1842,7 @@ export type AssetFactoryProperties = {
   /**
    * - NOT REQUIRED: Semicolon-delimited list of string group names for which this asset is available for use. Leave out to assign no groups.
    */
-  applicableGroups?: string;
+  applicableGroupNames?: string;
   /**
    * - REQUIRED: The type of asset this factory will create.
    */
@@ -1897,7 +1911,7 @@ export type AssetFactoryContainerProperties = {
   /**
    * - NOT REQUIRED: Semicolon-delimited list of string group names for which this asset is available for use.
    */
-  applicableGroups?: string;
+  applicableGroupNames?: string;
   /**
    * - NOT REQUIRED: String describing the asset factory container, displayed in the new menu.
    */
@@ -2230,8 +2244,13 @@ export type PublishSetProperties = {
   sendReportOnErrorOnly?: boolean;
 };
 export type PublishSet = PublishSetProperties & ContaineredAsset;
-export type PublishSetContainerProperties = any;
-export type PublishSetContainer = ContaineredAsset;
+export type PublishSetContainerProperties = {
+  /**
+   * - NOT REQUIRED: Array of contained children
+   */
+  children?: ContainerChildren[];
+};
+export type PublishSetContainer = PublishSetContainerProperties & ContaineredAsset;
 export type TargetProperties = {
   /**
    * - Priority: parentTargetId > parentTargetPath
@@ -2391,7 +2410,7 @@ export type DestinationProperties = {
    * - Semicolon-delimited list of string group names
    * - NOT REQUIRED
    */
-  applicableGroups?: string;
+  applicableGroupNames?: string;
   /**
    * - The directory to place the published files in
    * - NOT REQUIRED
@@ -2611,7 +2630,7 @@ export type WorkflowDefinitionProperties = {
    * - NOT REQUIRED: leave out to assign no groups
    * - Semicolon-delimited list of string group names for which this asset is available for use
    */
-  applicableGroups?: string;
+  applicableGroupNames?: string;
   /**
    * - NOT REQUIRED: default: false
    * - Whether or not this is a copy type workflow
@@ -2940,7 +2959,11 @@ export type SiteProperties = {
   /**
    * - NOT REQUIRED: Default is "absolute".
    */
-  linkRewriting?: LinkRewriting;
+  linkRewriting?: SiteLinkRewriting;
+  /**
+   * - NOT REQUIRED: Extra settings as a JSON string.
+   */
+  extraSettings?: string;
 };
 export type Site = SiteProperties & NamedAsset;
 export type EditorConfigurationProperties = {
@@ -3538,6 +3561,10 @@ export type CheckInRequest = {
    * - REQUIRED: Identifier for the message.
    */
   identifier: Identifier;
+  /**
+   * - REQUIRED: Comments to include with the check-in.
+   */
+  comments: string;
 };
 export type CheckInResponse = OperationResult;
 export type ListSitesRequest = any;
@@ -3690,7 +3717,7 @@ export type WorkflowStep = {
   /**
    * - NOT REQUIRED: The actions this step contains
    */
-  actions?: WorkflowActions;
+  actions?: WorkflowAction[];
 };
 /**
  * - An array of workflowStep objects
@@ -3800,7 +3827,7 @@ export type PublishInformation = {
    * - Supplying an empty set of identifiers will publish to all Destinations
    * that are enabled and applicable for the user making the web services call.
    */
-  destinations?: AssetIdentifiers;
+  destinations?: Identifier[];
   /**
    * - NOT REQUIRED: Whether to unpublish the asset instead of publishing it. Default: false
    * - Similar to the GUI - you can choose to unpublish the asset instead of publishing it.
@@ -3830,3 +3857,13 @@ export type PublishUnpublishRequest = {
   publishInformation: PublishInformation;
 };
 export type PublishUnpublishResponse = OperationResult;
+/**
+ * - Request body for the editPreference operation
+ */
+export type EditPreferenceRequest = {
+  /**
+   * - REQUIRED: The preference to create or update
+   */
+  preference: Preference;
+};
+export type EditPreferenceResponse = OperationResult;

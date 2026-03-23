@@ -1,27 +1,33 @@
 {
   "name": "cascade-cms-api",
-  "version": "1.0.8",
-  "description": "A Javascript library for the Cascade CMS API",
-  "main": "main.js",
-  "types": "./types/main.d.ts",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
+  "version": "1.1.0",
+  "author": "Philip Kukla",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/kuklaph/cascade-cms-api.git"
   },
+  "main": "main.js",
+  "devDependencies": {
+    "fast-xml-parser": "^5.3.4",
+    "typescript": "^5",
+    "yaml": "^2.8.3"
+  },
+  "bugs": {
+    "url": "https://github.com/kuklaph/cascade-cms-api/issues"
+  },
+  "description": "A Javascript library for the Cascade CMS API",
+  "homepage": "https://github.com/kuklaph/cascade-cms-api#readme",
   "keywords": [
     "cascade",
     "cms",
     "javascript",
     "api"
   ],
-  "author": "Philip Kukla",
   "license": "MIT",
-  "bugs": {
-    "url": "https://github.com/kuklaph/cascade-cms-api/issues"
+  "private": false,
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "homepage": "https://github.com/kuklaph/cascade-cms-api#readme",
-  "type": "module"
+  "type": "module",
+  "types": "./types/main.d.ts"
 }

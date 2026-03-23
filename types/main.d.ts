@@ -279,6 +279,17 @@ export function CascadeAPI(
     opts: Requests.PublishUnpublishRequest,
     retryOnTimeout?: boolean
   ): Promise<Requests.PublishUnpublishResponse>;
+  /**
+   * editPreference operation.
+   *
+   * @param {Requests.EditPreferenceRequest} opts - The starting object container.
+   * @param {boolean} retryOnTimeout - Should the request retry on timeout
+   * @return {Promise<Requests.EditPreferenceResponse>}
+   */
+  editPreference(
+    opts: Requests.EditPreferenceRequest,
+    retryOnTimeout?: boolean
+  ): Promise<Requests.EditPreferenceResponse>;
 };
-export * as Types from "./types.d.ts";
-import * as Requests from "./types.d.ts";
+export type * as Types from "./types.d.ts";
+import type * as Requests from "./types.d.ts";
