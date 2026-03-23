@@ -142,6 +142,10 @@
  */
 
 /**
+ * @typedef {"absolute" | "relative" | "site-relative"} SiteLinkRewriting
+ */
+
+/**
  * @typedef {Object} PublishableAssetProperties
  * @property {boolean} [shouldBePublished]
  * - NOT REQUIRED: default: true
@@ -295,7 +299,7 @@
  * - If assetType=symlink, one of symlinkId or symlinkPath should be provided if asset is selected for this node
  * - If assetType=linkable, symlinkId or symlinkPath should be populated if the selected linkable asset is a symlink
  * - When editing and selected asset is recycled, it is recommended to preserve this relationship by providing selected asset's id in case if the selected asset gets restored from the recycle bin.
- * @property {string} [recycled] - NOT REQUIRED
+ * @property {boolean} [recycled] - NOT REQUIRED
  * - Use for reading only - this attribute is not necessary when editing or creating and will not affect these operations if provided.
  * - When editing or creating and selecting a recycled asset, id of the asset should be provided (blockId instead of blockPath, fileId instead of filePath etc.).
  * - If path is provided, Cascade will look only for a non-recycled asset with given path even if 'recycled=true' is provided.
@@ -831,8 +835,8 @@
 
 /**
  * @typedef {Object} OperationResult
- * @property {string} success
- * @property {string} message
+ * @property {boolean} success
+ * @property {string} [message]
  */
 
 /**
@@ -866,6 +870,8 @@
  * - REQUIRED: The type of ACL entry, either "user" or "group".
  * @property {string} name
  * - REQUIRED: The name of the user or group for which this ACL entry applies.
+ * @property {string} [id]
+ * - NOT REQUIRED: The id of the group.
  */
 
 /**
@@ -997,6 +1003,8 @@
  * @property {StructuredData} [structuredData]
  * - A page either contains XHTML content (plain WYSIWYG page) or structured data content.
  * Priority: xhtml > structuredData. One is REQUIRED.
+ * @property {string} [xhtml]
+ * - XHTML content for a plain WYSIWYG block. Priority: xhtml > structuredData. One is REQUIRED.
  */
 
 /**
@@ -1010,10 +1018,11 @@
 //#region XmlBlockProperties DONE
 /**
  * @typedef {Object} XmlBlockProperties
+ * @property {string} [xml] - The XML content of the block.
  */
 
 /**
- * @typedef {ExpiringAsset} XmlBlock - A block containing plain XML
+ * @typedef {XmlBlockProperties & ExpiringAsset} XmlBlock - A block containing plain XML
  */
 
 //#endregion
@@ -1044,7 +1053,7 @@
  * - One is REQUIRED
  * - Priority: text > data
  * - A file either contains plaintext content or binary content (base64 encoded)
- * @property {any[]} [data]
+ * @property {number[]} [data]
  * - One is REQUIRED
  * - Priority: text > data
  * - A file either contains plaintext content or binary content (base64 encoded)
@@ -1261,7 +1270,7 @@
  */
 
 /**
- * @typedef {GroupProperties
+ * @typedef {GroupProperties & BaseAsset
  * } Group
  */
 
@@ -1293,7 +1302,7 @@
 //#region AssetFactoryProperties DONE
 /**
  * @typedef {Object} AssetFactoryProperties
- * @property {string} [applicableGroups]
+ * @property {string} [applicableGroupNames]
  * - NOT REQUIRED: Semicolon-delimited list of string group names for which this asset is available for use. Leave out to assign no groups.
  * @property {string} assetType
  * - REQUIRED: The type of asset this factory will create.
@@ -1340,7 +1349,7 @@
 //#region AssetFactoryContainerProperties DONE
 /**
  * @typedef {Object} AssetFactoryContainerProperties
- * @property {string} [applicableGroups]
+ * @property {string} [applicableGroupNames]
  * - NOT REQUIRED: Semicolon-delimited list of string group names for which this asset is available for use.
  * @property {string} [description]
  * - NOT REQUIRED: String describing the asset factory container, displayed in the new menu.
@@ -1635,10 +1644,12 @@
 //#region PublishSetContainerProperties
 /**
  * @typedef {Object} PublishSetContainerProperties
+ * @property {ContainerChildren[]} [children]
+ * - NOT REQUIRED: Array of contained children
  */
 
 /**
- * @typedef {ContaineredAsset} PublishSetContainer
+ * @typedef {PublishSetContainerProperties & ContaineredAsset} PublishSetContainer
  */
 
 //#endregion
@@ -1759,7 +1770,7 @@
  * @property {string} [transportPath]
  * - Priority: transportId > transportPath
  * - One is REQUIRED
- * @property {string} [applicableGroups]
+ * @property {string} [applicableGroupNames]
  * - Semicolon-delimited list of string group names
  * - NOT REQUIRED
  * @property {string} [directory]
@@ -1957,7 +1968,7 @@
 //#region WorkflowDefinitionProperties DONE
 /**
  * @typedef {Object} WorkflowDefinitionProperties
- * @property {string} [applicableGroups]
+ * @property {string} [applicableGroupNames]
  * - NOT REQUIRED: leave out to assign no groups
  * - Semicolon-delimited list of string group names for which this asset is available for use
  * @property {boolean} [copy]
@@ -2186,8 +2197,10 @@
  * - NOT REQUIRED: Used only when reading a site. Ignored in other cases.
  * @property {string} [rootWorkflowEmailContainerId]
  * - NOT REQUIRED: Used only when reading a site. Ignored in other cases.
- * @property {LinkRewriting} [linkRewriting]
+ * @property {SiteLinkRewriting} [linkRewriting]
  * - NOT REQUIRED: Default is "absolute".
+ * @property {string} [extraSettings]
+ * - NOT REQUIRED: Extra settings as a JSON string.
  */
 
 /**
@@ -2766,6 +2779,8 @@
  * @typedef {Object} CheckInRequest
  * @property {Identifier} identifier
  * - REQUIRED: Identifier for the message.
+ * @property {string} comments
+ * - REQUIRED: Comments to include with the check-in.
  */
 //#endregion
 
@@ -2917,7 +2932,7 @@
  * - REQUIRED: The type of step ("system", "edit", or "transition")
  * @property {string} owner
  * - REQUIRED: The owner (user or group name) of this step
- * @property {WorkflowActions} [actions]
+ * @property {WorkflowAction[]} [actions]
  * - NOT REQUIRED: The actions this step contains
  */
 
@@ -3028,7 +3043,7 @@
 //#region
 /**
  * @typedef PublishInformation
- * @property {AssetIdentifiers} [destinations]
+ * @property {Identifier[]} [destinations]
  * - NOT REQUIRED:
  * - Destinations to which the asset should be published.
  * - This field is Ignored when identifier (above) points to a Destination
@@ -3060,6 +3075,18 @@
 //#region
 /**
  * @typedef {OperationResult} PublishUnpublishResponse
+ */
+//#endregion
+
+//#region EditPreference
+/**
+ * @typedef {Object} EditPreferenceRequest
+ * - Request body for the editPreference operation
+ * @property {Preference} preference - REQUIRED: The preference to create or update
+ */
+
+/**
+ * @typedef {OperationResult} EditPreferenceResponse
  */
 //#endregion
 
@@ -3434,6 +3461,18 @@ function CascadeAPI_({ apiKey, url }) {
      */
     publishUnpublish(opts, retryOnTimeout = true) {
       return handleRequest("publish", opts, retryOnTimeout);
+    },
+
+    /**
+     * editPreference operation.
+     *
+     * @param {EditPreferenceRequest} opts - The starting object container.
+     * @param {boolean} [opts.muteHttpExceptions] - Optional: Whether or not to mute http exceptions
+     * @param {boolean} [retryOnTimeout] - Whether or not to retry on timeout
+     * @return {EditPreferenceResponse}
+     */
+    editPreference(opts, retryOnTimeout = true) {
+      return handleRequest("editPreference", opts, retryOnTimeout);
     },
   };
 }

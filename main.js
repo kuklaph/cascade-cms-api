@@ -398,5 +398,16 @@ export function CascadeAPI({ apiKey, url }, timeout = 30000) {
     publishUnpublish(opts, retryOnTimeout = true) {
       return handleRequest("publish", opts, retryOnTimeout);
     },
+
+    /**
+     * editPreference operation.
+     *
+     * @param {Requests.EditPreferenceRequest} opts - The starting object container.
+     * @param {boolean} retryOnTimeout - Should the request retry on timeout
+     * @return {Promise<Requests.EditPreferenceResponse>}
+     */
+    editPreference(opts, retryOnTimeout = true) {
+      return handleRequest("editPreference", opts, retryOnTimeout);
+    },
   };
 }
