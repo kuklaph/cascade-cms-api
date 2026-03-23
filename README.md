@@ -1,5 +1,14 @@
 # Cascade CMS API Library
 
+## Upgrading to 1.1.0
+
+Version 1.1.0 includes type accuracy fixes verified against the WSDL and REST API. Most changes add missing properties or fix incorrect types. Two changes may affect existing code:
+
+- **`OperationResult.success`** changed from `string` to `boolean` — if you compare `result.success === "true"`, update to `result.success === true`
+- **`OperationResult.message`** changed from required to optional — the REST API omits this field on success
+
+See [CHANGELOG.md](CHANGELOG.md) for the full list of changes.
+
 ## Other Resources
 
 **Cascade Conference 2024** \
