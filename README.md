@@ -9,14 +9,6 @@ Version 1.1.0 includes type accuracy fixes verified against the WSDL and REST AP
 
 See [CHANGELOG.md](CHANGELOG.md) for the full list of changes.
 
-## Other Resources
-
-**Cascade Conference 2024** \
-Click [here](https://github.com/kuklaph/cascade-cms-tools/tree/main/cascade-conference-2024) if you're looking for UNCW's presentation (`The API Awakens: Unleashing Effeciency with Cascade`) resources from the 2024 Cascade Conference.
-
-**Cascade CMS Tools** \
-Check out my other library [cascade-cms-tools](https://github.com/kuklaph/cascade-cms-tools)
-
 ## Cascade Documentation
 
 ### **Please note this library is a work in progress. If you come across a bug please open an issue.**
@@ -118,3 +110,8 @@ const read = await cascadeAPI.read({
 ```
 
 A built in retry is offered for the Nodejs version. The default allotted timeout time is `30` seconds. You can adjust whether or not to use a retry (the default is `true`) per request method as an optional parameter. If you want to update the timeout time, you can pass in an optional `timeout` parameter when instantiating `CascadeAPI`.
+
+## Other Resources
+
+**Cascade CMS Tools** \
+Check out my other library [cascade-cms-tools](https://github.com/kuklaph/cascade-cms-tools)
