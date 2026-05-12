@@ -1,3 +1,5 @@
 testing.js
 node_modules/
 docs/convert
+package-lock.json
+bun.lock

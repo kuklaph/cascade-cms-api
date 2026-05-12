@@ -1,0 +1,27 @@
+# Swagger UI static assets (hosted on GitHub Pages, not needed in npm package)
+docs/swagger-ui/swagger-ui-bundle.js
+docs/swagger-ui/swagger-ui-bundle.js.map
+docs/swagger-ui/swagger-ui-es-bundle-core.js
+docs/swagger-ui/swagger-ui-es-bundle-core.js.map
+docs/swagger-ui/swagger-ui-es-bundle.js
+docs/swagger-ui/swagger-ui-es-bundle.js.map
+docs/swagger-ui/swagger-ui-standalone-preset.js
+docs/swagger-ui/swagger-ui-standalone-preset.js.map
+docs/swagger-ui/swagger-ui.css
+docs/swagger-ui/swagger-ui.css.map
+docs/swagger-ui/swagger-ui.js
+docs/swagger-ui/swagger-ui.js.map
+docs/swagger-ui/index.html
+docs/swagger-ui/index.css
+docs/swagger-ui/swagger-initializer.js
+docs/swagger-ui/oauth2-redirect.html
+docs/swagger-ui/favicon-16x16.png
+docs/swagger-ui/favicon-32x32.png
+
+# Conversion scripts and working files
+docs/convert/
+
+# Dev files
+bun.lock
+node_modules/
+testing.js
