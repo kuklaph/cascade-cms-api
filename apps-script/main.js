@@ -28,6 +28,9 @@
  * @property {string} tags.name
  * - REQUIRED: Value of tag string
  */
+/**
+ * @typedef {Tags} Tag
+ */
 
 /**
  * @typedef {Object} FolderContainedAssetProperties
@@ -88,14 +91,17 @@
  * - NOT REQUIRED
  * @property {string} [title]
  * - NOT REQUIRED
- * @property {Object[]} [dynamicFields]
+ * @property {DynamicMetadataField[]} [dynamicFields]
  * - NOT REQUIRED: Array
- * @property {string} dynamicFields.name
- * - REQUIRED
- * @property {Object[]} [dynamicFields.fieldValues]
- * - NOT REQUIRED: Array
- * @property {string} [dynamicFields.fieldValues.value]
- * - NOT REQUIRED
+ */
+/**
+ * @typedef {Object} FieldValue
+ * @property {string} [value]
+ */
+/**
+ * @typedef {Object} DynamicMetadataField
+ * @property {string} name
+ * @property {FieldValue[]} [fieldValues]
  */
 
 /**
@@ -136,6 +142,9 @@
  * @typedef {DublinAwareAsset & ExpiringAssetProperties} ExpiringAsset
  * - An asset that can expire and be moved to an expiration folder
  */
+/**
+ * @typedef {ExpiringAsset} Block
+ */
 
 /**
  * @typedef {"inherit" | "absolute" | "relative" | "site-relative"} LinkRewriting
@@ -143,6 +152,39 @@
 
 /**
  * @typedef {"absolute" | "relative" | "site-relative"} SiteLinkRewriting
+ */
+/**
+ * @typedef {"site" | "global"} RoleTypes
+ */
+/**
+ * @typedef {"normal" | "ldap" | "custom"} UserAuthTypes
+ */
+/**
+ * @typedef {"folder-controlled" | "factory-controlled" | "none"} AssetFactoryWorkflowMode
+ */
+/**
+ * @typedef {"folder-order" | "alphabetical" | "last-modified-date" | "created-date"} IndexBlockSortMethod
+ */
+/**
+ * @typedef {"folder" | "content-type"} IndexBlockType
+ */
+/**
+ * @typedef {"ascending" | "descending"} IndexBlockSortOrder
+ */
+/**
+ * @typedef {"no-render" | "render" | "render-current-page-only"} IndexBlockPageXml
+ */
+/**
+ * @typedef {"render-normally" | "hierarchy" | "hierarchy-with-siblings" | "hierarchy-siblings-forward"} IndexBlockRenderingBehavior
+ */
+/**
+ * @typedef {"user-only" | "users-and-mentions" | "search-terms"} TwitterQueryType
+ */
+/**
+ * @typedef {"text" | "asset" | "group"} StructuredDataType
+ */
+/**
+ * @typedef {"block" | "file" | "page" | "symlink" | "page,file,symlink"} StructuredDataAssetType
  */
 
 /**
@@ -209,7 +251,6 @@
  * "site" |
  * "sitedestinationcontainer" |
  * "symlink" |
- * "target" |
  * "template" |
  * "transport" |
  * "transport_fs" |
@@ -222,8 +263,7 @@
  * "workflowdefinition" |
  * "workflowdefinitioncontainer" |
  * "workflowemail" |
- * "workflowemailcontainer" |
- * "xhtmlDataDefinitionBlock"} EntityTypeString - All asset type strings
+ * "workflowemailcontainer"} EntityTypeString - All asset type strings
  */
 
 /**
@@ -329,7 +369,7 @@
  * "JSON" |
  * "JS" |
  * "CSS"} SerializationType
- * - The various serialization types for a target
+ * - The various serialization types for published output
  */
 
 /**
@@ -354,8 +394,8 @@
  * @property {string} [outputExtension]
  * - The output file extension, for example ".html". Only required when in a site.
  * @property {SerializationType} [serializationType]
- * - The content type this target serializes its output as. Only required when in a site.
- * - The various serialization types for a target
+ * - The content type this configuration serializes its output as. Only required when in a site.
+ * - The various serialization types for published output
  * @property {boolean} [includeXMLDeclaration]
  * - When the serializationType is "XML", should Cascade include the XML declaration in published files? NOT REQUIRED default: false.
  * @property {boolean} [publishable]
@@ -616,8 +656,8 @@
 
 /**
  * @typedef {Object} ConnectorContentTypeLinkParam
- * @property {string} name
- * - REQUIRED: Name of the parameter.
+ * @property {string} [name]
+ * - NOT REQUIRED: Name of the parameter.
  * @property {string} value
  * - REQUIRED: Value of the parameter.
  */
@@ -737,7 +777,7 @@
 
 /**
  * @typedef {"all-destinations" | "selected-destinations"} ScheduledDestinationMode
- * - For Sites, Targets, Publish Sets scheduledPublishDestinationMode property
+ * - For Sites, Publish Sets scheduledPublishDestinationMode property
  */
 
 /**
@@ -745,8 +785,7 @@
  */
 
 /**
- * @typedef {Object} DaysOfWeek
- * @property {DayOfWeek} [dayOfWeek] - NOT REQUIRED: A list of days of the week.
+ * @typedef {DayOfWeek} DaysOfWeek
  */
 
 /**
@@ -787,8 +826,7 @@
  */
 
 /**
- * @typedef {Object} NamingRuleAsset
- * @property {"block" | "file" | "folder" | "page" | "symlink" | "template" | "reference" | "format"} [namingRuleAsset]
+ * @typedef {"block" | "file" | "folder" | "page" | "symlink" | "template" | "reference" | "format"} NamingRuleAsset
  */
 
 /**
@@ -838,6 +876,11 @@
  * @property {boolean} success
  * @property {string} [message]
  */
+/**
+ * @typedef {Object} ErrorResponse
+ * @property {false} success
+ * @property {string} message
+ */
 
 /**
  * @typedef {Identifier} AssetIdentifiers
@@ -847,9 +890,9 @@
 /**
  * @typedef {Object} UnpublishParameters
  * - Parameters used when unpublishing an asset
- * @property {boolean} [unpublish]
+ * @property {(boolean|null)} [unpublish]
  * - NOT REQUIRED: When true, the asset will be unpublished. Default: false
- * @property {AssetIdentifiers[]} [destinations]
+ * @property {(AssetIdentifiers[]|null)} [destinations]
  * - NOT REQUIRED: Unpublishes the asset from the given destinations. Default: all enabled destinations in the asset's site
  */
 
@@ -862,20 +905,56 @@
  */
 
 /**
- * @typedef {Object} AclEntry
- * - A single access control list entry
+ * @typedef {Object} AclEntryReceive
+ * - A single access control list entry returned by readAccessRights.
  * @property {AclEntryLevel} level
  * - REQUIRED: The access level, either "read" or "write".
  * @property {AclEntryType} type
  * - REQUIRED: The type of ACL entry, either "user" or "group".
  * @property {string} name
  * - REQUIRED: The name of the user or group for which this ACL entry applies.
- * @property {string} [id]
- * - NOT REQUIRED: The id of the group.
+ * @property {string} id
+ * - REQUIRED: The id of the user or group for which this ACL entry applies.
  */
 
 /**
- * @typedef {AclEntry} AclEntries
+ * @typedef {Object} AclEntrySendWithName
+ * - A single access control list entry sent to editAccessRights using a user or group name.
+ * @property {AclEntryLevel} level
+ * - REQUIRED: The access level, either "read" or "write".
+ * @property {AclEntryType} type
+ * - REQUIRED: The type of ACL entry, either "user" or "group".
+ * @property {string} name
+ * - REQUIRED when id is not provided: The name of the user or group for which this ACL entry applies.
+ * @property {string} [id]
+ * - NOT REQUIRED: The id of the user or group for which this ACL entry applies.
+ */
+
+/**
+ * @typedef {Object} AclEntrySendWithId
+ * - A single access control list entry sent to editAccessRights using a user or group id.
+ * @property {AclEntryLevel} level
+ * - REQUIRED: The access level, either "read" or "write".
+ * @property {AclEntryType} type
+ * - REQUIRED: The type of ACL entry, either "user" or "group".
+ * @property {string} id
+ * - REQUIRED when name is not provided: The id of the user or group for which this ACL entry applies.
+ * @property {string} [name]
+ * - NOT REQUIRED: The name of the user or group for which this ACL entry applies.
+ */
+
+/**
+ * @typedef {(AclEntrySendWithName|AclEntrySendWithId)} AclEntrySend
+ * - A single access control list entry sent to editAccessRights.
+ */
+
+/**
+ * @typedef {AclEntryReceive} AclEntry
+ * - A single access control list entry returned by readAccessRights.
+ */
+
+/**
+ * @typedef {AclEntryReceive} AclEntries
  * - Array wrapper for access control list entries
  */
 
@@ -885,7 +964,7 @@
 
 /**
  * @typedef {Object} AccessRightsInformationSend
- * @property {AclEntries[]} [aclEntries]
+ * @property {AclEntrySend[]} [aclEntries]
  * - Optional list of Access Control List entries.
  * @property {AllLevel} allLevel
  * - REQUIRED: Defines the access level for all users.
@@ -895,7 +974,7 @@
  * @typedef {Object} AccessRightsInformationReceive
  * @property {Identifier} identifier
  * - REQUIRED: Unique identifier for the asset or component whose access rights are being defined.
- * @property {AclEntries[]} [aclEntries]
+ * @property {AclEntryReceive[]} [aclEntries]
  * - Optional list of Access Control List entries.
  * @property {AllLevel} allLevel
  * - REQUIRED: Defines the access level for all users.
@@ -1018,7 +1097,7 @@
 //#region XmlBlockProperties DONE
 /**
  * @typedef {Object} XmlBlockProperties
- * @property {string} [xml] - The XML content of the block.
+ * @property {string} xml - REQUIRED: The XML content of the block.
  */
 
 /**
@@ -1177,13 +1256,6 @@
 //#region TemplateProperties DONE
 /**
  * @typedef {Object} TemplateProperties
- * @property {string} [targetId]
- * - NOT REQUIRED when template is inside of site
- * - REQUIRED when template is in the global area
- * - For defining the target relationship. Priority: targetId > targetPath
- * @property {string} [targetPath]
- * - NOT REQUIRED when template is inside of site
- * - REQUIRED when template is in the global area
  * @property {string} [formatId]
  * - NOT REQUIRED: Overall xslt format applied to this template. Defaults to none.
  * - When editing and selected asset is recycled, it is recommended to preserve this relationship by providing the selected asset's ID in case it gets restored from the recycle bin.
@@ -1238,7 +1310,7 @@
  * - NOT REQUIRED: Whether or not this user is enabled. Default false.
  * @property {string} groups
  * - REQUIRED: A semi-colon separated list of groups this user is a member of.
- * @property {string} role
+ * @property {string} roles
  * - REQUIRED: This user's roles.
  * @property {string} [defaultSiteId]
  * - NOT REQUIRED: Default Site for the user, defaultSiteId takes precedence if both fields are set.
@@ -1626,7 +1698,7 @@
  * @property {DestinationList[]} [scheduledPublishDestinations] - NOT REQUIRED: Used in conjunction with scheduledPublishDestinationMode when destinations are to be specified explicitly.
  * @property {string} [timeToPublish] - NOT REQUIRED: The base time this set will be published. Default is 00:00 (midnight).
  * @property {number} [publishIntervalHours] - NOT REQUIRED: Every how many hours the asset should be published. Can be between 1 and 23.
- * @property {DaysOfWeek[]} [publishDaysOfWeek] - NOT REQUIRED: Which days of the week the job should publish on.
+ * @property {DayOfWeek[]} [publishDaysOfWeek] - NOT REQUIRED: Which days of the week the job should publish on.
  * @property {string} [cronExpression] - NOT REQUIRED: Cron expression for scheduled publishing.
  * @property {string} [sendReportToUsers] - NOT REQUIRED: Semicolon-delimited list of string user names for which this asset is available for use.
  * @property {string} [sendReportToGroups] - NOT REQUIRED: Semicolon-delimited list of string group names for which this asset is available for use.
@@ -1654,88 +1726,6 @@
 
 //#endregion
 
-//#region TargetProperties DONE
-/**
- * @typedef {Object} TargetProperties
- * @property {string} [parentTargetId]
- * - Priority: parentTargetId > parentTargetPath
- * - One is REQUIRED
- * @property {string} [parentTargetPath]
- * - Priority: parentTargetId > parentTargetPath
- * - One is REQUIRED
- * @property {string} [path]
- * - The path of this target. When creating this need not be specified. When editing this will be the CURRENT path of the target.
- * @property {string} [baseFolderId]
- * - Priority: baseFolderId > baseFolderPath
- * - One is REQUIRED
- * @property {string} [baseFolderPath]
- * - Priority: baseFolderId > baseFolderPath
- * - One is REQUIRED
- * @property {string} outputExtension
- * - REQUIRED: The output file extension, for example ".html"
- * @property {string} [cssClasses]
- * - The CSS classes that pages using this target will have available to them in the WYSIWYG editor (comma-delimted list)
- * - NOT REQUIRED default: empty
- * @property {string} [cssFileId]
- * - When editing and selected asset is recycled, it is recommended to preserve this relationship by providing selected asset's id in case if the selected asset gets restored from the recycle bin.
- * - Priority: cssFileId > cssFilePath
- * @property {string} [cssFilePath]
- * - Path works only for non-recycled assets
- * @property {boolean} [cssFileRecycled]
- * - For reading purposes only. Ignored when editing, copying etc.
- * @property {SerializationType} serializationType
- * - REQUIRED: The content type this target serializes its output as
- * @property {boolean} [includeXMLDeclaration]
- * - When the serializationType is "XML", should Cascade include the XML declaration in published files?
- * - NOT REQUIRED default: false
- * @property {boolean} [includeTargetPath]
- * - When publishing, whether or not to include the target path as part of the path of the published file
- * - NOT REQUIRED default: false
- * @property {boolean} [removeBaseFolder]
- * - When publishing, whether or not to remove the base folder's path from the path of the published file
- * - NOT REQUIRED default: false
- * @property {boolean} [usesScheduledPublishing]
- * - Whether or not to publish this set on a schedule
- * - NOT REQUIRED default: false
- * @property {string} [scheduledPublishDestinationMode]
- * - Scheduled publish destination selection mode
- * - NOT REQUIRED
- * @property {DestinationList[]} [scheduledPublishDestinations]
- * - Used in conjunction with scheduledPublishDestinationMode when destinations are to be specified explicitly
- * - NOT REQUIRED
- * @property {string} [timeToPublish]
- * - The base time this set will be published. For example if one wanted this set to publish at 0100, 0500, 0900, 1300, 1700, 2100, I would enter one of those times here and set the "publishInterval" to 4, and the "publishIntervalUnits" to "hours"
- * - NOT REQUIRED default: 00:00 (midnight), if cronExpression provided or usesScheduledPublishing is false, ignored
- * @property {number} [publishIntervalHours]
- * - Every how many hours the asset should be published. Can be between 1 and 23
- * - One of the following 3 is REQUIRED if usesScheduledPublishing is true, else NOT REQUIRED and ignored
- * @property {DaysOfWeek[]} [publishDaysOfWeek]
- * - Which days of the week the job should publish on - select all days to have a daily publish
- * - One of the following 3 is REQUIRED if usesScheduledPublishing is true, else NOT REQUIRED and ignored
- * @property {string} [cronExpression]
- * - Applicable only if publishInterval Units is "cron" - only a valid Cron Expression will be accepted
- * - One of the following 3 is REQUIRED if usesScheduledPublishing is true, else NOT REQUIRED and ignored
- * @property {string} [sendReportToUsers]
- * - Semicolon-delimited list of string user names for which this asset is available for use
- * - NOT REQUIRED leave out to assign no users
- * @property {string} [sendReportToGroups]
- * - Semicolon-delimited list of string group names for which this asset is available for use
- * - NOT REQUIRED leave out to assign no groups
- * @property {boolean} [sendReportOnErrorOnly]
- * - Whether or not to send a report when there are no errors
- * - NOT REQUIRED default: false
- * @property {ContainerChildren[]} [children]
- * - NOT REQUIRED: The array of children
- */
-
-/**
- * @typedef {TargetProperties &
- * NamedAsset
- * } Target
- */
-
-//#endregion
-
 //#region SiteDestinationContainerProperties DONE
 /**
  * @typedef {Object} SiteDestinationContainerProperties
@@ -1758,12 +1748,10 @@
  * - Priority: parentContainerId > parentContainerPath
  * - One is REQUIRED
  * - When inside a Site, this field must refer to a SiteDestinationContainer.
- * - When not in a Site, this field must refer to a Target
  * @property {string} [parentContainerPath]
  * - Priority: parentContainerId > parentContainerPath
  * - One is REQUIRED
  * - When inside a Site, this field must refer to a SiteDestinationContainer.
- * - When not in a Site, this field must refer to a Target
  * @property {string} [transportId]
  * - Priority: transportId > transportPath
  * - One is REQUIRED
@@ -1801,7 +1789,7 @@
  * @property {number} [publishIntervalHours]
  * - Every how many hours the asset should be published. Can be between 1 and 23
  * - One is REQUIRED if usesScheduledPublishing is true, else NOT REQUIRED and ignored
- * @property {DaysOfWeek[]} [publishDaysOfWeek]
+ * @property {DayOfWeek[]} [publishDaysOfWeek]
  * - Which days of the week the job should publish on
  * - One is REQUIRED if usesScheduledPublishing is true, else NOT REQUIRED and ignored
  * @property {string} [cronExpression]
@@ -2120,7 +2108,7 @@
  * @property {number} [publishIntervalHours]
  * - Optional: Interval in hours for publishing. One of the choices for scheduled publishing.
  * - Every how many hours the asset should be published. Can be between 1 and 23
- * @property {DaysOfWeek[]} [publishDaysOfWeek]
+ * @property {DayOfWeek[]} [publishDaysOfWeek]
  * - Optional: Days of the week for publishing. One of the choices for scheduled publishing.
  * - Which days of the which the job should publish on - select all days to have a daily publish
  * @property {string} [cronExpression]
@@ -2152,15 +2140,12 @@
  * - REQUIRED: Determines whether naming rules are inherited from the system preferences.
  * - If true, the rule properties will be ignored when saving, but old values are preserved.
  * Otherwise, null values will be defaulted to appropriate values when saving.
- * Naming rules read from a site may be null.
  * @property {NamingRuleCase} [namingRuleCase]
  * - Optional: Defines what case a name can be. Depends on inheritNamingRules.
  * @property {NamingRuleSpacing} [namingRuleSpacing]
  * - Optional: Defines how spaces are handled for names. Depends on inheritNamingRules.
- * @property {NamingRuleAssets[]} [namingRuleAssets]
+ * @property {NamingRuleAsset[]} [namingRuleAssets]
  * - Optional: Defines the asset types that enforce naming rules. Depends on inheritNamingRules.
- * @property {boolean} accessibilityCheckerEnabled
- * - REQUIRED: Generate accessibility report on schedule.
  * @property {boolean} [siteImproveIntegrationEnabled]
  * - NOT REQUIRED: Enables Siteimprove integration.
  * @property {string} [siteImproveUrl]
@@ -2302,8 +2287,6 @@
  * - Admin area assets (must be manager or higher to access, no workflowConfiguration needed
  * @property {PublishSetContainer} [publishSetContainer] - One is REQUIRED
  * - Admin area assets (must be manager or higher to access, no workflowConfiguration needed
- * @property {Target} [target] - One is REQUIRED
- * - Admin area assets (must be manager or higher to access, no workflowConfiguration needed
  * @property {SiteDestinationContainer} [siteDestinationContainer] - One is REQUIRED
  * - Admin area assets (must be manager or higher to access, no workflowConfiguration needed
  * @property {Destination} [destination] - One is REQUIRED
@@ -2386,6 +2369,12 @@
 /**
  * @typedef {OperationResult} RemoveResponse
  */
+/**
+ * @typedef {RemoveRequest} DeleteRequest
+ */
+/**
+ * @typedef {RemoveResponse} DeleteResponse
+ */
 //#endregion
 
 // ─── Edit Request ────────────────────────────────────────────────────────────
@@ -2417,6 +2406,12 @@
  */
 /**
  * @typedef {OperationResult & CreateResponseProperties} CreateResponse
+ */
+/**
+ * @typedef {CreateResponse} CreateResult
+ */
+/**
+ * @typedef {ReadResponse} ReadResult
  */
 //#endregion
 
@@ -2989,7 +2984,7 @@
  * - REQUIRED: The id of the workflow to perform the transition on
  * @property {string} actionIdentifier
  * - REQUIRED: The identifier of the action to transition to
- * @property {string} [transitionComment]
+ * @property {(string|null)} [transitionComment]
  * - NOT REQUIRED: The user's comment about the transition taken
  */
 
@@ -3047,18 +3042,18 @@
  * - NOT REQUIRED:
  * - Destinations to which the asset should be published.
  * - This field is Ignored when identifier (above) points to a Destination
- * - Publishing an asset that does not allow you to select Destinations in the Cascade UI (Publish Set or Target) *will* respect the Destinations
+ * - Publishing an asset that does not allow you to select Destinations in the Cascade UI (Publish Set) *will* respect the Destinations
  * supplied here (this is an inconsistency between the UI and web services).
  * - Supplying an empty set of identifiers will publish to all Destinations
  * that are enabled and applicable for the user making the web services call.
- * @property {boolean} [unpublish]
+ * @property {(boolean|null)} [unpublish]
  * - NOT REQUIRED: Whether to unpublish the asset instead of publishing it. Default: false
  * - Similar to the GUI - you can choose to unpublish the asset instead of publishing it.
- * @property {boolean} [publishRelatedAssets]
+ * @property {(boolean|null)} [publishRelatedAssets]
  * - NOT REQUIRED: Whether to publish related assets
- * @property {boolean} [publishRelatedPublishSet]
+ * @property {(boolean|null)} [publishRelatedPublishSet]
  * - NOT REQUIRED: Whether to publish related publish sets
- * @property {string} [scheduledDate]
+ * @property {(string|null)} [scheduledDate]
  * - NOT REQUIRED: The scheduled date for publishing the asset
  */
 
@@ -3075,6 +3070,12 @@
 //#region
 /**
  * @typedef {OperationResult} PublishUnpublishResponse
+ */
+/**
+ * @typedef {PublishUnpublishRequest} PublishRequest
+ */
+/**
+ * @typedef {PublishUnpublishResponse} PublishResponse
  */
 //#endregion
 

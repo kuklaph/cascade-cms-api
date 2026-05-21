@@ -2,6 +2,33 @@
 
 All notable changes to this project will be documented in this file.
 
+## [2.0.0] - 2026-05-21
+
+### Breaking Changes
+
+- Removed REST-inaccurate `target` entity/type surfaces from TypeScript, JSDoc, Apps Script, and OpenAPI docs. Publishing-related shapes now use the REST publish destination/set fields instead.
+- Split ACL entry contracts into read and send shapes:
+  - `AclEntryReceive` is returned by `readAccessRights` and requires both `name` and `id`.
+  - `AclEntrySend` is used by `editAccessRights` and requires `level`, `type`, and at least one of `name` or `id`.
+- Removed request-body `authentication` schemas from OpenAPI request shapes. The library supplies authentication through request headers.
+- Tightened REST read/request nullability across audited assets. Fields proven absent-or-value are now optional instead of nullable; fields proven to accept `null` remain nullable.
+
+### Added
+
+- `ErrorResponse` type for failed operation responses.
+- Missing aliases and enum helpers including `Tag`, `Block`, `RoleTypes`, `UserAuthTypes`, asset factory workflow modes, index block modes, Twitter query modes, and structured data value types.
+- Structured metadata helper types: `DynamicMetadataField` and `FieldValue`.
+
+### Fixed
+
+- `Metadata.dynamicFields` now uses the reusable `DynamicMetadataField[]` shape.
+- `XmlBlockProperties.xml` is required.
+- `UserProperties.roles` now matches the REST read response property name.
+- `readPreferences`, `listMessages`, and `listSites` OpenAPI request bodies are modeled as empty library-authenticated requests.
+- `accessibilityCheckEnabled` is the canonical site field name; stale `accessibilityCheckerEnabled` references were removed.
+- `DaysOfWeek`, `NamingRuleAsset`, connector parameter, scheduled publish, publish/unpublish, workflow transition, and site naming-rule shapes now match audited REST behavior.
+- Swagger UI OpenAPI JSON/YAML and Apps Script JSDoc were synchronized with the audited TypeScript contracts.
+
 ## [1.1.0] - 2026-03-23
 
 ### Breaking Changes (Minor)

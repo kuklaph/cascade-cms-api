@@ -25,3 +25,4 @@ docs/convert/
 bun.lock
 node_modules/
 testing.js
+.serena

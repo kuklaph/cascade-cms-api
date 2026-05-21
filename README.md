@@ -1,5 +1,7 @@
 # Cascade CMS API Library
 
+Version 2.0.0 includes additional REST contract corrections, including type-level breaking changes for target-related surfaces, ACL entry send/read shapes, and audited nullability. See [CHANGELOG.md](CHANGELOG.md) before upgrading from `1.1.0`.
+
 Version 1.1.0 includes type accuracy fixes verified against the WSDL and REST API. Most changes add missing properties or fix incorrect types. Two changes may affect existing code:
 
 - **`OperationResult.success`** changed from `string` to `boolean` — if you compare `result.success === "true"`, update to `result.success === true`

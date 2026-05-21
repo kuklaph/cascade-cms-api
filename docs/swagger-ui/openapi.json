@@ -3,7 +3,7 @@
   "info": {
     "title": "Cascade CMS API",
     "version": "2.6",
-    "description": "OpenAPI 3.1.0 specification for the Cascade CMS REST API. Derived from the WSDL-generated spec with REST-specific patches applied (flat arrays, boolean success, integer[] file data).",
+    "description": "OpenAPI 3.1.0 specification for the Cascade CMS REST API. Derived from the WSDL-generated spec with REST-specific patches applied (flat arrays, boolean success, integer[] file data, header auth).",
     "license": {
       "name": "MIT",
       "url": "https://opensource.org/licenses/MIT"
@@ -42,7 +42,10 @@
     "schemas": {
       "MessageMarkType": {
         "type": "string",
-        "enum": ["read", "unread"],
+        "enum": [
+          "read",
+          "unread"
+        ],
         "description": "For marking messages - read or unread"
       },
       "SearchFieldString": {
@@ -155,171 +158,290 @@
       },
       "AllLevel": {
         "type": "string",
-        "enum": ["none", "read", "write"],
+        "enum": [
+          "none",
+          "read",
+          "write"
+        ],
         "description": "Defines the access level for all users."
       },
       "AclEntryLevel": {
         "type": "string",
-        "enum": ["read", "write"],
+        "enum": [
+          "read",
+          "write"
+        ],
         "description": "The access level, either 'read' or 'write'."
       },
       "AclEntryType": {
         "type": "string",
-        "enum": ["user", "group"],
+        "enum": [
+          "user",
+          "group"
+        ],
         "description": "The type of ACL entry, either 'user' or 'group'."
       },
       "RoleTypes": {
         "type": "string",
-        "enum": ["site", "global"],
+        "enum": [
+          "site",
+          "global"
+        ],
         "description": "The types of roles."
       },
       "UserAuthTypes": {
         "type": "string",
-        "enum": ["normal", "ldap", "custom"],
+        "enum": [
+          "normal",
+          "ldap",
+          "custom"
+        ],
         "description": "The various ways a user can be authenticated in Cascade Server."
       },
       "NamingRuleCase": {
         "type": "string",
-        "enum": ["ANY", "LOWER", "UPPER"],
+        "enum": [
+          "ANY",
+          "LOWER",
+          "UPPER"
+        ],
         "description": "Case rules for asset naming conventions."
       },
       "NamingRuleSpacing": {
         "type": "string",
-        "enum": ["SPACE", "REMOVE", "HYPHEN", "UNDERSCORE"],
+        "enum": [
+          "SPACE",
+          "REMOVE",
+          "HYPHEN",
+          "UNDERSCORE"
+        ],
         "description": "Spacing rules for asset naming conventions."
       },
       "NamingRuleAsset": {
         "type": "string",
-        "enum": ["block", "file", "folder", "page", "symlink", "template", "reference", "format"],
+        "enum": [
+          "block",
+          "file",
+          "folder",
+          "page",
+          "symlink",
+          "template",
+          "reference",
+          "format"
+        ],
         "description": "Asset types that naming rules can be applied to."
       },
       "RecycleBinExpiration": {
         "type": "string",
-        "enum": ["1", "15", "30", "never"],
+        "enum": [
+          "1",
+          "15",
+          "30",
+          "never"
+        ],
         "description": "Duration before recycled assets are permanently deleted."
       },
       "ScheduledDestinationMode": {
         "type": "string",
-        "enum": ["all-destinations", "selected-destinations"],
-        "description": "For Sites, Targets, Publish Sets scheduledPublishDestinationMode property"
+        "enum": [
+          "all-destinations",
+          "selected-destinations"
+        ],
+        "description": "For Sites, Publish Sets scheduledPublishDestinationMode property"
       },
       "AssetFactoryWorkflowMode": {
         "type": "string",
-        "enum": ["folder-controlled", "factory-controlled", "none"],
+        "enum": [
+          "folder-controlled",
+          "factory-controlled",
+          "none"
+        ],
         "description": "For asset factory's workflowMode field"
       },
       "ContentTypePageConfigurationPublishMode": {
         "type": "string",
-        "enum": ["all-destinations", "selected-destinations", "do-not-publish"],
+        "enum": [
+          "all-destinations",
+          "selected-destinations",
+          "do-not-publish"
+        ],
         "description": "Enum values for ContentTypePageConfigurationPublishMode."
       },
       "InlineEditableFieldType": {
         "type": "string",
-        "enum": ["wired-metadata", "dynamic-metadata", "data-definition", "xhtml"],
+        "enum": [
+          "wired-metadata",
+          "dynamic-metadata",
+          "data-definition",
+          "xhtml"
+        ],
         "description": "Enum values for InlineEditableFieldType."
       },
       "MetadataFieldVisibility": {
         "type": "string",
-        "enum": ["inline", "hidden", "visible"],
+        "enum": [
+          "inline",
+          "hidden",
+          "visible"
+        ],
         "description": "Enumeration of the possible metadata field visibilities"
       },
       "DynamicMetadataFieldType": {
         "type": "string",
-        "enum": ["text", "datetime", "radio", "dropdown", "checkbox", "multiselect"],
+        "enum": [
+          "text",
+          "datetime",
+          "radio",
+          "dropdown",
+          "checkbox",
+          "multiselect"
+        ],
         "description": "The different types of dynamic metadata fields"
       },
       "DayOfWeek": {
         "type": "string",
-        "enum": ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"],
+        "enum": [
+          "Monday",
+          "Tuesday",
+          "Wednesday",
+          "Thursday",
+          "Friday",
+          "Saturday",
+          "Sunday"
+        ],
         "description": "Days of the week for scheduling."
       },
       "SerializationType": {
         "type": "string",
-        "enum": ["HTML", "XML", "PDF", "RTF", "JSON", "JS", "CSS"],
-        "description": "The various serialization types for a target."
+        "enum": [
+          "HTML",
+          "XML",
+          "PDF",
+          "RTF",
+          "JSON",
+          "JS",
+          "CSS"
+        ],
+        "description": "The various serialization types for published output."
       },
       "AuthMode": {
         "type": "string",
-        "enum": ["PASSWORD", "PUBLIC_KEY"],
+        "enum": [
+          "PASSWORD",
+          "PUBLIC_KEY"
+        ],
         "description": "Authentication modes for transport connections."
       },
       "FtpProtocolType": {
         "type": "string",
-        "enum": ["FTP", "FTPS", "SFTP"],
+        "enum": [
+          "FTP",
+          "FTPS",
+          "SFTP"
+        ],
         "description": "FTP protocol variants for transport connections."
       },
       "WorkflowNamingBehavior": {
         "type": "string",
-        "enum": ["auto-name", "name-of-definition", "empty"],
+        "enum": [
+          "auto-name",
+          "name-of-definition",
+          "empty"
+        ],
         "description": "The different options for naming an instance of a workflow definition"
       },
       "IndexBlockSortMethod": {
         "type": "string",
-        "enum": ["folder-order", "alphabetical", "last-modified-date", "created-date"],
+        "enum": [
+          "folder-order",
+          "alphabetical",
+          "last-modified-date",
+          "created-date"
+        ],
         "description": "For indexBlock's sortMethod property"
       },
       "IndexBlockType": {
         "type": "string",
-        "enum": ["folder", "content-type"],
+        "enum": [
+          "folder",
+          "content-type"
+        ],
         "description": "For the indexBlock's indexBlockType property"
       },
       "IndexBlockSortOrder": {
         "type": "string",
-        "enum": ["ascending", "descending"],
+        "enum": [
+          "ascending",
+          "descending"
+        ],
         "description": "For indexBlock's sortOrder property"
       },
       "IndexBlockPageXml": {
         "type": "string",
-        "enum": ["no-render", "render", "render-current-page-only"],
+        "enum": [
+          "no-render",
+          "render",
+          "render-current-page-only"
+        ],
         "description": "For indexBlock's pageXML property"
       },
       "IndexBlockRenderingBehavior": {
         "type": "string",
-        "enum": ["render-normally", "hierarchy", "hierarchy-with-siblings", "hierarchy-siblings-forward"],
+        "enum": [
+          "render-normally",
+          "hierarchy",
+          "hierarchy-with-siblings",
+          "hierarchy-siblings-forward"
+        ],
         "description": "For indexBlock's renderingBehavior property"
       },
       "TwitterQueryType": {
         "type": "string",
-        "enum": ["user-only", "users-and-mentions", "search-terms"],
+        "enum": [
+          "user-only",
+          "users-and-mentions",
+          "search-terms"
+        ],
         "description": "Query types for Twitter feed blocks."
       },
       "LinkRewriting": {
         "type": "string",
-        "enum": ["inherit", "absolute", "relative", "site-relative"],
+        "enum": [
+          "inherit",
+          "absolute",
+          "relative",
+          "site-relative"
+        ],
         "description": "Link rewriting behavior for assets during publishing."
       },
       "SiteLinkRewriting": {
         "type": "string",
-        "enum": ["absolute", "relative", "site-relative"],
+        "enum": [
+          "absolute",
+          "relative",
+          "site-relative"
+        ],
         "description": "Site-level link rewriting behavior during publishing."
       },
       "StructuredDataType": {
         "type": "string",
-        "enum": ["text", "asset", "group"],
+        "enum": [
+          "text",
+          "asset",
+          "group"
+        ],
         "description": "The different types of a structured data node"
       },
       "StructuredDataAssetType": {
         "type": "string",
-        "enum": ["block", "file", "page", "symlink", "page,file,symlink"],
+        "enum": [
+          "block",
+          "file",
+          "page",
+          "symlink",
+          "page,file,symlink"
+        ],
         "description": "The different types of assets a structured data node can contain"
-      },
-      "Authentication": {
-        "type": "object",
-        "properties": {
-          "password": {
-            "type": "string",
-            "description": "User's password"
-          },
-          "username": {
-            "type": "string",
-            "description": "User's username"
-          },
-          "apiKey": {
-            "type": "string",
-            "description": "User's API key"
-          }
-        },
-        "description": "Unless an apiKey is provided, both username and password are REQUIRED."
       },
       "Path": {
         "type": "object",
@@ -329,15 +451,17 @@
             "description": "When reading a site, the \"path\" element should be populated with the site's name."
           },
           "siteId": {
-            "type": ["string", "null"],
+            "type": "string",
             "description": "NOT REQUIRED:"
           },
           "siteName": {
-            "type": ["string", "null"],
+            "type": "string",
             "description": "NOT REQUIRED:"
           }
         },
-        "required": ["path"],
+        "required": [
+          "path"
+        ],
         "description": "Represents a path to an asset in the Cascade CMS hierarchy."
       },
       "Identifier": {
@@ -360,7 +484,9 @@
             "description": "NOT REQUIRED: For reading purposes only. Ignored when editing, copying etc."
           }
         },
-        "required": ["type"],
+        "required": [
+          "type"
+        ],
         "description": "Identifies an asset by ID and/or path, along with its type and site context."
       },
       "BaseAsset": {
@@ -403,7 +529,11 @@
                 "description": "REQUIRED: The body of the message."
               }
             },
-            "required": ["to", "subject", "body"]
+            "required": [
+              "to",
+              "subject",
+              "body"
+            ]
           }
         ],
         "description": "Represents a message within the system"
@@ -438,7 +568,9 @@
             "description": "NOT REQUIRED\n- Asset types to search (e.g. page, folder, site). If left blank, all asset types will be searched."
           }
         },
-        "required": ["searchTerms"],
+        "required": [
+          "searchTerms"
+        ],
         "description": "Properties for the Search Information"
       },
       "CopyParameters": {
@@ -457,18 +589,28 @@
             "description": "The new name for the copied asset."
           }
         },
-        "required": ["destinationContainerIdentifier", "doWorkflow", "newName"],
+        "required": [
+          "destinationContainerIdentifier",
+          "doWorkflow",
+          "newName"
+        ],
         "description": "Properties for the Copy Parameters"
       },
       "UnpublishParameters": {
         "type": "object",
         "properties": {
           "unpublish": {
-            "type": ["boolean", "null"],
+            "type": [
+              "boolean",
+              "null"
+            ],
             "description": "NOT REQUIRED: When true, the asset will be unpublished. Default: false."
           },
           "destinations": {
-            "type": ["array", "null"],
+            "type": [
+              "array",
+              "null"
+            ],
             "items": {
               "$ref": "#/components/schemas/Identifier"
             },
@@ -498,7 +640,9 @@
                 "description": "NOT REQUIRED: Name to give the asset. If left empty, the asset's name will not be changed"
               }
             },
-            "required": ["doWorkflow"]
+            "required": [
+              "doWorkflow"
+            ]
           }
         ],
         "description": "Properties for Move Parameters"
@@ -516,7 +660,9 @@
                 "description": "Determines if a workflow should be executed"
               }
             },
-            "required": ["doWorkflow"]
+            "required": [
+              "doWorkflow"
+            ]
           }
         ],
         "description": "Properties for Delete Parameters"
@@ -569,7 +715,9 @@
             "description": "A message providing details about the operation result. Present on failure, absent on success."
           }
         },
-        "required": ["success"],
+        "required": [
+          "success"
+        ],
         "description": "The result of an API operation, indicating success or failure."
       },
       "Audit": {
@@ -593,7 +741,11 @@
             "description": "REQUIRED: The date and time the action was performed."
           }
         },
-        "required": ["user", "action", "date"],
+        "required": [
+          "user",
+          "action",
+          "date"
+        ],
         "description": "Represents a single audit"
       },
       "ReadAuditsResult": {
@@ -612,7 +764,9 @@
                 "description": "REQUIRED: Represents the audits in the system."
               }
             },
-            "required": ["audits"]
+            "required": [
+              "audits"
+            ]
           }
         ],
         "description": "Result data from the `readAudits` operation."
@@ -629,11 +783,17 @@
             "description": "REQUIRED: The identifier of the action to transition to."
           },
           "transitionComment": {
-            "type": ["string", "null"],
+            "type": [
+              "string",
+              "null"
+            ],
             "description": "NOT REQUIRED: The user's comment about the transition taken."
           }
         },
-        "required": ["workflowId", "actionIdentifier"],
+        "required": [
+          "workflowId",
+          "actionIdentifier"
+        ],
         "description": "For performing a workflow transition"
       },
       "CheckOutResult": {
@@ -645,14 +805,7 @@
             "type": "object",
             "properties": {
               "workingCopyIdentifier": {
-                "oneOf": [
-                  {
-                    "$ref": "#/components/schemas/Identifier"
-                  },
-                  {
-                    "type": "null"
-                  }
-                ],
+                "$ref": "#/components/schemas/Identifier",
                 "description": "NOT REQUIRED: Identifier for the working copy."
               }
             }
@@ -673,7 +826,9 @@
                 "description": "When creating an asset, this will contain the ID of the created asset"
               }
             },
-            "required": ["createdAssetId"]
+            "required": [
+              "createdAssetId"
+            ]
           }
         ],
         "description": "When creating an asset, this will contain the ID of the created asset"
@@ -687,7 +842,7 @@
             "type": "object",
             "properties": {
               "messages": {
-                "type": ["array", "null"],
+                "type": "array",
                 "items": {
                   "$ref": "#/components/schemas/Message"
                 },
@@ -710,7 +865,10 @@
             "description": "REQUIRED: The step's assignment (user or group name)."
           }
         },
-        "required": ["stepIdentifier", "stepAssignment"],
+        "required": [
+          "stepIdentifier",
+          "stepAssignment"
+        ],
         "description": "A single step configuration"
       },
       "WorkflowConfiguration": {
@@ -745,7 +903,10 @@
             "description": "Optional due date for the workflow. If not specified, will default to 7 days from today."
           }
         },
-        "required": ["workflowName", "workflowComments"],
+        "required": [
+          "workflowName",
+          "workflowComments"
+        ],
         "description": "For configuring workflow"
       },
       "NamedAsset": {
@@ -761,7 +922,9 @@
                 "description": "REQUIRED on create, ignored on edit. Use move operation to rename an asset."
               }
             },
-            "required": ["name"]
+            "required": [
+              "name"
+            ]
           }
         ],
         "description": "All assets have a name"
@@ -770,10 +933,13 @@
         "type": "object",
         "properties": {
           "name": {
-            "type": ["string", "null"],
-            "description": "The name of the tag."
+            "type": "string",
+            "description": "REQUIRED: The name of the tag."
           }
         },
+        "required": [
+          "name"
+        ],
         "description": "A single tag that can be applied to an asset."
       },
       "FolderContainedAsset": {
@@ -797,33 +963,33 @@
                 "description": "NOT REQUIRED: The path of an asset."
               },
               "lastModifiedDate": {
-                "type": ["string", "null"],
+                "type": "string",
                 "format": "date-time",
                 "description": "NOT REQUIRED: When this asset was last modified.\n- Read only."
               },
               "lastModifiedBy": {
-                "type": ["string", "null"],
+                "type": "string",
                 "description": "NOT REQUIRED: Who last modified this asset.\n- Read only."
               },
               "createdDate": {
-                "type": ["string", "null"],
+                "type": "string",
                 "format": "date-time",
                 "description": "NOT REQUIRED: When this asset was created.\n- Read only."
               },
               "createdBy": {
-                "type": ["string", "null"],
+                "type": "string",
                 "description": "NOT REQUIRED: Who created this asset.\n- Read only."
               },
               "siteId": {
-                "type": ["string", "null"],
+                "type": "string",
                 "description": "One is REQUIRED: The Site in which the asset is located."
               },
               "siteName": {
-                "type": ["string", "null"],
+                "type": "string",
                 "description": "One is REQUIRED."
               },
               "tags": {
-                "type": ["array", "null"],
+                "type": "array",
                 "items": {
                   "$ref": "#/components/schemas/Tag"
                 },
@@ -838,7 +1004,7 @@
         "type": "object",
         "properties": {
           "value": {
-            "type": ["string", "null"],
+            "type": "string",
             "description": "The value of the field."
           }
         },
@@ -852,14 +1018,16 @@
             "description": "The name of the dynamic metadata field."
           },
           "fieldValues": {
-            "type": ["array", "null"],
+            "type": "array",
             "items": {
               "$ref": "#/components/schemas/FieldValue"
             },
             "description": "The values assigned to this dynamic metadata field."
           }
         },
-        "required": ["name"],
+        "required": [
+          "name"
+        ],
         "description": "A dynamic metadata field entry containing a name and its associated values."
       },
       "Metadata": {
@@ -874,7 +1042,7 @@
             "description": "NOT REQUIRED:"
           },
           "endDate": {
-            "type": ["string", "null"],
+            "type": "string",
             "format": "date-time",
             "description": "NOT REQUIRED:"
           },
@@ -887,12 +1055,12 @@
             "description": "NOT REQUIRED:"
           },
           "reviewDate": {
-            "type": ["string", "null"],
+            "type": "string",
             "format": "date-time",
             "description": "NOT REQUIRED:"
           },
           "startDate": {
-            "type": ["string", "null"],
+            "type": "string",
             "format": "date-time",
             "description": "NOT REQUIRED:"
           },
@@ -939,11 +1107,11 @@
                 "description": "NOT REQUIRED: For defining the metadata set relationship.\n- Priority: metadataSetId > metadataSetPath"
               },
               "reviewOnSchedule": {
-                "type": ["boolean", "null"],
+                "type": "boolean",
                 "description": "NOT REQUIRED"
               },
               "reviewEvery": {
-                "type": ["integer", "null"],
+                "type": "integer",
                 "format": "int32",
                 "minimum": 0,
                 "description": "NOT REQUIRED"
@@ -1000,7 +1168,9 @@
                 "description": "REQUIRED: The URL of an XML feed."
               }
             },
-            "required": ["feedURL"]
+            "required": [
+              "feedURL"
+            ]
           }
         ],
         "description": "A block which aggregates a URL as an XML feed"
@@ -1114,7 +1284,10 @@
                 "description": "NOT REQUIRED: The Page XML rendering option. Default: no-render."
               }
             },
-            "required": ["maxRenderedAssets", "depthOfIndex"]
+            "required": [
+              "maxRenderedAssets",
+              "depthOfIndex"
+            ]
           }
         ],
         "description": "Block is an abstract type which the five concrete block types build on"
@@ -1132,7 +1305,9 @@
                 "description": "REQUIRED: The text of the block."
               }
             },
-            "required": ["text"]
+            "required": [
+              "text"
+            ]
           }
         ],
         "description": "A block containing plain text"
@@ -1200,7 +1375,10 @@
             "description": "NOT REQUIRED:\n- Use for reading only - this attribute is not necessary when editing or creating and will not affect these operations if provided.\n- If a path is provided, Cascade will look only for a non-recycled asset with the given path, even if 'recycled=true' is provided."
           }
         },
-        "required": ["type", "identifier"],
+        "required": [
+          "type",
+          "identifier"
+        ],
         "description": "A single structured data node."
       },
       "StructuredData": {
@@ -1258,7 +1436,9 @@
                 "description": "The XML content of the block REQUIRED"
               }
             },
-            "required": ["xml"]
+            "required": [
+              "xml"
+            ]
           }
         ],
         "description": "A block containing plain XML"
@@ -1280,12 +1460,12 @@
                 "description": "NOT REQUIRED: default: true.\n- Whether or not this asset can be indexed."
               },
               "lastPublishedDate": {
-                "type": ["string", "null"],
+                "type": "string",
                 "format": "date-time",
                 "description": "NOT REQUIRED:\n- The last date this asset was published."
               },
               "lastPublishedBy": {
-                "type": ["string", "null"],
+                "type": "string",
                 "description": "NOT REQUIRED:\n- Who last published this asset."
               }
             }
@@ -1334,7 +1514,7 @@
             "type": "object",
             "properties": {
               "children": {
-                "type": ["array", "null"],
+                "type": "array",
                 "items": {
                   "$ref": "#/components/schemas/Identifier"
                 },
@@ -1394,7 +1574,9 @@
                 "description": "When this is set to true, this will keep a format defined at a lower level from applying to this region. NOT REQUIRED: default: false."
               }
             },
-            "required": ["name"]
+            "required": [
+              "name"
+            ]
           }
         ],
         "description": "Properties specific to a page region."
@@ -1443,30 +1625,26 @@
                 "description": "NOT REQUIRED: Regions of the page."
               },
               "outputExtension": {
-                "type": ["string", "null"],
+                "type": "string",
                 "description": "NOT REQUIRED: The output extension, if specified, of the page configuration."
               },
               "serializationType": {
-                "oneOf": [
-                  {
-                    "$ref": "#/components/schemas/SerializationType"
-                  },
-                  {
-                    "type": "null"
-                  }
-                ],
-                "description": "NOT REQUIRED: The serialization type."
+                "description": "NOT REQUIRED: The serialization type.",
+                "$ref": "#/components/schemas/SerializationType"
               },
               "includeXMLDeclaration": {
-                "type": ["boolean", "null"],
+                "type": "boolean",
                 "description": "NOT REQUIRED: Whether or not to include an XML declaration in the output."
               },
               "publishable": {
-                "type": ["boolean", "null"],
+                "type": "boolean",
                 "description": "NOT REQUIRED: Whether or not the page is publishable."
               }
             },
-            "required": ["name", "defaultConfiguration"]
+            "required": [
+              "name",
+              "defaultConfiguration"
+            ]
           }
         ],
         "description": "A single page configuration's name, such as \"XML\" or \"Full HTML\"."
@@ -1540,7 +1718,9 @@
                 "description": "The type of the referenced asset. REQUIRED."
               }
             },
-            "required": ["referencedAssetType"]
+            "required": [
+              "referencedAssetType"
+            ]
           }
         ],
         "description": "The following concrete types extend folder-contained-asset"
@@ -1558,7 +1738,9 @@
                 "description": "REQUIRED: The XML content of the xslt format."
               }
             },
-            "required": ["xml"]
+            "required": [
+              "xml"
+            ]
           }
         ],
         "description": "Represents an XSLT format used for transformations in Cascade CMS."
@@ -1576,7 +1758,9 @@
                 "description": "REQUIRED: The script content of the scriptFormat."
               }
             },
-            "required": ["script"]
+            "required": [
+              "script"
+            ]
           }
         ],
         "description": "Represents a script (Velocity) format in Cascade CMS."
@@ -1608,15 +1792,15 @@
             "type": "object",
             "properties": {
               "formatId": {
-                "type": ["string", "null"],
+                "type": "string",
                 "description": "NOT REQUIRED: Overall xslt format applied to this template. Defaults to none.\n- When editing and selected asset is recycled, it is recommended to preserve this relationship by providing the selected asset's ID in case it gets restored from the recycle bin."
               },
               "formatPath": {
-                "type": ["string", "null"],
+                "type": "string",
                 "description": "NOT REQUIRED: Path works only for non-recycled assets."
               },
               "formatRecycled": {
-                "type": ["boolean", "null"],
+                "type": "boolean",
                 "description": "NOT REQUIRED: For reading purposes only. Ignored when editing, copying, etc."
               },
               "xml": {
@@ -1631,7 +1815,9 @@
                 "description": "NOT REQUIRED: The page regions and their block/xslt format assignments for this template. Defaults to all regions empty."
               }
             },
-            "required": ["xml"]
+            "required": [
+              "xml"
+            ]
           }
         ],
         "description": "Represents a template that defines the structure and layout of a page."
@@ -1667,16 +1853,16 @@
             "type": "string",
             "description": "REQUIRED: A semi-colon separated list of groups this user is a member of."
           },
-          "role": {
+          "roles": {
             "type": "string",
             "description": "REQUIRED: This user's roles."
           },
           "defaultSiteId": {
-            "type": ["string", "null"],
+            "type": "string",
             "description": "NOT REQUIRED: Default Site for the user, defaultSiteId takes precedence if both fields are set."
           },
           "defaultSiteName": {
-            "type": ["string", "null"],
+            "type": "string",
             "description": "NOT REQUIRED:"
           },
           "ldapDN": {
@@ -1684,7 +1870,15 @@
             "description": "REQUIRED if authType is ldap; otherwise, NOT REQUIRED."
           }
         },
-        "required": ["username", "authType", "password", "groups", "role"],
+        "required": [
+          "username",
+          "fullName",
+          "email",
+          "authType",
+          "password",
+          "groups",
+          "roles"
+        ],
         "description": "A user"
       },
       "Group": {
@@ -1708,7 +1902,10 @@
                 "description": "REQUIRED:\n- The Roles for this group.\n- Note that this role will also apply to all the members, possibly adding roles for those users."
               }
             },
-            "required": ["groupName", "role"]
+            "required": [
+              "groupName",
+              "role"
+            ]
           }
         ],
         "description": "A group"
@@ -2114,7 +2311,9 @@
                 "description": "ONE is REQUIRED:\n- The global or site abilities for the role.\n- Use the correct one depending on the type of the role."
               }
             },
-            "required": ["roleType"]
+            "required": [
+              "roleType"
+            ]
           }
         ],
         "description": "A role"
@@ -2140,11 +2339,11 @@
                 "description": "NOT REQUIRED: The path of an asset.\n- Left blank when creating, specify this to uniquely identify an asset when editing."
               },
               "siteId": {
-                "type": ["string", "null"],
+                "type": "string",
                 "description": "NOT REQUIRED: The site in which the asset is located.\n- Priority: siteId > siteName. One is REQUIRED."
               },
               "siteName": {
-                "type": ["string", "null"],
+                "type": "string",
                 "description": "NOT REQUIRED: Priority: siteId > siteName. One is REQUIRED."
               }
             }
@@ -2164,7 +2363,9 @@
             "description": "NOT REQUIRED: Parameter value."
           }
         },
-        "required": ["name"],
+        "required": [
+          "name"
+        ],
         "description": "A parameter for an asset factory plugin."
       },
       "AssetFactoryPlugin": {
@@ -2182,7 +2383,9 @@
             "description": "NOT REQUIRED: Parameters for the asset factory plugin."
           }
         },
-        "required": ["name"],
+        "required": [
+          "name"
+        ],
         "description": "A plugin attached to an asset factory."
       },
       "AssetFactory": {
@@ -2234,7 +2437,7 @@
                 "description": "NOT REQUIRED: When the placement folder is specified, this allows assets to be placed in subfolders of that folder as well. Defaults to false."
               },
               "folderPlacementPosition": {
-                "type": ["integer", "null"],
+                "type": "integer",
                 "format": "int32",
                 "minimum": 0,
                 "description": "NOT REQUIRED: Assets created from this factory will be positioned at this folder position. Defaults to 0."
@@ -2263,7 +2466,10 @@
                 "description": "NOT REQUIRED: An array of asset factory plugins assigned to the asset factory. Defaults to empty."
               }
             },
-            "required": ["assetType", "workflowMode"]
+            "required": [
+              "assetType",
+              "workflowMode"
+            ]
           }
         ],
         "description": "An asset factory used to create new assets with predefined settings."
@@ -2285,7 +2491,7 @@
                 "description": "NOT REQUIRED: String describing the asset factory container, displayed in the new menu."
               },
               "children": {
-                "type": ["array", "null"],
+                "type": "array",
                 "items": {
                   "$ref": "#/components/schemas/Identifier"
                 },
@@ -2312,14 +2518,16 @@
             "description": "REQUIRED."
           },
           "destinations": {
-            "type": ["array", "null"],
+            "type": "array",
             "items": {
               "$ref": "#/components/schemas/Identifier"
             },
             "description": "REQUIRED if \"publishMode\" is \"selected-destinations\", else NOT REQUIRED and ignored."
           }
         },
-        "required": ["publishMode"],
+        "required": [
+          "publishMode"
+        ],
         "description": "Maps a content type to a specific page configuration."
       },
       "InlineEditableField": {
@@ -2334,7 +2542,7 @@
             "description": "REQUIRED."
           },
           "dataDefinitionGroupPath": {
-            "type": ["string", "null"],
+            "type": "string",
             "description": "NOT REQUIRED. This property is only applicable for data-definition type fields.\n- It holds a list of ancestor data definition groups presented in the form of a path."
           },
           "type": {
@@ -2342,11 +2550,15 @@
             "description": "REQUIRED."
           },
           "name": {
-            "type": ["string", "null"],
+            "type": "string",
             "description": "REQUIRED for metadata and data-definition field type. NOT REQUIRED for xhtml field type.\n- Use title, displayName, summary, teaser, keywords, description, author, startDate, endDate, reviewDate for wired metadata fields,\nfield name for dynamic metadata field or field identifier for a data definition field."
           }
         },
-        "required": ["pageConfigurationName", "pageRegionName", "type"],
+        "required": [
+          "pageConfigurationName",
+          "pageRegionName",
+          "type"
+        ],
         "description": "A field that can be edited inline within the Cascade CMS interface."
       },
       "ContentType": {
@@ -2398,14 +2610,14 @@
                 "description": "NOT REQUIRED: Priority: publishSetId > publishSetPath."
               },
               "contentTypePageConfigurations": {
-                "type": ["array", "null"],
+                "type": "array",
                 "items": {
                   "$ref": "#/components/schemas/ContentTypePageConfiguration"
                 },
                 "description": "NOT REQUIRED: if not specified, the default publish mode 'all-destinations' is used for each pageConfiguration."
               },
               "inlineEditableFields": {
-                "type": ["array", "null"],
+                "type": "array",
                 "items": {
                   "$ref": "#/components/schemas/InlineEditableField"
                 },
@@ -2425,7 +2637,7 @@
             "type": "object",
             "properties": {
               "children": {
-                "type": ["array", "null"],
+                "type": "array",
                 "items": {
                   "$ref": "#/components/schemas/Identifier"
                 },
@@ -2445,7 +2657,7 @@
             "type": "object",
             "properties": {
               "children": {
-                "type": ["array", "null"],
+                "type": "array",
                 "items": {
                   "$ref": "#/components/schemas/Identifier"
                 },
@@ -2460,30 +2672,35 @@
         "type": "object",
         "properties": {
           "name": {
-            "type": ["string", "null"],
+            "type": "string",
             "description": "REQUIRED: Name of the parameter."
           },
           "value": {
-            "type": ["string", "null"],
+            "type": "string",
             "description": "REQUIRED: Value of the parameter."
           }
         },
-        "required": ["name", "value"],
+        "required": [
+          "name",
+          "value"
+        ],
         "description": "A parameter for a connector."
       },
       "ConnectorContentTypeLinkParam": {
         "type": "object",
         "properties": {
           "name": {
-            "type": ["string", "null"],
-            "description": "REQUIRED: Name of the parameter."
+            "type": "string",
+            "description": "NOT REQUIRED: Name of the parameter."
           },
           "value": {
-            "type": ["string", "null"],
+            "type": "string",
             "description": "REQUIRED: Value of the parameter."
           }
         },
-        "required": ["name", "value"],
+        "required": [
+          "value"
+        ],
         "description": "A parameter for a connector content type link."
       },
       "ConnectorContentTypeLink": {
@@ -2506,7 +2723,7 @@
             "description": "NOT REQUIRED: Name for the page configuration."
           },
           "connectorContentTypeLinkParams": {
-            "type": ["array", "null"],
+            "type": "array",
             "items": {
               "$ref": "#/components/schemas/ConnectorContentTypeLinkParam"
             },
@@ -2524,15 +2741,15 @@
             "type": "object",
             "properties": {
               "auth1": {
-                "type": ["string", "null"],
+                "type": "string",
                 "description": "NOT REQUIRED: First authentication token for the external application the connector connects to (usually a username or email address)"
               },
               "auth2": {
-                "type": ["string", "null"],
+                "type": "string",
                 "description": "NOT REQUIRED: Second authentication token for the external application the connector connects to (usually a password)\\nWrite only - hidden when read"
               },
               "url": {
-                "type": ["string", "null"],
+                "type": "string",
                 "description": "NOT REQUIRED: URL of the external application the connector connects to"
               },
               "verified": {
@@ -2540,19 +2757,19 @@
                 "description": "NOT REQUIRED: Determines whether or not the connector has been verified\\nRead only - editing a connector always unverifies it"
               },
               "verifiedDate": {
-                "type": ["string", "null"],
+                "type": "string",
                 "format": "date-time",
                 "description": "NOT REQUIRED: The date this connector was verified\\nRead only - editing a connector always clears the verification date"
               },
               "connectorParameters": {
-                "type": ["array", "null"],
+                "type": "array",
                 "items": {
                   "$ref": "#/components/schemas/ConnectorParameter"
                 },
                 "description": "NOT REQUIRED: A list of connector parameters"
               },
               "connectorContentTypeLinks": {
-                "type": ["array", "null"],
+                "type": "array",
                 "items": {
                   "$ref": "#/components/schemas/ConnectorContentTypeLink"
                 },
@@ -2595,7 +2812,9 @@
                 "description": "REQUIRED: The individual page configurations contained within this set."
               }
             },
-            "required": ["pageConfigurations"]
+            "required": [
+              "pageConfigurations"
+            ]
           }
         ],
         "description": "A set of page configurations that define output channels for a site."
@@ -2609,7 +2828,7 @@
             "type": "object",
             "properties": {
               "children": {
-                "type": ["array", "null"],
+                "type": "array",
                 "items": {
                   "$ref": "#/components/schemas/Identifier"
                 },
@@ -2633,7 +2852,9 @@
                 "description": "REQUIRED: The XML content of this data definition."
               }
             },
-            "required": ["xml"]
+            "required": [
+              "xml"
+            ]
           }
         ],
         "description": "A structured data definition that defines the fields for structured data blocks."
@@ -2647,7 +2868,7 @@
             "type": "object",
             "properties": {
               "children": {
-                "type": ["array", "null"],
+                "type": "array",
                 "items": {
                   "$ref": "#/components/schemas/Identifier"
                 },
@@ -2671,7 +2892,9 @@
                 "description": "REQUIRED: The XML content of this shared field."
               }
             },
-            "required": ["xml"]
+            "required": [
+              "xml"
+            ]
           }
         ],
         "description": "A shared field definition that can be reused across multiple data definitions."
@@ -2685,7 +2908,7 @@
             "type": "object",
             "properties": {
               "children": {
-                "type": ["array", "null"],
+                "type": "array",
                 "items": {
                   "$ref": "#/components/schemas/Identifier"
                 },
@@ -2738,7 +2961,7 @@
             "description": "The visibility of this field NOT REQUIRED default visible"
           },
           "possibleValues": {
-            "type": ["array", "null"],
+            "type": "array",
             "items": {
               "$ref": "#/components/schemas/DynamicMetadataFieldDefinitionValue"
             },
@@ -2749,7 +2972,11 @@
             "description": "Optional help text for this field."
           }
         },
-        "required": ["name", "label", "fieldType"],
+        "required": [
+          "name",
+          "label",
+          "fieldType"
+        ],
         "description": "A single dynamic metadata field definition"
       },
       "MetadataSet": {
@@ -2913,7 +3140,7 @@
             "type": "object",
             "properties": {
               "children": {
-                "type": ["array", "null"],
+                "type": "array",
                 "items": {
                   "$ref": "#/components/schemas/Identifier"
                 },
@@ -2958,15 +3185,8 @@
                 "description": "NOT REQUIRED: Whether or not to publish this set on a schedule. Default is false."
               },
               "scheduledPublishDestinationMode": {
-                "oneOf": [
-                  {
-                    "$ref": "#/components/schemas/ScheduledDestinationMode"
-                  },
-                  {
-                    "type": "null"
-                  }
-                ],
-                "description": "NOT REQUIRED: Scheduled publish destination selection mode."
+                "description": "NOT REQUIRED: Scheduled publish destination selection mode.",
+                "$ref": "#/components/schemas/ScheduledDestinationMode"
               },
               "scheduledPublishDestinations": {
                 "type": "array",
@@ -3023,7 +3243,7 @@
             "type": "object",
             "properties": {
               "children": {
-                "type": ["array", "null"],
+                "type": "array",
                 "items": {
                   "$ref": "#/components/schemas/Identifier"
                 },
@@ -3043,7 +3263,7 @@
             "type": "object",
             "properties": {
               "children": {
-                "type": ["array", "null"],
+                "type": "array",
                 "items": {
                   "$ref": "#/components/schemas/Identifier"
                 },
@@ -3064,11 +3284,11 @@
             "properties": {
               "parentContainerId": {
                 "type": "string",
-                "description": "Priority: parentContainerId > parentContainerPath\n- One is REQUIRED\n- When inside a Site, this field must refer to a SiteDestinationContainer.\n- When not in a Site, this field must refer to a Target"
+                "description": "Priority: parentContainerId > parentContainerPath\n- One is REQUIRED\n- When inside a Site, this field must refer to a SiteDestinationContainer."
               },
               "parentContainerPath": {
                 "type": "string",
-                "description": "Priority: parentContainerId > parentContainerPath\n- One is REQUIRED\n- When inside a Site, this field must refer to a SiteDestinationContainer.\n- When not in a Site, this field must refer to a Target"
+                "description": "Priority: parentContainerId > parentContainerPath\n- One is REQUIRED\n- When inside a Site, this field must refer to a SiteDestinationContainer."
               },
               "transportId": {
                 "type": "string",
@@ -3103,15 +3323,8 @@
                 "description": "Whether or not to publish this set on a schedule\n- NOT REQUIRED"
               },
               "scheduledPublishDestinationMode": {
-                "oneOf": [
-                  {
-                    "$ref": "#/components/schemas/ScheduledDestinationMode"
-                  },
-                  {
-                    "type": "null"
-                  }
-                ],
-                "description": "Not used, will be ignored if any value is set"
+                "description": "Not used, will be ignored if any value is set",
+                "$ref": "#/components/schemas/ScheduledDestinationMode"
               },
               "scheduledPublishDestinations": {
                 "type": "array",
@@ -3138,19 +3351,19 @@
                 "description": "Whether or not to send a report when there are no errors\n- NOT REQUIRED default: false"
               },
               "webUrl": {
-                "type": ["string", "null"],
+                "type": "string",
                 "description": "The base URL for linking to a given configuration during publishing\n- NOT REQUIRED"
               },
               "extensionsToStrip": {
-                "type": ["string", "null"],
+                "type": "string",
                 "description": "Comma-separated list of extensions to strip from links\n- NOT REQUIRED"
               },
               "siteId": {
-                "type": ["string", "null"],
+                "type": "string",
                 "description": "Priority: siteId > siteName\n- One is REQUIRED"
               },
               "siteName": {
-                "type": ["string", "null"],
+                "type": "string",
                 "description": "Priority: siteId > siteName\n- One is REQUIRED"
               },
               "publishIntervalHours": {
@@ -3188,7 +3401,9 @@
                 "description": "REQUIRED\n- The directory to output the files to, for example \"c:\\inetfiles\\wwwroot\""
               }
             },
-            "required": ["directory"]
+            "required": [
+              "directory"
+            ]
           }
         ],
         "description": "Properties for the FileSystem Transport"
@@ -3240,7 +3455,12 @@
                 "description": "REQUIRED\n- Whether or not to connect using regular FTP, FTP over SSL/TLS, or SFTP using secure FTP (SSH protocol)"
               }
             },
-            "required": ["hostName", "port", "username", "ftpProtocolType"]
+            "required": [
+              "hostName",
+              "port",
+              "username",
+              "ftpProtocolType"
+            ]
           }
         ],
         "description": "Properties for the Ftp Transport"
@@ -3282,7 +3502,13 @@
                 "description": "NOT REQUIRED\n- The password to use when connecting to the server"
               }
             },
-            "required": ["transportSiteId", "serverName", "serverPort", "databaseName", "username"]
+            "required": [
+              "transportSiteId",
+              "serverName",
+              "serverPort",
+              "databaseName",
+              "username"
+            ]
           }
         ],
         "description": "Properties for the Database Transport"
@@ -3312,7 +3538,11 @@
                 "description": "NOT REQUIRED\n- The directory to place the files in"
               }
             },
-            "required": ["key", "secret", "bucketName"]
+            "required": [
+              "key",
+              "secret",
+              "bucketName"
+            ]
           }
         ],
         "description": "Properties for the Cloud Transport"
@@ -3326,7 +3556,7 @@
             "type": "object",
             "properties": {
               "children": {
-                "type": ["array", "null"],
+                "type": "array",
                 "items": {
                   "$ref": "#/components/schemas/Identifier"
                 },
@@ -3394,7 +3624,10 @@
                 "description": "NOT REQUIRED"
               }
             },
-            "required": ["namingBehavior", "xml"]
+            "required": [
+              "namingBehavior",
+              "xml"
+            ]
           }
         ],
         "description": "Properties for the Workflow Definition"
@@ -3408,7 +3641,7 @@
             "type": "object",
             "properties": {
               "children": {
-                "type": ["array", "null"],
+                "type": "array",
                 "items": {
                   "$ref": "#/components/schemas/Identifier"
                 },
@@ -3436,7 +3669,10 @@
                 "description": "REQUIRED\n- The body of this email"
               }
             },
-            "required": ["subject", "body"]
+            "required": [
+              "subject",
+              "body"
+            ]
           }
         ],
         "description": "Properties for the Workflow Email"
@@ -3450,7 +3686,7 @@
             "type": "object",
             "properties": {
               "children": {
-                "type": ["array", "null"],
+                "type": "array",
                 "items": {
                   "$ref": "#/components/schemas/Identifier"
                 },
@@ -3496,7 +3732,12 @@
                 "description": "REQUIRED: The type of twitter feed block."
               }
             },
-            "required": ["maxResults", "useDefaultStyle", "excludeJQuery", "queryType"]
+            "required": [
+              "maxResults",
+              "useDefaultStyle",
+              "excludeJQuery",
+              "queryType"
+            ]
           }
         ],
         "description": "A block that displays a Twitter feed."
@@ -3536,7 +3777,7 @@
                 "description": "REQUIRED: The site URL"
               },
               "extensionsToStrip": {
-                "type": ["string", "null"],
+                "type": "string",
                 "description": "NOT REQUIRED: A comma-separated list of extensions that should be stripped from cross-site links pointing to assets in this site. Default: empty"
               },
               "defaultMetadataSetId": {
@@ -3587,14 +3828,7 @@
                 "description": "NOT REQUIRED: Whether or not to publish this set on a schedule. Default: false"
               },
               "scheduledPublishDestinationMode": {
-                "oneOf": [
-                  {
-                    "$ref": "#/components/schemas/ScheduledDestinationMode"
-                  },
-                  {
-                    "type": "null"
-                  }
-                ],
+                "$ref": "#/components/schemas/ScheduledDestinationMode",
                 "description": "NOT REQUIRED: Scheduled publish destination selection mode."
               },
               "scheduledPublishDestinations": {
@@ -3655,32 +3889,18 @@
               },
               "inheritNamingRules": {
                 "type": "boolean",
-                "description": "REQUIRED: Determines whether naming rules are inherited from the system preferences.\n- If true, the rule properties will be ignored when saving, but old values are preserved.\n- Otherwise, null values will be defaulted to appropriate values when saving.\n- Naming rules read from a site may be null."
+                "description": "REQUIRED: Determines whether naming rules are inherited from the system preferences.\n- If true, the rule properties will be ignored when saving, but old values are preserved.\n- Otherwise, null values will be defaulted to appropriate values when saving."
               },
               "namingRuleCase": {
-                "oneOf": [
-                  {
-                    "$ref": "#/components/schemas/NamingRuleCase"
-                  },
-                  {
-                    "type": "null"
-                  }
-                ],
-                "description": "Optional: Defines what case a name can be. Depends on inheritNamingRules."
+                "description": "Optional: Defines what case a name can be. Depends on inheritNamingRules.",
+                "$ref": "#/components/schemas/NamingRuleCase"
               },
               "namingRuleSpacing": {
-                "oneOf": [
-                  {
-                    "$ref": "#/components/schemas/NamingRuleSpacing"
-                  },
-                  {
-                    "type": "null"
-                  }
-                ],
-                "description": "Optional: Defines how spaces are handled for names. Depends on inheritNamingRules."
+                "description": "Optional: Defines how spaces are handled for names. Depends on inheritNamingRules.",
+                "$ref": "#/components/schemas/NamingRuleSpacing"
               },
               "namingRuleAssets": {
-                "type": ["array", "null"],
+                "type": "array",
                 "items": {
                   "$ref": "#/components/schemas/NamingRuleAsset"
                 },
@@ -3707,55 +3927,55 @@
                 "description": "NOT REQUIRED: Enables Webdam DAM integration."
               },
               "rootFolderId": {
-                "type": ["string", "null"],
+                "type": "string",
                 "description": "NOT REQUIRED: The root folder id, used only when reading a site. Ignored in other cases."
               },
               "rootAssetFactoryContainerId": {
-                "type": ["string", "null"],
+                "type": "string",
                 "description": "NOT REQUIRED: Used only when reading a site. Ignored in other cases."
               },
               "rootPageConfigurationSetContainerId": {
-                "type": ["string", "null"],
+                "type": "string",
                 "description": "NOT REQUIRED: Used only when reading a site. Ignored in other cases."
               },
               "rootContentTypeContainerId": {
-                "type": ["string", "null"],
+                "type": "string",
                 "description": "NOT REQUIRED: Used only when reading a site. Ignored in other cases."
               },
               "rootConnectorContainerId": {
-                "type": ["string", "null"],
+                "type": "string",
                 "description": "NOT REQUIRED: Used only when reading a site. Ignored in other cases."
               },
               "rootDataDefinitionContainerId": {
-                "type": ["string", "null"],
+                "type": "string",
                 "description": "NOT REQUIRED: Used only when reading a site. Ignored in other cases."
               },
               "rootSharedFieldContainerId": {
-                "type": ["string", "null"],
+                "type": "string",
                 "description": "NOT REQUIRED: Used only when reading a site. Ignored in other cases."
               },
               "rootMetadataSetContainerId": {
-                "type": ["string", "null"],
+                "type": "string",
                 "description": "NOT REQUIRED: Used only when reading a site. Ignored in other cases."
               },
               "rootPublishSetContainerId": {
-                "type": ["string", "null"],
+                "type": "string",
                 "description": "NOT REQUIRED: Used only when reading a site. Ignored in other cases."
               },
               "rootSiteDestinationContainerId": {
-                "type": ["string", "null"],
+                "type": "string",
                 "description": "NOT REQUIRED: Used only when reading a site. Ignored in other cases."
               },
               "rootTransportContainerId": {
-                "type": ["string", "null"],
+                "type": "string",
                 "description": "NOT REQUIRED: Used only when reading a site. Ignored in other cases."
               },
               "rootWorkflowDefinitionContainerId": {
-                "type": ["string", "null"],
+                "type": "string",
                 "description": "NOT REQUIRED: Used only when reading a site. Ignored in other cases."
               },
               "rootWorkflowEmailContainerId": {
-                "type": ["string", "null"],
+                "type": "string",
                 "description": "NOT REQUIRED: Used only when reading a site. Ignored in other cases."
               },
               "linkRewriting": {
@@ -3763,7 +3983,7 @@
                 "description": "NOT REQUIRED: Default is \"absolute\"."
               },
               "extraSettings": {
-                "type": ["string", "null"],
+                "type": "string",
                 "description": "JSON string representing additional settings for the Site. Keys/values are subject to change. NOT REQUIRED"
               },
               "publishIntervalHours": {
@@ -3809,11 +4029,11 @@
             "type": "object",
             "properties": {
               "siteId": {
-                "type": ["string", "null"],
+                "type": "string",
                 "description": "NOT REQUIRED: when referencing the System Default Editor Configuration (id=DEFAULT, name=Default)\n- One is REQUIRED for all other Editor Configurations"
               },
               "siteName": {
-                "type": ["string", "null"],
+                "type": "string",
                 "description": "NOT REQUIRED: when referencing the System Default Editor Configuration (id=DEFAULT, name=Default)\n- One is REQUIRED for all other Editor Configurations"
               },
               "cssFileId": {
@@ -3833,7 +4053,9 @@
                 "description": "REQUIRED: JSON String for the configuration"
               }
             },
-            "required": ["configuration"]
+            "required": [
+              "configuration"
+            ]
           }
         ],
         "description": "Properties for the Editor Configuration"
@@ -4066,14 +4288,7 @@
             "description": "One is REQUIRED\n- Admin area assets (must be manager or higher to access, no workflowConfiguration needed)"
           },
           "connectorContainer": {
-            "oneOf": [
-              {
-                "$ref": "#/components/schemas/ConnectorContainer"
-              },
-              {
-                "type": "null"
-              }
-            ],
+            "$ref": "#/components/schemas/ConnectorContainer",
             "description": "One is REQUIRED\n- Admin area assets (must be manager or higher to access, no workflowConfiguration needed)"
           },
           "wordPressConnector": {
@@ -4341,14 +4556,7 @@
             "description": "One is REQUIRED\n- Admin area assets (must be manager or higher to access, no workflowConfiguration needed)"
           },
           "site": {
-            "oneOf": [
-              {
-                "$ref": "#/components/schemas/Site"
-              },
-              {
-                "type": "null"
-              }
-            ],
+            "$ref": "#/components/schemas/Site",
             "description": "One is REQUIRED\n- Admin area assets (must be manager or higher to access, no workflowConfiguration needed)"
           },
           "editorConfiguration": {
@@ -4378,12 +4586,14 @@
                 "description": "The asset data returned by the read operation."
               }
             },
-            "required": ["asset"]
+            "required": [
+              "asset"
+            ]
           }
         ],
         "description": "Result data from the `read` operation."
       },
-      "AclEntry": {
+      "AclEntryReceive": {
         "type": "object",
         "properties": {
           "level": {
@@ -4395,16 +4605,67 @@
             "description": "REQUIRED: The type of ACL entry, either 'user' or 'group'."
           },
           "name": {
-            "type": ["string", "null"],
+            "type": "string",
             "description": "REQUIRED: The name of the user or group for which this ACL entry applies."
           },
           "id": {
-            "type": ["string", "null"],
-            "description": "The id of the group"
+            "type": "string",
+            "description": "REQUIRED: The id of the user or group for which this ACL entry applies."
           }
         },
-        "required": ["level", "type"],
-        "description": "A single access control list entry"
+        "required": [
+          "level",
+          "type",
+          "name",
+          "id"
+        ],
+        "description": "A single access control list entry returned by readAccessRights."
+      },
+      "AclEntrySend": {
+        "type": "object",
+        "properties": {
+          "level": {
+            "$ref": "#/components/schemas/AclEntryLevel",
+            "description": "REQUIRED: The access level, either 'read' or 'write'."
+          },
+          "type": {
+            "$ref": "#/components/schemas/AclEntryType",
+            "description": "REQUIRED: The type of ACL entry, either 'user' or 'group'."
+          },
+          "name": {
+            "type": "string",
+            "description": "The name of the user or group for which this ACL entry applies. Required when id is not provided."
+          },
+          "id": {
+            "type": "string",
+            "description": "The id of the user or group for which this ACL entry applies. Required when name is not provided."
+          }
+        },
+        "required": [
+          "level",
+          "type"
+        ],
+        "anyOf": [
+          {
+            "required": [
+              "name"
+            ]
+          },
+          {
+            "required": [
+              "id"
+            ]
+          }
+        ],
+        "description": "A single access control list entry sent to editAccessRights."
+      },
+      "AclEntry": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/AclEntryReceive"
+          }
+        ],
+        "description": "A single access control list entry returned by readAccessRights."
       },
       "ReadAccessRightsResult": {
         "allOf": [
@@ -4419,7 +4680,9 @@
                 "description": "A result of reading the access rights of an asset"
               }
             },
-            "required": ["accessRightsInformation"]
+            "required": [
+              "accessRightsInformation"
+            ]
           }
         ],
         "description": "A result of reading the access rights of an asset"
@@ -4437,7 +4700,9 @@
                 "description": "REQUIRED: A result of reading the workflow information of a folder."
               }
             },
-            "required": ["workflowSettings"]
+            "required": [
+              "workflowSettings"
+            ]
           }
         ],
         "description": "A result of reading the workflow information of a folder"
@@ -4465,7 +4730,10 @@
                 "description": "REQUIRED: A list of asset identifiers that are manually subscribed."
               }
             },
-            "required": ["subscribers", "manualSubscribers"]
+            "required": [
+              "subscribers",
+              "manualSubscribers"
+            ]
           }
         ],
         "description": "Deprecated. See relationshipsResult"
@@ -4486,7 +4754,9 @@
                 "description": "The resulting found asset identifiers"
               }
             },
-            "required": ["matches"]
+            "required": [
+              "matches"
+            ]
           }
         ],
         "description": "Properties for the Search Result"
@@ -4511,7 +4781,12 @@
             "description": "REQUIRED: The id of the step that will result when this action is chosen by the user."
           }
         },
-        "required": ["identifier", "label", "actionType", "nextId"],
+        "required": [
+          "identifier",
+          "label",
+          "actionType",
+          "nextId"
+        ],
         "description": "A single workflow action"
       },
       "WorkflowStep": {
@@ -4541,7 +4816,12 @@
             "description": "NOT REQUIRED: The actions this step contains."
           }
         },
-        "required": ["identifier", "label", "stepType", "owner"],
+        "required": [
+          "identifier",
+          "label",
+          "stepType",
+          "owner"
+        ],
         "description": "A single workflow step"
       },
       "Workflow": {
@@ -4575,12 +4855,12 @@
                 "description": "NOT REQUIRED: The unordered steps of this workflow."
               },
               "startDate": {
-                "type": ["string", "null"],
+                "type": "string",
                 "format": "date-time",
                 "description": "NOT REQUIRED: The date when the workflow was initialized."
               },
               "endDate": {
-                "type": ["string", "null"],
+                "type": "string",
                 "format": "date-time",
                 "description": "NOT REQUIRED: The due date of the workflow."
               },
@@ -4601,7 +4881,10 @@
                 "description": "NOT REQUIRED: Custom workflow email to send when email trigger set to notify."
               }
             },
-            "required": ["relatedEntity", "currentStep"]
+            "required": [
+              "relatedEntity",
+              "currentStep"
+            ]
           }
         ],
         "description": "Represents a workflow instance's properties in progress."
@@ -4639,7 +4922,9 @@
                 "description": "REQUIRED: The identifiers for the sites."
               }
             },
-            "required": ["sites"]
+            "required": [
+              "sites"
+            ]
           }
         ],
         "description": "Result data from the `listSites` operation."
@@ -4656,7 +4941,10 @@
             "description": "REQUIRED: The value of the preference."
           }
         },
-        "required": ["name", "value"],
+        "required": [
+          "name",
+          "value"
+        ],
         "description": "Preference object for editing"
       },
       "ReadPreferencesResult": {
@@ -4668,14 +4956,16 @@
             "type": "object",
             "properties": {
               "preferences": {
-                "type": ["array", "null"],
+                "type": "array",
                 "items": {
                   "$ref": "#/components/schemas/Preference"
                 },
                 "description": "The list of user preferences."
               }
             },
-            "required": ["preferences"]
+            "required": [
+              "preferences"
+            ]
           }
         ],
         "description": "Result data from the `readPreferences` operation."
@@ -4683,45 +4973,48 @@
       "PublishInformation": {
         "type": "object",
         "properties": {
-          "identifier": {
-            "$ref": "#/components/schemas/Identifier",
-            "description": "Identifier of the asset being published REQUIRED"
-          },
           "destinations": {
             "type": "array",
             "items": {
               "$ref": "#/components/schemas/Identifier"
             },
-            "description": "NOT REQUIRED: Destinations to which the asset should be published.\n- This field is ignored when identifier points to a Destination.\n- Publishing an asset that does not allow you to select Destinations in the Cascade UI (Publish Set or Target) *will* respect the Destinations supplied here (this is an inconsistency between the UI and web services).\n- Supplying an empty set of identifiers will publish to all Destinations that are enabled and applicable for the user making the web services call."
+            "description": "NOT REQUIRED: Destinations to which the asset should be published.\n- This field is ignored when identifier points to a Destination.\n- Publishing an asset that does not allow you to select Destinations in the Cascade UI (Publish Set) *will* respect the Destinations supplied here (this is an inconsistency between the UI and web services).\n- Supplying an empty set of identifiers will publish to all Destinations that are enabled and applicable for the user making the web services call."
           },
           "unpublish": {
-            "type": ["boolean", "null"],
+            "type": [
+              "boolean",
+              "null"
+            ],
             "description": "NOT REQUIRED: Whether to unpublish the asset instead of publishing it.\n- Similar to the GUI - you can choose to unpublish the asset instead of publishing it."
           },
           "publishRelatedAssets": {
-            "type": ["boolean", "null"],
+            "type": [
+              "boolean",
+              "null"
+            ],
             "description": "NOT REQUIRED: Whether to publish related assets."
           },
           "publishRelatedPublishSet": {
-            "type": ["boolean", "null"],
+            "type": [
+              "boolean",
+              "null"
+            ],
             "description": "NOT REQUIRED: Whether to publish related publish sets."
           },
           "scheduledDate": {
-            "type": ["string", "null"],
+            "type": [
+              "string",
+              "null"
+            ],
             "format": "date-time",
             "description": "NOT REQUIRED: The scheduled date for publishing the asset."
           }
         },
-        "required": ["identifier"],
         "description": "Contains information about asset publishing status and schedule."
       },
       "DeleteRequest": {
         "type": "object",
         "properties": {
-          "authentication": {
-            "$ref": "#/components/schemas/Authentication",
-            "description": "Authentication information containing the API key or password credentials."
-          },
           "identifier": {
             "$ref": "#/components/schemas/Identifier",
             "description": "REQUIRED: Parameters used when reading an asset"
@@ -4735,7 +5028,9 @@
             "description": "NOT REQUIRED: For configuring workflow"
           }
         },
-        "required": ["authentication", "identifier"],
+        "required": [
+          "identifier"
+        ],
         "description": "Request object for asset removal"
       },
       "DeleteResponse": {
@@ -4745,16 +5040,14 @@
       "CreateRequest": {
         "type": "object",
         "properties": {
-          "authentication": {
-            "$ref": "#/components/schemas/Authentication",
-            "description": "Authentication information containing the API key or password credentials."
-          },
           "asset": {
             "$ref": "#/components/schemas/Asset",
             "description": "The actual operations for inclusion in a batch op"
           }
         },
-        "required": ["authentication", "asset"],
+        "required": [
+          "asset"
+        ],
         "description": "The request object for asset creating"
       },
       "CreateResponse": {
@@ -4764,16 +5057,19 @@
       "PublishRequest": {
         "type": "object",
         "properties": {
-          "authentication": {
-            "$ref": "#/components/schemas/Authentication",
-            "description": "Authentication information containing the API key or password credentials."
+          "identifier": {
+            "$ref": "#/components/schemas/Identifier",
+            "description": "REQUIRED: Identifier of the asset being published."
           },
           "publishInformation": {
             "$ref": "#/components/schemas/PublishInformation",
             "description": "REQUIRED: Information related to the publishing or unpublishing."
           }
         },
-        "required": ["authentication", "publishInformation"],
+        "required": [
+          "identifier",
+          "publishInformation"
+        ],
         "description": "Request body for the `publish` operation."
       },
       "PublishResponse": {
@@ -4783,16 +5079,14 @@
       "EditRequest": {
         "type": "object",
         "properties": {
-          "authentication": {
-            "$ref": "#/components/schemas/Authentication",
-            "description": "Authentication information containing the API key or password credentials."
-          },
           "asset": {
             "$ref": "#/components/schemas/Asset",
             "description": "The asset data to create or update."
           }
         },
-        "required": ["authentication", "asset"],
+        "required": [
+          "asset"
+        ],
         "description": "The request object for asset editing"
       },
       "EditResponse": {
@@ -4802,16 +5096,14 @@
       "ReadRequest": {
         "type": "object",
         "properties": {
-          "authentication": {
-            "$ref": "#/components/schemas/Authentication",
-            "description": "Authentication information containing the API key or password credentials."
-          },
           "identifier": {
             "$ref": "#/components/schemas/Identifier",
             "description": "Identifies the asset to read."
           }
         },
-        "required": ["authentication", "identifier"],
+        "required": [
+          "identifier"
+        ],
         "description": "REQUIRED: Parameters used when reading an asset"
       },
       "ReadResponse": {
@@ -4821,16 +5113,14 @@
       "SearchRequest": {
         "type": "object",
         "properties": {
-          "authentication": {
-            "$ref": "#/components/schemas/Authentication",
-            "description": "Authentication information containing the API key or password credentials."
-          },
           "searchInformation": {
             "$ref": "#/components/schemas/SearchInformation",
             "description": "The search criteria and parameters."
           }
         },
-        "required": ["authentication", "searchInformation"],
+        "required": [
+          "searchInformation"
+        ],
         "description": "Properties for the Search Request"
       },
       "SearchResponse": {
@@ -4840,16 +5130,14 @@
       "ReadAccessRightsRequest": {
         "type": "object",
         "properties": {
-          "authentication": {
-            "$ref": "#/components/schemas/Authentication",
-            "description": "Authentication information containing the API key or password credentials."
-          },
           "identifier": {
             "$ref": "#/components/schemas/Identifier",
             "description": "REQUIRED: Parameters used when reading an asset"
           }
         },
-        "required": ["authentication", "identifier"],
+        "required": [
+          "identifier"
+        ],
         "description": "Properties for the ReadAccessRights Request"
       },
       "ReadAccessRightsResponse": {
@@ -4859,10 +5147,6 @@
       "EditAccessRightsRequest": {
         "type": "object",
         "properties": {
-          "authentication": {
-            "$ref": "#/components/schemas/Authentication",
-            "description": "Authentication information containing the API key or password credentials."
-          },
           "accessRightsInformation": {
             "$ref": "#/components/schemas/AccessRightsInformationSend",
             "description": "REQUIRED: Complete information about the access rights of an asset or component."
@@ -4876,7 +5160,10 @@
             "description": "REQUIRED: Unique identifier for the asset or component whose access rights are being defined."
           }
         },
-        "required": ["authentication", "accessRightsInformation", "identifier"],
+        "required": [
+          "accessRightsInformation",
+          "identifier"
+        ],
         "description": "Request body for the `editAccessRights` operation."
       },
       "EditAccessRightsResponse": {
@@ -4886,16 +5173,14 @@
       "ReadWorkflowSettingsRequest": {
         "type": "object",
         "properties": {
-          "authentication": {
-            "$ref": "#/components/schemas/Authentication",
-            "description": "Authentication information containing the API key or password credentials."
-          },
           "identifier": {
             "$ref": "#/components/schemas/Identifier",
             "description": "REQUIRED: Parameters used when reading an asset."
           }
         },
-        "required": ["authentication", "identifier"],
+        "required": [
+          "identifier"
+        ],
         "description": "Request body for the `readWorkflowSettings` operation."
       },
       "ReadWorkflowSettingsResponse": {
@@ -4905,10 +5190,6 @@
       "EditWorkflowSettingsRequest": {
         "type": "object",
         "properties": {
-          "authentication": {
-            "$ref": "#/components/schemas/Authentication",
-            "description": "Authentication information containing the API key or password credentials."
-          },
           "workflowSettings": {
             "$ref": "#/components/schemas/WorkflowSettingsSend",
             "description": "REQUIRED: The workflow settings to be edited."
@@ -4926,7 +5207,10 @@
             "description": "Identifies the asset whose workflow settings to edit."
           }
         },
-        "required": ["authentication", "workflowSettings", "identifier"],
+        "required": [
+          "workflowSettings",
+          "identifier"
+        ],
         "description": "Request body for the `editWorkflowSettings` operation."
       },
       "EditWorkflowSettingsResponse": {
@@ -4936,16 +5220,14 @@
       "ListSubscribersRequest": {
         "type": "object",
         "properties": {
-          "authentication": {
-            "$ref": "#/components/schemas/Authentication",
-            "description": "Authentication information containing the API key or password credentials."
-          },
           "identifier": {
             "$ref": "#/components/schemas/Identifier",
             "description": "REQUIRED: Parameters used when reading an asset."
           }
         },
-        "required": ["authentication", "identifier"],
+        "required": [
+          "identifier"
+        ],
         "description": "Request body for the `listSubscribers` operation."
       },
       "ListSubscribersResponse": {
@@ -4954,14 +5236,7 @@
       },
       "ListMessagesRequest": {
         "type": "object",
-        "properties": {
-          "authentication": {
-            "$ref": "#/components/schemas/Authentication",
-            "description": "Authentication information containing the API key or password credentials."
-          }
-        },
-        "required": ["authentication"],
-        "description": "Request body for the `listMessages` operation."
+        "description": "Empty request body for the `listMessages` operation. Authentication is supplied by the generated client using the Authorization header."
       },
       "ListMessagesResponse": {
         "$ref": "#/components/schemas/ListMessagesResult",
@@ -4970,10 +5245,6 @@
       "MarkMessageRequest": {
         "type": "object",
         "properties": {
-          "authentication": {
-            "$ref": "#/components/schemas/Authentication",
-            "description": "Authentication information containing the API key or password credentials."
-          },
           "identifier": {
             "$ref": "#/components/schemas/Identifier",
             "description": "REQUIRED: Identifier for the message."
@@ -4983,7 +5254,10 @@
             "description": "REQUIRED: The type of mark to apply to the message.\n- For marking messages - read or unread"
           }
         },
-        "required": ["authentication", "identifier", "markType"],
+        "required": [
+          "identifier",
+          "markType"
+        ],
         "description": "Request body for the `markMessage` operation."
       },
       "MarkMessageResponse": {
@@ -4993,16 +5267,14 @@
       "DeleteMessageRequest": {
         "type": "object",
         "properties": {
-          "authentication": {
-            "$ref": "#/components/schemas/Authentication",
-            "description": "Authentication information containing the API key or password credentials."
-          },
           "identifier": {
             "$ref": "#/components/schemas/Identifier",
             "description": "REQUIRED: Identifier for the message."
           }
         },
-        "required": ["authentication", "identifier"],
+        "required": [
+          "identifier"
+        ],
         "description": "Request body for the `deleteMessage` operation."
       },
       "DeleteMessageResponse": {
@@ -5012,16 +5284,14 @@
       "CheckOutRequest": {
         "type": "object",
         "properties": {
-          "authentication": {
-            "$ref": "#/components/schemas/Authentication",
-            "description": "Authentication information containing the API key or password credentials."
-          },
           "identifier": {
             "$ref": "#/components/schemas/Identifier",
             "description": "REQUIRED: Identifier for the message."
           }
         },
-        "required": ["authentication", "identifier"],
+        "required": [
+          "identifier"
+        ],
         "description": "Request body for the `checkOut` operation."
       },
       "CheckOutResponse": {
@@ -5031,10 +5301,6 @@
       "CheckInRequest": {
         "type": "object",
         "properties": {
-          "authentication": {
-            "$ref": "#/components/schemas/Authentication",
-            "description": "Authentication information containing the API key or password credentials."
-          },
           "identifier": {
             "$ref": "#/components/schemas/Identifier",
             "description": "REQUIRED: Identifier for the message."
@@ -5044,7 +5310,10 @@
             "description": "Comments to include with the check-in."
           }
         },
-        "required": ["authentication", "identifier", "comments"],
+        "required": [
+          "identifier",
+          "comments"
+        ],
         "description": "Request body for the `checkIn` operation."
       },
       "CheckInResponse": {
@@ -5054,10 +5323,6 @@
       "CopyRequest": {
         "type": "object",
         "properties": {
-          "authentication": {
-            "$ref": "#/components/schemas/Authentication",
-            "description": "Authentication information containing the API key or password credentials."
-          },
           "identifier": {
             "$ref": "#/components/schemas/Identifier",
             "description": "The identifier of the asset to be copied."
@@ -5071,7 +5336,10 @@
             "description": "NOT REQUIRED\n- The configuration for any workflow that needs to be applied after the copy."
           }
         },
-        "required": ["authentication", "identifier", "copyParameters"],
+        "required": [
+          "identifier",
+          "copyParameters"
+        ],
         "description": "Properties for the Copy Request"
       },
       "CopyResponse": {
@@ -5081,10 +5349,6 @@
       "SiteCopyRequest": {
         "type": "object",
         "properties": {
-          "authentication": {
-            "$ref": "#/components/schemas/Authentication",
-            "description": "Authentication information containing the API key or password credentials."
-          },
           "originalSiteId": {
             "type": "string",
             "description": "NOT REQUIRED\n- The ID of the site to be copied. Takes precedence over originalSiteName if both are provided.\n- One is REQUIRED (either originalSiteId or originalSiteName)"
@@ -5098,7 +5362,9 @@
             "description": "REQUIRED: The name for the new site that will be created from the copy."
           }
         },
-        "required": ["authentication", "newSiteName"],
+        "required": [
+          "newSiteName"
+        ],
         "description": "Properties for the SiteCopy Request"
       },
       "SiteCopyResponse": {
@@ -5107,14 +5373,7 @@
       },
       "ListSitesRequest": {
         "type": "object",
-        "properties": {
-          "authentication": {
-            "$ref": "#/components/schemas/Authentication",
-            "description": "Authentication information containing the API key or password credentials."
-          }
-        },
-        "required": ["authentication"],
-        "description": "Request body for the `listSites` operation."
+        "description": "Empty request body for the `listSites` operation. Authentication is supplied by the generated client using the Authorization header."
       },
       "ListSitesResponse": {
         "$ref": "#/components/schemas/ListSitesResult",
@@ -5123,10 +5382,6 @@
       "MoveRequest": {
         "type": "object",
         "properties": {
-          "authentication": {
-            "$ref": "#/components/schemas/Authentication",
-            "description": "Authentication information containing the API key or password credentials."
-          },
           "identifier": {
             "$ref": "#/components/schemas/Identifier",
             "description": "REQUIRED: Parameters used when reading an asset"
@@ -5140,7 +5395,10 @@
             "description": "NOT REQUIRED: For configuring workflow"
           }
         },
-        "required": ["authentication", "identifier", "moveParameters"],
+        "required": [
+          "identifier",
+          "moveParameters"
+        ],
         "description": "Request object for moving an asset"
       },
       "MoveResponse": {
@@ -5150,16 +5408,14 @@
       "ReadWorkflowInformationRequest": {
         "type": "object",
         "properties": {
-          "authentication": {
-            "$ref": "#/components/schemas/Authentication",
-            "description": "Authentication information containing the API key or password credentials."
-          },
           "identifier": {
             "$ref": "#/components/schemas/Identifier",
             "description": "REQUIRED: Identifier for the message."
           }
         },
-        "required": ["authentication", "identifier"],
+        "required": [
+          "identifier"
+        ],
         "description": "Request body for the `readWorkflowInformation` operation."
       },
       "ReadWorkflowInformationResponse": {
@@ -5169,16 +5425,14 @@
       "ReadAuditsRequest": {
         "type": "object",
         "properties": {
-          "authentication": {
-            "$ref": "#/components/schemas/Authentication",
-            "description": "Authentication information containing the API key or password credentials."
-          },
           "auditParameters": {
             "$ref": "#/components/schemas/AuditParameters",
             "description": "REQUIRED: The parameters for the audit."
           }
         },
-        "required": ["authentication", "auditParameters"],
+        "required": [
+          "auditParameters"
+        ],
         "description": "Request body for the `readAudits` operation."
       },
       "ReadAuditsResponse": {
@@ -5188,16 +5442,14 @@
       "PerformWorkflowTransitionRequest": {
         "type": "object",
         "properties": {
-          "authentication": {
-            "$ref": "#/components/schemas/Authentication",
-            "description": "Authentication information containing the API key or password credentials."
-          },
           "workflowTransitionInformation": {
             "$ref": "#/components/schemas/WorkflowTransitionInformation",
             "description": "REQUIRED: Information related to the workflow transition."
           }
         },
-        "required": ["authentication", "workflowTransitionInformation"],
+        "required": [
+          "workflowTransitionInformation"
+        ],
         "description": "Request body for the `performWorkflowTransition` operation."
       },
       "PerformWorkflowTransitionResponse": {
@@ -5206,14 +5458,7 @@
       },
       "ReadPreferencesRequest": {
         "type": "object",
-        "properties": {
-          "authentication": {
-            "$ref": "#/components/schemas/Authentication",
-            "description": "Authentication information containing the API key or password credentials."
-          }
-        },
-        "required": ["authentication"],
-        "description": "Request body for the `readPreferences` operation."
+        "description": "Empty request body for the `readPreferences` operation. Authentication is supplied by the generated client using the Authorization header."
       },
       "ReadPreferencesResponse": {
         "$ref": "#/components/schemas/ReadPreferencesResult",
@@ -5222,16 +5467,14 @@
       "EditPreferenceRequest": {
         "type": "object",
         "properties": {
-          "authentication": {
-            "$ref": "#/components/schemas/Authentication",
-            "description": "Authentication information containing the API key or password credentials."
-          },
           "preference": {
             "$ref": "#/components/schemas/Preference",
             "description": "The preference to create or update."
           }
         },
-        "required": ["authentication", "preference"],
+        "required": [
+          "preference"
+        ],
         "description": "Request body for the `editPreference` operation."
       },
       "EditPreferenceResponse": {
@@ -5248,7 +5491,7 @@
           "aclEntries": {
             "type": "array",
             "items": {
-              "$ref": "#/components/schemas/AclEntry"
+              "$ref": "#/components/schemas/AclEntryReceive"
             },
             "description": "Optional list of Access Control List entries."
           },
@@ -5257,7 +5500,10 @@
             "description": "REQUIRED: Defines the access level for all users."
           }
         },
-        "required": ["identifier", "allLevel"],
+        "required": [
+          "identifier",
+          "allLevel"
+        ],
         "description": "Access rights information as returned from a read operation (includes all ACL entries)."
       },
       "AccessRightsInformationSend": {
@@ -5266,7 +5512,7 @@
           "aclEntries": {
             "type": "array",
             "items": {
-              "$ref": "#/components/schemas/AclEntry"
+              "$ref": "#/components/schemas/AclEntrySend"
             },
             "description": "Optional list of Access Control List entries."
           },
@@ -5275,7 +5521,9 @@
             "description": "REQUIRED: Defines the access level for all users."
           }
         },
-        "required": ["allLevel"],
+        "required": [
+          "allLevel"
+        ],
         "description": "Access rights information as sent in an edit operation (specifies ACL entries to set)."
       },
       "WorkflowSettingsReceive": {
@@ -5308,7 +5556,9 @@
             "description": "NOT REQUIRED: Inherited workflow definitions from the parent folder. Ignored on edit."
           }
         },
-        "required": ["identifier"],
+        "required": [
+          "identifier"
+        ],
         "description": "Complete data with the workflow settings of a folder"
       },
       "WorkflowSettingsSend": {
@@ -5344,7 +5594,9 @@
         "properties": {
           "success": {
             "type": "boolean",
-            "enum": [false],
+            "enum": [
+              false
+            ],
             "description": "Whether the operation completed successfully."
           },
           "message": {
@@ -5352,7 +5604,10 @@
             "description": "A message providing details about the operation result, typically populated on failure."
           }
         },
-        "required": ["success", "message"],
+        "required": [
+          "success",
+          "message"
+        ],
         "description": "Error response returned when an operation fails."
       }
     }

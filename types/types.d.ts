@@ -25,6 +25,7 @@ export type Tags = {
    */
   name: string;
 };
+export type Tag = Tags;
 export type FolderContainedAssetProperties = {
   /**
    * - REQUIRED on create, ignored on edit: The parent folder relationship
@@ -125,12 +126,14 @@ export type Metadata = {
   /**
    * - NOT REQUIRED: Array
    */
-  dynamicFields?: {
-    name: string;
-    fieldValues?: {
-      value?: string;
-    }[];
-  }[];
+  dynamicFields?: DynamicMetadataField[];
+};
+export type FieldValue = {
+  value?: string;
+};
+export type DynamicMetadataField = {
+  name: string;
+  fieldValues?: FieldValue[];
 };
 export type DublinAwareAssetProperties = {
   /**
@@ -184,12 +187,46 @@ export type ExpiringAssetProperties = {
  * - An asset that can expire and be moved to an expiration folder
  */
 export type ExpiringAsset = DublinAwareAsset & ExpiringAssetProperties;
+export type Block = ExpiringAsset;
 export type LinkRewriting =
   | "inherit"
   | "absolute"
   | "relative"
   | "site-relative";
 export type SiteLinkRewriting = "absolute" | "relative" | "site-relative";
+export type RoleTypes = "site" | "global";
+export type UserAuthTypes = "normal" | "ldap" | "custom";
+export type AssetFactoryWorkflowMode =
+  | "folder-controlled"
+  | "factory-controlled"
+  | "none";
+export type IndexBlockSortMethod =
+  | "folder-order"
+  | "alphabetical"
+  | "last-modified-date"
+  | "created-date";
+export type IndexBlockType = "folder" | "content-type";
+export type IndexBlockSortOrder = "ascending" | "descending";
+export type IndexBlockPageXml =
+  | "no-render"
+  | "render"
+  | "render-current-page-only";
+export type IndexBlockRenderingBehavior =
+  | "render-normally"
+  | "hierarchy"
+  | "hierarchy-with-siblings"
+  | "hierarchy-siblings-forward";
+export type TwitterQueryType =
+  | "user-only"
+  | "users-and-mentions"
+  | "search-terms";
+export type StructuredDataType = "text" | "asset" | "group";
+export type StructuredDataAssetType =
+  | "block"
+  | "file"
+  | "page"
+  | "symlink"
+  | "page,file,symlink";
 export type PublishableAssetProperties = {
   /**
    * - NOT REQUIRED: default: true
@@ -260,7 +297,6 @@ export type EntityTypeString =
   | "site"
   | "sitedestinationcontainer"
   | "symlink"
-  | "target"
   | "template"
   | "transport"
   | "transport_fs"
@@ -273,8 +309,7 @@ export type EntityTypeString =
   | "workflowdefinition"
   | "workflowdefinitioncontainer"
   | "workflowemail"
-  | "workflowemailcontainer"
-  | "xhtmlDataDefinitionBlock";
+  | "workflowemailcontainer";
 export type Path = {
   /**
    * - When reading a site, the "path" element should be populated with the site's name.
@@ -429,7 +464,7 @@ export type StructuredData = {
   structuredDataNodes?: StructuredDataNodes[];
 };
 /**
- * - The various serialization types for a target
+ * - The various serialization types for published output
  */
 export type SerializationType =
   | "HTML"
@@ -478,8 +513,8 @@ export type PageConfigurationProperties = {
    */
   outputExtension?: string;
   /**
-   * - The content type this target serializes its output as. Only required when in a site.
-   * - The various serialization types for a target
+   * - The content type this configuration serializes its output as. Only required when in a site.
+   * - The various serialization types for published output
    */
   serializationType?: SerializationType;
   /**
@@ -1045,9 +1080,9 @@ export type ConnectorParameter = {
 export type ConnectorParameterList = ConnectorParameter;
 export type ConnectorContentTypeLinkParam = {
   /**
-   * - REQUIRED: Name of the parameter.
+   * - NOT REQUIRED: Name of the parameter.
    */
-  name: string;
+  name?: string;
   /**
    * - REQUIRED: Value of the parameter.
    */
@@ -1193,7 +1228,7 @@ export type DynamicMetadataFieldDefinitions = DynamicMetadataFieldDefinition;
  */
 export type PublishableAssetList = Identifier;
 /**
- * - For Sites, Targets, Publish Sets scheduledPublishDestinationMode property
+ * - For Sites, Publish Sets scheduledPublishDestinationMode property
  */
 export type ScheduledDestinationMode =
   | "all-destinations"
@@ -1206,12 +1241,7 @@ export type DayOfWeek =
   | "Friday"
   | "Saturday"
   | "Sunday";
-export type DaysOfWeek = {
-  /**
-   * - NOT REQUIRED: A list of days of the week.
-   */
-  dayOfWeek?: DayOfWeek;
-};
+export type DaysOfWeek = DayOfWeek;
 export type AuthMode = "PASSWORD" | "PUBLIC_KEY";
 export type FtpProtocolType = "FTP" | "FTPS" | "SFTP";
 /**
@@ -1243,17 +1273,15 @@ export type RoleAssignments = RoleAssignment;
 export type RecycleBinExpiration = "1" | "15" | "30" | "never";
 export type NamingRuleCase = "ANY" | "LOWER" | "UPPER";
 export type NamingRuleSpacing = "SPACE" | "REMOVE" | "HYPHEN" | "UNDERSCORE";
-export type NamingRuleAsset = {
-  namingRuleAsset?:
-    | "block"
-    | "file"
-    | "folder"
-    | "page"
-    | "symlink"
-    | "template"
-    | "reference"
-    | "format";
-};
+export type NamingRuleAsset =
+  | "block"
+  | "file"
+  | "folder"
+  | "page"
+  | "symlink"
+  | "template"
+  | "reference"
+  | "format";
 export type NamingRuleAssets = NamingRuleAsset;
 export type WorkflowStepConfiguration = {
   /**
@@ -1308,6 +1336,10 @@ export type OperationResult = {
   success: boolean;
   message?: string;
 };
+export type ErrorResponse = {
+  success: false;
+  message: string;
+};
 /**
  * - Array wrapper for multiple identifiers of assets
  */
@@ -1319,18 +1351,18 @@ export type UnpublishParameters = {
   /**
    * - NOT REQUIRED: When true, the asset will be unpublished. Default: false
    */
-  unpublish?: boolean;
+  unpublish?: boolean | null;
   /**
    * - NOT REQUIRED: Unpublishes the asset from the given destinations. Default: all enabled destinations in the asset's site
    */
-  destinations?: AssetIdentifiers[];
+  destinations?: AssetIdentifiers[] | null;
 };
 export type AclEntryLevel = "read" | "write";
 export type AclEntryType = "user" | "group";
 /**
- * - A single access control list entry
+ * - A single access control list entry returned by readAccessRights.
  */
-export type AclEntry = {
+export type AclEntryReceive = {
   /**
    * - REQUIRED: The access level, either "read" or "write".
    */
@@ -1344,20 +1376,58 @@ export type AclEntry = {
    */
   name: string;
   /**
-   * - NOT REQUIRED: The id of the group.
+   * - REQUIRED: The id of the user or group for which this ACL entry applies.
    */
-  id?: string;
+  id: string;
 };
+/**
+ * - A single access control list entry sent to editAccessRights.
+ */
+export type AclEntrySendBase = {
+  /**
+   * - REQUIRED: The access level, either "read" or "write".
+   */
+  level: AclEntryLevel;
+  /**
+   * - REQUIRED: The type of ACL entry, either "user" or "group".
+   */
+  type: AclEntryType;
+};
+export type AclEntrySend =
+  | (AclEntrySendBase & {
+      /**
+       * - REQUIRED when id is not provided: The name of the user or group for which this ACL entry applies.
+       */
+      name: string;
+      /**
+       * - NOT REQUIRED: The id of the user or group for which this ACL entry applies.
+       */
+      id?: string;
+    })
+  | (AclEntrySendBase & {
+      /**
+       * - REQUIRED when name is not provided: The id of the user or group for which this ACL entry applies.
+       */
+      id: string;
+      /**
+       * - NOT REQUIRED: The name of the user or group for which this ACL entry applies.
+       */
+      name?: string;
+    });
+/**
+ * - A single access control list entry returned by readAccessRights.
+ */
+export type AclEntry = AclEntryReceive;
 /**
  * - Array wrapper for access control list entries
  */
-export type AclEntries = AclEntry;
+export type AclEntries = AclEntryReceive;
 export type AllLevel = "none" | "read" | "write";
 export type AccessRightsInformationSend = {
   /**
    * - Optional list of Access Control List entries.
    */
-  aclEntries?: AclEntries[];
+  aclEntries?: AclEntrySend[];
   /**
    * - REQUIRED: Defines the access level for all users.
    */
@@ -1371,7 +1441,7 @@ export type AccessRightsInformationReceive = {
   /**
    * - Optional list of Access Control List entries.
    */
-  aclEntries?: AclEntries[];
+  aclEntries?: AclEntryReceive[];
   /**
    * - REQUIRED: Defines the access level for all users.
    */
@@ -1567,7 +1637,7 @@ export type XmlBlockProperties = {
   /**
    * - The XML content of the block.
    */
-  xml?: string;
+  xml: string;
 };
 /**
  * - A block containing plain XML
@@ -1709,17 +1779,6 @@ export type ScriptFormatProperties = {
 export type ScriptFormat = ScriptFormatProperties & FolderContainedAsset;
 export type TemplateProperties = {
   /**
-   * - NOT REQUIRED when template is inside of site
-   * - REQUIRED when template is in the global area
-   * - For defining the target relationship. Priority: targetId > targetPath
-   */
-  targetId?: string;
-  /**
-   * - NOT REQUIRED when template is inside of site
-   * - REQUIRED when template is in the global area
-   */
-  targetPath?: string;
-  /**
    * - NOT REQUIRED: Overall xslt format applied to this template. Defaults to none.
    * - When editing and selected asset is recycled, it is recommended to preserve this relationship by providing the selected asset's ID in case it gets restored from the recycle bin.
    */
@@ -1786,7 +1845,7 @@ export type UserProperties = {
   /**
    * - REQUIRED: This user's roles.
    */
-  role: string;
+  roles: string;
   /**
    * - NOT REQUIRED: Default Site for the user, defaultSiteId takes precedence if both fields are set.
    */
@@ -2225,7 +2284,7 @@ export type PublishSetProperties = {
   /**
    * - NOT REQUIRED: Which days of the week the job should publish on.
    */
-  publishDaysOfWeek?: DaysOfWeek[];
+  publishDaysOfWeek?: DayOfWeek[];
   /**
    * - NOT REQUIRED: Cron expression for scheduled publishing.
    */
@@ -2251,128 +2310,6 @@ export type PublishSetContainerProperties = {
   children?: ContainerChildren[];
 };
 export type PublishSetContainer = PublishSetContainerProperties & ContaineredAsset;
-export type TargetProperties = {
-  /**
-   * - Priority: parentTargetId > parentTargetPath
-   * - One is REQUIRED
-   */
-  parentTargetId?: string;
-  /**
-   * - Priority: parentTargetId > parentTargetPath
-   * - One is REQUIRED
-   */
-  parentTargetPath?: string;
-  /**
-   * - The path of this target. When creating this need not be specified. When editing this will be the CURRENT path of the target.
-   */
-  path?: string;
-  /**
-   * - Priority: baseFolderId > baseFolderPath
-   * - One is REQUIRED
-   */
-  baseFolderId?: string;
-  /**
-   * - Priority: baseFolderId > baseFolderPath
-   * - One is REQUIRED
-   */
-  baseFolderPath?: string;
-  /**
-   * - REQUIRED: The output file extension, for example ".html"
-   */
-  outputExtension: string;
-  /**
-   * - The CSS classes that pages using this target will have available to them in the WYSIWYG editor (comma-delimted list)
-   * - NOT REQUIRED default: empty
-   */
-  cssClasses?: string;
-  /**
-   * - When editing and selected asset is recycled, it is recommended to preserve this relationship by providing selected asset's id in case if the selected asset gets restored from the recycle bin.
-   * - Priority: cssFileId > cssFilePath
-   */
-  cssFileId?: string;
-  /**
-   * - Path works only for non-recycled assets
-   */
-  cssFilePath?: string;
-  /**
-   * - For reading purposes only. Ignored when editing, copying etc.
-   */
-  cssFileRecycled?: boolean;
-  /**
-   * - REQUIRED: The content type this target serializes its output as
-   */
-  serializationType: SerializationType;
-  /**
-   * - When the serializationType is "XML", should Cascade include the XML declaration in published files?
-   * - NOT REQUIRED default: false
-   */
-  includeXMLDeclaration?: boolean;
-  /**
-   * - When publishing, whether or not to include the target path as part of the path of the published file
-   * - NOT REQUIRED default: false
-   */
-  includeTargetPath?: boolean;
-  /**
-   * - When publishing, whether or not to remove the base folder's path from the path of the published file
-   * - NOT REQUIRED default: false
-   */
-  removeBaseFolder?: boolean;
-  /**
-   * - Whether or not to publish this set on a schedule
-   * - NOT REQUIRED default: false
-   */
-  usesScheduledPublishing?: boolean;
-  /**
-   * - Scheduled publish destination selection mode
-   * - NOT REQUIRED
-   */
-  scheduledPublishDestinationMode?: string;
-  /**
-   * - Used in conjunction with scheduledPublishDestinationMode when destinations are to be specified explicitly
-   * - NOT REQUIRED
-   */
-  scheduledPublishDestinations?: DestinationList[];
-  /**
-   * - The base time this set will be published. For example if one wanted this set to publish at 0100, 0500, 0900, 1300, 1700, 2100, I would enter one of those times here and set the "publishInterval" to 4, and the "publishIntervalUnits" to "hours"
-   * - NOT REQUIRED default: 00:00 (midnight), if cronExpression provided or usesScheduledPublishing is false, ignored
-   */
-  timeToPublish?: string;
-  /**
-   * - Every how many hours the asset should be published. Can be between 1 and 23
-   * - One of the following 3 is REQUIRED if usesScheduledPublishing is true, else NOT REQUIRED and ignored
-   */
-  publishIntervalHours?: number;
-  /**
-   * - Which days of the week the job should publish on - select all days to have a daily publish
-   * - One of the following 3 is REQUIRED if usesScheduledPublishing is true, else NOT REQUIRED and ignored
-   */
-  publishDaysOfWeek?: DaysOfWeek[];
-  /**
-   * - Applicable only if publishInterval Units is "cron" - only a valid Cron Expression will be accepted
-   * - One of the following 3 is REQUIRED if usesScheduledPublishing is true, else NOT REQUIRED and ignored
-   */
-  cronExpression?: string;
-  /**
-   * - Semicolon-delimited list of string user names for which this asset is available for use
-   * - NOT REQUIRED leave out to assign no users
-   */
-  sendReportToUsers?: string;
-  /**
-   * - Semicolon-delimited list of string group names for which this asset is available for use
-   * - NOT REQUIRED leave out to assign no groups
-   */
-  sendReportToGroups?: string;
-  /**
-   * - Whether or not to send a report when there are no errors
-   * - NOT REQUIRED default: false
-   */
-  sendReportOnErrorOnly?: boolean;
-  /**
-   * - NOT REQUIRED: The array of children
-   */
-  children?: ContainerChildren[];
-};
-export type Target = TargetProperties & NamedAsset;
 export type SiteDestinationContainerProperties = {
   /**
    * - NOT REQUIRED: The array of children assets.
@@ -2386,14 +2323,12 @@ export type DestinationProperties = {
    * - Priority: parentContainerId > parentContainerPath
    * - One is REQUIRED
    * - When inside a Site, this field must refer to a SiteDestinationContainer.
-   * - When not in a Site, this field must refer to a Target
    */
   parentContainerId?: string;
   /**
    * - Priority: parentContainerId > parentContainerPath
    * - One is REQUIRED
    * - When inside a Site, this field must refer to a SiteDestinationContainer.
-   * - When not in a Site, this field must refer to a Target
    */
   parentContainerPath?: string;
   /**
@@ -2461,7 +2396,7 @@ export type DestinationProperties = {
    * - Which days of the week the job should publish on
    * - One is REQUIRED if usesScheduledPublishing is true, else NOT REQUIRED and ignored
    */
-  publishDaysOfWeek?: DaysOfWeek[];
+  publishDaysOfWeek?: DayOfWeek[];
   /**
    * - Applicable only if publishInterval Units is "cron"
    * - One is REQUIRED if usesScheduledPublishing is true, else NOT REQUIRED and ignored
@@ -2811,7 +2746,7 @@ export type SiteProperties = {
    * - Optional: Days of the week for publishing. One of the choices for scheduled publishing.
    * - Which days of the which the job should publish on - select all days to have a daily publish
    */
-  publishDaysOfWeek?: DaysOfWeek[];
+  publishDaysOfWeek?: DayOfWeek[];
   /**
    * - Optional: Cron expression for scheduled publishing. One of the choices for scheduled publishing.
    * - Applicable only if publishInterval Units is "cron" - only a valid Cron Expression will be accepted
@@ -2865,7 +2800,6 @@ export type SiteProperties = {
    * - REQUIRED: Determines whether naming rules are inherited from the system preferences.
    * - If true, the rule properties will be ignored when saving, but old values are preserved.
    * Otherwise, null values will be defaulted to appropriate values when saving.
-   * Naming rules read from a site may be null.
    */
   inheritNamingRules: boolean;
   /**
@@ -2879,11 +2813,7 @@ export type SiteProperties = {
   /**
    * - Optional: Defines the asset types that enforce naming rules. Depends on inheritNamingRules.
    */
-  namingRuleAssets?: NamingRuleAssets[];
-  /**
-   * - REQUIRED: Generate accessibility report on schedule.
-   */
-  accessibilityCheckerEnabled: boolean;
+  namingRuleAssets?: NamingRuleAsset[];
   /**
    * - NOT REQUIRED: Enables Siteimprove integration.
    */
@@ -3163,11 +3093,6 @@ export type AssetProperties = {
    * - One is REQUIRED
    * - Admin area assets (must be manager or higher to access, no workflowConfiguration needed
    */
-  target?: Target;
-  /**
-   * - One is REQUIRED
-   * - Admin area assets (must be manager or higher to access, no workflowConfiguration needed
-   */
   siteDestinationContainer?: SiteDestinationContainer;
   /**
    * - One is REQUIRED
@@ -3272,6 +3197,8 @@ export type RemoveRequest = {
   deleteParameters?: DeleteParameters;
 };
 export type RemoveResponse = OperationResult;
+export type DeleteRequest = RemoveRequest;
+export type DeleteResponse = RemoveResponse;
 export type EditRequest = Asset;
 export type EditResponse = OperationResult;
 export type CreateRequest = Asset;
@@ -3282,6 +3209,8 @@ export type CreateResponseProperties = {
   createdAssetId: string;
 };
 export type CreateResponse = OperationResult & CreateResponseProperties;
+export type CreateResult = CreateResponse;
+export type ReadResult = ReadResponse;
 export type MoveParametersProperties = {
   /**
    * - NOT REQUIRED: The container into which the asset will be moved. If left empty, the asset will remain in its current container.
@@ -3485,7 +3414,7 @@ export type ListSubscribersResult = {
   manualSubscribers: AssetIdentifiers[];
 };
 export type ListSubscribersResponse = OperationResult & ListSubscribersResult;
-export type ListMessagesRequest = any;
+export type ListMessagesRequest = {};
 export type MessageProperties = {
   /**
    * - REQUIRED: Who the message was/will be sent to.
@@ -3567,7 +3496,7 @@ export type CheckInRequest = {
   comments: string;
 };
 export type CheckInResponse = OperationResult;
-export type ListSitesRequest = any;
+export type ListSitesRequest = {};
 export type ListSitesResult = {
   /**
    * - REQUIRED: The identifiers for the sites.
@@ -3789,7 +3718,7 @@ export type WorkflowTransitionInformation = {
   /**
    * - NOT REQUIRED: The user's comment about the transition taken
    */
-  transitionComment?: string;
+  transitionComment?: string | null;
 };
 export type PerformWorkflowTransitionRequest = {
   /**
@@ -3798,7 +3727,7 @@ export type PerformWorkflowTransitionRequest = {
   workflowTransitionInformation: WorkflowTransitionInformation;
 };
 export type PerformWorkflowTransitionResponse = OperationResult;
-export type ReadPreferencesRequest = any;
+export type ReadPreferencesRequest = {};
 /**
  * - Preference object for editing
  */
@@ -3822,7 +3751,7 @@ export type PublishInformation = {
    * - NOT REQUIRED:
    * - Destinations to which the asset should be published.
    * - This field is Ignored when identifier (above) points to a Destination
-   * - Publishing an asset that does not allow you to select Destinations in the Cascade UI (Publish Set or Target) *will* respect the Destinations
+   * - Publishing an asset that does not allow you to select Destinations in the Cascade UI (Publish Set) *will* respect the Destinations
    * supplied here (this is an inconsistency between the UI and web services).
    * - Supplying an empty set of identifiers will publish to all Destinations
    * that are enabled and applicable for the user making the web services call.
@@ -3832,19 +3761,19 @@ export type PublishInformation = {
    * - NOT REQUIRED: Whether to unpublish the asset instead of publishing it. Default: false
    * - Similar to the GUI - you can choose to unpublish the asset instead of publishing it.
    */
-  unpublish?: boolean;
+  unpublish?: boolean | null;
   /**
    * - NOT REQUIRED: Whether to publish related assets
    */
-  publishRelatedAssets?: boolean;
+  publishRelatedAssets?: boolean | null;
   /**
    * - NOT REQUIRED: Whether to publish related publish sets
    */
-  publishRelatedPublishSet?: boolean;
+  publishRelatedPublishSet?: boolean | null;
   /**
    * - NOT REQUIRED: The scheduled date for publishing the asset
    */
-  scheduledDate?: string;
+  scheduledDate?: string | null;
 };
 export type PublishUnpublishRequest = {
   /**
@@ -3857,6 +3786,8 @@ export type PublishUnpublishRequest = {
   publishInformation: PublishInformation;
 };
 export type PublishUnpublishResponse = OperationResult;
+export type PublishRequest = PublishUnpublishRequest;
+export type PublishResponse = PublishUnpublishResponse;
 /**
  * - Request body for the editPreference operation
  */

@@ -1,6 +1,6 @@
 {
   "name": "cascade-cms-api",
-  "version": "1.1.0",
+  "version": "2.0.0",
   "author": "Philip Kukla",
   "repository": {
     "type": "git",
@@ -8,6 +8,7 @@
   },
   "main": "main.js",
   "devDependencies": {
+    "dotseal": "^1.0.0",
     "fast-xml-parser": "^5.3.4",
     "typescript": "^5",
     "yaml": "^2.8.3"

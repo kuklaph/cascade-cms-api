@@ -7,7 +7,7 @@ info:
     url: https://github.com/kuklaph/cascade-cms-api/blob/main/LICENSE
   contact:
     name: Official Cascade Rest API Documentation
-    url: "https://www.hannonhill.com/cascadecms/latest/developing-in-cascade/rest-api/index.html"
+    url: https://www.hannonhill.com/cascadecms/latest/developing-in-cascade/rest-api/index.html
   description: |
     *This was created by [Kuklaph](https://github.com/kuklaph) and is not an official Cascade API document. I do not claim to own any rights of Hannon Hill or Cascade in anyway.*
 
@@ -15,9 +15,9 @@ info:
 
     This documentation is based on the [Cascade CMS API Library](https://github.com/kuklaph/cascade-cms-api) which only uses POST requests.
 
-    - The Authentication parameter is implied with the usage of the library.
-    - I have included the authentication parameter in the documentation, but it is not necessary when using the library.
-    - Other authentication methods are shown for completeness.
+    - Authentication is handled by the library and sent with the request headers.
+    - Request body schemas do not include an `authentication` property.
+    - Other Cascade REST authentication methods are shown below for direct Cascade REST calls.
 
     If you come across a bug please create an [issue](https://github.com/kuklaph/cascade-cms-api/issues).
 
@@ -58,39 +58,24 @@ info:
         Example: `Authorization: Basic am9obi5zbWl0aDpqb2huMTIz`
       - Request parameters `u` and `p` for username and password, or `apiKey` for the user's API Key. \
         Examples: `u=john.smith&p=john123` OR `apiKey=27c03f58-7c79-45d1-aa8f-76d697bbb10d`
-      - Authentication can also be provided in body in JSON format for POST requests only. \
-        Examples:
-          ```json
-          "authentication": {
-            "username": "john.smith",
-            "password": "john123"
-          }
-          ```
-          ```json
-          "authentication": {
-            "apiKey": "27c03f58-7c79-45d1-aa8f-76d697bbb10d"
-          }
-          ```
+      - Raw Cascade REST can also accept body authentication for POST requests, but this library does not expose body authentication in request schemas because the generated client supplies auth through request headers.
 tags:
   - name: Examples
     description: Various ways to interact with the API
   - name: POST Only
     description: These interact with POST and a Bearer API Key
-
 servers:
-  - url: "https://{yourOrg}.cascadecms.com/api/v1"
+  - url: https://{yourOrg}.cascadecms.com/api/v1
     variables:
       yourOrg:
-        default: "demo"
-        description: "Your organization identifier in Cascade CMS"
-
+        default: demo
+        description: Your organization identifier in Cascade CMS
 security:
   - BasicAuth: []
   - ApiKeyAuth: []
-
 components:
   securitySchemes:
-    BasicAuth: # HTTP Basic Authentication
+    BasicAuth:
       type: http
       scheme: basic
     ApiKeyAuth:
@@ -121,8 +106,7 @@ components:
         - velocityFormatContent
         - xml
         - link
-      description: Asset fields to search (e.g. name, title, content), see searchField
-        simpleType for valid values
+      description: Asset fields to search (e.g. name, title, content), see searchField simpleType for valid values
     AuditTypes:
       type: string
       enum:
@@ -190,7 +174,6 @@ components:
         - site
         - sitedestinationcontainer
         - symlink
-        - target
         - template
         - transport
         - transport_fs
@@ -206,7 +189,6 @@ components:
         - workflowemailcontainer
         - facebookconnector
         - twitterconnector
-        - xhtmlDataDefinitionBlock
       description: All asset type strings
     AllLevel:
       type: string
@@ -280,7 +262,7 @@ components:
       enum:
         - all-destinations
         - selected-destinations
-      description: For Sites, Targets, Publish Sets scheduledPublishDestinationMode property
+      description: For Sites, Publish Sets scheduledPublishDestinationMode property
     AssetFactoryWorkflowMode:
       type: string
       enum:
@@ -341,7 +323,7 @@ components:
         - JSON
         - JS
         - CSS
-      description: The various serialization types for a target.
+      description: The various serialization types for published output.
     AuthMode:
       type: string
       enum:
@@ -435,35 +417,17 @@ components:
         - symlink
         - page,file,symlink
       description: The different types of assets a structured data node can contain
-    Authentication:
-      type: object
-      properties:
-        password:
-          type: string
-          description: User's password
-        username:
-          type: string
-          description: User's username
-        apiKey:
-          type: string
-          description: User's API key
-      description: Unless an apiKey is provided, both username and password are REQUIRED.
     Path:
       type: object
       properties:
         path:
           type: string
-          description: When reading a site, the "path" element should be populated with
-            the site's name.
+          description: When reading a site, the "path" element should be populated with the site's name.
         siteId:
-          type:
-            - string
-            - "null"
+          type: string
           description: "NOT REQUIRED:"
         siteName:
-          type:
-            - string
-            - "null"
+          type: string
           description: "NOT REQUIRED:"
       required:
         - path
@@ -473,11 +437,8 @@ components:
       properties:
         id:
           type: string
-          description: >-
-            When editing and selected asset is recycled, it is recommended to
-            preserve this relationship by providing selected asset's id in case
-            if the selected asset gets restored from the recycle bin.
-
+          description: |-
+            When editing and selected asset is recycled, it is recommended to preserve this relationship by providing selected asset's id in case if the selected asset gets restored from the recycle bin.
             - One is REQUIRED.
         path:
           $ref: "#/components/schemas/Path"
@@ -487,26 +448,19 @@ components:
           description: REQUIRED. All asset type strings.
         recycled:
           type: boolean
-          description: "NOT REQUIRED: For reading purposes only. Ignored when editing,
-            copying etc."
+          description: "NOT REQUIRED: For reading purposes only. Ignored when editing, copying etc."
       required:
         - type
-      description: Identifies an asset by ID and/or path, along with its type and site
-        context.
+      description: Identifies an asset by ID and/or path, along with its type and site context.
     BaseAsset:
       type: object
       properties:
         id:
           type: string
-          description: The id of the asset. When creating, this should not be present as
-            an asset does not have an id until it is created. When editing,
-            specify this to uniquely identify an asset.
-      description: >-
+          description: The id of the asset. When creating, this should not be present as an asset does not have an id until it is created. When editing, specify this to uniquely identify an asset.
+      description: |-
         All assets inherit from base asset.
-
-        - The id of the asset. When creating, this should not be present as an
-        asset does not have an id until it is created. When editing, specify
-        this to uniquely identify an asset.
+        - The id of the asset. When creating, this should not be present as an asset does not have an id until it is created. When editing, specify this to uniquely identify an asset.
     Message:
       allOf:
         - $ref: "#/components/schemas/BaseAsset"
@@ -517,16 +471,14 @@ components:
               description: "REQUIRED: Who the message was/will be sent to."
             from:
               type: string
-              description: "NOT REQUIRED: Who sent the message. Not necessary when sending a
-                message."
+              description: "NOT REQUIRED: Who sent the message. Not necessary when sending a message."
             subject:
               type: string
               description: "REQUIRED: The subject of the message."
             date:
               type: string
               format: date-time
-              description: "NOT REQUIRED: The date the message was sent. Not necessary when
-                sending a message."
+              description: "NOT REQUIRED: The date the message was sent. Not necessary when sending a message."
             body:
               type: string
               description: "REQUIRED: The body of the message."
@@ -543,18 +495,14 @@ components:
           description: The search terms to use for the search query.
         siteId:
           type: string
-          description: >-
+          description: |-
             NOT REQUIRED
-
-            - Id of the site to search. If left blank, all sites will be
-            searched.
+            - Id of the site to search. If left blank, all sites will be searched.
         siteName:
           type: string
-          description: >-
+          description: |-
             NOT REQUIRED
-
-            - Name of the site to search. If left blank, all sites will be
-            searched.
+            - Name of the site to search. If left blank, all sites will be searched.
         searchFields:
           type: array
           items:
@@ -566,11 +514,9 @@ components:
           type: array
           items:
             $ref: "#/components/schemas/EntityTypeString"
-          description: >-
+          description: |-
             NOT REQUIRED
-
-            - Asset types to search (e.g. page, folder, site). If left blank,
-            all asset types will be searched.
+            - Asset types to search (e.g. page, folder, site). If left blank, all asset types will be searched.
       required:
         - searchTerms
       description: Properties for the Search Information
@@ -579,12 +525,10 @@ components:
       properties:
         destinationContainerIdentifier:
           $ref: "#/components/schemas/Identifier"
-          description: The identifier for the destination container where the asset will
-            be copied to.
+          description: The identifier for the destination container where the asset will be copied to.
         doWorkflow:
           type: boolean
-          description: Indicates whether a workflow should be initiated after the copy
-            operation.
+          description: Indicates whether a workflow should be initiated after the copy operation.
         newName:
           type: string
           description: The new name for the copied asset.
@@ -600,16 +544,14 @@ components:
           type:
             - boolean
             - "null"
-          description: "NOT REQUIRED: When true, the asset will be unpublished. Default:
-            false."
+          description: "NOT REQUIRED: When true, the asset will be unpublished. Default: false."
         destinations:
           type:
             - array
             - "null"
           items:
             $ref: "#/components/schemas/Identifier"
-          description: "NOT REQUIRED: Unpublishes the asset from the given destinations.
-            Default: all enabled destinations in the asset's site."
+          description: "NOT REQUIRED: Unpublishes the asset from the given destinations. Default: all enabled destinations in the asset's site."
       description: Parameters used when unpublishing an asset
     MoveParameters:
       allOf:
@@ -618,15 +560,13 @@ components:
           properties:
             destinationContainerIdentifier:
               $ref: "#/components/schemas/Identifier"
-              description: "NOT REQUIRED: The container into which the asset will be moved. If
-                left empty, the asset will remain in its current container"
+              description: "NOT REQUIRED: The container into which the asset will be moved. If left empty, the asset will remain in its current container"
             doWorkflow:
               type: boolean
               description: Determines if a workflow should be executed
             newName:
               type: string
-              description: "NOT REQUIRED: Name to give the asset. If left empty, the asset's
-                name will not be changed"
+              description: "NOT REQUIRED: Name to give the asset. If left empty, the asset's name will not be changed"
           required:
             - doWorkflow
       description: Properties for Move Parameters
@@ -652,25 +592,21 @@ components:
           description: "NOT REQUIRED: Filter the audits by a given user name."
         groupname:
           type: string
-          description: "NOT REQUIRED: Filter the audits by a given group name. The audits
-            for all users in the group will be returned."
+          description: "NOT REQUIRED: Filter the audits by a given group name. The audits for all users in the group will be returned."
         rolename:
           type: string
           description: "NOT REQUIRED: Filter the audits by a given role."
         startDate:
           type: string
           format: date-time
-          description: "NOT REQUIRED: Filter the audits by a start time. Only audits for
-            events that happened after this time will be included."
+          description: "NOT REQUIRED: Filter the audits by a start time. Only audits for events that happened after this time will be included."
         endDate:
           type: string
           format: date-time
-          description: "NOT REQUIRED: Filter the audits by an end time. Only audits for
-            events that happened before this time will be included."
+          description: "NOT REQUIRED: Filter the audits by an end time. Only audits for events that happened before this time will be included."
         auditType:
           $ref: "#/components/schemas/AuditTypes"
-          description: "NOT REQUIRED: Filter the audits by an audit type. Only audits of
-            this type will be returned in the response."
+          description: "NOT REQUIRED: Filter the audits by an audit type. Only audits of this type will be returned in the response."
       description: Parameters when getting the audits from the system
     OperationResult:
       type: object
@@ -680,8 +616,7 @@ components:
           description: Whether the operation completed successfully.
         message:
           type: string
-          description: A message providing details about the operation result. Present on
-            failure, absent on success.
+          description: A message providing details about the operation result. Present on failure, absent on success.
       required:
         - success
       description: The result of an API operation, indicating success or failure.
@@ -696,8 +631,7 @@ components:
           description: "REQUIRED: The type of action the user performed."
         identifier:
           $ref: "#/components/schemas/Identifier"
-          description: "NOT REQUIRED: The identifier identifying the asset the action was
-            performed on, if any."
+          description: "NOT REQUIRED: The identifier identifying the asset the action was performed on, if any."
         date:
           type: string
           format: date-time
@@ -744,9 +678,7 @@ components:
         - type: object
           properties:
             workingCopyIdentifier:
-              oneOf:
-                - $ref: "#/components/schemas/Identifier"
-                - type: "null"
+              $ref: "#/components/schemas/Identifier"
               description: "NOT REQUIRED: Identifier for the working copy."
       description: Result data from the `checkOut` operation.
     CreateResult:
@@ -756,8 +688,7 @@ components:
           properties:
             createdAssetId:
               type: string
-              description: When creating an asset, this will contain the ID of the created
-                asset
+              description: When creating an asset, this will contain the ID of the created asset
           required:
             - createdAssetId
       description: When creating an asset, this will contain the ID of the created asset
@@ -767,9 +698,7 @@ components:
         - type: object
           properties:
             messages:
-              type:
-                - array
-                - "null"
+              type: array
               items:
                 $ref: "#/components/schemas/Message"
               description: "NOT REQUIRED: A list of messages."
@@ -795,27 +724,22 @@ components:
           description: "REQUIRED: When the workflow is instantiated, this will be its name."
         workflowDefinitionId:
           type: string
-          description: "Priority: workflowDefinitionId > workflowDefinitionPath. One is
-            REQUIRED."
+          description: "Priority: workflowDefinitionId > workflowDefinitionPath. One is REQUIRED."
         workflowDefinitionPath:
           type: string
-          description: "Priority: workflowDefinitionId > workflowDefinitionPath. One is
-            REQUIRED."
+          description: "Priority: workflowDefinitionId > workflowDefinitionPath. One is REQUIRED."
         workflowComments:
           type: string
-          description: "REQUIRED: The comments for this operation which will be recorded
-            with the workflow."
+          description: "REQUIRED: The comments for this operation which will be recorded with the workflow."
         workflowStepConfigurations:
           type: array
           items:
             $ref: "#/components/schemas/WorkflowStepConfiguration"
-          description: "NOT REQUIRED: default: the defaults as defined in the workflow
-            definition."
+          description: "NOT REQUIRED: default: the defaults as defined in the workflow definition."
         endDate:
           type: string
           format: date-time
-          description: Optional due date for the workflow. If not specified, will default
-            to 7 days from today.
+          description: Optional due date for the workflow. If not specified, will default to 7 days from today.
       required:
         - workflowName
         - workflowComments
@@ -827,8 +751,7 @@ components:
           properties:
             name:
               type: string
-              description: REQUIRED on create, ignored on edit. Use move operation to rename
-                an asset.
+              description: REQUIRED on create, ignored on edit. Use move operation to rename an asset.
           required:
             - name
       description: All assets have a name
@@ -836,10 +759,10 @@ components:
       type: object
       properties:
         name:
-          type:
-            - string
-            - "null"
-          description: The name of the tag.
+          type: string
+          description: "REQUIRED: The name of the tag."
+      required:
+        - name
       description: A single tag that can be applied to an asset.
     FolderContainedAsset:
       allOf:
@@ -848,12 +771,9 @@ components:
           properties:
             parentFolderId:
               type: string
-              description: >-
-                REQUIRED: on create, ignored on edit: The parent folder
-                relationship.
-
+              description: |-
+                REQUIRED: on create, ignored on edit: The parent folder relationship.
                 - Priority: parentFolderId > parentFolderPath.
-
                 - One is REQUIRED.
             parentFolderPath:
               type: string
@@ -862,49 +782,35 @@ components:
               type: string
               description: "NOT REQUIRED: The path of an asset."
             lastModifiedDate:
-              type:
-                - string
-                - "null"
+              type: string
               format: date-time
               description: |-
                 NOT REQUIRED: When this asset was last modified.
                 - Read only.
             lastModifiedBy:
-              type:
-                - string
-                - "null"
+              type: string
               description: |-
                 NOT REQUIRED: Who last modified this asset.
                 - Read only.
             createdDate:
-              type:
-                - string
-                - "null"
+              type: string
               format: date-time
               description: |-
                 NOT REQUIRED: When this asset was created.
                 - Read only.
             createdBy:
-              type:
-                - string
-                - "null"
+              type: string
               description: |-
                 NOT REQUIRED: Who created this asset.
                 - Read only.
             siteId:
-              type:
-                - string
-                - "null"
+              type: string
               description: "One is REQUIRED: The Site in which the asset is located."
             siteName:
-              type:
-                - string
-                - "null"
+              type: string
               description: One is REQUIRED.
             tags:
-              type:
-                - array
-                - "null"
+              type: array
               items:
                 $ref: "#/components/schemas/Tag"
               description: "NOT REQUIRED: Content Tags assigned to the asset."
@@ -913,9 +819,7 @@ components:
       type: object
       properties:
         value:
-          type:
-            - string
-            - "null"
+          type: string
           description: The value of the field.
       description: A single value within a structured field.
     DynamicMetadataField:
@@ -925,16 +829,13 @@ components:
           type: string
           description: The name of the dynamic metadata field.
         fieldValues:
-          type:
-            - array
-            - "null"
+          type: array
           items:
             $ref: "#/components/schemas/FieldValue"
           description: The values assigned to this dynamic metadata field.
       required:
         - name
-      description: A dynamic metadata field entry containing a name and its associated
-        values.
+      description: A dynamic metadata field entry containing a name and its associated values.
     Metadata:
       type: object
       properties:
@@ -945,9 +846,7 @@ components:
           type: string
           description: "NOT REQUIRED:"
         endDate:
-          type:
-            - string
-            - "null"
+          type: string
           format: date-time
           description: "NOT REQUIRED:"
         keywords:
@@ -957,15 +856,11 @@ components:
           type: string
           description: "NOT REQUIRED:"
         reviewDate:
-          type:
-            - string
-            - "null"
+          type: string
           format: date-time
           description: "NOT REQUIRED:"
         startDate:
-          type:
-            - string
-            - "null"
+          type: string
           format: date-time
           description: "NOT REQUIRED:"
         summary:
@@ -992,8 +887,7 @@ components:
           properties:
             metadata:
               $ref: "#/components/schemas/Metadata"
-              description: "The individual wired metadata fields NOT REQUIRED default: all
-                empty"
+              description: "The individual wired metadata fields NOT REQUIRED default: all empty"
             metadataSetId:
               type: string
               description: |-
@@ -1005,19 +899,14 @@ components:
                 NOT REQUIRED: For defining the metadata set relationship.
                 - Priority: metadataSetId > metadataSetPath
             reviewOnSchedule:
-              type:
-                - boolean
-                - "null"
+              type: boolean
               description: NOT REQUIRED
             reviewEvery:
-              type:
-                - integer
-                - "null"
+              type: integer
               format: int32
               minimum: 0
               description: NOT REQUIRED
-      description: "NOT REQUIRED: The individual wired metadata fields. | default: all
-        empty."
+      description: "NOT REQUIRED: The individual wired metadata fields. | default: all empty."
     ExpiringAsset:
       allOf:
         - $ref: "#/components/schemas/DublinAwareAsset"
@@ -1025,20 +914,15 @@ components:
           properties:
             expirationFolderId:
               type: string
-              description: >-
-                NOT REQUIRED: When editing and selected asset is recycled, it is
-                recommended to preserve this relationship by providing selected
-                asset's id in case if the selected asset gets restored from the
-                recycle bin.
-
+              description: |-
+                NOT REQUIRED: When editing and selected asset is recycled, it is recommended to preserve this relationship by providing selected asset's id in case if the selected asset gets restored from the recycle bin.
                 - Priority: expirationFolderId > expirationFolderPath
             expirationFolderPath:
               type: string
               description: "NOT REQUIRED: Path works only for non-recycled assets."
             expirationFolderRecycled:
               type: boolean
-              description: "NOT REQUIRED: For reading purposes only. Ignored when editing,
-                copying etc."
+              description: "NOT REQUIRED: For reading purposes only. Ignored when editing, copying etc."
       description: An asset that can expire and be moved to an expiration folder.
     Block:
       allOf:
@@ -1063,111 +947,77 @@ components:
           properties:
             indexBlockType:
               $ref: "#/components/schemas/IndexBlockType"
-              description: "NOT REQUIRED: The type of the index block. It takes 'folder' as a
-                default. Default: 'folder'"
+              description: "NOT REQUIRED: The type of the index block. It takes 'folder' as a default. Default: 'folder'"
             indexedFolderId:
               type: string
-              description: "NOT REQUIRED: The indexed folder relationship when indexBlockType
-                is folder. Priority: indexedFolderId > indexedFolderPath. When
-                editing and selected asset is recycled, it is recommended to
-                preserve this relationship by providing selected asset's id in
-                case if the selected asset gets restored from the recycle bin."
+              description: "NOT REQUIRED: The indexed folder relationship when indexBlockType is folder. Priority: indexedFolderId > indexedFolderPath. When editing and selected asset is recycled, it is recommended to preserve this relationship by providing selected asset's id in case if the selected asset gets restored from the recycle bin."
             indexedFolderPath:
               type: string
               description: "NOT REQUIRED: Path works only for non-recycled assets."
             indexedContentTypeId:
               type: string
-              description: "NOT REQUIRED: The indexed content type relationship when
-                indexBlockType is content-type. Priority: indexedContentTypeId >
-                indexedContentTypePath. One is REQUIRED when indexBlockType is
-                content-type."
+              description: "NOT REQUIRED: The indexed content type relationship when indexBlockType is content-type. Priority: indexedContentTypeId > indexedContentTypePath. One is REQUIRED when indexBlockType is content-type."
             indexedContentTypePath:
               type: string
-              description: "NOT REQUIRED: The indexed content type relationship when
-                indexBlockType is content-type. Priority: indexedContentTypeId >
-                indexedContentTypePath. One is REQUIRED when indexBlockType is
-                content-type."
+              description: "NOT REQUIRED: The indexed content type relationship when indexBlockType is content-type. Priority: indexedContentTypeId > indexedContentTypePath. One is REQUIRED when indexBlockType is content-type."
             indexedFolderRecycled:
               type: boolean
-              description: "NOT REQUIRED: For reading purposes only. Ignored when editing,
-                copying etc."
+              description: "NOT REQUIRED: For reading purposes only. Ignored when editing, copying etc."
             maxRenderedAssets:
               type: integer
               format: int32
               minimum: 0
-              description: "REQUIRED: The maximum number of assets to render in XML form for
-                this index block."
+              description: "REQUIRED: The maximum number of assets to render in XML form for this index block."
             depthOfIndex:
               type: integer
               format: int32
               minimum: 0
-              description: "REQUIRED: The folder depth to which the indexer will render assets
-                in XML form."
+              description: "REQUIRED: The folder depth to which the indexer will render assets in XML form."
             renderingBehavior:
               $ref: "#/components/schemas/IndexBlockRenderingBehavior"
-              description: "NOT REQUIRED: The rendering behavior of the folder index block.
-                Default: 'render-normally'."
+              description: "NOT REQUIRED: The rendering behavior of the folder index block. Default: 'render-normally'."
             indexPages:
               type: boolean
-              description: "NOT REQUIRED: Whether or not to index page assets. Default:
-                false."
+              description: "NOT REQUIRED: Whether or not to index page assets. Default: false."
             indexBlocks:
               type: boolean
-              description: "NOT REQUIRED: Whether or not to index block assets. Default:
-                false."
+              description: "NOT REQUIRED: Whether or not to index block assets. Default: false."
             indexLinks:
               type: boolean
-              description: "NOT REQUIRED: Whether or not to index (sym)link assets. Default:
-                false."
+              description: "NOT REQUIRED: Whether or not to index (sym)link assets. Default: false."
             indexFiles:
               type: boolean
-              description: "NOT REQUIRED: Whether or not to index file assets. Default:
-                false."
+              description: "NOT REQUIRED: Whether or not to index file assets. Default: false."
             indexRegularContent:
               type: boolean
-              description: "NOT REQUIRED: Whether or not to include path data. Default:
-                false."
+              description: "NOT REQUIRED: Whether or not to include path data. Default: false."
             indexSystemMetadata:
               type: boolean
-              description: "NOT REQUIRED: Whether or not to include last modified date, last
-                modified by, created date and created by. Default: false."
+              description: "NOT REQUIRED: Whether or not to include last modified date, last modified by, created date and created by. Default: false."
             indexUserMetadata:
               type: boolean
-              description: "NOT REQUIRED: Whether or not to include wired/dynamic metadata.
-                Default: false."
+              description: "NOT REQUIRED: Whether or not to include wired/dynamic metadata. Default: false."
             indexAccessRights:
               type: boolean
-              description: "NOT REQUIRED: Whether or not to include access rights information.
-                Default: false."
+              description: "NOT REQUIRED: Whether or not to include access rights information. Default: false."
             indexTags:
               type: boolean
               description: "NOT REQUIRED: Whether or not to include tags. Default: false."
             indexUserInfo:
               type: boolean
-              description: "NOT REQUIRED: When this is 'true', an element 'user-information'
-                will be added towards the bottom of the rendered XML including
-                information about the user's login, full name and group
-                memberships. Default: false."
+              description: "NOT REQUIRED: When this is 'true', an element 'user-information' will be added towards the bottom of the rendered XML including information about the user's login, full name and group memberships. Default: false."
             indexWorkflowInfo:
               type: boolean
-              description: "NOT REQUIRED: When this is 'true', and this block is included in a
-                page that is in workflow, an element containing the page's
-                workflow information will be included in the rendered XML.
-                Default: false."
+              description: "NOT REQUIRED: When this is 'true', and this block is included in a page that is in workflow, an element containing the page's workflow information will be included in the rendered XML. Default: false."
             appendCallingPageData:
               type: boolean
-              description: "NOT REQUIRED: When this is 'true', the page which includes this
-                index block will have its information also included at the
-                bottom in a 'calling-page-data' element. Default: false."
+              description: "NOT REQUIRED: When this is 'true', the page which includes this index block will have its information also included at the bottom in a 'calling-page-data' element. Default: false."
             sortMethod:
               $ref: "#/components/schemas/IndexBlockSortMethod"
-              description: "NOT REQUIRED: How to sort the folder contents when rendering the
-                XML content. Default: 'folder-order' for folder index blocks and
-                'alphabetical' for content type index blocks."
+              description: "NOT REQUIRED: How to sort the folder contents when rendering the XML content. Default: 'folder-order' for folder index blocks and 'alphabetical' for content type index blocks."
             sortOrder:
               $ref: "#/components/schemas/IndexBlockSortOrder"
-              description: "NOT REQUIRED: In what order to sort the assets in the index block.
-                Default: ascending."
+              description: "NOT REQUIRED: In what order to sort the assets in the index block. Default: ascending."
             pageXML:
               $ref: "#/components/schemas/IndexBlockPageXml"
               description: "NOT REQUIRED: The Page XML rendering option. Default: no-render."
@@ -1194,13 +1044,9 @@ components:
           description: "REQUIRED: Each node has a type."
         identifier:
           type: string
-          description: >-
-            REQUIRED: The text identifier of the node coming from corresponding
-            field in Data Definition.
-
-            - If this node is preserved on the asset but the corresponding field
-            no longer exists in Data Definition, the identifier's value will be
-            "\<legacy\>".
+          description: |-
+            REQUIRED: The text identifier of the node coming from corresponding field in Data Definition.
+            - If this node is preserved on the asset but the corresponding field no longer exists in Data Definition, the identifier's value will be "\<legacy\>".
         structuredDataNodes:
           type: array
           items:
@@ -1214,127 +1060,68 @@ components:
           description: REQUIRED if type is 'asset'.
         blockId:
           type: string
-          description: >-
+          description: |-
             NOT REQUIRED: Priority: blockId > blockPath.
-
-            - When editing and the selected asset is recycled, it is recommended
-            to preserve this relationship by providing the selected asset's id
-            in case the selected asset gets restored from the recycle bin.
-
+            - When editing and the selected asset is recycled, it is recommended to preserve this relationship by providing the selected asset's id in case the selected asset gets restored from the recycle bin.
             - The block assigned to this page region.
         blockPath:
           type: string
-          description: >-
+          description: |-
             NOT REQUIRED: Priority: blockId > blockPath.
-
             - Path works only for non-recycled assets.
-
-            - When editing and the selected asset is recycled, it is recommended
-            to preserve this relationship by providing the selected asset's id
-            in case the selected asset gets restored from the recycle bin.
-
+            - When editing and the selected asset is recycled, it is recommended to preserve this relationship by providing the selected asset's id in case the selected asset gets restored from the recycle bin.
             - The block assigned to this page region.
         fileId:
           type: string
-          description: >-
+          description: |-
             NOT REQUIRED:
-
-            - If assetType=file, one of fileId or filePath should be provided if
-            an asset is selected for this node.
-
-            - If assetType=linkable, fileId or filePath should be populated if
-            the selected linkable asset is a file.
-
-            - When editing and the selected asset is recycled, it is recommended
-            to preserve this relationship by providing the selected asset's id
-            in case the selected asset gets restored from the recycle bin.
+            - If assetType=file, one of fileId or filePath should be provided if an asset is selected for this node.
+            - If assetType=linkable, fileId or filePath should be populated if the selected linkable asset is a file.
+            - When editing and the selected asset is recycled, it is recommended to preserve this relationship by providing the selected asset's id in case the selected asset gets restored from the recycle bin.
         filePath:
           type: string
-          description: >-
+          description: |-
             NOT REQUIRED:
-
             - Path works only for non-recycled assets.
-
-            - If assetType=file, one of fileId or filePath should be provided if
-            an asset is selected for this node.
-
-            - If assetType=linkable, fileId or filePath should be populated if
-            the selected linkable asset is a file.
-
-            - When editing and the selected asset is recycled, it is recommended
-            to preserve this relationship by providing the selected asset's id
-            in case the selected asset gets restored from the recycle bin.
+            - If assetType=file, one of fileId or filePath should be provided if an asset is selected for this node.
+            - If assetType=linkable, fileId or filePath should be populated if the selected linkable asset is a file.
+            - When editing and the selected asset is recycled, it is recommended to preserve this relationship by providing the selected asset's id in case the selected asset gets restored from the recycle bin.
         pageId:
           type: string
-          description: >-
+          description: |-
             NOT REQUIRED:
-
-            - If assetType=page, one of pageId or pagePath should be provided if
-            an asset is selected for this node.
-
-            - If assetType=linkable, pageId or pagePath should be populated if
-            the selected linkable asset is a page.
-
-            - When editing and the selected asset is recycled, it is recommended
-            to preserve this relationship by providing the selected asset's id
-            in case the selected asset gets restored from the recycle bin.
+            - If assetType=page, one of pageId or pagePath should be provided if an asset is selected for this node.
+            - If assetType=linkable, pageId or pagePath should be populated if the selected linkable asset is a page.
+            - When editing and the selected asset is recycled, it is recommended to preserve this relationship by providing the selected asset's id in case the selected asset gets restored from the recycle bin.
         pagePath:
           type: string
-          description: >-
+          description: |-
             NOT REQUIRED:
-
             - Path works only for non-recycled assets.
-
-            - If assetType=page, one of pageId or pagePath should be provided if
-            an asset is selected for this node.
-
-            - If assetType=linkable, pageId or pagePath should be populated if
-            the selected linkable asset is a page.
-
-            - When editing and the selected asset is recycled, it is recommended
-            to preserve this relationship by providing the selected asset's id
-            in case the selected asset gets restored from the recycle bin.
+            - If assetType=page, one of pageId or pagePath should be provided if an asset is selected for this node.
+            - If assetType=linkable, pageId or pagePath should be populated if the selected linkable asset is a page.
+            - When editing and the selected asset is recycled, it is recommended to preserve this relationship by providing the selected asset's id in case the selected asset gets restored from the recycle bin.
         symlinkId:
           type: string
-          description: >-
+          description: |-
             NOT REQUIRED:
-
-            - If assetType=symlink, one of symlinkId or symlinkPath should be
-            provided if an asset is selected for this node.
-
-            - If assetType=linkable, symlinkId or symlinkPath should be
-            populated if the selected linkable asset is a symlink.
-
-            - When editing and the selected asset is recycled, it is recommended
-            to preserve this relationship by providing the selected asset's id
-            in case the selected asset gets restored from the recycle bin.
+            - If assetType=symlink, one of symlinkId or symlinkPath should be provided if an asset is selected for this node.
+            - If assetType=linkable, symlinkId or symlinkPath should be populated if the selected linkable asset is a symlink.
+            - When editing and the selected asset is recycled, it is recommended to preserve this relationship by providing the selected asset's id in case the selected asset gets restored from the recycle bin.
         symlinkPath:
           type: string
-          description: >-
+          description: |-
             NOT REQUIRED:
-
             - Path works only for non-recycled assets.
-
-            - If assetType=symlink, one of symlinkId or symlinkPath should be
-            provided if an asset is selected for this node.
-
-            - If assetType=linkable, symlinkId or symlinkPath should be
-            populated if the selected linkable asset is a symlink.
-
-            - When editing and the selected asset is recycled, it is recommended
-            to preserve this relationship by providing the selected asset's id
-            in case the selected asset gets restored from the recycle bin.
+            - If assetType=symlink, one of symlinkId or symlinkPath should be provided if an asset is selected for this node.
+            - If assetType=linkable, symlinkId or symlinkPath should be populated if the selected linkable asset is a symlink.
+            - When editing and the selected asset is recycled, it is recommended to preserve this relationship by providing the selected asset's id in case the selected asset gets restored from the recycle bin.
         recycled:
           type: boolean
-          description: >-
+          description: |-
             NOT REQUIRED:
-
-            - Use for reading only - this attribute is not necessary when
-            editing or creating and will not affect these operations if
-            provided.
-
-            - If a path is provided, Cascade will look only for a non-recycled
-            asset with the given path, even if 'recycled=true' is provided.
+            - Use for reading only - this attribute is not necessary when editing or creating and will not affect these operations if provided.
+            - If a path is provided, Cascade will look only for a non-recycled asset with the given path, even if 'recycled=true' is provided.
       required:
         - type
         - identifier
@@ -1344,12 +1131,10 @@ components:
       properties:
         definitionId:
           type: string
-          description: "NOT REQUIRED: Id of the Data Definition block. Priority:
-            definitionId > definitionPath."
+          description: "NOT REQUIRED: Id of the Data Definition block. Priority: definitionId > definitionPath."
         definitionPath:
           type: string
-          description: "NOT REQUIRED: Path of the Data Definition block. Priority:
-            definitionId > definitionPath."
+          description: "NOT REQUIRED: Path of the Data Definition block. Priority: definitionId > definitionPath."
         structuredDataNodes:
           type: array
           items:
@@ -1363,8 +1148,7 @@ components:
           properties:
             structuredData:
               $ref: "#/components/schemas/StructuredData"
-              description: "A choice between structured data and xhtml content Priority: xhtml
-                > structuredData One is REQUIRED"
+              description: "A choice between structured data and xhtml content Priority: xhtml > structuredData One is REQUIRED"
             xhtml:
               type: string
               description: The XHTML content of the block.
@@ -1396,17 +1180,13 @@ components:
                 NOT REQUIRED: default: true.
                 - Whether or not this asset can be indexed.
             lastPublishedDate:
-              type:
-                - string
-                - "null"
+              type: string
               format: date-time
               description: |-
                 NOT REQUIRED:
                 - The last date this asset was published.
             lastPublishedBy:
-              type:
-                - string
-                - "null"
+              type: string
               description: |-
                 NOT REQUIRED:
                 - Who last published this asset.
@@ -1420,24 +1200,18 @@ components:
           properties:
             text:
               type: string
-              description: >-
+              description: |-
                 One is REQUIRED.
-
                 - Priority: text > data.
-
-                - A file either contains plaintext content or binary content
-                (base64 encoded).
+                - A file either contains plaintext content or binary content (base64 encoded).
             data:
               type: array
               items:
                 type: integer
-              description: >-
+              description: |-
                 One is REQUIRED.
-
                 - Priority: text > data.
-
-                - A file either contains plaintext content or binary content
-                (base64 encoded).
+                - A file either contains plaintext content or binary content (base64 encoded).
             rewriteLinks:
               type: boolean
               description: Whether links in the file should be rewritten during publishing.
@@ -1451,9 +1225,7 @@ components:
         - type: object
           properties:
             children:
-              type:
-                - array
-                - "null"
+              type: array
               items:
                 $ref: "#/components/schemas/Identifier"
               description: |-
@@ -1470,44 +1242,33 @@ components:
           properties:
             name:
               type: string
-              description: >-
-                The name of this page region, for example, "DEFAULT", or
-                "JAVASCRIPT-INCLUDE".
-
-                - This MUST correspond to the name of a region defined in the
-                template. REQUIRED.
+              description: |-
+                The name of this page region, for example, "DEFAULT", or "JAVASCRIPT-INCLUDE".
+                - This MUST correspond to the name of a region defined in the template. REQUIRED.
             blockId:
               type: string
-              description: "The block assigned at this page region. Priority: blockId >
-                blockPath. NOT REQUIRED."
+              description: "The block assigned at this page region. Priority: blockId > blockPath. NOT REQUIRED."
             blockPath:
               type: string
               description: Path works only for non-recycled assets.
             blockRecycled:
               type: boolean
-              description: "NOT REQUIRED: For reading purposes only. Ignored when editing,
-                copying, etc."
+              description: "NOT REQUIRED: For reading purposes only. Ignored when editing, copying, etc."
             noBlock:
               type: boolean
-              description: "When this is set to true, this will keep a block defined at a
-                lower level from applying to this region. NOT REQUIRED: default:
-                false."
+              description: "When this is set to true, this will keep a block defined at a lower level from applying to this region. NOT REQUIRED: default: false."
             formatId:
               type: string
-              description: "The format assigned at this page region, can be either XSLT or
-                script. Priority: formatId > formatPath. NOT REQUIRED."
+              description: "The format assigned at this page region, can be either XSLT or script. Priority: formatId > formatPath. NOT REQUIRED."
             formatPath:
               type: string
               description: Path works only for non-recycled assets.
             formatRecycled:
               type: boolean
-              description: "NOT REQUIRED: For reading purposes only. Ignored when editing,
-                copying, etc."
+              description: "NOT REQUIRED: For reading purposes only. Ignored when editing, copying, etc."
             noFormat:
               type: boolean
-              description: "When this is set to true, this will keep a format defined at a
-                lower level from applying to this region. NOT REQUIRED: default:
-                false."
+              description: "When this is set to true, this will keep a format defined at a lower level from applying to this region. NOT REQUIRED: default: false."
           required:
             - name
       description: Properties specific to a page region.
@@ -1518,27 +1279,22 @@ components:
           properties:
             name:
               type: string
-              description: "REQUIRED: A single page configuration's name, such as 'XML' or
-                'Full HTML'."
+              description: "REQUIRED: A single page configuration's name, such as 'XML' or 'Full HTML'."
             defaultConfiguration:
               type: boolean
               description: "REQUIRED: Whether or not this is the default configuration."
             templateId:
               type: string
-              description: "NOT REQUIRED: The template for this configuration. Priority:
-                templateId > templatePath."
+              description: "NOT REQUIRED: The template for this configuration. Priority: templateId > templatePath."
             templatePath:
               type: string
-              description: "NOT REQUIRED: The template for this configuration. Priority:
-                templateId > templatePath."
+              description: "NOT REQUIRED: The template for this configuration. Priority: templateId > templatePath."
             formatId:
               type: string
-              description: "NOT REQUIRED: The overall XSLT format applied to this page
-                configuration. Priority: formatId > formatPath."
+              description: "NOT REQUIRED: The overall XSLT format applied to this page configuration. Priority: formatId > formatPath."
             formatPath:
               type: string
-              description: "NOT REQUIRED: The overall XSLT format applied to this page
-                configuration. Priority: formatId > formatPath."
+              description: "NOT REQUIRED: The overall XSLT format applied to this page configuration. Priority: formatId > formatPath."
             formatRecycled:
               type: boolean
               description: "NOT REQUIRED: Whether or not the format is recycled."
@@ -1548,26 +1304,16 @@ components:
                 $ref: "#/components/schemas/PageRegion"
               description: "NOT REQUIRED: Regions of the page."
             outputExtension:
-              type:
-                - string
-                - "null"
-              description: "NOT REQUIRED: The output extension, if specified, of the page
-                configuration."
+              type: string
+              description: "NOT REQUIRED: The output extension, if specified, of the page configuration."
             serializationType:
-              oneOf:
-                - $ref: "#/components/schemas/SerializationType"
-                - type: "null"
               description: "NOT REQUIRED: The serialization type."
+              $ref: "#/components/schemas/SerializationType"
             includeXMLDeclaration:
-              type:
-                - boolean
-                - "null"
-              description: "NOT REQUIRED: Whether or not to include an XML declaration in the
-                output."
+              type: boolean
+              description: "NOT REQUIRED: Whether or not to include an XML declaration in the output."
             publishable:
-              type:
-                - boolean
-                - "null"
+              type: boolean
               description: "NOT REQUIRED: Whether or not the page is publishable."
           required:
             - name
@@ -1580,66 +1326,43 @@ components:
           properties:
             configurationSetId:
               type: string
-              description: >-
+              description: |-
                 For defining the configuration set or content type relationship.
-
-                - Priority: (contentTypeId > contentTypePath) >
-                (configurationSetId > configurationSetPath).
-
-                - One is REQUIRED: contentTypeId | contentTypePath |
-                configurationSetId | configurationSetPath
+                - Priority: (contentTypeId > contentTypePath) > (configurationSetId > configurationSetPath).
+                - One is REQUIRED: contentTypeId | contentTypePath | configurationSetId | configurationSetPath
             configurationSetPath:
               type: string
-              description: >-
+              description: |-
                 For defining the configuration set or content type relationship.
-
-                - Priority: (contentTypeId > contentTypePath) >
-                (configurationSetId > configurationSetPath).
-
-                - One is REQUIRED: contentTypeId | contentTypePath |
-                configurationSetId | configurationSetPath
+                - Priority: (contentTypeId > contentTypePath) > (configurationSetId > configurationSetPath).
+                - One is REQUIRED: contentTypeId | contentTypePath | configurationSetId | configurationSetPath
             contentTypeId:
               type: string
-              description: >-
+              description: |-
                 For defining the configuration set or content type relationship.
-
-                - Priority: (contentTypeId > contentTypePath) >
-                (configurationSetId > configurationSetPath).
-
-                - One is REQUIRED: contentTypeId | contentTypePath |
-                configurationSetId | configurationSetPath
+                - Priority: (contentTypeId > contentTypePath) > (configurationSetId > configurationSetPath).
+                - One is REQUIRED: contentTypeId | contentTypePath | configurationSetId | configurationSetPath
             contentTypePath:
               type: string
-              description: >-
+              description: |-
                 For defining the configuration set or content type relationship.
-
-                - Priority: (contentTypeId > contentTypePath) >
-                (configurationSetId > configurationSetPath).
-
-                - One is REQUIRED: contentTypeId | contentTypePath |
-                configurationSetId | configurationSetPath
+                - Priority: (contentTypeId > contentTypePath) > (configurationSetId > configurationSetPath).
+                - One is REQUIRED: contentTypeId | contentTypePath | configurationSetId | configurationSetPath
             structuredData:
               $ref: "#/components/schemas/StructuredData"
-              description: >-
-                A page either contains XHTML content (plain WYSIWYG page) or
-                structured data content.
-
+              description: |-
+                A page either contains XHTML content (plain WYSIWYG page) or structured data content.
                 - Priority: xhtml > structuredData. One is REQUIRED.
             xhtml:
               type: string
-              description: A page either contains XHTML content (plain WYSIWYG page) or
-                structured data content.
+              description: A page either contains XHTML content (plain WYSIWYG page) or structured data content.
             pageConfigurations:
               type: array
               items:
                 $ref: "#/components/schemas/PageConfiguration"
-              description: >-
-                The page configurations containing page-level region
-                block/format assignments.
-
-                - NOT REQUIRED when creating a page, but you must submit
-                assignment information when editing
-
+              description: |-
+                The page configurations containing page-level region block/format assignments.
+                - NOT REQUIRED when creating a page, but you must submit assignment information when editing
                 - if you want to maintain the region assignments.
             linkRewriting:
               $ref: "#/components/schemas/LinkRewriting"
@@ -1699,35 +1422,23 @@ components:
               type: string
               format: uri
               description: "NOT REQUIRED: The fully qualified URL of this link."
-      description: A symlink is not a UNIX symlink - it is simply an asset containing
-        a hyperlink
+      description: A symlink is not a UNIX symlink - it is simply an asset containing a hyperlink
     Template:
       allOf:
         - $ref: "#/components/schemas/FolderContainedAsset"
         - type: object
           properties:
             formatId:
-              type:
-                - string
-                - "null"
-              description: >-
-                NOT REQUIRED: Overall xslt format applied to this template.
-                Defaults to none.
-
-                - When editing and selected asset is recycled, it is recommended
-                to preserve this relationship by providing the selected asset's
-                ID in case it gets restored from the recycle bin.
+              type: string
+              description: |-
+                NOT REQUIRED: Overall xslt format applied to this template. Defaults to none.
+                - When editing and selected asset is recycled, it is recommended to preserve this relationship by providing the selected asset's ID in case it gets restored from the recycle bin.
             formatPath:
-              type:
-                - string
-                - "null"
+              type: string
               description: "NOT REQUIRED: Path works only for non-recycled assets."
             formatRecycled:
-              type:
-                - boolean
-                - "null"
-              description: "NOT REQUIRED: For reading purposes only. Ignored when editing,
-                copying, etc."
+              type: boolean
+              description: "NOT REQUIRED: For reading purposes only. Ignored when editing, copying, etc."
             xml:
               type: string
               description: "REQUIRED: The XHTML content of the template."
@@ -1735,8 +1446,7 @@ components:
               type: array
               items:
                 $ref: "#/components/schemas/PageRegion"
-              description: "NOT REQUIRED: The page regions and their block/xslt format
-                assignments for this template. Defaults to all regions empty."
+              description: "NOT REQUIRED: The page regions and their block/xslt format assignments for this template. Defaults to all regions empty."
           required:
             - xml
       description: Represents a template that defines the structure and layout of a page.
@@ -1766,31 +1476,27 @@ components:
           description: "NOT REQUIRED: Whether or not this user is enabled. Default false."
         groups:
           type: string
-          description: "REQUIRED: A semi-colon separated list of groups this user is a
-            member of."
-        role:
+          description: "REQUIRED: A semi-colon separated list of groups this user is a member of."
+        roles:
           type: string
           description: "REQUIRED: This user's roles."
         defaultSiteId:
-          type:
-            - string
-            - "null"
-          description: "NOT REQUIRED: Default Site for the user, defaultSiteId takes
-            precedence if both fields are set."
+          type: string
+          description: "NOT REQUIRED: Default Site for the user, defaultSiteId takes precedence if both fields are set."
         defaultSiteName:
-          type:
-            - string
-            - "null"
+          type: string
           description: "NOT REQUIRED:"
         ldapDN:
           type: string
           description: REQUIRED if authType is ldap; otherwise, NOT REQUIRED.
       required:
         - username
+        - fullName
+        - email
         - authType
         - password
         - groups
-        - role
+        - roles
       description: A user
     Group:
       allOf:
@@ -1802,20 +1508,15 @@ components:
               description: "REQUIRED: The name of the group."
             users:
               type: string
-              description: >-
+              description: |-
                 NOT REQUIRED:
-
-                - Semi-colon delimited list of all of the member users of this
-                group.
+                - Semi-colon delimited list of all of the member users of this group.
             role:
               type: string
-              description: >-
+              description: |-
                 REQUIRED:
-
                 - The Roles for this group.
-
-                - Note that this role will also apply to all the members,
-                possibly adding roles for those users.
+                - Note that this role will also apply to all the members, possibly adding roles for those users.
           required:
             - groupName
             - role
@@ -2134,38 +1835,27 @@ components:
           properties:
             parentContainerId:
               type: string
-              description: >-
+              description: |-
                 NOT REQUIRED on edit: For defining the container relationship.
-
                 - Priority: parentContainerId > parentContainerPath.
-
-                - Required on create, ignored on edit. Use move operation to
-                move an asset after it has been created.
+                - Required on create, ignored on edit. Use move operation to move an asset after it has been created.
             parentContainerPath:
               type: string
-              description: >-
-                NOT REQUIRED on edit: Priority: parentContainerId >
-                parentContainerPath.
-
+              description: |-
+                NOT REQUIRED on edit: Priority: parentContainerId > parentContainerPath.
                 - One is REQUIRED on create, ignored on edit.
             path:
               type: string
-              description: >-
+              description: |-
                 NOT REQUIRED: The path of an asset.
-
-                - Left blank when creating, specify this to uniquely identify an
-                asset when editing.
+                - Left blank when creating, specify this to uniquely identify an asset when editing.
             siteId:
-              type:
-                - string
-                - "null"
+              type: string
               description: |-
                 NOT REQUIRED: The site in which the asset is located.
                 - Priority: siteId > siteName. One is REQUIRED.
             siteName:
-              type:
-                - string
-                - "null"
+              type: string
               description: "NOT REQUIRED: Priority: siteId > siteName. One is REQUIRED."
       description: All system area assets are 'containered'.
     AssetFactoryPluginParameter:
@@ -2201,73 +1891,52 @@ components:
           properties:
             applicableGroupNames:
               type: string
-              description: "NOT REQUIRED: Semicolon-delimited list of string group names for
-                which this asset is available for use. Leave out to assign no
-                groups."
+              description: "NOT REQUIRED: Semicolon-delimited list of string group names for which this asset is available for use. Leave out to assign no groups."
             assetType:
               type: string
               description: "REQUIRED: The type of asset this factory will create."
             baseAssetId:
               type: string
-              description: >-
+              description: |-
                 NOT REQUIRED: The default/base asset for this factory.
-
-                - When editing and selected asset is recycled, it is recommended
-                to preserve this relationship by providing the selected asset's
-                ID in case it gets restored from the recycle bin.
+                - When editing and selected asset is recycled, it is recommended to preserve this relationship by providing the selected asset's ID in case it gets restored from the recycle bin.
             baseAssetPath:
               type: string
               description: "NOT REQUIRED: Path works only for non-recycled assets."
             baseAssetRecycled:
               type: boolean
-              description: "NOT REQUIRED: For reading purposes only. Ignored when editing,
-                copying, etc."
+              description: "NOT REQUIRED: For reading purposes only. Ignored when editing, copying, etc."
             description:
               type: string
-              description: "NOT REQUIRED: The description text for this factory which is
-                displayed in the new menu. Defaults to null."
+              description: "NOT REQUIRED: The description text for this factory which is displayed in the new menu. Defaults to null."
             placementFolderId:
               type: string
-              description: >-
-                NOT REQUIRED: Where assets created from this factory must be
-                placed if specified.
-
-                - When editing and selected asset is recycled, it is recommended
-                to preserve this relationship by providing the selected asset's
-                ID in case it gets restored from the recycle bin.
+              description: |-
+                NOT REQUIRED: Where assets created from this factory must be placed if specified.
+                - When editing and selected asset is recycled, it is recommended to preserve this relationship by providing the selected asset's ID in case it gets restored from the recycle bin.
             placementFolderPath:
               type: string
               description: "NOT REQUIRED: Path works only for non-recycled assets."
             placementFolderRecycled:
               type: boolean
-              description: "NOT REQUIRED: For reading purposes only. Ignored when editing,
-                copying, etc."
+              description: "NOT REQUIRED: For reading purposes only. Ignored when editing, copying, etc."
             allowSubfolderPlacement:
               type: boolean
-              description: "NOT REQUIRED: When the placement folder is specified, this allows
-                assets to be placed in subfolders of that folder as well.
-                Defaults to false."
+              description: "NOT REQUIRED: When the placement folder is specified, this allows assets to be placed in subfolders of that folder as well. Defaults to false."
             folderPlacementPosition:
-              type:
-                - integer
-                - "null"
+              type: integer
               format: int32
               minimum: 0
-              description: "NOT REQUIRED: Assets created from this factory will be positioned
-                at this folder position. Defaults to 0."
+              description: "NOT REQUIRED: Assets created from this factory will be positioned at this folder position. Defaults to 0."
             overwrite:
               type: boolean
-              description: "NOT REQUIRED: If an asset is created from this factory and placed
-                in a folder with an asset of the same name, whether or not that
-                asset will be overwritten. Defaults to false."
+              description: "NOT REQUIRED: If an asset is created from this factory and placed in a folder with an asset of the same name, whether or not that asset will be overwritten. Defaults to false."
             workflowMode:
               $ref: "#/components/schemas/AssetFactoryWorkflowMode"
-              description: "REQUIRED: What workflow behavior to use when creating assets using
-                this asset factory."
+              description: "REQUIRED: What workflow behavior to use when creating assets using this asset factory."
             workflowDefinitionId:
               type: string
-              description: "NOT REQUIRED: When workflowMode is 'factory-controlled', this
-                specifies the workflow definition to use."
+              description: "NOT REQUIRED: When workflowMode is 'factory-controlled', this specifies the workflow definition to use."
             workflowDefinitionPath:
               type: string
               description: "NOT REQUIRED: Defaults to empty."
@@ -2275,8 +1944,7 @@ components:
               type: array
               items:
                 $ref: "#/components/schemas/AssetFactoryPlugin"
-              description: "NOT REQUIRED: An array of asset factory plugins assigned to the
-                asset factory. Defaults to empty."
+              description: "NOT REQUIRED: An array of asset factory plugins assigned to the asset factory. Defaults to empty."
           required:
             - assetType
             - workflowMode
@@ -2288,16 +1956,12 @@ components:
           properties:
             applicableGroupNames:
               type: string
-              description: "NOT REQUIRED: Semicolon-delimited list of string group names for
-                which this asset is available for use."
+              description: "NOT REQUIRED: Semicolon-delimited list of string group names for which this asset is available for use."
             description:
               type: string
-              description: "NOT REQUIRED: String describing the asset factory container,
-                displayed in the new menu."
+              description: "NOT REQUIRED: String describing the asset factory container, displayed in the new menu."
             children:
-              type:
-                - array
-                - "null"
+              type: array
               items:
                 $ref: "#/components/schemas/Identifier"
               description: "NOT REQUIRED: The array of children."
@@ -2317,13 +1981,10 @@ components:
           $ref: "#/components/schemas/ContentTypePageConfigurationPublishMode"
           description: REQUIRED.
         destinations:
-          type:
-            - array
-            - "null"
+          type: array
           items:
             $ref: "#/components/schemas/Identifier"
-          description: REQUIRED if "publishMode" is "selected-destinations", else NOT
-            REQUIRED and ignored.
+          description: REQUIRED if "publishMode" is "selected-destinations", else NOT REQUIRED and ignored.
       required:
         - publishMode
       description: Maps a content type to a specific page configuration.
@@ -2337,31 +1998,19 @@ components:
           type: string
           description: REQUIRED.
         dataDefinitionGroupPath:
-          type:
-            - string
-            - "null"
-          description: >-
-            NOT REQUIRED. This property is only applicable for data-definition
-            type fields.
-
-            - It holds a list of ancestor data definition groups presented in
-            the form of a path.
+          type: string
+          description: |-
+            NOT REQUIRED. This property is only applicable for data-definition type fields.
+            - It holds a list of ancestor data definition groups presented in the form of a path.
         type:
           $ref: "#/components/schemas/InlineEditableFieldType"
           description: REQUIRED.
         name:
-          type:
-            - string
-            - "null"
-          description: >-
-            REQUIRED for metadata and data-definition field type. NOT REQUIRED
-            for xhtml field type.
-
-            - Use title, displayName, summary, teaser, keywords, description,
-            author, startDate, endDate, reviewDate for wired metadata fields,
-
-            field name for dynamic metadata field or field identifier for a data
-            definition field.
+          type: string
+          description: |-
+            REQUIRED for metadata and data-definition field type. NOT REQUIRED for xhtml field type.
+            - Use title, displayName, summary, teaser, keywords, description, author, startDate, endDate, reviewDate for wired metadata fields,
+            field name for dynamic metadata field or field identifier for a data definition field.
       required:
         - pageConfigurationName
         - pageRegionName
@@ -2374,12 +2023,10 @@ components:
           properties:
             pageConfigurationSetId:
               type: string
-              description: "One is REQUIRED: Priority: pageConfigurationSetId >
-                pageConfigurationSetPath."
+              description: "One is REQUIRED: Priority: pageConfigurationSetId > pageConfigurationSetPath."
             pageConfigurationSetPath:
               type: string
-              description: "One is REQUIRED: Priority: pageConfigurationSetId >
-                pageConfigurationSetPath."
+              description: "One is REQUIRED: Priority: pageConfigurationSetId > pageConfigurationSetPath."
             metadataSetId:
               type: string
               description: "One is REQUIRED: Priority: metadataSetId > metadataSetPath."
@@ -2394,12 +2041,10 @@ components:
               description: "NOT REQUIRED: Priority: dataDefinitionId > dataDefinitionPath."
             editorConfigurationId:
               type: string
-              description: "NOT REQUIRED: Priority: editorConfigurationId >
-                editorConfigurationPath."
+              description: "NOT REQUIRED: Priority: editorConfigurationId > editorConfigurationPath."
             editorConfigurationPath:
               type: string
-              description: "NOT REQUIRED: Priority: editorConfigurationId >
-                editorConfigurationPath."
+              description: "NOT REQUIRED: Priority: editorConfigurationId > editorConfigurationPath."
             publishSetId:
               type: string
               description: "NOT REQUIRED: Priority: publishSetId > publishSetPath."
@@ -2407,32 +2052,23 @@ components:
               type: string
               description: "NOT REQUIRED: Priority: publishSetId > publishSetPath."
             contentTypePageConfigurations:
-              type:
-                - array
-                - "null"
+              type: array
               items:
                 $ref: "#/components/schemas/ContentTypePageConfiguration"
-              description: "NOT REQUIRED: if not specified, the default publish mode
-                'all-destinations' is used for each pageConfiguration."
+              description: "NOT REQUIRED: if not specified, the default publish mode 'all-destinations' is used for each pageConfiguration."
             inlineEditableFields:
-              type:
-                - array
-                - "null"
+              type: array
               items:
                 $ref: "#/components/schemas/InlineEditableField"
-              description: "NOT REQUIRED: if not specified, none of the regions or fields will
-                be inline editable."
-      description: Defines a content type that determines the structure and behavior
-        of pages.
+              description: "NOT REQUIRED: if not specified, none of the regions or fields will be inline editable."
+      description: Defines a content type that determines the structure and behavior of pages.
     ContentTypeContainer:
       allOf:
         - $ref: "#/components/schemas/ContaineredAsset"
         - type: object
           properties:
             children:
-              type:
-                - array
-                - "null"
+              type: array
               items:
                 $ref: "#/components/schemas/Identifier"
               description: "NOT REQUIRED: The array of children (identifiers)."
@@ -2443,9 +2079,7 @@ components:
         - type: object
           properties:
             children:
-              type:
-                - array
-                - "null"
+              type: array
               items:
                 $ref: "#/components/schemas/Identifier"
               description: "NOT REQUIRED: The array of children (identifiers)."
@@ -2454,14 +2088,10 @@ components:
       type: object
       properties:
         name:
-          type:
-            - string
-            - "null"
+          type: string
           description: "REQUIRED: Name of the parameter."
         value:
-          type:
-            - string
-            - "null"
+          type: string
           description: "REQUIRED: Value of the parameter."
       required:
         - name
@@ -2471,17 +2101,12 @@ components:
       type: object
       properties:
         name:
-          type:
-            - string
-            - "null"
-          description: "REQUIRED: Name of the parameter."
+          type: string
+          description: "NOT REQUIRED: Name of the parameter."
         value:
-          type:
-            - string
-            - "null"
+          type: string
           description: "REQUIRED: Value of the parameter."
       required:
-        - name
         - value
       description: A parameter for a connector content type link.
     ConnectorContentTypeLink:
@@ -2489,12 +2114,10 @@ components:
       properties:
         contentTypeId:
           type: string
-          description: "REQUIRED: One of contentTypeId or contentTypePath must be
-            specified."
+          description: "REQUIRED: One of contentTypeId or contentTypePath must be specified."
         contentTypePath:
           type: string
-          description: "REQUIRED: One of contentTypeId or contentTypePath must be
-            specified."
+          description: "REQUIRED: One of contentTypeId or contentTypePath must be specified."
         pageConfigurationId:
           type: string
           description: "NOT REQUIRED: Identifier for the page configuration."
@@ -2502,9 +2125,7 @@ components:
           type: string
           description: "NOT REQUIRED: Name for the page configuration."
         connectorContentTypeLinkParams:
-          type:
-            - array
-            - "null"
+          type: array
           items:
             $ref: "#/components/schemas/ConnectorContentTypeLinkParam"
           description: "NOT REQUIRED: A list of connector content type link params."
@@ -2515,47 +2136,28 @@ components:
         - type: object
           properties:
             auth1:
-              type:
-                - string
-                - "null"
-              description: "NOT REQUIRED: First authentication token for the external
-                application the connector connects to (usually a username or
-                email address)"
+              type: string
+              description: "NOT REQUIRED: First authentication token for the external application the connector connects to (usually a username or email address)"
             auth2:
-              type:
-                - string
-                - "null"
-              description: "NOT REQUIRED: Second authentication token for the external
-                application the connector connects to (usually a
-                password)\\nWrite only - hidden when read"
+              type: string
+              description: "NOT REQUIRED: Second authentication token for the external application the connector connects to (usually a password)\\nWrite only - hidden when read"
             url:
-              type:
-                - string
-                - "null"
-              description: "NOT REQUIRED: URL of the external application the connector
-                connects to"
+              type: string
+              description: "NOT REQUIRED: URL of the external application the connector connects to"
             verified:
               type: boolean
-              description: "NOT REQUIRED: Determines whether or not the connector has been
-                verified\\nRead only - editing a connector always unverifies it"
+              description: "NOT REQUIRED: Determines whether or not the connector has been verified\\nRead only - editing a connector always unverifies it"
             verifiedDate:
-              type:
-                - string
-                - "null"
+              type: string
               format: date-time
-              description: "NOT REQUIRED: The date this connector was verified\\nRead only -
-                editing a connector always clears the verification date"
+              description: "NOT REQUIRED: The date this connector was verified\\nRead only - editing a connector always clears the verification date"
             connectorParameters:
-              type:
-                - array
-                - "null"
+              type: array
               items:
                 $ref: "#/components/schemas/ConnectorParameter"
               description: "NOT REQUIRED: A list of connector parameters"
             connectorContentTypeLinks:
-              type:
-                - array
-                - "null"
+              type: array
               items:
                 $ref: "#/components/schemas/ConnectorContentTypeLink"
               description: REQUIRED for FacebookConnector and WordPressConnector
@@ -2577,8 +2179,7 @@ components:
               type: array
               items:
                 $ref: "#/components/schemas/PageConfiguration"
-              description: "REQUIRED: The individual page configurations contained within this
-                set."
+              description: "REQUIRED: The individual page configurations contained within this set."
           required:
             - pageConfigurations
       description: A set of page configurations that define output channels for a site.
@@ -2588,9 +2189,7 @@ components:
         - type: object
           properties:
             children:
-              type:
-                - array
-                - "null"
+              type: array
               items:
                 $ref: "#/components/schemas/Identifier"
               description: "NOT REQUIRED: The array of children assets."
@@ -2605,17 +2204,14 @@ components:
               description: "REQUIRED: The XML content of this data definition."
           required:
             - xml
-      description: A structured data definition that defines the fields for structured
-        data blocks.
+      description: A structured data definition that defines the fields for structured data blocks.
     DataDefinitionContainer:
       allOf:
         - $ref: "#/components/schemas/ContaineredAsset"
         - type: object
           properties:
             children:
-              type:
-                - array
-                - "null"
+              type: array
               items:
                 $ref: "#/components/schemas/Identifier"
               description: "NOT REQUIRED: The array of children."
@@ -2630,17 +2226,14 @@ components:
               description: "REQUIRED: The XML content of this shared field."
           required:
             - xml
-      description: A shared field definition that can be reused across multiple data
-        definitions.
+      description: A shared field definition that can be reused across multiple data definitions.
     SharedFieldContainer:
       allOf:
         - $ref: "#/components/schemas/ContaineredAsset"
         - type: object
           properties:
             children:
-              type:
-                - array
-                - "null"
+              type: array
               items:
                 $ref: "#/components/schemas/Identifier"
               description: "NOT REQUIRED: The array of children."
@@ -2650,16 +2243,13 @@ components:
       properties:
         value:
           type: string
-          description: "NOT REQUIRED: The actual string value. When not provided, an empty
-            string will be used."
+          description: "NOT REQUIRED: The actual string value. When not provided, an empty string will be used."
         label:
           type: string
-          description: "NOT REQUIRED: Label displayed to the user editing an asset. When
-            not provided, value will be displayed."
+          description: "NOT REQUIRED: Label displayed to the user editing an asset. When not provided, value will be displayed."
         selectedByDefault:
           type: boolean
-          description: Whether or not this value should be checked by default when
-            creating new assets through web UI.
+          description: Whether or not this value should be checked by default when creating new assets through web UI.
       description: Represents a possible value for a dynamic metadata field
     DynamicMetadataFieldDefinition:
       type: object
@@ -2680,13 +2270,10 @@ components:
           $ref: "#/components/schemas/MetadataFieldVisibility"
           description: The visibility of this field NOT REQUIRED default visible
         possibleValues:
-          type:
-            - array
-            - "null"
+          type: array
           items:
             $ref: "#/components/schemas/DynamicMetadataFieldDefinitionValue"
-          description: REQUIRED for radio, checkbox, dropdown and multiselect types,
-            ignored for text type.
+          description: REQUIRED for radio, checkbox, dropdown and multiselect types, ignored for text type.
         helpText:
           type: string
           description: Optional help text for this field.
@@ -2702,122 +2289,100 @@ components:
           properties:
             authorFieldRequired:
               type: boolean
-              description: "NOT REQUIRED: Whether the author field is required on assets using
-                this metadata set. Default is false."
+              description: "NOT REQUIRED: Whether the author field is required on assets using this metadata set. Default is false."
             authorFieldVisibility:
               $ref: "#/components/schemas/MetadataFieldVisibility"
-              description: "NOT REQUIRED: The visibility of the author field for assets using
-                this metadata set. Default is 'visible'."
+              description: "NOT REQUIRED: The visibility of the author field for assets using this metadata set. Default is 'visible'."
             authorFieldHelpText:
               type: string
               description: "NOT REQUIRED: The help text for the author field."
             descriptionFieldRequired:
               type: boolean
-              description: "NOT REQUIRED: Whether the description field is required on assets
-                using this metadata set. Default is false."
+              description: "NOT REQUIRED: Whether the description field is required on assets using this metadata set. Default is false."
             descriptionFieldVisibility:
               $ref: "#/components/schemas/MetadataFieldVisibility"
-              description: "NOT REQUIRED: The visibility of the description field for assets
-                using this metadata set. Default is 'visible'."
+              description: "NOT REQUIRED: The visibility of the description field for assets using this metadata set. Default is 'visible'."
             descriptionFieldHelpText:
               type: string
               description: "NOT REQUIRED: The help text for the description field."
             displayNameFieldRequired:
               type: boolean
-              description: "NOT REQUIRED: Whether the display name field is required on assets
-                using this metadata set. Default is false."
+              description: "NOT REQUIRED: Whether the display name field is required on assets using this metadata set. Default is false."
             displayNameFieldVisibility:
               $ref: "#/components/schemas/MetadataFieldVisibility"
-              description: "NOT REQUIRED: The visibility of the display name field for assets
-                using this metadata set. Default is 'visible'."
+              description: "NOT REQUIRED: The visibility of the display name field for assets using this metadata set. Default is 'visible'."
             displayNameFieldHelpText:
               type: string
               description: "NOT REQUIRED: The help text for the display name field."
             endDateFieldRequired:
               type: boolean
-              description: "NOT REQUIRED: Whether the end date field is required on assets
-                using this metadata set. Default is false."
+              description: "NOT REQUIRED: Whether the end date field is required on assets using this metadata set. Default is false."
             endDateFieldVisibility:
               $ref: "#/components/schemas/MetadataFieldVisibility"
-              description: "NOT REQUIRED: The visibility of the end date field for assets
-                using this metadata set. Default is 'visible'."
+              description: "NOT REQUIRED: The visibility of the end date field for assets using this metadata set. Default is 'visible'."
             endDateFieldHelpText:
               type: string
               description: "NOT REQUIRED: The help text for the end date field."
             expirationFolderFieldRequired:
               type: boolean
-              description: "NOT REQUIRED: Whether the expiration folder field is required on
-                assets using this metadata set. Default is false."
+              description: "NOT REQUIRED: Whether the expiration folder field is required on assets using this metadata set. Default is false."
             expirationFolderFieldVisibility:
               $ref: "#/components/schemas/MetadataFieldVisibility"
-              description: "NOT REQUIRED: The visibility of the expiration folder field for
-                assets using this metadata set. Default is 'visible'."
+              description: "NOT REQUIRED: The visibility of the expiration folder field for assets using this metadata set. Default is 'visible'."
             expirationFolderFieldHelpText:
               type: string
               description: "NOT REQUIRED: The help text for the expiration folder field."
             keywordsFieldRequired:
               type: boolean
-              description: "NOT REQUIRED: Whether the keywords field is required on assets
-                using this metadata set. Default is false."
+              description: "NOT REQUIRED: Whether the keywords field is required on assets using this metadata set. Default is false."
             keywordsFieldVisibility:
               $ref: "#/components/schemas/MetadataFieldVisibility"
-              description: "NOT REQUIRED: The visibility of the keywords field for assets
-                using this metadata set. Default is 'visible'."
+              description: "NOT REQUIRED: The visibility of the keywords field for assets using this metadata set. Default is 'visible'."
             keywordsFieldHelpText:
               type: string
               description: "NOT REQUIRED: The help text for the keywords field."
             reviewDateFieldRequired:
               type: boolean
-              description: "NOT REQUIRED: Whether the review date field is required on assets
-                using this metadata set. Default is false."
+              description: "NOT REQUIRED: Whether the review date field is required on assets using this metadata set. Default is false."
             reviewDateFieldVisibility:
               $ref: "#/components/schemas/MetadataFieldVisibility"
-              description: "NOT REQUIRED: The visibility of the review date field for assets
-                using this metadata set. Default is 'visible'."
+              description: "NOT REQUIRED: The visibility of the review date field for assets using this metadata set. Default is 'visible'."
             reviewDateFieldHelpText:
               type: string
               description: "NOT REQUIRED: The help text for the review date field."
             startDateFieldRequired:
               type: boolean
-              description: "NOT REQUIRED: Whether the start date field is required on assets
-                using this metadata set. Default is false."
+              description: "NOT REQUIRED: Whether the start date field is required on assets using this metadata set. Default is false."
             startDateFieldVisibility:
               $ref: "#/components/schemas/MetadataFieldVisibility"
-              description: "NOT REQUIRED: The visibility of the start date field for assets
-                using this metadata set. Default is 'visible'."
+              description: "NOT REQUIRED: The visibility of the start date field for assets using this metadata set. Default is 'visible'."
             startDateFieldHelpText:
               type: string
               description: "NOT REQUIRED: The help text for the start date field."
             summaryFieldRequired:
               type: boolean
-              description: "NOT REQUIRED: Whether the summary field is required on assets
-                using this metadata set. Default is false."
+              description: "NOT REQUIRED: Whether the summary field is required on assets using this metadata set. Default is false."
             summaryFieldVisibility:
               $ref: "#/components/schemas/MetadataFieldVisibility"
-              description: "NOT REQUIRED: The visibility of the summary field for assets using
-                this metadata set. Default is 'visible'."
+              description: "NOT REQUIRED: The visibility of the summary field for assets using this metadata set. Default is 'visible'."
             summaryFieldHelpText:
               type: string
               description: "NOT REQUIRED: The help text for the summary field."
             teaserFieldRequired:
               type: boolean
-              description: "NOT REQUIRED: Whether the teaser field is required on assets using
-                this metadata set. Default is false."
+              description: "NOT REQUIRED: Whether the teaser field is required on assets using this metadata set. Default is false."
             teaserFieldVisibility:
               $ref: "#/components/schemas/MetadataFieldVisibility"
-              description: "NOT REQUIRED: The visibility of the teaser field for assets using
-                this metadata set. Default is 'visible'."
+              description: "NOT REQUIRED: The visibility of the teaser field for assets using this metadata set. Default is 'visible'."
             teaserFieldHelpText:
               type: string
               description: "NOT REQUIRED: The help text for the teaser field."
             titleFieldRequired:
               type: boolean
-              description: "NOT REQUIRED: Whether the title field is required on assets using
-                this metadata set. Default is false."
+              description: "NOT REQUIRED: Whether the title field is required on assets using this metadata set. Default is false."
             titleFieldVisibility:
               $ref: "#/components/schemas/MetadataFieldVisibility"
-              description: "NOT REQUIRED: The visibility of the title field for assets using
-                this metadata set. Default is 'visible'."
+              description: "NOT REQUIRED: The visibility of the title field for assets using this metadata set. Default is 'visible'."
             titleFieldHelpText:
               type: string
               description: "NOT REQUIRED: The help text for the title field."
@@ -2833,9 +2398,7 @@ components:
         - type: object
           properties:
             children:
-              type:
-                - array
-                - "null"
+              type: array
               items:
                 $ref: "#/components/schemas/Identifier"
               description: "NOT REQUIRED: The array of children."
@@ -2849,59 +2412,46 @@ components:
               type: array
               items:
                 $ref: "#/components/schemas/Identifier"
-              description: "NOT REQUIRED: A list of files that is included in this publish
-                set. Default is empty."
+              description: "NOT REQUIRED: A list of files that is included in this publish set. Default is empty."
             folders:
               type: array
               items:
                 $ref: "#/components/schemas/Identifier"
-              description: "NOT REQUIRED: A list of folders that is included in this publish
-                set. Default is empty."
+              description: "NOT REQUIRED: A list of folders that is included in this publish set. Default is empty."
             pages:
               type: array
               items:
                 $ref: "#/components/schemas/Identifier"
-              description: "NOT REQUIRED: A list of pages that is included in this publish
-                set. Default is empty."
+              description: "NOT REQUIRED: A list of pages that is included in this publish set. Default is empty."
             usesScheduledPublishing:
               type: boolean
-              description: "NOT REQUIRED: Whether or not to publish this set on a schedule.
-                Default is false."
+              description: "NOT REQUIRED: Whether or not to publish this set on a schedule. Default is false."
             scheduledPublishDestinationMode:
-              oneOf:
-                - $ref: "#/components/schemas/ScheduledDestinationMode"
-                - type: "null"
               description: "NOT REQUIRED: Scheduled publish destination selection mode."
+              $ref: "#/components/schemas/ScheduledDestinationMode"
             scheduledPublishDestinations:
               type: array
               items:
                 $ref: "#/components/schemas/Identifier"
-              description: "NOT REQUIRED: Used in conjunction with
-                scheduledPublishDestinationMode when destinations are to be
-                specified explicitly."
+              description: "NOT REQUIRED: Used in conjunction with scheduledPublishDestinationMode when destinations are to be specified explicitly."
             timeToPublish:
               type: string
               format: time
-              description: "NOT REQUIRED: The base time this set will be published. Default is
-                00:00 (midnight)."
+              description: "NOT REQUIRED: The base time this set will be published. Default is 00:00 (midnight)."
             sendReportToUsers:
               type: string
-              description: "NOT REQUIRED: Semicolon-delimited list of string user names for
-                which this asset is available for use."
+              description: "NOT REQUIRED: Semicolon-delimited list of string user names for which this asset is available for use."
             sendReportToGroups:
               type: string
-              description: "NOT REQUIRED: Semicolon-delimited list of string group names for
-                which this asset is available for use."
+              description: "NOT REQUIRED: Semicolon-delimited list of string group names for which this asset is available for use."
             sendReportOnErrorOnly:
               type: boolean
-              description: "NOT REQUIRED: Whether or not to send a report when there are no
-                errors. Default is false."
+              description: "NOT REQUIRED: Whether or not to send a report when there are no errors. Default is false."
             publishIntervalHours:
               type: integer
               format: int32
               minimum: 0
-              description: "NOT REQUIRED: Every how many hours the asset should be published.
-                Can be between 1 and 23."
+              description: "NOT REQUIRED: Every how many hours the asset should be published. Can be between 1 and 23."
             publishDaysOfWeek:
               type: array
               items:
@@ -2917,9 +2467,7 @@ components:
         - type: object
           properties:
             children:
-              type:
-                - array
-                - "null"
+              type: array
               items:
                 $ref: "#/components/schemas/Identifier"
               description: The array of children
@@ -2930,9 +2478,7 @@ components:
         - type: object
           properties:
             children:
-              type:
-                - array
-                - "null"
+              type: array
               items:
                 $ref: "#/components/schemas/Identifier"
               description: "NOT REQUIRED: The array of children assets."
@@ -2944,26 +2490,16 @@ components:
           properties:
             parentContainerId:
               type: string
-              description: >-
+              description: |-
                 Priority: parentContainerId > parentContainerPath
-
                 - One is REQUIRED
-
-                - When inside a Site, this field must refer to a
-                SiteDestinationContainer.
-
-                - When not in a Site, this field must refer to a Target
+                - When inside a Site, this field must refer to a SiteDestinationContainer.
             parentContainerPath:
               type: string
-              description: >-
+              description: |-
                 Priority: parentContainerId > parentContainerPath
-
                 - One is REQUIRED
-
-                - When inside a Site, this field must refer to a
-                SiteDestinationContainer.
-
-                - When not in a Site, this field must refer to a Target
+                - When inside a Site, this field must refer to a SiteDestinationContainer.
             transportId:
               type: string
               description: |-
@@ -3005,10 +2541,8 @@ components:
                 Whether or not to publish this set on a schedule
                 - NOT REQUIRED
             scheduledPublishDestinationMode:
-              oneOf:
-                - $ref: "#/components/schemas/ScheduledDestinationMode"
-                - type: "null"
               description: Not used, will be ignored if any value is set
+              $ref: "#/components/schemas/ScheduledDestinationMode"
             scheduledPublishDestinations:
               type: array
               items:
@@ -3017,16 +2551,10 @@ components:
             timeToPublish:
               type: string
               format: time
-              description: >-
+              description: |-
                 The base time this set will be published.
-
-                - For example if one wanted this set to publish at 0100, 0500,
-                0900, 1300, 1700, 2100, I would enter one of those times here
-                and set the "publishInterval" to 4, and the
-                "publishIntervalUnits" to "hours"
-
-                - NOT REQUIRED default: 00:00 (midnight), if cronExpression
-                provided or usesScheduledPublishing is false, ignored
+                - For example if one wanted this set to publish at 0100, 0500, 0900, 1300, 1700, 2100, I would enter one of those times here and set the "publishInterval" to 4, and the "publishIntervalUnits" to "hours"
+                - NOT REQUIRED default: 00:00 (midnight), if cronExpression provided or usesScheduledPublishing is false, ignored
             sendReportToUsers:
               type: string
               description: |-
@@ -3043,32 +2571,22 @@ components:
                 Whether or not to send a report when there are no errors
                 - NOT REQUIRED default: false
             webUrl:
-              type:
-                - string
-                - "null"
-              description: >-
-                The base URL for linking to a given configuration during
-                publishing
-
+              type: string
+              description: |-
+                The base URL for linking to a given configuration during publishing
                 - NOT REQUIRED
             extensionsToStrip:
-              type:
-                - string
-                - "null"
+              type: string
               description: |-
                 Comma-separated list of extensions to strip from links
                 - NOT REQUIRED
             siteId:
-              type:
-                - string
-                - "null"
+              type: string
               description: |-
                 Priority: siteId > siteName
                 - One is REQUIRED
             siteName:
-              type:
-                - string
-                - "null"
+              type: string
               description: |-
                 Priority: siteId > siteName
                 - One is REQUIRED
@@ -3076,28 +2594,21 @@ components:
               type: integer
               format: int32
               minimum: 0
-              description: >-
-                Every how many hours the asset should be published. Can be
-                between 1 and 23
-
-                - One is REQUIRED if usesScheduledPublishing is true, else NOT
-                REQUIRED and ignored
+              description: |-
+                Every how many hours the asset should be published. Can be between 1 and 23
+                - One is REQUIRED if usesScheduledPublishing is true, else NOT REQUIRED and ignored
             publishDaysOfWeek:
               type: array
               items:
                 $ref: "#/components/schemas/DayOfWeek"
-              description: >-
+              description: |-
                 Which days of the week the job should publish on
-
-                - One is REQUIRED if usesScheduledPublishing is true, else NOT
-                REQUIRED and ignored
+                - One is REQUIRED if usesScheduledPublishing is true, else NOT REQUIRED and ignored
             cronExpression:
               type: string
-              description: >-
+              description: |-
                 Applicable only if publishInterval Units is "cron"
-
-                - One is REQUIRED if usesScheduledPublishing is true, else NOT
-                REQUIRED and ignored
+                - One is REQUIRED if usesScheduledPublishing is true, else NOT REQUIRED and ignored
       description: A publishing destination that defines where content is published.
     FileSystemTransport:
       allOf:
@@ -3106,11 +2617,9 @@ components:
           properties:
             directory:
               type: string
-              description: >-
+              description: |-
                 REQUIRED
-
-                - The directory to output the files to, for example
-                "c:\inetfiles\wwwroot"
+                - The directory to output the files to, for example "c:\inetfiles\wwwroot"
           required:
             - directory
       description: Properties for the FileSystem Transport
@@ -3143,24 +2652,18 @@ components:
                 - The username to use when connecting to the server
             authMode:
               $ref: "#/components/schemas/AuthMode"
-              description: >-
+              description: |-
                 REQUIRED when ftpProtocolType is SFTP
-
-                - The authentication mode to use when connecting to the server.
-                Applicable only when ftpProtocolType is SFTP
+                - The authentication mode to use when connecting to the server. Applicable only when ftpProtocolType is SFTP
             privateKey:
               type: string
-              description: >-
+              description: |-
                 NOT REQUIRED
-
-                - The key to use when connecting to the server. Applicable only
-                when ftpProtocolType is SFTP and authMode is "PUBLIC_KEY"
+                - The key to use when connecting to the server. Applicable only when ftpProtocolType is SFTP and authMode is "PUBLIC_KEY"
             password:
               type: string
-              description: >-
-                REQUIRED when ftpProtocolType is FTP or FTPS or when
-                ftpProtocolType is SFTP and authMode is "PASSWORD"
-
+              description: |-
+                REQUIRED when ftpProtocolType is FTP or FTPS or when ftpProtocolType is SFTP and authMode is "PASSWORD"
                 - The password to use when connecting to the server
             directory:
               type: string
@@ -3169,11 +2672,9 @@ components:
                 - The directory to place the files in
             ftpProtocolType:
               $ref: "#/components/schemas/FtpProtocolType"
-              description: >-
+              description: |-
                 REQUIRED
-
-                - Whether or not to connect using regular FTP, FTP over SSL/TLS,
-                or SFTP using secure FTP (SSH protocol)
+                - Whether or not to connect using regular FTP, FTP over SSL/TLS, or SFTP using secure FTP (SSH protocol)
           required:
             - hostName
             - port
@@ -3262,9 +2763,7 @@ components:
         - type: object
           properties:
             children:
-              type:
-                - array
-                - "null"
+              type: array
               items:
                 $ref: "#/components/schemas/Identifier"
               description: |-
@@ -3278,11 +2777,9 @@ components:
           properties:
             applicableGroupNames:
               type: string
-              description: >-
+              description: |-
                 NOT REQUIRED
-
-                - Semicolon-delimited list of string group names for which this
-                asset is available for use
+                - Semicolon-delimited list of string group names for which this asset is available for use
             copy:
               type: boolean
               description: |-
@@ -3310,11 +2807,9 @@ components:
                 - Whether or not this is a move type workflow
             namingBehavior:
               $ref: "#/components/schemas/WorkflowNamingBehavior"
-              description: >-
+              description: |-
                 REQUIRED
-
-                - The naming behavior when an instance of this workflow is
-                created
+                - The naming behavior when an instance of this workflow is created
             xml:
               type: string
               description: |-
@@ -3322,11 +2817,9 @@ components:
                 - The actual workflow definition XML
             completedWorkflowEmailId:
               type: string
-              description: >-
+              description: |-
                 NOT REQUIRED
-
-                - Custom workflow email to send when email trigger set to
-                completed
+                - Custom workflow email to send when email trigger set to completed
             completedWorkflowEmailPath:
               type: string
               description: NOT REQUIRED
@@ -3348,9 +2841,7 @@ components:
         - type: object
           properties:
             children:
-              type:
-                - array
-                - "null"
+              type: array
               items:
                 $ref: "#/components/schemas/Identifier"
               description: |-
@@ -3382,9 +2873,7 @@ components:
         - type: object
           properties:
             children:
-              type:
-                - array
-                - "null"
+              type: array
               items:
                 $ref: "#/components/schemas/Identifier"
               description: |-
@@ -3403,11 +2892,9 @@ components:
                 - REQUIRED for Tweets Only and Tweets and Mentions query types.
             searchString:
               type: string
-              description: >-
+              description: |-
                 NOT REQUIRED: The Search String for the block.
-
-                - REQUIRED for Tweets Only and Tweets and Mentions search terms
-                types.
+                - REQUIRED for Tweets Only and Tweets and Mentions search terms types.
             maxResults:
               type: integer
               format: int32
@@ -3415,8 +2902,7 @@ components:
               description: "REQUIRED: The maximum number of tweets which can be shown."
             useDefaultStyle:
               type: boolean
-              description: "REQUIRED: Should the twitter feed block use the default CSS
-                style?"
+              description: "REQUIRED: Should the twitter feed block use the default CSS style?"
             excludeJQuery:
               type: boolean
               description: "REQUIRED: Should the twitter feed block include the JQuery API?"
@@ -3454,12 +2940,8 @@ components:
               type: string
               description: "REQUIRED: The site URL"
             extensionsToStrip:
-              type:
-                - string
-                - "null"
-              description: "NOT REQUIRED: A comma-separated list of extensions that should be
-                stripped from cross-site links pointing to assets in this site.
-                Default: empty"
+              type: string
+              description: "NOT REQUIRED: A comma-separated list of extensions that should be stripped from cross-site links pointing to assets in this site. Default: empty"
             defaultMetadataSetId:
               type: string
               description: |-
@@ -3472,70 +2954,39 @@ components:
                 - Priority: defaultMetadataSetId > defaultMetadataSetPath
             siteAssetFactoryContainerId:
               type: string
-              description: >-
-                NOT REQUIRED: Defines the site asset factory container
-                relationship by ID.
-
-                - Priority: siteAssetFactoryContainerId >
-                siteAssetFactoryContainerPath
-
-                - This asset factory container will determine which asset
-                factories show on that user's dashboard under the "My New
-                Content Wizards" section in the site.
+              description: |-
+                NOT REQUIRED: Defines the site asset factory container relationship by ID.
+                - Priority: siteAssetFactoryContainerId > siteAssetFactoryContainerPath
+                - This asset factory container will determine which asset factories show on that user's dashboard under the "My New Content Wizards" section in the site.
             siteAssetFactoryContainerPath:
               type: string
-              description: >-
-                NOT REQUIRED: Defines the site asset factory container
-                relationship by path.
-
-                - Priority: siteAssetFactoryContainerId >
-                siteAssetFactoryContainerPath
-
-                - This asset factory container will determine which asset
-                factories show on that user's dashboard under the "My New
-                Content Wizards" section in the site.
+              description: |-
+                NOT REQUIRED: Defines the site asset factory container relationship by path.
+                - Priority: siteAssetFactoryContainerId > siteAssetFactoryContainerPath
+                - This asset factory container will determine which asset factories show on that user's dashboard under the "My New Content Wizards" section in the site.
             defaultEditorConfigurationId:
               type: string
-              description: "NOT REQUIRED: Default editor configuration by ID. Priority:
-                defaultEditorConfigurationId > defaultEditorConfigurationPath"
+              description: "NOT REQUIRED: Default editor configuration by ID. Priority: defaultEditorConfigurationId > defaultEditorConfigurationPath"
             defaultEditorConfigurationPath:
               type: string
               description: "NOT REQUIRED: Default editor configuration by path."
             siteStartingPageId:
               type: string
-              description: >-
-                NOT REQUIRED: Defines the site starting page relationship by ID.
-                Overrides the global starting page.
-
+              description: |-
+                NOT REQUIRED: Defines the site starting page relationship by ID. Overrides the global starting page.
                 - Priority: siteStartingPageId > siteStartingPagePath
-
-                - This starting page will override the global starting page set
-                in the system preferences
-
-                - When editing and selected asset is recycled, it is recommended
-                to preserve this relationship by providing selected asset's id
-                in case if the selected asset gets restored from the recycle
-                bin.
+                - This starting page will override the global starting page set in the system preferences
+                - When editing and selected asset is recycled, it is recommended to preserve this relationship by providing selected asset's id in case if the selected asset gets restored from the recycle bin.
             siteStartingPagePath:
               type: string
-              description: >-
-                NOT REQUIRED: Defines the site starting page relationship by
-                path. Overrides the global starting page. Only for non-recycled
-                assets.
-
+              description: |-
+                NOT REQUIRED: Defines the site starting page relationship by path. Overrides the global starting page. Only for non-recycled assets.
                 - Priority: siteStartingPageId > siteStartingPagePath
-
-                - This starting page will override the global starting page set
-                in the system preferences
-
-                - When editing and selected asset is recycled, it is recommended
-                to preserve this relationship by providing selected asset's id
-                in case if the selected asset gets restored from the recycle
-                bin.
+                - This starting page will override the global starting page set in the system preferences
+                - When editing and selected asset is recycled, it is recommended to preserve this relationship by providing selected asset's id in case if the selected asset gets restored from the recycle bin.
             siteStartingPageRecycled:
               type: boolean
-              description: "NOT REQUIRED: For reading purposes only. Indicates if the site
-                starting page is recycled."
+              description: "NOT REQUIRED: For reading purposes only. Indicates if the site starting page is recycled."
             roleAssignments:
               type: array
               items:
@@ -3543,48 +2994,32 @@ components:
               description: "NOT REQUIRED: Role assignments for the site."
             usesScheduledPublishing:
               type: boolean
-              description: "NOT REQUIRED: Whether or not to publish this set on a schedule.
-                Default: false"
+              description: "NOT REQUIRED: Whether or not to publish this set on a schedule. Default: false"
             scheduledPublishDestinationMode:
-              oneOf:
-                - $ref: "#/components/schemas/ScheduledDestinationMode"
-                - type: "null"
+              $ref: "#/components/schemas/ScheduledDestinationMode"
               description: "NOT REQUIRED: Scheduled publish destination selection mode."
             scheduledPublishDestinations:
               type: array
               items:
                 $ref: "#/components/schemas/Identifier"
-              description: >-
-                NOT REQUIRED: Destinations to be explicitly specified for
-                scheduled publish.
-
-                - Used in conjunction with scheduledPublishDestinationMode when
-                destinations are to be specified explicitly
+              description: |-
+                NOT REQUIRED: Destinations to be explicitly specified for scheduled publish.
+                - Used in conjunction with scheduledPublishDestinationMode when destinations are to be specified explicitly
             timeToPublish:
               type: string
               format: time
-              description: >-
-                NOT REQUIRED: The base time this set will be published. default:
-                00:00 (midnight), if cronExpression provided or
-                usesScheduledPublishing is false, ignored
-
-                - The base time this set will be published. For example, if one
-                wanted this set to publish at 0100, 0500, 0900, 1300, 1700,
-                2100, I would enter one of those times here and set the
-                "publishInterval" to 4, and the "publishIntervalUnits" to
-                "hours"
+              description: |-
+                NOT REQUIRED: The base time this set will be published. default: 00:00 (midnight), if cronExpression provided or usesScheduledPublishing is false, ignored
+                - The base time this set will be published. For example, if one wanted this set to publish at 0100, 0500, 0900, 1300, 1700, 2100, I would enter one of those times here and set the "publishInterval" to 4, and the "publishIntervalUnits" to "hours"
             sendReportToUsers:
               type: string
-              description: "NOT REQUIRED: Semicolon-delimited list of user names for which
-                this asset is available."
+              description: "NOT REQUIRED: Semicolon-delimited list of user names for which this asset is available."
             sendReportToGroups:
               type: string
-              description: "NOT REQUIRED: Semicolon-delimited list of group names for which
-                this asset is available."
+              description: "NOT REQUIRED: Semicolon-delimited list of group names for which this asset is available."
             sendReportOnErrorOnly:
               type: boolean
-              description: "NOT REQUIRED: Whether to send a report only when there are errors.
-                Default: false"
+              description: "NOT REQUIRED: Whether to send a report only when there are errors. Default: false"
             recycleBinExpiration:
               $ref: "#/components/schemas/RecycleBinExpiration"
               description: "REQUIRED: The recycle bin expiration time."
@@ -3609,42 +3044,23 @@ components:
             accessibilityCheckEnabled:
               type: boolean
               description: REQUIRED
-            accessibilityCheckerEnabled:
-              type: boolean
-              description: "REQUIRED: Generate accessibility report on schedule."
             inheritNamingRules:
               type: boolean
-              description: >-
-                REQUIRED: Determines whether naming rules are inherited from the
-                system preferences.
-
-                - If true, the rule properties will be ignored when saving, but
-                old values are preserved.
-
-                - Otherwise, null values will be defaulted to appropriate values
-                when saving.
-
-                - Naming rules read from a site may be null.
+              description: |-
+                REQUIRED: Determines whether naming rules are inherited from the system preferences.
+                - If true, the rule properties will be ignored when saving, but old values are preserved.
+                - Otherwise, null values will be defaulted to appropriate values when saving.
             namingRuleCase:
-              oneOf:
-                - $ref: "#/components/schemas/NamingRuleCase"
-                - type: "null"
-              description: "Optional: Defines what case a name can be. Depends on
-                inheritNamingRules."
+              description: "Optional: Defines what case a name can be. Depends on inheritNamingRules."
+              $ref: "#/components/schemas/NamingRuleCase"
             namingRuleSpacing:
-              oneOf:
-                - $ref: "#/components/schemas/NamingRuleSpacing"
-                - type: "null"
-              description: "Optional: Defines how spaces are handled for names. Depends on
-                inheritNamingRules."
+              description: "Optional: Defines how spaces are handled for names. Depends on inheritNamingRules."
+              $ref: "#/components/schemas/NamingRuleSpacing"
             namingRuleAssets:
-              type:
-                - array
-                - "null"
+              type: array
               items:
                 $ref: "#/components/schemas/NamingRuleAsset"
-              description: "Optional: Defines the asset types that enforce naming rules.
-                Depends on inheritNamingRules."
+              description: "Optional: Defines the asset types that enforce naming rules. Depends on inheritNamingRules."
             siteImproveIntegrationEnabled:
               type: boolean
               description: "NOT REQUIRED: Enables Siteimprove integration."
@@ -3661,120 +3077,69 @@ components:
               type: boolean
               description: "NOT REQUIRED: Enables Webdam DAM integration."
             rootFolderId:
-              type:
-                - string
-                - "null"
-              description: "NOT REQUIRED: The root folder id, used only when reading a site.
-                Ignored in other cases."
+              type: string
+              description: "NOT REQUIRED: The root folder id, used only when reading a site. Ignored in other cases."
             rootAssetFactoryContainerId:
-              type:
-                - string
-                - "null"
-              description: "NOT REQUIRED: Used only when reading a site. Ignored in other
-                cases."
+              type: string
+              description: "NOT REQUIRED: Used only when reading a site. Ignored in other cases."
             rootPageConfigurationSetContainerId:
-              type:
-                - string
-                - "null"
-              description: "NOT REQUIRED: Used only when reading a site. Ignored in other
-                cases."
+              type: string
+              description: "NOT REQUIRED: Used only when reading a site. Ignored in other cases."
             rootContentTypeContainerId:
-              type:
-                - string
-                - "null"
-              description: "NOT REQUIRED: Used only when reading a site. Ignored in other
-                cases."
+              type: string
+              description: "NOT REQUIRED: Used only when reading a site. Ignored in other cases."
             rootConnectorContainerId:
-              type:
-                - string
-                - "null"
-              description: "NOT REQUIRED: Used only when reading a site. Ignored in other
-                cases."
+              type: string
+              description: "NOT REQUIRED: Used only when reading a site. Ignored in other cases."
             rootDataDefinitionContainerId:
-              type:
-                - string
-                - "null"
-              description: "NOT REQUIRED: Used only when reading a site. Ignored in other
-                cases."
+              type: string
+              description: "NOT REQUIRED: Used only when reading a site. Ignored in other cases."
             rootSharedFieldContainerId:
-              type:
-                - string
-                - "null"
-              description: "NOT REQUIRED: Used only when reading a site. Ignored in other
-                cases."
+              type: string
+              description: "NOT REQUIRED: Used only when reading a site. Ignored in other cases."
             rootMetadataSetContainerId:
-              type:
-                - string
-                - "null"
-              description: "NOT REQUIRED: Used only when reading a site. Ignored in other
-                cases."
+              type: string
+              description: "NOT REQUIRED: Used only when reading a site. Ignored in other cases."
             rootPublishSetContainerId:
-              type:
-                - string
-                - "null"
-              description: "NOT REQUIRED: Used only when reading a site. Ignored in other
-                cases."
+              type: string
+              description: "NOT REQUIRED: Used only when reading a site. Ignored in other cases."
             rootSiteDestinationContainerId:
-              type:
-                - string
-                - "null"
-              description: "NOT REQUIRED: Used only when reading a site. Ignored in other
-                cases."
+              type: string
+              description: "NOT REQUIRED: Used only when reading a site. Ignored in other cases."
             rootTransportContainerId:
-              type:
-                - string
-                - "null"
-              description: "NOT REQUIRED: Used only when reading a site. Ignored in other
-                cases."
+              type: string
+              description: "NOT REQUIRED: Used only when reading a site. Ignored in other cases."
             rootWorkflowDefinitionContainerId:
-              type:
-                - string
-                - "null"
-              description: "NOT REQUIRED: Used only when reading a site. Ignored in other
-                cases."
+              type: string
+              description: "NOT REQUIRED: Used only when reading a site. Ignored in other cases."
             rootWorkflowEmailContainerId:
-              type:
-                - string
-                - "null"
-              description: "NOT REQUIRED: Used only when reading a site. Ignored in other
-                cases."
+              type: string
+              description: "NOT REQUIRED: Used only when reading a site. Ignored in other cases."
             linkRewriting:
               $ref: "#/components/schemas/SiteLinkRewriting"
               description: 'NOT REQUIRED: Default is "absolute".'
             extraSettings:
-              type:
-                - string
-                - "null"
-              description: JSON string representing additional settings for the Site.
-                Keys/values are subject to change. NOT REQUIRED
+              type: string
+              description: JSON string representing additional settings for the Site. Keys/values are subject to change. NOT REQUIRED
             publishIntervalHours:
               type: integer
               format: int32
               minimum: 0
-              description: >-
-                Optional: Interval in hours for publishing. One of the choices
-                for scheduled publishing.
-
-                - Every how many hours the asset should be published. Can be
-                between 1 and 23
+              description: |-
+                Optional: Interval in hours for publishing. One of the choices for scheduled publishing.
+                - Every how many hours the asset should be published. Can be between 1 and 23
             publishDaysOfWeek:
               type: array
               items:
                 $ref: "#/components/schemas/DayOfWeek"
-              description: >-
-                Optional: Days of the week for publishing. One of the choices
-                for scheduled publishing.
-
-                - Which days of the which the job should publish on - select all
-                days to have a daily publish
+              description: |-
+                Optional: Days of the week for publishing. One of the choices for scheduled publishing.
+                - Which days of the which the job should publish on - select all days to have a daily publish
             cronExpression:
               type: string
-              description: >-
-                Optional: Cron expression for scheduled publishing. One of the
-                choices for scheduled publishing.
-
-                - Applicable only if publishIntervalUnits is "cron" - only a
-                valid Cron Expression will be accepted
+              description: |-
+                Optional: Cron expression for scheduled publishing. One of the choices for scheduled publishing.
+                - Applicable only if publishIntervalUnits is "cron" - only a valid Cron Expression will be accepted
           required:
             - url
             - recycleBinExpiration
@@ -3785,7 +3150,6 @@ components:
             - spellCheckEnabled
             - linkCheckEnabled
             - accessibilityCheckEnabled
-            - accessibilityCheckerEnabled
             - inheritNamingRules
       description: Properties for the Site
     EditorConfiguration:
@@ -3794,34 +3158,21 @@ components:
         - type: object
           properties:
             siteId:
-              type:
-                - string
-                - "null"
-              description: >-
-                NOT REQUIRED: when referencing the System Default Editor
-                Configuration (id=DEFAULT, name=Default)
-
+              type: string
+              description: |-
+                NOT REQUIRED: when referencing the System Default Editor Configuration (id=DEFAULT, name=Default)
                 - One is REQUIRED for all other Editor Configurations
             siteName:
-              type:
-                - string
-                - "null"
-              description: >-
-                NOT REQUIRED: when referencing the System Default Editor
-                Configuration (id=DEFAULT, name=Default)
-
+              type: string
+              description: |-
+                NOT REQUIRED: when referencing the System Default Editor Configuration (id=DEFAULT, name=Default)
                 - One is REQUIRED for all other Editor Configurations
             cssFileId:
               type: string
-              description: >-
+              description: |-
                 NOT REQUIRED:
-
                 - Priority: cssFileId > cssFilePath
-
-                - When editing and the selected asset is recycled, it is
-                recommended to preserve this relationship by providing the
-                selected asset's id in case if the selected asset gets restored
-                from the recycle bin.
+                - When editing and the selected asset is recycled, it is recommended to preserve this relationship by providing the selected asset's id in case if the selected asset gets restored from the recycle bin.
             cssFilePath:
               type: string
               description: |-
@@ -3830,8 +3181,7 @@ components:
                 - Path works only for non-recycled assets
             cssFileRecycled:
               type: boolean
-              description: "NOT REQUIRED: For reading purposes only. Ignored when editing,
-                copying, etc."
+              description: "NOT REQUIRED: For reading purposes only. Ignored when editing, copying, etc."
             configuration:
               type: string
               description: "REQUIRED: JSON String for the configuration"
@@ -3918,304 +3268,232 @@ components:
           oneOf:
             - $ref: "#/components/schemas/Group"
             - type: "null"
-          description: >-
+          description: |-
             One is REQUIRED
-
-            - Admin area assets (must be manager or higher to access, no
-            workflowConfiguration needed)
+            - Admin area assets (must be manager or higher to access, no workflowConfiguration needed)
         role:
           oneOf:
             - $ref: "#/components/schemas/Role"
             - type: "null"
-          description: >-
+          description: |-
             One is REQUIRED
-
-            - Admin area assets (must be manager or higher to access, no
-            workflowConfiguration needed)
+            - Admin area assets (must be manager or higher to access, no workflowConfiguration needed)
         assetFactory:
           oneOf:
             - $ref: "#/components/schemas/AssetFactory"
             - type: "null"
-          description: >-
+          description: |-
             One is REQUIRED
-
-            - Admin area assets (must be manager or higher to access, no
-            workflowConfiguration needed)
+            - Admin area assets (must be manager or higher to access, no workflowConfiguration needed)
         assetFactoryContainer:
           oneOf:
             - $ref: "#/components/schemas/AssetFactoryContainer"
             - type: "null"
-          description: >-
+          description: |-
             One is REQUIRED
-
-            - Admin area assets (must be manager or higher to access, no
-            workflowConfiguration needed)
+            - Admin area assets (must be manager or higher to access, no workflowConfiguration needed)
         contentType:
           oneOf:
             - $ref: "#/components/schemas/ContentType"
             - type: "null"
-          description: >-
+          description: |-
             One is REQUIRED
-
-            - Admin area assets (must be manager or higher to access, no
-            workflowConfiguration needed)
+            - Admin area assets (must be manager or higher to access, no workflowConfiguration needed)
         contentTypeContainer:
           oneOf:
             - $ref: "#/components/schemas/ContentTypeContainer"
             - type: "null"
-          description: >-
+          description: |-
             One is REQUIRED
-
-            - Admin area assets (must be manager or higher to access, no
-            workflowConfiguration needed)
+            - Admin area assets (must be manager or higher to access, no workflowConfiguration needed)
         connectorContainer:
-          oneOf:
-            - $ref: "#/components/schemas/ConnectorContainer"
-            - type: "null"
-          description: >-
+          $ref: "#/components/schemas/ConnectorContainer"
+          description: |-
             One is REQUIRED
-
-            - Admin area assets (must be manager or higher to access, no
-            workflowConfiguration needed)
+            - Admin area assets (must be manager or higher to access, no workflowConfiguration needed)
         wordPressConnector:
           oneOf:
             - $ref: "#/components/schemas/WordPressConnector"
             - type: "null"
-          description: >-
+          description: |-
             One is REQUIRED
-
-            - Admin area assets (must be manager or higher to access, no
-            workflowConfiguration needed)
+            - Admin area assets (must be manager or higher to access, no workflowConfiguration needed)
         googleAnalyticsConnector:
           oneOf:
             - $ref: "#/components/schemas/GoogleAnalyticsConnector"
             - type: "null"
-          description: >-
+          description: |-
             One is REQUIRED
-
-            - Admin area assets (must be manager or higher to access, no
-            workflowConfiguration needed)
+            - Admin area assets (must be manager or higher to access, no workflowConfiguration needed)
         pageConfigurationSet:
           oneOf:
             - $ref: "#/components/schemas/PageConfigurationSet"
             - type: "null"
-          description: >-
+          description: |-
             One is REQUIRED
-
-            - Admin area assets (must be manager or higher to access, no
-            workflowConfiguration needed)
+            - Admin area assets (must be manager or higher to access, no workflowConfiguration needed)
         pageConfigurationSetContainer:
           oneOf:
             - $ref: "#/components/schemas/PageConfigurationSetContainer"
             - type: "null"
-          description: >-
+          description: |-
             One is REQUIRED
-
-            - Admin area assets (must be manager or higher to access, no
-            workflowConfiguration needed)
+            - Admin area assets (must be manager or higher to access, no workflowConfiguration needed)
         dataDefinition:
           oneOf:
             - $ref: "#/components/schemas/DataDefinition"
             - type: "null"
-          description: >-
+          description: |-
             One is REQUIRED
-
-            - Admin area assets (must be manager or higher to access, no
-            workflowConfiguration needed)
+            - Admin area assets (must be manager or higher to access, no workflowConfiguration needed)
         dataDefinitionContainer:
           oneOf:
             - $ref: "#/components/schemas/DataDefinitionContainer"
             - type: "null"
-          description: >-
+          description: |-
             One is REQUIRED
-
-            - Admin area assets (must be manager or higher to access, no
-            workflowConfiguration needed)
+            - Admin area assets (must be manager or higher to access, no workflowConfiguration needed)
         sharedField:
           oneOf:
             - $ref: "#/components/schemas/SharedField"
             - type: "null"
-          description: >-
+          description: |-
             One is REQUIRED
-
-            - Admin area assets (must be manager or higher to access, no
-            workflowConfiguration needed)
+            - Admin area assets (must be manager or higher to access, no workflowConfiguration needed)
         sharedFieldContainer:
           oneOf:
             - $ref: "#/components/schemas/SharedFieldContainer"
             - type: "null"
-          description: >-
+          description: |-
             One is REQUIRED
-
-            - Admin area assets (must be manager or higher to access, no
-            workflowConfiguration needed)
+            - Admin area assets (must be manager or higher to access, no workflowConfiguration needed)
         metadataSet:
           oneOf:
             - $ref: "#/components/schemas/MetadataSet"
             - type: "null"
-          description: >-
+          description: |-
             One is REQUIRED
-
-            - Admin area assets (must be manager or higher to access, no
-            workflowConfiguration needed)
+            - Admin area assets (must be manager or higher to access, no workflowConfiguration needed)
         metadataSetContainer:
           oneOf:
             - $ref: "#/components/schemas/MetadataSetContainer"
             - type: "null"
-          description: >-
+          description: |-
             One is REQUIRED
-
-            - Admin area assets (must be manager or higher to access, no
-            workflowConfiguration needed)
+            - Admin area assets (must be manager or higher to access, no workflowConfiguration needed)
         publishSet:
           oneOf:
             - $ref: "#/components/schemas/PublishSet"
             - type: "null"
-          description: >-
+          description: |-
             One is REQUIRED
-
-            - Admin area assets (must be manager or higher to access, no
-            workflowConfiguration needed)
+            - Admin area assets (must be manager or higher to access, no workflowConfiguration needed)
         publishSetContainer:
           oneOf:
             - $ref: "#/components/schemas/PublishSetContainer"
             - type: "null"
-          description: >-
+          description: |-
             One is REQUIRED
-
-            - Admin area assets (must be manager or higher to access, no
-            workflowConfiguration needed)
+            - Admin area assets (must be manager or higher to access, no workflowConfiguration needed)
         siteDestinationContainer:
           oneOf:
             - $ref: "#/components/schemas/SiteDestinationContainer"
             - type: "null"
-          description: >-
+          description: |-
             One is REQUIRED
-
-            - Admin area assets (must be manager or higher to access, no
-            workflowConfiguration needed)
+            - Admin area assets (must be manager or higher to access, no workflowConfiguration needed)
         destination:
           oneOf:
             - $ref: "#/components/schemas/Destination"
             - type: "null"
-          description: >-
+          description: |-
             One is REQUIRED
-
-            - Admin area assets (must be manager or higher to access, no
-            workflowConfiguration needed)
+            - Admin area assets (must be manager or higher to access, no workflowConfiguration needed)
         fileSystemTransport:
           oneOf:
             - $ref: "#/components/schemas/FileSystemTransport"
             - type: "null"
-          description: >-
+          description: |-
             One is REQUIRED
-
-            - Admin area assets (must be manager or higher to access, no
-            workflowConfiguration needed)
+            - Admin area assets (must be manager or higher to access, no workflowConfiguration needed)
         ftpTransport:
           oneOf:
             - $ref: "#/components/schemas/FtpTransport"
             - type: "null"
-          description: >-
+          description: |-
             One is REQUIRED
-
-            - Admin area assets (must be manager or higher to access, no
-            workflowConfiguration needed)
+            - Admin area assets (must be manager or higher to access, no workflowConfiguration needed)
         databaseTransport:
           oneOf:
             - $ref: "#/components/schemas/DatabaseTransport"
             - type: "null"
-          description: >-
+          description: |-
             One is REQUIRED
-
-            - Admin area assets (must be manager or higher to access, no
-            workflowConfiguration needed)
+            - Admin area assets (must be manager or higher to access, no workflowConfiguration needed)
         cloudTransport:
           oneOf:
             - $ref: "#/components/schemas/CloudTransport"
             - type: "null"
-          description: >-
+          description: |-
             One is REQUIRED
-
-            - Admin area assets (must be manager or higher to access, no
-            workflowConfiguration needed)
+            - Admin area assets (must be manager or higher to access, no workflowConfiguration needed)
         transportContainer:
           oneOf:
             - $ref: "#/components/schemas/TransportContainer"
             - type: "null"
-          description: >-
+          description: |-
             One is REQUIRED
-
-            - Admin area assets (must be manager or higher to access, no
-            workflowConfiguration needed)
+            - Admin area assets (must be manager or higher to access, no workflowConfiguration needed)
         workflowDefinition:
           oneOf:
             - $ref: "#/components/schemas/WorkflowDefinition"
             - type: "null"
-          description: >-
+          description: |-
             One is REQUIRED
-
-            - Admin area assets (must be manager or higher to access, no
-            workflowConfiguration needed)
+            - Admin area assets (must be manager or higher to access, no workflowConfiguration needed)
         workflowDefinitionContainer:
           oneOf:
             - $ref: "#/components/schemas/WorkflowDefinitionContainer"
             - type: "null"
-          description: >-
+          description: |-
             One is REQUIRED
-
-            - Admin area assets (must be manager or higher to access, no
-            workflowConfiguration needed)
+            - Admin area assets (must be manager or higher to access, no workflowConfiguration needed)
         workflowEmail:
           oneOf:
             - $ref: "#/components/schemas/WorkflowEmail"
             - type: "null"
-          description: >-
+          description: |-
             One is REQUIRED
-
-            - Admin area assets (must be manager or higher to access, no
-            workflowConfiguration needed)
+            - Admin area assets (must be manager or higher to access, no workflowConfiguration needed)
         workflowEmailContainer:
           oneOf:
             - $ref: "#/components/schemas/WorkflowEmailContainer"
             - type: "null"
-          description: >-
+          description: |-
             One is REQUIRED
-
-            - Admin area assets (must be manager or higher to access, no
-            workflowConfiguration needed)
+            - Admin area assets (must be manager or higher to access, no workflowConfiguration needed)
         twitterFeedBlock:
           oneOf:
             - $ref: "#/components/schemas/TwitterFeedBlock"
             - type: "null"
-          description: >-
+          description: |-
             One is REQUIRED
-
-            - Admin area assets (must be manager or higher to access, no
-            workflowConfiguration needed)
+            - Admin area assets (must be manager or higher to access, no workflowConfiguration needed)
         site:
-          oneOf:
-            - $ref: "#/components/schemas/Site"
-            - type: "null"
-          description: >-
+          $ref: "#/components/schemas/Site"
+          description: |-
             One is REQUIRED
-
-            - Admin area assets (must be manager or higher to access, no
-            workflowConfiguration needed)
+            - Admin area assets (must be manager or higher to access, no workflowConfiguration needed)
         editorConfiguration:
           oneOf:
             - $ref: "#/components/schemas/EditorConfiguration"
             - type: "null"
-          description: >-
+          description: |-
             One is REQUIRED
-
-            - Admin area assets (must be manager or higher to access, no
-            workflowConfiguration needed)
-      description: >-
+            - Admin area assets (must be manager or higher to access, no workflowConfiguration needed)
+      description: |-
         Properties for each asset type
-
-        - Admin area assets require managerial or higher access, and no
-        workflowConfiguration is needed for them.
+        - Admin area assets require managerial or higher access, and no workflowConfiguration is needed for them.
     ReadResult:
       allOf:
         - $ref: "#/components/schemas/OperationResult"
@@ -4227,7 +3505,7 @@ components:
           required:
             - asset
       description: Result data from the `read` operation.
-    AclEntry:
+    AclEntryReceive:
       type: object
       properties:
         level:
@@ -4237,20 +3515,45 @@ components:
           $ref: "#/components/schemas/AclEntryType"
           description: "REQUIRED: The type of ACL entry, either 'user' or 'group'."
         name:
-          type:
-            - string
-            - "null"
-          description: "REQUIRED: The name of the user or group for which this ACL entry
-            applies."
+          type: string
+          description: "REQUIRED: The name of the user or group for which this ACL entry applies."
         id:
-          type:
-            - string
-            - "null"
-          description: The id of the group
+          type: string
+          description: "REQUIRED: The id of the user or group for which this ACL entry applies."
       required:
         - level
         - type
-      description: A single access control list entry
+        - name
+        - id
+      description: A single access control list entry returned by readAccessRights.
+    AclEntrySend:
+      type: object
+      properties:
+        level:
+          $ref: "#/components/schemas/AclEntryLevel"
+          description: "REQUIRED: The access level, either 'read' or 'write'."
+        type:
+          $ref: "#/components/schemas/AclEntryType"
+          description: "REQUIRED: The type of ACL entry, either 'user' or 'group'."
+        name:
+          type: string
+          description: The name of the user or group for which this ACL entry applies. Required when id is not provided.
+        id:
+          type: string
+          description: The id of the user or group for which this ACL entry applies. Required when name is not provided.
+      required:
+        - level
+        - type
+      anyOf:
+        - required:
+            - name
+        - required:
+            - id
+      description: A single access control list entry sent to editAccessRights.
+    AclEntry:
+      allOf:
+        - $ref: "#/components/schemas/AclEntryReceive"
+      description: A single access control list entry returned by readAccessRights.
     ReadAccessRightsResult:
       allOf:
         - $ref: "#/components/schemas/OperationResult"
@@ -4269,8 +3572,7 @@ components:
           properties:
             workflowSettings:
               $ref: "#/components/schemas/WorkflowSettingsReceive"
-              description: "REQUIRED: A result of reading the workflow information of a
-                folder."
+              description: "REQUIRED: A result of reading the workflow information of a folder."
           required:
             - workflowSettings
       description: A result of reading the workflow information of a folder
@@ -4288,8 +3590,7 @@ components:
               type: array
               items:
                 $ref: "#/components/schemas/Identifier"
-              description: "REQUIRED: A list of asset identifiers that are manually
-                subscribed."
+              description: "REQUIRED: A list of asset identifiers that are manually subscribed."
           required:
             - subscribers
             - manualSubscribers
@@ -4321,8 +3622,7 @@ components:
           description: "REQUIRED: The type of action: reverse, forward, next-id."
         nextId:
           type: string
-          description: "REQUIRED: The id of the step that will result when this action is
-            chosen by the user."
+          description: "REQUIRED: The id of the step that will result when this action is chosen by the user."
       required:
         - identifier
         - label
@@ -4377,33 +3677,25 @@ components:
                 $ref: "#/components/schemas/WorkflowStep"
               description: "NOT REQUIRED: The unordered steps of this workflow."
             startDate:
-              type:
-                - string
-                - "null"
+              type: string
               format: date-time
               description: "NOT REQUIRED: The date when the workflow was initialized."
             endDate:
-              type:
-                - string
-                - "null"
+              type: string
               format: date-time
               description: "NOT REQUIRED: The due date of the workflow."
             completedWorkflowEmailId:
               type: string
-              description: "NOT REQUIRED: Custom workflow email to send when email trigger set
-                to completed."
+              description: "NOT REQUIRED: Custom workflow email to send when email trigger set to completed."
             completedWorkflowEmailPath:
               type: string
-              description: "NOT REQUIRED: Custom workflow email to send when email trigger set
-                to completed."
+              description: "NOT REQUIRED: Custom workflow email to send when email trigger set to completed."
             notificationWorkflowEmailId:
               type: string
-              description: "NOT REQUIRED: Custom workflow email to send when email trigger set
-                to notify."
+              description: "NOT REQUIRED: Custom workflow email to send when email trigger set to notify."
             notificationWorkflowEmailPath:
               type: string
-              description: "NOT REQUIRED: Custom workflow email to send when email trigger set
-                to notify."
+              description: "NOT REQUIRED: Custom workflow email to send when email trigger set to notify."
           required:
             - relatedEntity
             - currentStep
@@ -4449,9 +3741,7 @@ components:
         - type: object
           properties:
             preferences:
-              type:
-                - array
-                - "null"
+              type: array
               items:
                 $ref: "#/components/schemas/Preference"
               description: The list of user preferences.
@@ -4461,36 +3751,22 @@ components:
     PublishInformation:
       type: object
       properties:
-        identifier:
-          $ref: "#/components/schemas/Identifier"
-          description: Identifier of the asset being published REQUIRED
         destinations:
           type: array
           items:
             $ref: "#/components/schemas/Identifier"
-          description: >-
+          description: |-
             NOT REQUIRED: Destinations to which the asset should be published.
-
             - This field is ignored when identifier points to a Destination.
-
-            - Publishing an asset that does not allow you to select Destinations
-            in the Cascade UI (Publish Set or Target) *will* respect the
-            Destinations supplied here (this is an inconsistency between the UI
-            and web services).
-
-            - Supplying an empty set of identifiers will publish to all
-            Destinations that are enabled and applicable for the user making the
-            web services call.
+            - Publishing an asset that does not allow you to select Destinations in the Cascade UI (Publish Set) *will* respect the Destinations supplied here (this is an inconsistency between the UI and web services).
+            - Supplying an empty set of identifiers will publish to all Destinations that are enabled and applicable for the user making the web services call.
         unpublish:
           type:
             - boolean
             - "null"
-          description: >-
-            NOT REQUIRED: Whether to unpublish the asset instead of publishing
-            it.
-
-            - Similar to the GUI - you can choose to unpublish the asset instead
-            of publishing it.
+          description: |-
+            NOT REQUIRED: Whether to unpublish the asset instead of publishing it.
+            - Similar to the GUI - you can choose to unpublish the asset instead of publishing it.
         publishRelatedAssets:
           type:
             - boolean
@@ -4507,16 +3783,10 @@ components:
             - "null"
           format: date-time
           description: "NOT REQUIRED: The scheduled date for publishing the asset."
-      required:
-        - identifier
       description: Contains information about asset publishing status and schedule.
     DeleteRequest:
       type: object
       properties:
-        authentication:
-          $ref: "#/components/schemas/Authentication"
-          description: Authentication information containing the API key or password
-            credentials.
         identifier:
           $ref: "#/components/schemas/Identifier"
           description: "REQUIRED: Parameters used when reading an asset"
@@ -4527,7 +3797,6 @@ components:
           $ref: "#/components/schemas/WorkflowConfiguration"
           description: "NOT REQUIRED: For configuring workflow"
       required:
-        - authentication
         - identifier
       description: Request object for asset removal
     DeleteResponse:
@@ -4536,15 +3805,10 @@ components:
     CreateRequest:
       type: object
       properties:
-        authentication:
-          $ref: "#/components/schemas/Authentication"
-          description: Authentication information containing the API key or password
-            credentials.
         asset:
           $ref: "#/components/schemas/Asset"
           description: The actual operations for inclusion in a batch op
       required:
-        - authentication
         - asset
       description: The request object for asset creating
     CreateResponse:
@@ -4553,15 +3817,14 @@ components:
     PublishRequest:
       type: object
       properties:
-        authentication:
-          $ref: "#/components/schemas/Authentication"
-          description: Authentication information containing the API key or password
-            credentials.
+        identifier:
+          $ref: "#/components/schemas/Identifier"
+          description: "REQUIRED: Identifier of the asset being published."
         publishInformation:
           $ref: "#/components/schemas/PublishInformation"
           description: "REQUIRED: Information related to the publishing or unpublishing."
       required:
-        - authentication
+        - identifier
         - publishInformation
       description: Request body for the `publish` operation.
     PublishResponse:
@@ -4570,15 +3833,10 @@ components:
     EditRequest:
       type: object
       properties:
-        authentication:
-          $ref: "#/components/schemas/Authentication"
-          description: Authentication information containing the API key or password
-            credentials.
         asset:
           $ref: "#/components/schemas/Asset"
           description: The asset data to create or update.
       required:
-        - authentication
         - asset
       description: The request object for asset editing
     EditResponse:
@@ -4587,15 +3845,10 @@ components:
     ReadRequest:
       type: object
       properties:
-        authentication:
-          $ref: "#/components/schemas/Authentication"
-          description: Authentication information containing the API key or password
-            credentials.
         identifier:
           $ref: "#/components/schemas/Identifier"
           description: Identifies the asset to read.
       required:
-        - authentication
         - identifier
       description: "REQUIRED: Parameters used when reading an asset"
     ReadResponse:
@@ -4604,15 +3857,10 @@ components:
     SearchRequest:
       type: object
       properties:
-        authentication:
-          $ref: "#/components/schemas/Authentication"
-          description: Authentication information containing the API key or password
-            credentials.
         searchInformation:
           $ref: "#/components/schemas/SearchInformation"
           description: The search criteria and parameters.
       required:
-        - authentication
         - searchInformation
       description: Properties for the Search Request
     SearchResponse:
@@ -4621,15 +3869,10 @@ components:
     ReadAccessRightsRequest:
       type: object
       properties:
-        authentication:
-          $ref: "#/components/schemas/Authentication"
-          description: Authentication information containing the API key or password
-            credentials.
         identifier:
           $ref: "#/components/schemas/Identifier"
           description: "REQUIRED: Parameters used when reading an asset"
       required:
-        - authentication
         - identifier
       description: Properties for the ReadAccessRights Request
     ReadAccessRightsResponse:
@@ -4638,27 +3881,18 @@ components:
     EditAccessRightsRequest:
       type: object
       properties:
-        authentication:
-          $ref: "#/components/schemas/Authentication"
-          description: Authentication information containing the API key or password
-            credentials.
         accessRightsInformation:
           $ref: "#/components/schemas/AccessRightsInformationSend"
-          description: "REQUIRED: Complete information about the access rights of an asset
-            or component."
+          description: "REQUIRED: Complete information about the access rights of an asset or component."
         applyToChildren:
           type: boolean
-          description: >-
-            NOT REQUIRED: Indicates whether to apply the access rights to
-            children.
-
+          description: |-
+            NOT REQUIRED: Indicates whether to apply the access rights to children.
             - This property is not required for non-folders and non-containers.
         identifier:
           $ref: "#/components/schemas/Identifier"
-          description: "REQUIRED: Unique identifier for the asset or component whose
-            access rights are being defined."
+          description: "REQUIRED: Unique identifier for the asset or component whose access rights are being defined."
       required:
-        - authentication
         - accessRightsInformation
         - identifier
       description: Request body for the `editAccessRights` operation.
@@ -4668,15 +3902,10 @@ components:
     ReadWorkflowSettingsRequest:
       type: object
       properties:
-        authentication:
-          $ref: "#/components/schemas/Authentication"
-          description: Authentication information containing the API key or password
-            credentials.
         identifier:
           $ref: "#/components/schemas/Identifier"
           description: "REQUIRED: Parameters used when reading an asset."
       required:
-        - authentication
         - identifier
       description: Request body for the `readWorkflowSettings` operation.
     ReadWorkflowSettingsResponse:
@@ -4685,26 +3914,19 @@ components:
     EditWorkflowSettingsRequest:
       type: object
       properties:
-        authentication:
-          $ref: "#/components/schemas/Authentication"
-          description: Authentication information containing the API key or password
-            credentials.
         workflowSettings:
           $ref: "#/components/schemas/WorkflowSettingsSend"
           description: "REQUIRED: The workflow settings to be edited."
         applyInheritWorkflowsToChildren:
           type: boolean
-          description: "NOT REQUIRED: Determines whether to apply the 'inheritWorkflows'
-            settings to children folders."
+          description: "NOT REQUIRED: Determines whether to apply the 'inheritWorkflows' settings to children folders."
         applyRequireWorkflowToChildren:
           type: boolean
-          description: "NOT REQUIRED: Determines whether to apply the 'requireWorkflow'
-            settings to children folders."
+          description: "NOT REQUIRED: Determines whether to apply the 'requireWorkflow' settings to children folders."
         identifier:
           $ref: "#/components/schemas/Identifier"
           description: Identifies the asset whose workflow settings to edit.
       required:
-        - authentication
         - workflowSettings
         - identifier
       description: Request body for the `editWorkflowSettings` operation.
@@ -4714,15 +3936,10 @@ components:
     ListSubscribersRequest:
       type: object
       properties:
-        authentication:
-          $ref: "#/components/schemas/Authentication"
-          description: Authentication information containing the API key or password
-            credentials.
         identifier:
           $ref: "#/components/schemas/Identifier"
           description: "REQUIRED: Parameters used when reading an asset."
       required:
-        - authentication
         - identifier
       description: Request body for the `listSubscribers` operation.
     ListSubscribersResponse:
@@ -4730,24 +3947,13 @@ components:
       description: Response from the `listSubscribers` operation.
     ListMessagesRequest:
       type: object
-      properties:
-        authentication:
-          $ref: "#/components/schemas/Authentication"
-          description: Authentication information containing the API key or password
-            credentials.
-      required:
-        - authentication
-      description: Request body for the `listMessages` operation.
+      description: Empty request body for the `listMessages` operation. Authentication is supplied by the generated client using the Authorization header.
     ListMessagesResponse:
       $ref: "#/components/schemas/ListMessagesResult"
       description: Response from the `listMessages` operation.
     MarkMessageRequest:
       type: object
       properties:
-        authentication:
-          $ref: "#/components/schemas/Authentication"
-          description: Authentication information containing the API key or password
-            credentials.
         identifier:
           $ref: "#/components/schemas/Identifier"
           description: "REQUIRED: Identifier for the message."
@@ -4757,7 +3963,6 @@ components:
             REQUIRED: The type of mark to apply to the message.
             - For marking messages - read or unread
       required:
-        - authentication
         - identifier
         - markType
       description: Request body for the `markMessage` operation.
@@ -4767,15 +3972,10 @@ components:
     DeleteMessageRequest:
       type: object
       properties:
-        authentication:
-          $ref: "#/components/schemas/Authentication"
-          description: Authentication information containing the API key or password
-            credentials.
         identifier:
           $ref: "#/components/schemas/Identifier"
           description: "REQUIRED: Identifier for the message."
       required:
-        - authentication
         - identifier
       description: Request body for the `deleteMessage` operation.
     DeleteMessageResponse:
@@ -4784,15 +3984,10 @@ components:
     CheckOutRequest:
       type: object
       properties:
-        authentication:
-          $ref: "#/components/schemas/Authentication"
-          description: Authentication information containing the API key or password
-            credentials.
         identifier:
           $ref: "#/components/schemas/Identifier"
           description: "REQUIRED: Identifier for the message."
       required:
-        - authentication
         - identifier
       description: Request body for the `checkOut` operation.
     CheckOutResponse:
@@ -4801,10 +3996,6 @@ components:
     CheckInRequest:
       type: object
       properties:
-        authentication:
-          $ref: "#/components/schemas/Authentication"
-          description: Authentication information containing the API key or password
-            credentials.
         identifier:
           $ref: "#/components/schemas/Identifier"
           description: "REQUIRED: Identifier for the message."
@@ -4812,7 +4003,6 @@ components:
           type: string
           description: Comments to include with the check-in.
       required:
-        - authentication
         - identifier
         - comments
       description: Request body for the `checkIn` operation.
@@ -4822,10 +4012,6 @@ components:
     CopyRequest:
       type: object
       properties:
-        authentication:
-          $ref: "#/components/schemas/Authentication"
-          description: Authentication information containing the API key or password
-            credentials.
         identifier:
           $ref: "#/components/schemas/Identifier"
           description: The identifier of the asset to be copied.
@@ -4834,13 +4020,10 @@ components:
           description: Parameters controlling the copy operation.
         workflowConfiguration:
           $ref: "#/components/schemas/WorkflowConfiguration"
-          description: >-
+          description: |-
             NOT REQUIRED
-
-            - The configuration for any workflow that needs to be applied after
-            the copy.
+            - The configuration for any workflow that needs to be applied after the copy.
       required:
-        - authentication
         - identifier
         - copyParameters
       description: Properties for the Copy Request
@@ -4850,18 +4033,11 @@ components:
     SiteCopyRequest:
       type: object
       properties:
-        authentication:
-          $ref: "#/components/schemas/Authentication"
-          description: Authentication information containing the API key or password
-            credentials.
         originalSiteId:
           type: string
-          description: >-
+          description: |-
             NOT REQUIRED
-
-            - The ID of the site to be copied. Takes precedence over
-            originalSiteName if both are provided.
-
+            - The ID of the site to be copied. Takes precedence over originalSiteName if both are provided.
             - One is REQUIRED (either originalSiteId or originalSiteName)
         originalSiteName:
           type: string
@@ -4871,10 +4047,8 @@ components:
             - One is REQUIRED (either originalSiteId or originalSiteName)
         newSiteName:
           type: string
-          description: "REQUIRED: The name for the new site that will be created from the
-            copy."
+          description: "REQUIRED: The name for the new site that will be created from the copy."
       required:
-        - authentication
         - newSiteName
       description: Properties for the SiteCopy Request
     SiteCopyResponse:
@@ -4882,36 +4056,23 @@ components:
       description: Response from the `siteCopy` operation.
     ListSitesRequest:
       type: object
-      properties:
-        authentication:
-          $ref: "#/components/schemas/Authentication"
-          description: Authentication information containing the API key or password
-            credentials.
-      required:
-        - authentication
-      description: Request body for the `listSites` operation.
+      description: Empty request body for the `listSites` operation. Authentication is supplied by the generated client using the Authorization header.
     ListSitesResponse:
       $ref: "#/components/schemas/ListSitesResult"
       description: Response from the `listSites` operation.
     MoveRequest:
       type: object
       properties:
-        authentication:
-          $ref: "#/components/schemas/Authentication"
-          description: Authentication information containing the API key or password
-            credentials.
         identifier:
           $ref: "#/components/schemas/Identifier"
           description: "REQUIRED: Parameters used when reading an asset"
         moveParameters:
           $ref: "#/components/schemas/MoveParameters"
-          description: "REQUIRED: parameters specifying a new name and/or container for
-            the asset"
+          description: "REQUIRED: parameters specifying a new name and/or container for the asset"
         workflowConfiguration:
           $ref: "#/components/schemas/WorkflowConfiguration"
           description: "NOT REQUIRED: For configuring workflow"
       required:
-        - authentication
         - identifier
         - moveParameters
       description: Request object for moving an asset
@@ -4921,15 +4082,10 @@ components:
     ReadWorkflowInformationRequest:
       type: object
       properties:
-        authentication:
-          $ref: "#/components/schemas/Authentication"
-          description: Authentication information containing the API key or password
-            credentials.
         identifier:
           $ref: "#/components/schemas/Identifier"
           description: "REQUIRED: Identifier for the message."
       required:
-        - authentication
         - identifier
       description: Request body for the `readWorkflowInformation` operation.
     ReadWorkflowInformationResponse:
@@ -4938,15 +4094,10 @@ components:
     ReadAuditsRequest:
       type: object
       properties:
-        authentication:
-          $ref: "#/components/schemas/Authentication"
-          description: Authentication information containing the API key or password
-            credentials.
         auditParameters:
           $ref: "#/components/schemas/AuditParameters"
           description: "REQUIRED: The parameters for the audit."
       required:
-        - authentication
         - auditParameters
       description: Request body for the `readAudits` operation.
     ReadAuditsResponse:
@@ -4955,15 +4106,10 @@ components:
     PerformWorkflowTransitionRequest:
       type: object
       properties:
-        authentication:
-          $ref: "#/components/schemas/Authentication"
-          description: Authentication information containing the API key or password
-            credentials.
         workflowTransitionInformation:
           $ref: "#/components/schemas/WorkflowTransitionInformation"
           description: "REQUIRED: Information related to the workflow transition."
       required:
-        - authentication
         - workflowTransitionInformation
       description: Request body for the `performWorkflowTransition` operation.
     PerformWorkflowTransitionResponse:
@@ -4971,29 +4117,17 @@ components:
       description: Response from the `performWorkflowTransition` operation.
     ReadPreferencesRequest:
       type: object
-      properties:
-        authentication:
-          $ref: "#/components/schemas/Authentication"
-          description: Authentication information containing the API key or password
-            credentials.
-      required:
-        - authentication
-      description: Request body for the `readPreferences` operation.
+      description: Empty request body for the `readPreferences` operation. Authentication is supplied by the generated client using the Authorization header.
     ReadPreferencesResponse:
       $ref: "#/components/schemas/ReadPreferencesResult"
       description: Response from the `readPreferences` operation.
     EditPreferenceRequest:
       type: object
       properties:
-        authentication:
-          $ref: "#/components/schemas/Authentication"
-          description: Authentication information containing the API key or password
-            credentials.
         preference:
           $ref: "#/components/schemas/Preference"
           description: The preference to create or update.
       required:
-        - authentication
         - preference
       description: Request body for the `editPreference` operation.
     EditPreferenceResponse:
@@ -5004,12 +4138,11 @@ components:
       properties:
         identifier:
           $ref: "#/components/schemas/Identifier"
-          description: "REQUIRED: Unique identifier for the asset or component whose
-            access rights are being defined."
+          description: "REQUIRED: Unique identifier for the asset or component whose access rights are being defined."
         aclEntries:
           type: array
           items:
-            $ref: "#/components/schemas/AclEntry"
+            $ref: "#/components/schemas/AclEntryReceive"
           description: Optional list of Access Control List entries.
         allLevel:
           $ref: "#/components/schemas/AllLevel"
@@ -5017,23 +4150,21 @@ components:
       required:
         - identifier
         - allLevel
-      description: Access rights information as returned from a read operation
-        (includes all ACL entries).
+      description: Access rights information as returned from a read operation (includes all ACL entries).
     AccessRightsInformationSend:
       type: object
       properties:
         aclEntries:
           type: array
           items:
-            $ref: "#/components/schemas/AclEntry"
+            $ref: "#/components/schemas/AclEntrySend"
           description: Optional list of Access Control List entries.
         allLevel:
           $ref: "#/components/schemas/AllLevel"
           description: "REQUIRED: Defines the access level for all users."
       required:
         - allLevel
-      description: Access rights information as sent in an edit operation (specifies
-        ACL entries to set).
+      description: Access rights information as sent in an edit operation (specifies ACL entries to set).
     WorkflowSettingsReceive:
       type: object
       properties:
@@ -5047,18 +4178,15 @@ components:
           description: "NOT REQUIRED: Workflow definitions associated with this folder."
         inheritWorkflows:
           type: boolean
-          description: "NOT REQUIRED: Determines whether the workflow settings are
-            inherited from the parent folder."
+          description: "NOT REQUIRED: Determines whether the workflow settings are inherited from the parent folder."
         requireWorkflow:
           type: boolean
-          description: "NOT REQUIRED: Indicates whether a workflow is required for this
-            folder."
+          description: "NOT REQUIRED: Indicates whether a workflow is required for this folder."
         inheritedWorkflowDefinitions:
           type: array
           items:
             $ref: "#/components/schemas/Identifier"
-          description: "NOT REQUIRED: Inherited workflow definitions from the parent
-            folder. Ignored on edit."
+          description: "NOT REQUIRED: Inherited workflow definitions from the parent folder. Ignored on edit."
       required:
         - identifier
       description: Complete data with the workflow settings of a folder
@@ -5072,18 +4200,15 @@ components:
           description: "NOT REQUIRED: Workflow definitions associated with this folder."
         inheritWorkflows:
           type: boolean
-          description: "NOT REQUIRED: Determines whether the workflow settings are
-            inherited from the parent folder."
+          description: "NOT REQUIRED: Determines whether the workflow settings are inherited from the parent folder."
         requireWorkflow:
           type: boolean
-          description: "NOT REQUIRED: Indicates whether a workflow is required for this
-            folder."
+          description: "NOT REQUIRED: Indicates whether a workflow is required for this folder."
         inheritedWorkflowDefinitions:
           type: array
           items:
             $ref: "#/components/schemas/Identifier"
-          description: "NOT REQUIRED: Inherited workflow definitions from the parent
-            folder. Ignored on edit."
+          description: "NOT REQUIRED: Inherited workflow definitions from the parent folder. Ignored on edit."
       description: Complete data with the workflow settings of a folder
     ErrorResponse:
       type: object
@@ -5095,8 +4220,7 @@ components:
           description: Whether the operation completed successfully.
         message:
           type: string
-          description: A message providing details about the operation result, typically
-            populated on failure.
+          description: A message providing details about the operation result, typically populated on failure.
       required:
         - success
         - message
