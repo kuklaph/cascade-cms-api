@@ -4,3 +4,4 @@ docs/convert
 package-lock.json
 bun.lock
 .serena
+tmp

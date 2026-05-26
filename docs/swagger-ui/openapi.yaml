@@ -1,75 +1,17 @@
 openapi: 3.1.0
 info:
-  title: Cascade CMS API Library
-  version: 1.0.0
+  title: Cascade CMS API
+  version: 2.0.0
+  description: OpenAPI 3.1.0 specification for the Cascade CMS REST API. Derived from the WSDL-generated spec with REST-specific patches applied (flat arrays, boolean success, integer[] file data, header auth).
   license:
-    name: MIT License
-    url: https://github.com/kuklaph/cascade-cms-api/blob/main/LICENSE
-  contact:
-    name: Official Cascade Rest API Documentation
-    url: https://www.hannonhill.com/cascadecms/latest/developing-in-cascade/rest-api/index.html
-  description: |
-    *This was created by [Kuklaph](https://github.com/kuklaph) and is not an official Cascade API document. I do not claim to own any rights of Hannon Hill or Cascade in anyway.*
-
-    The WSDL was initially converted to JSDoc types (for usage in the Cascade CMS API Library) and then converted to openAPI specs.
-
-    This documentation is based on the [Cascade CMS API Library](https://github.com/kuklaph/cascade-cms-api) which only uses POST requests.
-
-    - Authentication is handled by the library and sent with the request headers.
-    - Request body schemas do not include an `authentication` property.
-    - Other Cascade REST authentication methods are shown below for direct Cascade REST calls.
-
-    If you come across a bug please create an [issue](https://github.com/kuklaph/cascade-cms-api/issues).
-
-    ### Snippet From Official Cascade REST Documentation
-
-    Though the Cascade CMS v1 REST APi does not exactly follow RESTful API conventions, it is similar enough to be called so.
-    The supported methods are "GET" and "POST". The name of the operation should be included in the URL.
-    The request and response are in JSON format that resembles format of SOAP objects from Cascade CMS's Web Services.
-    Future version of the API may adhere more closely to REST.
-
-    **Symbols in this document**
-
-    {identifier}
-
-    Either:
-      - End of URL string for POST or GET requests: `{type}/{id}`. Example: `folder/2b2fd9bc7f0000010044b22e65131cd3`
-      - End of URL string for POST or GET requests: `{type}/{siteName}/{path}`. \
-        Example: `page/www.example.com/news/2003/best-of-show`
-      - The identifier can also be provided in body in JSON format for POST requests only. \
-        Example:
-        ```json
-        "identifier": {
-          "type": "page",
-          "path": {
-            "siteId": "2b2fd9a67f0000010044b22e4f6b0859",
-            "path": "news/2003/about"
-          }
-        }
-        ```
-        Notice that providing a site id for the identifier is not possible in a URL string.
-
-    {auth}
-
-    Either:
-      - The user's API Key can be provided within the request's Authorization header as a Bearer token.
-        Example: `Authorization: Bearer 27c03f58-7c79-45d1-aa8f-76d697bbb10d`
-      - The user's username and password can be provided within the request's Authorization header using a Basic authentication string, which is a base64-encoded string containing `username:password`.
-        Example: `Authorization: Basic am9obi5zbWl0aDpqb2huMTIz`
-      - Request parameters `u` and `p` for username and password, or `apiKey` for the user's API Key. \
-        Examples: `u=john.smith&p=john123` OR `apiKey=27c03f58-7c79-45d1-aa8f-76d697bbb10d`
-      - Raw Cascade REST can also accept body authentication for POST requests, but this library does not expose body authentication in request schemas because the generated client supplies auth through request headers.
-tags:
-  - name: Examples
-    description: Various ways to interact with the API
-  - name: POST Only
-    description: These interact with POST and a Bearer API Key
+    name: MIT
+    url: https://opensource.org/licenses/MIT
 servers:
   - url: https://{yourOrg}.cascadecms.com/api/v1
     variables:
       yourOrg:
         default: demo
-        description: Your organization identifier in Cascade CMS
+        description: Your Cascade CMS organization identifier
 security:
   - BasicAuth: []
   - ApiKeyAuth: []
@@ -4322,76 +4264,6 @@ paths:
               schema:
                 $ref: "#/components/schemas/ErrorResponse"
       description: Use this method to edit an asset
-  /read/{type}/{id}:
-    get:
-      operationId: readById
-      summary: Read an asset by type and id
-      tags:
-        - Examples
-      parameters:
-        - name: type
-          in: path
-          required: true
-          schema:
-            $ref: "#/components/schemas/EntityTypeString"
-          description: The asset type
-        - name: id
-          in: path
-          required: true
-          schema:
-            type: string
-          description: The asset id
-      responses:
-        "200":
-          description: Operation result
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/ReadResponse"
-        "400":
-          description: Bad request
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/ErrorResponse"
-  /read/{type}/{siteName}/{path}:
-    get:
-      operationId: readByPath
-      summary: Read an asset by type, site name, and path
-      tags:
-        - Examples
-      parameters:
-        - name: type
-          in: path
-          required: true
-          schema:
-            $ref: "#/components/schemas/EntityTypeString"
-          description: The asset type
-        - name: siteName
-          in: path
-          required: true
-          schema:
-            type: string
-          description: The site name
-        - name: path
-          in: path
-          required: true
-          schema:
-            type: string
-          description: The asset path
-      responses:
-        "200":
-          description: Operation result
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/ReadResponse"
-        "400":
-          description: Bad request
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/ErrorResponse"
   /read:
     post:
       operationId: read
