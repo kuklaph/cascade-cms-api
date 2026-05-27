@@ -29,7 +29,7 @@
  */
 
 /**
- * @typedef {Object} FolderContainedAssetProperties
+ * @typedef {Object} FolderContainedAssetPropertiesBase
  * @property {string} [parentFolderId]
  * - REQUIRED on create, ignored on edit: The parent folder relationship
  * - Priority: parentFolderId > parentFolderPath
@@ -56,6 +56,11 @@
  * - One is REQUIRED
  * @property {Tags[]} [tags]
  * - NOT REQUIRED: Content Tags assigned to the asset
+ */
+
+/**
+ * @typedef {FolderContainedAssetPropertiesBase &
+ * ({siteId: string} | {siteName: string})} FolderContainedAssetProperties
  */
 
 /**
@@ -273,7 +278,7 @@
  */
 
 /**
- * @typedef {Object} Identifier
+ * @typedef {Object} IdentifierBase
  * @property {string} [id]
  * - When editing and selected asset is recycled, it is recommended to preserve this relationship by providing selected asset's id
  *   in case if the selected asset gets restored from the recycle bin. One is REQUIRED.
@@ -284,6 +289,10 @@
  * - All asset type strings
  * @property {boolean} [recycled]
  * - NOT REQUIRED: For reading purposes only. Ignored when editing, copying etc.
+ */
+
+/**
+ * @typedef {IdentifierBase & ({id: string} | {path: Path})} Identifier
  */
 
 /**
@@ -545,7 +554,7 @@
  */
 
 /**
- * @typedef {Object} ContaineredAssetProperties
+ * @typedef {Object} ContaineredAssetPropertiesBase
  * @property {string} [parentContainerId]
  * - NOT REQUIRED on edit: For defining the container relationship. Priority: parentContainerId > parentContainerPath. Required on create, ignored on edit. Use move operation to move an asset after it has been created.
  * @property {string} [parentContainerPath]
@@ -556,6 +565,11 @@
  * - NOT REQUIRED: The site in which the asset is located. Priority: siteId > siteName. One is REQUIRED.
  * @property {string} [siteName]
  * - NOT REQUIRED: Priority: siteId > siteName. One is REQUIRED.
+ */
+
+/**
+ * @typedef {ContaineredAssetPropertiesBase &
+ * ({siteId: string} | {siteName: string})} ContaineredAssetProperties
  */
 
 /**
@@ -599,7 +613,7 @@
  */
 
 /**
- * @typedef {Object} ContentTypePageConfiguration
+ * @typedef {Object} ContentTypePageConfigurationBase
  * @property {string} [pageConfigurationId]
  * - Priority: pageConfigurationId > pageConfigurationName. One is REQUIRED.
  * @property {string} [pageConfigurationName]
@@ -607,6 +621,11 @@
  * - REQUIRED.
  * @property {DestinationList[]} [destinations]
  * - REQUIRED if "publishMode" is "selected-destinations", else NOT REQUIRED and ignored.
+ */
+
+/**
+ * @typedef {ContentTypePageConfigurationBase &
+ * ({pageConfigurationId: string} | {pageConfigurationName: string})} ContentTypePageConfiguration
  */
 
 /**
@@ -707,13 +726,18 @@
  */
 
 /**
- * @typedef {Object} StatusUpdateConnectorProperties
+ * @typedef {Object} StatusUpdateConnectorPropertiesBase
  * @property {string} [destinationId]
  * - One is REQUIRED:
  * - Priority: destinationId > destinationPath
  * @property {string} [destinationPath]
  * - One is REQUIRED:
  * - Priority: destinationId > destinationPath
+ */
+
+/**
+ * @typedef {StatusUpdateConnectorPropertiesBase &
+ * ({destinationId: string} | {destinationPath: string})} StatusUpdateConnectorProperties
  */
 
 /**
@@ -845,7 +869,7 @@
  */
 
 /**
- * @typedef {Object} WorkflowConfiguration
+ * @typedef {Object} WorkflowConfigurationBase
  * @property {string} workflowName
  * - When the workflow is instantiated, this will be its name
  * - REQUIRED
@@ -865,6 +889,11 @@
  * - NOT REQUIRED default: the defaults as defined in the workflow definition
  * @property {string} [endDate]
  * - Optional due date for the workflow. If not specified, will default to 7 days from today
+ */
+
+/**
+ * @typedef {WorkflowConfigurationBase &
+ * ({workflowDefinitionId: string} | {workflowDefinitionPath: string})} WorkflowConfiguration
  */
 
 /**
@@ -1074,12 +1103,17 @@
 
 //#region XhtmlDataDefinitionBlockProperties DONE
 /**
- * @typedef {Object} XhtmlDataDefinitionBlockProperties
+ * @typedef {Object} XhtmlDataDefinitionBlockPropertiesBase
  * @property {StructuredData} [structuredData]
  * - A page either contains XHTML content (plain WYSIWYG page) or structured data content.
  * Priority: xhtml > structuredData. One is REQUIRED.
  * @property {string} [xhtml]
  * - XHTML content for a plain WYSIWYG block. Priority: xhtml > structuredData. One is REQUIRED.
+ */
+
+/**
+ * @typedef {XhtmlDataDefinitionBlockPropertiesBase &
+ * ({structuredData: StructuredData} | {xhtml: string})} XhtmlDataDefinitionBlockProperties
  */
 
 /**
@@ -1123,7 +1157,7 @@
 
 //#region FileProperties DONE
 /**
- * @typedef {Object} FileProperties
+ * @typedef {Object} FilePropertiesBase
  * @property {string} [text]
  * - One is REQUIRED
  * - Priority: text > data
@@ -1135,6 +1169,10 @@
  * @property {boolean} [rewriteLinks]
  * @property {LinkRewriting} [linkRewriting]
  * - NOT REQUIRED: default: "inherit"
+ */
+
+/**
+ * @typedef {FilePropertiesBase & ({text: string} | {data: number[]})} FileProperties
  */
 
 /**
@@ -1164,7 +1202,7 @@
 
 //#region PageProperties DONE
 /**
- * @typedef {Object} PageProperties
+ * @typedef {Object} PagePropertiesBase
  * @property {string} [configurationSetId]
  * - For defining the configuration set or content type relationship.
  * Priority: (contentTypeId > contentTypePath) > (configurationSetId > configurationSetPath).
@@ -1195,6 +1233,12 @@
  */
 
 /**
+ * @typedef {PagePropertiesBase &
+ * ({contentTypeId: string} | {contentTypePath: string} | {configurationSetId: string} | {configurationSetPath: string}) &
+ * ({structuredData: StructuredData} | {xhtml: string})} PageProperties
+ */
+
+/**
  * @typedef {PageProperties &
  * PublishableAsset
  * } Page
@@ -1204,13 +1248,18 @@
 
 //#region ReferenceProperties DONE
 /**
- * @typedef {Object} ReferenceProperties
+ * @typedef {Object} ReferencePropertiesBase
  * @property {string} [referencedAssetId]
  * - For defining the referenced asset relationship. Priority: referencedAssetId > referencedAssetPath. One is REQUIRED.
  * @property {string} [referencedAssetPath]
  * - For defining the referenced asset relationship. Priority: referencedAssetId > referencedAssetPath. One is REQUIRED.
  * @property {EntityTypeString} referencedAssetType
  * - The type of the referenced asset. REQUIRED.
+ */
+
+/**
+ * @typedef {ReferencePropertiesBase &
+ * ({referencedAssetId: string} | {referencedAssetPath: string})} ReferenceProperties
  */
 
 /**
@@ -1346,17 +1395,10 @@
 
 //#region RoleProperties DONE
 /**
- * @typedef {Object} RoleProperties
- * @property {"site" | "global"} roleType
- * - NOT REQUIRED: The type of the role.
- * @property {GlobalAbilities} [globalAbilities]
- * - ONE is REQUIRED:
- * - The global or site abilities for the role.
- * - Use the correct one depending on the type of the role.
- * @property {SiteAbilities} [siteAbilities]
- * - ONE is REQUIRED:
- * - The global or site abilities for the role.
- * - Use the correct one depending on the type of the role.
+ * @typedef {(
+ * {roleType: "global", globalAbilities: GlobalAbilities, siteAbilities?: never} |
+ * {roleType: "site", globalAbilities?: never, siteAbilities: SiteAbilities}
+ * )} RoleProperties
  */
 
 /**
@@ -1435,7 +1477,7 @@
 
 //#region ContentTypeProperties DONE
 /**
- * @typedef {Object} ContentTypeProperties
+ * @typedef {Object} ContentTypePropertiesBase
  * @property {string} [pageConfigurationSetId]
  * - One is REQUIRED: Priority: pageConfigurationSetId > pageConfigurationSetPath.
  * @property {string} [pageConfigurationSetPath]
@@ -1460,6 +1502,12 @@
  * - NOT REQUIRED: - if not specified, the default publish mode "all-destinations" is used for each pageConfiguration.
  * @property {InlineEditableFields[]} [inlineEditableFields]
  * - NOT REQUIRED: - if not specified, none of the regions or fields will be inline editable.
+ */
+
+/**
+ * @typedef {ContentTypePropertiesBase &
+ * ({pageConfigurationSetId: string} | {pageConfigurationSetPath: string}) &
+ * ({metadataSetId: string} | {metadataSetPath: string})} ContentTypeProperties
  */
 
 /**
@@ -1739,7 +1787,7 @@
 
 //#region DestinationProperties DONE
 /**
- * @typedef {Object} DestinationProperties
+ * @typedef {Object} DestinationPropertiesBase
  * @property {string} [parentContainerId]
  * - Priority: parentContainerId > parentContainerPath
  * - One is REQUIRED
@@ -1812,6 +1860,13 @@
  * @property {string} [siteName]
  * - Priority: siteId > siteName
  * - One is REQUIRED
+ */
+
+/**
+ * @typedef {DestinationPropertiesBase &
+ * ({parentContainerId: string} | {parentContainerPath: string}) &
+ * ({transportId: string} | {transportPath: string}) &
+ * ({siteId: string} | {siteName: string})} DestinationProperties
  */
 
 /**
@@ -2226,7 +2281,7 @@
 
 //#region AssetProperties
 /**
- * @typedef {Object} AssetProperties
+ * @typedef {Object} AssetPropertiesBase
  * @property {WorkflowConfiguration} [workflowConfiguration]
  * @property {FeedBlock} [feedBlock] - One is REQUIRED
  * @property {IndexBlock} [indexBlock] - One is REQUIRED
@@ -2311,6 +2366,61 @@
  * - Admin area assets (must be manager or higher to access, no workflowConfiguration needed
  * @property {EditorConfiguration} [editorConfiguration] - One is REQUIRED
  * - Admin area assets (must be manager or higher to access, no workflowConfiguration needed
+ */
+/**
+ * @typedef {(
+ * {feedBlock: FeedBlock} |
+ * {indexBlock: IndexBlock} |
+ * {textBlock: TextBlock} |
+ * {xhtmlDataDefinitionBlock: XhtmlDataDefinitionBlock} |
+ * {xmlBlock: XmlBlock} |
+ * {file: File} |
+ * {folder: Folder} |
+ * {page: Page} |
+ * {reference: Reference} |
+ * {xsltFormat: XsltFormat} |
+ * {scriptFormat: ScriptFormat} |
+ * {symlink: Symlink} |
+ * {template: Template} |
+ * {user: User} |
+ * {group: Group} |
+ * {role: Role} |
+ * {assetFactory: AssetFactory} |
+ * {assetFactoryContainer: AssetFactoryContainer} |
+ * {contentType: ContentType} |
+ * {contentTypeContainer: ContentTypeContainer} |
+ * {connectorContainer: ConnectorContainer} |
+ * {facebookConnector: FacebookConnector} |
+ * {wordPressConnector: WordPressConnector} |
+ * {googleAnalyticsConnector: GoogleAnalyticsConnector} |
+ * {pageConfigurationSet: PageConfigurationSet} |
+ * {pageConfigurationSetContainer: PageConfigurationSetContainer} |
+ * {dataDefinition: DataDefinition} |
+ * {dataDefinitionContainer: DataDefinitionContainer} |
+ * {sharedField: SharedField} |
+ * {sharedFieldContainer: SharedFieldContainer} |
+ * {metadataSet: MetadataSet} |
+ * {metadataSetContainer: MetadataSetContainer} |
+ * {publishSet: PublishSet} |
+ * {publishSetContainer: PublishSetContainer} |
+ * {siteDestinationContainer: SiteDestinationContainer} |
+ * {destination: Destination} |
+ * {fileSystemTransport: FileSystemTransport} |
+ * {ftpTransport: FtpTransport} |
+ * {databaseTransport: DatabaseTransport} |
+ * {cloudTransport: CloudTransport} |
+ * {transportContainer: TransportContainer} |
+ * {workflowDefinition: WorkflowDefinition} |
+ * {workflowDefinitionContainer: WorkflowDefinitionContainer} |
+ * {workflowEmail: WorkflowEmail} |
+ * {workflowEmailContainer: WorkflowEmailContainer} |
+ * {twitterFeedBlock: TwitterFeedBlock} |
+ * {site: Site} |
+ * {editorConfiguration: EditorConfiguration}
+ * )} AssetPropertiesRequiredRelationship
+ */
+/**
+ * @typedef {AssetPropertiesBase & AssetPropertiesRequiredRelationship} AssetProperties
  */
 /**
  * @typedef {Object} Asset
@@ -2527,7 +2637,7 @@
 // ─── Sitecopy Request ────────────────────────────────────────────────────────
 //#region
 /**
- * @typedef {Object} SiteCopyRequest
+ * @typedef {Object} SiteCopyRequestBase
  * @property {string} [originalSiteId]
  * - The ID of the site to be copied. Takes precedence over originalSiteName if both are provided.
  * - One is REQUIRED (either originalSiteId or originalSiteName)
@@ -2536,6 +2646,11 @@
  * - One is REQUIRED (either originalSiteId or originalSiteName)
  * @property {string} newSiteName
  * - REQUIRED: The name for the new site that will be created from the copy.
+ */
+
+/**
+ * @typedef {SiteCopyRequestBase &
+ * ({originalSiteId: string} | {originalSiteName: string})} SiteCopyRequest
  */
 
 //#endregion

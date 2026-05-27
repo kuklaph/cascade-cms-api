@@ -2,7 +2,7 @@
 
 All notable changes to this project will be documented in this file.
 
-## [2.0.0] - 2026-05-26
+## [2.0.1] - 2026-05-27
 
 ### Breaking Changes
 
@@ -10,6 +10,7 @@ All notable changes to this project will be documented in this file.
 - Split ACL entry contracts into read and send shapes:
   - `AclEntryReceive` is returned by `readAccessRights` and requires both `name` and `id`.
   - `AclEntrySend` is used by `editAccessRights` and requires `level`, `type`, and at least one of `name` or `id`.
+- Required alternative relationships are now structural in OpenAPI, TypeScript, JSDoc, and Apps Script. Affected shapes include identifiers, site relationships, workflow definitions, content/page/reference/file branches, role global/site abilities, asset branch wrappers, destinations, and site-copy source selection.
 - Removed request-body `authentication` schemas from OpenAPI request shapes. The library supplies authentication through request headers.
 - Tightened REST read/request nullability across audited assets. Fields proven absent-or-value are now optional instead of nullable; fields proven to accept `null` remain nullable.
 

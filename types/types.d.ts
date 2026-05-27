@@ -1,5 +1,8 @@
 declare const _default: {};
 export default _default;
+export type RequireAtLeastOne<T, K extends keyof T> = Omit<T, K> & {
+  [P in K]-?: Required<Pick<T, P>> & Partial<Pick<T, Exclude<K, P>>>;
+}[K];
 /**
  * - All assets inherit from base asset
  */
@@ -26,7 +29,7 @@ export type Tags = {
   name: string;
 };
 export type Tag = Tags;
-export type FolderContainedAssetProperties = {
+export type FolderContainedAssetPropertiesBase = {
   /**
    * - REQUIRED on create, ignored on edit: The parent folder relationship
    * - Priority: parentFolderId > parentFolderPath
@@ -74,6 +77,10 @@ export type FolderContainedAssetProperties = {
    */
   tags?: Tags[];
 };
+export type FolderContainedAssetProperties = RequireAtLeastOne<
+  FolderContainedAssetPropertiesBase,
+  "siteId" | "siteName"
+>;
 /**
  * - Representing all home-area assets that are contained in a folder
  */
@@ -324,7 +331,7 @@ export type Path = {
    */
   siteName?: string;
 };
-export type Identifier = {
+export type IdentifierBase = {
   /**
    * - When editing and selected asset is recycled, it is recommended to preserve this relationship by providing selected asset's id
    * in case if the selected asset gets restored from the recycle bin. One is REQUIRED.
@@ -344,6 +351,7 @@ export type Identifier = {
    */
   recycled?: boolean;
 };
+export type Identifier = RequireAtLeastOne<IdentifierBase, "id" | "path">;
 export type ContainerChildren = Identifier;
 /**
  * - A single structured data node
@@ -958,7 +966,7 @@ export type SiteAbilities = {
    */
   accessSiteImproveIntegration?: boolean;
 };
-export type ContaineredAssetProperties = {
+export type ContaineredAssetPropertiesBase = {
   /**
    * - NOT REQUIRED on edit: For defining the container relationship. Priority: parentContainerId > parentContainerPath. Required on create, ignored on edit. Use move operation to move an asset after it has been created.
    */
@@ -980,6 +988,10 @@ export type ContaineredAssetProperties = {
    */
   siteName?: string;
 };
+export type ContaineredAssetProperties = RequireAtLeastOne<
+  ContaineredAssetPropertiesBase,
+  "siteId" | "siteName"
+>;
 /**
  * - All system area assets are "containered"
  */
@@ -1020,7 +1032,7 @@ export type ContentTypePageConfigurationPublishMode =
  * - A list of identifiers of publishable assets (files, folders, or pages).
  */
 export type DestinationList = Identifier;
-export type ContentTypePageConfiguration = {
+export type ContentTypePageConfigurationBase = {
   /**
    * - Priority: pageConfigurationId > pageConfigurationName. One is REQUIRED.
    */
@@ -1035,6 +1047,10 @@ export type ContentTypePageConfiguration = {
    */
   destinations?: DestinationList[];
 };
+export type ContentTypePageConfiguration = RequireAtLeastOne<
+  ContentTypePageConfigurationBase,
+  "pageConfigurationId" | "pageConfigurationName"
+>;
 export type ContentTypePageConfigurations = ContentTypePageConfiguration;
 export type InlineEditableField = {
   /**
@@ -1149,7 +1165,7 @@ export type ConnectorProperties = {
   connectorContentTypeLinks?: ConnectorContentTypeLinkList[];
 };
 export type Connector = ContaineredAsset & ConnectorProperties;
-export type StatusUpdateConnectorProperties = {
+export type StatusUpdateConnectorPropertiesBase = {
   /**
    * - One is REQUIRED:
    * - Priority: destinationId > destinationPath
@@ -1161,6 +1177,10 @@ export type StatusUpdateConnectorProperties = {
    */
   destinationPath?: string;
 };
+export type StatusUpdateConnectorProperties = RequireAtLeastOne<
+  StatusUpdateConnectorPropertiesBase,
+  "destinationId" | "destinationPath"
+>;
 export type StatusUpdateConnector = Connector & StatusUpdateConnectorProperties;
 /**
  * - The different types of dynamic metadata fields
@@ -1299,7 +1319,7 @@ export type WorkflowStepConfiguration = {
  * - An array of workflow step configuration objects
  */
 export type WorkflowStepConfigurations = WorkflowStepConfiguration;
-export type WorkflowConfiguration = {
+export type WorkflowConfigurationBase = {
   /**
    * - When the workflow is instantiated, this will be its name
    * - REQUIRED
@@ -1332,6 +1352,10 @@ export type WorkflowConfiguration = {
    */
   endDate?: string;
 };
+export type WorkflowConfiguration = RequireAtLeastOne<
+  WorkflowConfigurationBase,
+  "workflowDefinitionId" | "workflowDefinitionPath"
+>;
 export type OperationResult = {
   success: boolean;
   message?: string;
@@ -1617,7 +1641,7 @@ export type TextBlockProperties = {
  * - A block containing plain text
  */
 export type TextBlock = TextBlockProperties & ExpiringAsset;
-export type XhtmlDataDefinitionBlockProperties = {
+export type XhtmlDataDefinitionBlockPropertiesBase = {
   /**
    * - A page either contains XHTML content (plain WYSIWYG page) or structured data content.
    * Priority: xhtml > structuredData. One is REQUIRED.
@@ -1628,6 +1652,10 @@ export type XhtmlDataDefinitionBlockProperties = {
    */
   xhtml?: string;
 };
+export type XhtmlDataDefinitionBlockProperties = RequireAtLeastOne<
+  XhtmlDataDefinitionBlockPropertiesBase,
+  "structuredData" | "xhtml"
+>;
 /**
  * - A block containing plain XHTML or Structured Data
  */
@@ -1670,7 +1698,7 @@ export type TwitterFeedBlockProperties = {
   queryType: "user-only" | "users-and-mentions" | "search-terms";
 };
 export type TwitterFeedBlock = TwitterFeedBlockProperties & ExpiringAsset;
-export type FileProperties = {
+export type FilePropertiesBase = {
   /**
    * - One is REQUIRED
    * - Priority: text > data
@@ -1689,6 +1717,7 @@ export type FileProperties = {
    */
   linkRewriting?: LinkRewriting;
 };
+export type FileProperties = RequireAtLeastOne<FilePropertiesBase, "text" | "data">;
 export type File = FileProperties & PublishableAsset;
 export type FolderProperties = {
   /**
@@ -1702,7 +1731,7 @@ export type FolderProperties = {
   includeInStaleContent?: boolean;
 };
 export type Folder = FolderProperties & PublishableAsset;
-export type PageProperties = {
+export type PagePropertiesBase = {
   /**
    * - For defining the configuration set or content type relationship.
    * Priority: (contentTypeId > contentTypePath) > (configurationSetId > configurationSetPath).
@@ -1747,8 +1776,15 @@ export type PageProperties = {
    */
   linkRewriting?: LinkRewriting;
 };
+export type PageProperties = RequireAtLeastOne<
+  RequireAtLeastOne<
+    PagePropertiesBase,
+    "contentTypeId" | "contentTypePath" | "configurationSetId" | "configurationSetPath"
+  >,
+  "structuredData" | "xhtml"
+>;
 export type Page = PageProperties & PublishableAsset;
-export type ReferenceProperties = {
+export type ReferencePropertiesBase = {
   /**
    * - For defining the referenced asset relationship. Priority: referencedAssetId > referencedAssetPath. One is REQUIRED.
    */
@@ -1762,6 +1798,10 @@ export type ReferenceProperties = {
    */
   referencedAssetType: EntityTypeString;
 };
+export type ReferenceProperties = RequireAtLeastOne<
+  ReferencePropertiesBase,
+  "referencedAssetId" | "referencedAssetPath"
+>;
 export type Reference = ReferenceProperties & FolderContainedAsset;
 export type XsltFormatProperties = {
   /**
@@ -1878,24 +1918,35 @@ export type GroupProperties = {
   role: string;
 };
 export type Group = GroupProperties & BaseAsset;
-export type RoleProperties = {
-  /**
-   * - NOT REQUIRED: The type of the role.
-   */
-  roleType: "site" | "global";
-  /**
-   * - ONE is REQUIRED:
-   * - The global or site abilities for the role.
-   * - Use the correct one depending on the type of the role.
-   */
-  globalAbilities?: GlobalAbilities;
-  /**
-   * - ONE is REQUIRED:
-   * - The global or site abilities for the role.
-   * - Use the correct one depending on the type of the role.
-   */
-  siteAbilities?: SiteAbilities;
-};
+export type RoleProperties =
+  | {
+      /**
+       * - REQUIRED: The type of the role.
+       */
+      roleType: "global";
+      /**
+       * - REQUIRED for global roles.
+       */
+      globalAbilities: GlobalAbilities;
+      /**
+       * - NOT REQUIRED for global roles.
+       */
+      siteAbilities?: never;
+    }
+  | {
+      /**
+       * - REQUIRED: The type of the role.
+       */
+      roleType: "site";
+      /**
+       * - NOT REQUIRED for site roles.
+       */
+      globalAbilities?: never;
+      /**
+       * - REQUIRED for site roles.
+       */
+      siteAbilities: SiteAbilities;
+    };
 export type Role = RoleProperties & NamedAsset;
 export type AssetFactoryProperties = {
   /**
@@ -1982,7 +2033,7 @@ export type AssetFactoryContainerProperties = {
 };
 export type AssetFactoryContainer = AssetFactoryContainerProperties &
   ContaineredAsset;
-export type ContentTypeProperties = {
+export type ContentTypePropertiesBase = {
   /**
    * - One is REQUIRED: Priority: pageConfigurationSetId > pageConfigurationSetPath.
    */
@@ -2032,6 +2083,13 @@ export type ContentTypeProperties = {
    */
   inlineEditableFields?: InlineEditableFields[];
 };
+export type ContentTypeProperties = RequireAtLeastOne<
+  RequireAtLeastOne<
+    ContentTypePropertiesBase,
+    "pageConfigurationSetId" | "pageConfigurationSetPath"
+  >,
+  "metadataSetId" | "metadataSetPath"
+>;
 export type ContentType = ContentTypeProperties & ContaineredAsset;
 export type ContentTypeContainerProperties = {
   /**
@@ -2318,7 +2376,7 @@ export type SiteDestinationContainerProperties = {
 };
 export type SiteDestinationContainer = SiteDestinationContainerProperties &
   ContaineredAsset;
-export type DestinationProperties = {
+export type DestinationPropertiesBase = {
   /**
    * - Priority: parentContainerId > parentContainerPath
    * - One is REQUIRED
@@ -2438,6 +2496,16 @@ export type DestinationProperties = {
    */
   siteName?: string;
 };
+export type DestinationProperties = RequireAtLeastOne<
+  RequireAtLeastOne<
+    RequireAtLeastOne<
+      DestinationPropertiesBase,
+      "parentContainerId" | "parentContainerPath"
+    >,
+    "transportId" | "transportPath"
+  >,
+  "siteId" | "siteName"
+>;
 export type Destination = DestinationProperties & NamedAsset;
 export type FileSystemTransportProperties = {
   /**
@@ -2930,7 +2998,7 @@ export type EditorConfigurationProperties = {
   configuration: string;
 };
 export type EditorConfiguration = EditorConfigurationProperties & NamedAsset;
-export type AssetProperties = {
+export type AssetPropertiesBase = {
   workflowConfiguration?: WorkflowConfiguration;
   /**
    * - One is REQUIRED
@@ -3160,6 +3228,57 @@ export type AssetProperties = {
    */
   editorConfiguration?: EditorConfiguration;
 };
+export type AssetProperties = RequireAtLeastOne<
+  AssetPropertiesBase,
+  | "feedBlock"
+  | "indexBlock"
+  | "textBlock"
+  | "xhtmlDataDefinitionBlock"
+  | "xmlBlock"
+  | "file"
+  | "folder"
+  | "page"
+  | "reference"
+  | "xsltFormat"
+  | "scriptFormat"
+  | "symlink"
+  | "template"
+  | "user"
+  | "group"
+  | "role"
+  | "assetFactory"
+  | "assetFactoryContainer"
+  | "contentType"
+  | "contentTypeContainer"
+  | "connectorContainer"
+  | "facebookConnector"
+  | "wordPressConnector"
+  | "googleAnalyticsConnector"
+  | "pageConfigurationSet"
+  | "pageConfigurationSetContainer"
+  | "dataDefinition"
+  | "dataDefinitionContainer"
+  | "sharedField"
+  | "sharedFieldContainer"
+  | "metadataSet"
+  | "metadataSetContainer"
+  | "publishSet"
+  | "publishSetContainer"
+  | "siteDestinationContainer"
+  | "destination"
+  | "fileSystemTransport"
+  | "ftpTransport"
+  | "databaseTransport"
+  | "cloudTransport"
+  | "transportContainer"
+  | "workflowDefinition"
+  | "workflowDefinitionContainer"
+  | "workflowEmail"
+  | "workflowEmailContainer"
+  | "twitterFeedBlock"
+  | "site"
+  | "editorConfiguration"
+>;
 export type Asset = {
   /**
    * - REQUIRED: Asset object container
@@ -3321,7 +3440,7 @@ export type CopyRequest = {
   workflowConfiguration?: WorkflowConfiguration;
 };
 export type CopyResponse = OperationResult;
-export type SiteCopyRequest = {
+export type SiteCopyRequestBase = {
   /**
    * - The ID of the site to be copied. Takes precedence over originalSiteName if both are provided.
    * - One is REQUIRED (either originalSiteId or originalSiteName)
@@ -3337,6 +3456,10 @@ export type SiteCopyRequest = {
    */
   newSiteName: string;
 };
+export type SiteCopyRequest = RequireAtLeastOne<
+  SiteCopyRequestBase,
+  "originalSiteId" | "originalSiteName"
+>;
 export type SiteCopyResponse = OperationResult;
 export type ReadAccessRightsRequest = {
   /**

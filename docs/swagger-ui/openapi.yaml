@@ -1,7 +1,7 @@
 openapi: 3.1.0
 info:
   title: Cascade CMS API
-  version: 2.0.0
+  version: 2.0.1
   description: OpenAPI 3.1.0 specification for the Cascade CMS REST API. Derived from the WSDL-generated spec with REST-specific patches applied (flat arrays, boolean success, integer[] file data, header auth).
   license:
     name: MIT
@@ -394,6 +394,12 @@ components:
       required:
         - type
       description: Identifies an asset by ID and/or path, along with its type and site context.
+      allOf:
+        - anyOf:
+            - required:
+                - id
+            - required:
+                - path
     BaseAsset:
       type: object
       properties:
@@ -686,6 +692,12 @@ components:
         - workflowName
         - workflowComments
       description: For configuring workflow
+      allOf:
+        - anyOf:
+            - required:
+                - workflowDefinitionId
+            - required:
+                - workflowDefinitionPath
     NamedAsset:
       allOf:
         - $ref: "#/components/schemas/BaseAsset"
@@ -756,6 +768,11 @@ components:
               items:
                 $ref: "#/components/schemas/Tag"
               description: "NOT REQUIRED: Content Tags assigned to the asset."
+        - anyOf:
+            - required:
+                - siteId
+            - required:
+                - siteName
       description: Representing all home-area assets that are contained in a folder
     FieldValue:
       type: object
@@ -1094,6 +1111,11 @@ components:
             xhtml:
               type: string
               description: The XHTML content of the block.
+        - anyOf:
+            - required:
+                - structuredData
+            - required:
+                - xhtml
       description: A block containing plain XHTML or Structured Data
     XmlBlock:
       allOf:
@@ -1160,6 +1182,11 @@ components:
             linkRewriting:
               $ref: "#/components/schemas/LinkRewriting"
               description: "NOT REQUIRED: default: 'inherit'."
+        - anyOf:
+            - required:
+                - text
+            - required:
+                - data
       description: Represents a file asset in Cascade CMS.
     Folder:
       allOf:
@@ -1309,6 +1336,20 @@ components:
             linkRewriting:
               $ref: "#/components/schemas/LinkRewriting"
               description: "NOT REQUIRED: default: 'inherit'."
+        - anyOf:
+            - required:
+                - contentTypeId
+            - required:
+                - contentTypePath
+            - required:
+                - configurationSetId
+            - required:
+                - configurationSetPath
+        - anyOf:
+            - required:
+                - structuredData
+            - required:
+                - xhtml
       description: BEGIN Page and associated structured data types
     Reference:
       allOf:
@@ -1332,6 +1373,11 @@ components:
               description: The type of the referenced asset. REQUIRED.
           required:
             - referencedAssetType
+        - anyOf:
+            - required:
+                - referencedAssetId
+            - required:
+                - referencedAssetPath
       description: The following concrete types extend folder-contained-asset
     XsltFormat:
       allOf:
@@ -1754,7 +1800,7 @@ components:
           properties:
             roleType:
               $ref: "#/components/schemas/RoleTypes"
-              description: "NOT REQUIRED: The type of the role."
+              description: "REQUIRED: The type of the role."
             globalAbilities:
               $ref: "#/components/schemas/GlobalAbilities"
               description: |-
@@ -1769,6 +1815,25 @@ components:
                 - Use the correct one depending on the type of the role.
           required:
             - roleType
+        - oneOf:
+            - properties:
+                roleType:
+                  const: global
+              not:
+                required:
+                  - siteAbilities
+              required:
+                - roleType
+                - globalAbilities
+            - properties:
+                roleType:
+                  const: site
+              not:
+                required:
+                  - globalAbilities
+              required:
+                - roleType
+                - siteAbilities
       description: A role
     ContaineredAsset:
       allOf:
@@ -1799,6 +1864,11 @@ components:
             siteName:
               type: string
               description: "NOT REQUIRED: Priority: siteId > siteName. One is REQUIRED."
+        - anyOf:
+            - required:
+                - siteId
+            - required:
+                - siteName
       description: All system area assets are 'containered'.
     AssetFactoryPluginParameter:
       type: object
@@ -1930,6 +2000,12 @@ components:
       required:
         - publishMode
       description: Maps a content type to a specific page configuration.
+      allOf:
+        - anyOf:
+            - required:
+                - pageConfigurationId
+            - required:
+                - pageConfigurationName
     InlineEditableField:
       type: object
       properties:
@@ -2003,6 +2079,16 @@ components:
               items:
                 $ref: "#/components/schemas/InlineEditableField"
               description: "NOT REQUIRED: if not specified, none of the regions or fields will be inline editable."
+        - anyOf:
+            - required:
+                - pageConfigurationSetId
+            - required:
+                - pageConfigurationSetPath
+        - anyOf:
+            - required:
+                - metadataSetId
+            - required:
+                - metadataSetPath
       description: Defines a content type that determines the structure and behavior of pages.
     ContentTypeContainer:
       allOf:
@@ -2104,6 +2190,31 @@ components:
                 $ref: "#/components/schemas/ConnectorContentTypeLink"
               description: REQUIRED for FacebookConnector and WordPressConnector
       description: A connector for publishing content to external systems.
+    StatusUpdateConnector:
+      allOf:
+        - $ref: "#/components/schemas/Connector"
+        - type: object
+          properties:
+            destinationId:
+              type: string
+              description: |-
+                One is REQUIRED:
+                Priority: destinationId > destinationPath
+            destinationPath:
+              type: string
+              description: |-
+                One is REQUIRED:
+                Priority: destinationId > destinationPath
+          anyOf:
+            - required:
+                - destinationId
+            - required:
+                - destinationPath
+      description: A connector that publishes status updates to an external destination.
+    FacebookConnector:
+      allOf:
+        - $ref: "#/components/schemas/StatusUpdateConnector"
+      description: A connector for publishing content to Facebook.
     WordPressConnector:
       allOf:
         - $ref: "#/components/schemas/Connector"
@@ -2551,6 +2662,21 @@ components:
               description: |-
                 Applicable only if publishInterval Units is "cron"
                 - One is REQUIRED if usesScheduledPublishing is true, else NOT REQUIRED and ignored
+        - anyOf:
+            - required:
+                - parentContainerId
+            - required:
+                - parentContainerPath
+        - anyOf:
+            - required:
+                - transportId
+            - required:
+                - transportPath
+        - anyOf:
+            - required:
+                - siteId
+            - required:
+                - siteName
       description: A publishing destination that defines where content is published.
     FileSystemTransport:
       allOf:
@@ -3253,6 +3379,13 @@ components:
           description: |-
             One is REQUIRED
             - Admin area assets (must be manager or higher to access, no workflowConfiguration needed)
+        facebookConnector:
+          oneOf:
+            - $ref: "#/components/schemas/FacebookConnector"
+            - type: "null"
+          description: |-
+            One is REQUIRED
+            - Admin area assets (must be manager or higher to access, no workflowConfiguration needed)
         wordPressConnector:
           oneOf:
             - $ref: "#/components/schemas/WordPressConnector"
@@ -3436,6 +3569,296 @@ components:
       description: |-
         Properties for each asset type
         - Admin area assets require managerial or higher access, and no workflowConfiguration is needed for them.
+      allOf:
+        - anyOf:
+            - required:
+                - feedBlock
+              properties:
+                feedBlock:
+                  not:
+                    type: "null"
+            - required:
+                - indexBlock
+              properties:
+                indexBlock:
+                  not:
+                    type: "null"
+            - required:
+                - textBlock
+              properties:
+                textBlock:
+                  not:
+                    type: "null"
+            - required:
+                - xhtmlDataDefinitionBlock
+              properties:
+                xhtmlDataDefinitionBlock:
+                  not:
+                    type: "null"
+            - required:
+                - xmlBlock
+              properties:
+                xmlBlock:
+                  not:
+                    type: "null"
+            - required:
+                - file
+              properties:
+                file:
+                  not:
+                    type: "null"
+            - required:
+                - folder
+              properties:
+                folder:
+                  not:
+                    type: "null"
+            - required:
+                - page
+              properties:
+                page:
+                  not:
+                    type: "null"
+            - required:
+                - reference
+              properties:
+                reference:
+                  not:
+                    type: "null"
+            - required:
+                - xsltFormat
+              properties:
+                xsltFormat:
+                  not:
+                    type: "null"
+            - required:
+                - scriptFormat
+              properties:
+                scriptFormat:
+                  not:
+                    type: "null"
+            - required:
+                - symlink
+              properties:
+                symlink:
+                  not:
+                    type: "null"
+            - required:
+                - template
+              properties:
+                template:
+                  not:
+                    type: "null"
+            - required:
+                - user
+              properties:
+                user:
+                  not:
+                    type: "null"
+            - required:
+                - group
+              properties:
+                group:
+                  not:
+                    type: "null"
+            - required:
+                - role
+              properties:
+                role:
+                  not:
+                    type: "null"
+            - required:
+                - assetFactory
+              properties:
+                assetFactory:
+                  not:
+                    type: "null"
+            - required:
+                - assetFactoryContainer
+              properties:
+                assetFactoryContainer:
+                  not:
+                    type: "null"
+            - required:
+                - contentType
+              properties:
+                contentType:
+                  not:
+                    type: "null"
+            - required:
+                - contentTypeContainer
+              properties:
+                contentTypeContainer:
+                  not:
+                    type: "null"
+            - required:
+                - connectorContainer
+              properties:
+                connectorContainer:
+                  not:
+                    type: "null"
+            - required:
+                - facebookConnector
+              properties:
+                facebookConnector:
+                  not:
+                    type: "null"
+            - required:
+                - wordPressConnector
+              properties:
+                wordPressConnector:
+                  not:
+                    type: "null"
+            - required:
+                - googleAnalyticsConnector
+              properties:
+                googleAnalyticsConnector:
+                  not:
+                    type: "null"
+            - required:
+                - pageConfigurationSet
+              properties:
+                pageConfigurationSet:
+                  not:
+                    type: "null"
+            - required:
+                - pageConfigurationSetContainer
+              properties:
+                pageConfigurationSetContainer:
+                  not:
+                    type: "null"
+            - required:
+                - dataDefinition
+              properties:
+                dataDefinition:
+                  not:
+                    type: "null"
+            - required:
+                - dataDefinitionContainer
+              properties:
+                dataDefinitionContainer:
+                  not:
+                    type: "null"
+            - required:
+                - sharedField
+              properties:
+                sharedField:
+                  not:
+                    type: "null"
+            - required:
+                - sharedFieldContainer
+              properties:
+                sharedFieldContainer:
+                  not:
+                    type: "null"
+            - required:
+                - metadataSet
+              properties:
+                metadataSet:
+                  not:
+                    type: "null"
+            - required:
+                - metadataSetContainer
+              properties:
+                metadataSetContainer:
+                  not:
+                    type: "null"
+            - required:
+                - publishSet
+              properties:
+                publishSet:
+                  not:
+                    type: "null"
+            - required:
+                - publishSetContainer
+              properties:
+                publishSetContainer:
+                  not:
+                    type: "null"
+            - required:
+                - siteDestinationContainer
+              properties:
+                siteDestinationContainer:
+                  not:
+                    type: "null"
+            - required:
+                - destination
+              properties:
+                destination:
+                  not:
+                    type: "null"
+            - required:
+                - fileSystemTransport
+              properties:
+                fileSystemTransport:
+                  not:
+                    type: "null"
+            - required:
+                - ftpTransport
+              properties:
+                ftpTransport:
+                  not:
+                    type: "null"
+            - required:
+                - databaseTransport
+              properties:
+                databaseTransport:
+                  not:
+                    type: "null"
+            - required:
+                - cloudTransport
+              properties:
+                cloudTransport:
+                  not:
+                    type: "null"
+            - required:
+                - transportContainer
+              properties:
+                transportContainer:
+                  not:
+                    type: "null"
+            - required:
+                - workflowDefinition
+              properties:
+                workflowDefinition:
+                  not:
+                    type: "null"
+            - required:
+                - workflowDefinitionContainer
+              properties:
+                workflowDefinitionContainer:
+                  not:
+                    type: "null"
+            - required:
+                - workflowEmail
+              properties:
+                workflowEmail:
+                  not:
+                    type: "null"
+            - required:
+                - workflowEmailContainer
+              properties:
+                workflowEmailContainer:
+                  not:
+                    type: "null"
+            - required:
+                - twitterFeedBlock
+              properties:
+                twitterFeedBlock:
+                  not:
+                    type: "null"
+            - required:
+                - site
+              properties:
+                site:
+                  not:
+                    type: "null"
+            - required:
+                - editorConfiguration
+              properties:
+                editorConfiguration:
+                  not:
+                    type: "null"
     ReadResult:
       allOf:
         - $ref: "#/components/schemas/OperationResult"
@@ -3993,6 +4416,12 @@ components:
       required:
         - newSiteName
       description: Properties for the SiteCopy Request
+      allOf:
+        - anyOf:
+            - required:
+                - originalSiteId
+            - required:
+                - originalSiteName
     SiteCopyResponse:
       $ref: "#/components/schemas/OperationResult"
       description: Response from the `siteCopy` operation.
