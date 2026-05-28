@@ -3,6 +3,10 @@ export default _default;
 export type RequireAtLeastOne<T, K extends keyof T> = Omit<T, K> & {
   [P in K]-?: Required<Pick<T, P>> & Partial<Pick<T, Exclude<K, P>>>;
 }[K];
+export type RequireExactlyOne<T, K extends keyof T> = Omit<T, K> & {
+  [P in K]-?: Required<Pick<T, P>> &
+    Partial<Record<Exclude<K, P>, never>>;
+}[K];
 /**
  * - All assets inherit from base asset
  */
@@ -1160,7 +1164,7 @@ export type ConnectorProperties = {
    */
   connectorParameters?: ConnectorParameterList[];
   /**
-   * - REQUIRED for FacebookConnector and WordPressConnector
+   * - REQUIRED for WordPressConnector
    */
   connectorContentTypeLinks?: ConnectorContentTypeLinkList[];
 };
@@ -2109,8 +2113,13 @@ export type ConnectorContainer = ConnectorContainerProperties &
   ContaineredAsset;
 export type FacebookConnectorProperties = any;
 export type FacebookConnector = StatusUpdateConnector;
-export type WordPressConnectorProperties = any;
-export type WordPressConnector = Connector;
+export type WordPressConnectorProperties = {
+  /**
+   * - REQUIRED for WordPressConnector
+   */
+  connectorContentTypeLinks: ConnectorContentTypeLinkList[];
+};
+export type WordPressConnector = Connector & WordPressConnectorProperties;
 export type GoogleAnalyticsConnectorProperties = any;
 export type GoogleAnalyticsConnector = Connector;
 export type PageConfigurationSetProperties = {
@@ -3001,234 +3010,283 @@ export type EditorConfiguration = EditorConfigurationProperties & NamedAsset;
 export type AssetPropertiesBase = {
   workflowConfiguration?: WorkflowConfiguration;
   /**
-   * - One is REQUIRED
+   * - Exactly one asset branch is REQUIRED
    */
   feedBlock?: FeedBlock;
   /**
-   * - One is REQUIRED
+   * - Exactly one asset branch is REQUIRED
    */
   indexBlock?: IndexBlock;
   /**
-   * - One is REQUIRED
+   * - Exactly one asset branch is REQUIRED
    */
   textBlock?: TextBlock;
   /**
-   * - One is REQUIRED
+   * - Exactly one asset branch is REQUIRED
    */
   xhtmlDataDefinitionBlock?: XhtmlDataDefinitionBlock;
   /**
-   * - One is REQUIRED
+   * - Exactly one asset branch is REQUIRED
    */
   xmlBlock?: XmlBlock;
   /**
-   * - One is REQUIRED
+   * - Exactly one asset branch is REQUIRED
    */
   file?: File;
   /**
-   * - One is REQUIRED
+   * - Exactly one asset branch is REQUIRED
    */
   folder?: Folder;
   /**
-   * - ONE IS REQUIRED
+   * - Exactly one asset branch is REQUIRED
    */
   page?: Page;
   /**
-   * - One is REQUIRED
+   * - Exactly one asset branch is REQUIRED
    */
   reference?: Reference;
   /**
-   * - One is REQUIRED
+   * - Exactly one asset branch is REQUIRED
    */
   xsltFormat?: XsltFormat;
   /**
-   * - One is REQUIRED
+   * - Exactly one asset branch is REQUIRED
    */
   scriptFormat?: ScriptFormat;
   /**
-   * - One is REQUIRED
+   * - Exactly one asset branch is REQUIRED
    */
   symlink?: Symlink;
   /**
-   * - One is REQUIRED
+   * - Exactly one asset branch is REQUIRED
    */
   template?: Template;
   /**
-   * - One is REQUIRED
+   * - Exactly one asset branch is REQUIRED
    * - Admin area assets (must be manager or higher to access, no workflowConfiguration needed
    */
   user?: User;
   /**
-   * - One is REQUIRED
+   * - Exactly one asset branch is REQUIRED
    * - Admin area assets (must be manager or higher to access, no workflowConfiguration needed
    */
   group?: Group;
   /**
-   * - One is REQUIRED
+   * - Exactly one asset branch is REQUIRED
    * - Admin area assets (must be manager or higher to access, no workflowConfiguration needed
    */
   role?: Role;
   /**
-   * - One is REQUIRED
+   * - Exactly one asset branch is REQUIRED
    * - Admin area assets (must be manager or higher to access, no workflowConfiguration needed
    */
   assetFactory?: AssetFactory;
   /**
-   * - One is REQUIRED
+   * - Exactly one asset branch is REQUIRED
    * - Admin area assets (must be manager or higher to access, no workflowConfiguration needed
    */
   assetFactoryContainer?: AssetFactoryContainer;
   /**
-   * - One is REQUIRED
+   * - Exactly one asset branch is REQUIRED
    * - Admin area assets (must be manager or higher to access, no workflowConfiguration needed
    */
   contentType?: ContentType;
   /**
-   * - One is REQUIRED
+   * - Exactly one asset branch is REQUIRED
    * - Admin area assets (must be manager or higher to access, no workflowConfiguration needed
    */
   contentTypeContainer?: ContentTypeContainer;
   /**
-   * - One is REQUIRED
+   * - Exactly one asset branch is REQUIRED
    * - Admin area assets (must be manager or higher to access, no workflowConfiguration needed
    */
   connectorContainer?: ConnectorContainer;
   /**
-   * - One is REQUIRED
+   * - Exactly one asset branch is REQUIRED
    * - Admin area assets (must be manager or higher to access, no workflowConfiguration needed
    */
   facebookConnector?: FacebookConnector;
   /**
-   * - One is REQUIRED
+   * - Exactly one asset branch is REQUIRED
    * - Admin area assets (must be manager or higher to access, no workflowConfiguration needed
    */
   wordPressConnector?: WordPressConnector;
   /**
-   * - One is REQUIRED
+   * - Exactly one asset branch is REQUIRED
    * - Admin area assets (must be manager or higher to access, no workflowConfiguration needed
    */
   googleAnalyticsConnector?: GoogleAnalyticsConnector;
   /**
-   * - One is REQUIRED
+   * - Exactly one asset branch is REQUIRED
    * - Admin area assets (must be manager or higher to access, no workflowConfiguration needed
    */
   pageConfigurationSet?: PageConfigurationSet;
   /**
-   * - One is REQUIRED
+   * - Exactly one asset branch is REQUIRED
    * - Admin area assets (must be manager or higher to access, no workflowConfiguration needed
    */
   pageConfigurationSetContainer?: PageConfigurationSetContainer;
   /**
-   * - One is REQUIRED
+   * - Exactly one asset branch is REQUIRED
    * - Admin area assets (must be manager or higher to access, no workflowConfiguration needed
    */
   dataDefinition?: DataDefinition;
   /**
-   * - One is REQUIRED
+   * - Exactly one asset branch is REQUIRED
    * - Admin area assets (must be manager or higher to access, no workflowConfiguration needed
    */
   dataDefinitionContainer?: DataDefinitionContainer;
   /**
-   * - One is REQUIRED
+   * - Exactly one asset branch is REQUIRED
    * - Admin area assets (must be manager or higher to access, no workflowConfiguration needed
    */
   sharedField?: SharedField;
   /**
-   * - One is REQUIRED
+   * - Exactly one asset branch is REQUIRED
    * - Admin area assets (must be manager or higher to access, no workflowConfiguration needed
    */
   sharedFieldContainer?: SharedFieldContainer;
   /**
-   * - One is REQUIRED
+   * - Exactly one asset branch is REQUIRED
    * - Admin area assets (must be manager or higher to access, no workflowConfiguration needed
    */
   metadataSet?: MetadataSet;
   /**
-   * - One is REQUIRED
+   * - Exactly one asset branch is REQUIRED
    * - Admin area assets (must be manager or higher to access, no workflowConfiguration needed
    */
   metadataSetContainer?: MetadataSetContainer;
   /**
-   * - One is REQUIRED
+   * - Exactly one asset branch is REQUIRED
    * - Admin area assets (must be manager or higher to access, no workflowConfiguration needed
    */
   publishSet?: PublishSet;
   /**
-   * - One is REQUIRED
+   * - Exactly one asset branch is REQUIRED
    * - Admin area assets (must be manager or higher to access, no workflowConfiguration needed
    */
   publishSetContainer?: PublishSetContainer;
   /**
-   * - One is REQUIRED
+   * - Exactly one asset branch is REQUIRED
    * - Admin area assets (must be manager or higher to access, no workflowConfiguration needed
    */
   siteDestinationContainer?: SiteDestinationContainer;
   /**
-   * - One is REQUIRED
+   * - Exactly one asset branch is REQUIRED
    * - Admin area assets (must be manager or higher to access, no workflowConfiguration needed
    */
   destination?: Destination;
   /**
-   * - One is REQUIRED
+   * - Exactly one asset branch is REQUIRED
    * - Admin area assets (must be manager or higher to access, no workflowConfiguration needed
    */
   fileSystemTransport?: FileSystemTransport;
   /**
-   * - One is REQUIRED
+   * - Exactly one asset branch is REQUIRED
    * - Admin area assets (must be manager or higher to access, no workflowConfiguration needed
    */
   ftpTransport?: FtpTransport;
   /**
-   * - One is REQUIRED
+   * - Exactly one asset branch is REQUIRED
    * - Admin area assets (must be manager or higher to access, no workflowConfiguration needed
    */
   databaseTransport?: DatabaseTransport;
   /**
-   * - One is REQUIRED
+   * - Exactly one asset branch is REQUIRED
    * - Admin area assets (must be manager or higher to access, no workflowConfiguration needed
    */
   cloudTransport?: CloudTransport;
   /**
-   * - One is REQUIRED
+   * - Exactly one asset branch is REQUIRED
    * - Admin area assets (must be manager or higher to access, no workflowConfiguration needed
    */
   transportContainer?: TransportContainer;
   /**
-   * - One is REQUIRED
+   * - Exactly one asset branch is REQUIRED
    * - Admin area assets (must be manager or higher to access, no workflowConfiguration needed
    */
   workflowDefinition?: WorkflowDefinition;
   /**
-   * - One is REQUIRED
+   * - Exactly one asset branch is REQUIRED
    * - Admin area assets (must be manager or higher to access, no workflowConfiguration needed
    */
   workflowDefinitionContainer?: WorkflowDefinitionContainer;
   /**
-   * - One is REQUIRED
+   * - Exactly one asset branch is REQUIRED
    * - Admin area assets (must be manager or higher to access, no workflowConfiguration needed
    */
   workflowEmail?: WorkflowEmail;
   /**
-   * - One is REQUIRED
+   * - Exactly one asset branch is REQUIRED
    * - Admin area assets (must be manager or higher to access, no workflowConfiguration needed
    */
   workflowEmailContainer?: WorkflowEmailContainer;
   /**
-   * - One is REQUIRED
+   * - Exactly one asset branch is REQUIRED
    * - Admin area assets (must be manager or higher to access, no workflowConfiguration needed
    */
   twitterFeedBlock?: TwitterFeedBlock;
   /**
-   * - One is REQUIRED
+   * - Exactly one asset branch is REQUIRED
    * - Admin area assets (must be manager or higher to access, no workflowConfiguration needed
    */
   site?: Site;
   /**
-   * - One is REQUIRED
+   * - Exactly one asset branch is REQUIRED
    * - Admin area assets (must be manager or higher to access, no workflowConfiguration needed
    */
   editorConfiguration?: EditorConfiguration;
 };
-export type AssetProperties = RequireAtLeastOne<
+export type AssetPropertiesBranchName =
+  | "feedBlock"
+  | "indexBlock"
+  | "textBlock"
+  | "xhtmlDataDefinitionBlock"
+  | "xmlBlock"
+  | "file"
+  | "folder"
+  | "page"
+  | "reference"
+  | "xsltFormat"
+  | "scriptFormat"
+  | "symlink"
+  | "template"
+  | "user"
+  | "group"
+  | "role"
+  | "assetFactory"
+  | "assetFactoryContainer"
+  | "contentType"
+  | "contentTypeContainer"
+  | "connectorContainer"
+  | "facebookConnector"
+  | "wordPressConnector"
+  | "googleAnalyticsConnector"
+  | "pageConfigurationSet"
+  | "pageConfigurationSetContainer"
+  | "dataDefinition"
+  | "dataDefinitionContainer"
+  | "sharedField"
+  | "sharedFieldContainer"
+  | "metadataSet"
+  | "metadataSetContainer"
+  | "publishSet"
+  | "publishSetContainer"
+  | "siteDestinationContainer"
+  | "destination"
+  | "fileSystemTransport"
+  | "ftpTransport"
+  | "databaseTransport"
+  | "cloudTransport"
+  | "transportContainer"
+  | "workflowDefinition"
+  | "workflowDefinitionContainer"
+  | "workflowEmail"
+  | "workflowEmailContainer"
+  | "twitterFeedBlock"
+  | "site"
+  | "editorConfiguration";
+export type AssetProperties = RequireExactlyOne<
   AssetPropertiesBase,
   | "feedBlock"
   | "indexBlock"
@@ -3279,6 +3337,271 @@ export type AssetProperties = RequireAtLeastOne<
   | "site"
   | "editorConfiguration"
 >;
+export type CreateAssetWithoutId<T> = Omit<T, "id"> & {
+  /**
+   * - The asset id should not be present when creating because Cascade assigns it after create.
+   */
+  id?: never;
+};
+export type CreateFolderContainedAsset<T> = CreateAssetWithoutId<T> &
+  RequireAtLeastOne<
+    Pick<
+      FolderContainedAssetPropertiesBase,
+      "parentFolderId" | "parentFolderPath"
+    >,
+    "parentFolderId" | "parentFolderPath"
+  >;
+export type CreateContaineredAsset<T> = CreateAssetWithoutId<T> &
+  RequireAtLeastOne<
+    Pick<
+      ContaineredAssetPropertiesBase,
+      "parentContainerId" | "parentContainerPath"
+    >,
+    "parentContainerId" | "parentContainerPath"
+  >;
+export type CreateAssetPropertiesBase = AssetPropertiesBase;
+export type CreateAssetPropertiesRequiredRelationship =
+  | ({
+      feedBlock: CreateFolderContainedAsset<FeedBlock>;
+    } & Partial<Record<Exclude<AssetPropertiesBranchName, "feedBlock">, never>>)
+  | ({
+      indexBlock: CreateFolderContainedAsset<IndexBlock>;
+    } & Partial<Record<Exclude<AssetPropertiesBranchName, "indexBlock">, never>>)
+  | ({
+      textBlock: CreateFolderContainedAsset<TextBlock>;
+    } & Partial<Record<Exclude<AssetPropertiesBranchName, "textBlock">, never>>)
+  | ({
+      xhtmlDataDefinitionBlock: CreateFolderContainedAsset<XhtmlDataDefinitionBlock>;
+    } & Partial<
+      Record<Exclude<AssetPropertiesBranchName, "xhtmlDataDefinitionBlock">, never>
+    >)
+  | ({
+      xmlBlock: CreateFolderContainedAsset<XmlBlock>;
+    } & Partial<Record<Exclude<AssetPropertiesBranchName, "xmlBlock">, never>>)
+  | ({
+      file: CreateFolderContainedAsset<File>;
+    } & Partial<Record<Exclude<AssetPropertiesBranchName, "file">, never>>)
+  | ({
+      folder: CreateFolderContainedAsset<Folder>;
+    } & Partial<Record<Exclude<AssetPropertiesBranchName, "folder">, never>>)
+  | ({
+      page: CreateFolderContainedAsset<Page>;
+    } & Partial<Record<Exclude<AssetPropertiesBranchName, "page">, never>>)
+  | ({
+      reference: CreateFolderContainedAsset<Reference>;
+    } & Partial<Record<Exclude<AssetPropertiesBranchName, "reference">, never>>)
+  | ({
+      xsltFormat: CreateFolderContainedAsset<XsltFormat>;
+    } & Partial<Record<Exclude<AssetPropertiesBranchName, "xsltFormat">, never>>)
+  | ({
+      scriptFormat: CreateFolderContainedAsset<ScriptFormat>;
+    } & Partial<Record<Exclude<AssetPropertiesBranchName, "scriptFormat">, never>>)
+  | ({
+      symlink: CreateFolderContainedAsset<Symlink>;
+    } & Partial<Record<Exclude<AssetPropertiesBranchName, "symlink">, never>>)
+  | ({
+      template: CreateFolderContainedAsset<Template>;
+    } & Partial<Record<Exclude<AssetPropertiesBranchName, "template">, never>>)
+  | ({ user: CreateAssetWithoutId<User> } & Partial<
+      Record<Exclude<AssetPropertiesBranchName, "user">, never>
+    >)
+  | ({ group: CreateAssetWithoutId<Group> } & Partial<
+      Record<Exclude<AssetPropertiesBranchName, "group">, never>
+    >)
+  | ({ role: CreateAssetWithoutId<Role> } & Partial<
+      Record<Exclude<AssetPropertiesBranchName, "role">, never>
+    >)
+  | ({
+      assetFactory: CreateContaineredAsset<AssetFactory>;
+    } & Partial<Record<Exclude<AssetPropertiesBranchName, "assetFactory">, never>>)
+  | ({
+      assetFactoryContainer: CreateContaineredAsset<AssetFactoryContainer>;
+    } & Partial<
+      Record<Exclude<AssetPropertiesBranchName, "assetFactoryContainer">, never>
+    >)
+  | ({
+      contentType: CreateContaineredAsset<ContentType>;
+    } & Partial<Record<Exclude<AssetPropertiesBranchName, "contentType">, never>>)
+  | ({
+      contentTypeContainer: CreateContaineredAsset<ContentTypeContainer>;
+    } & Partial<
+      Record<Exclude<AssetPropertiesBranchName, "contentTypeContainer">, never>
+    >)
+  | ({
+      connectorContainer: CreateContaineredAsset<ConnectorContainer>;
+    } & Partial<
+      Record<Exclude<AssetPropertiesBranchName, "connectorContainer">, never>
+    >)
+  | ({
+      facebookConnector: CreateContaineredAsset<FacebookConnector>;
+    } & Partial<
+      Record<Exclude<AssetPropertiesBranchName, "facebookConnector">, never>
+    >)
+  | ({
+      wordPressConnector: CreateContaineredAsset<WordPressConnector>;
+    } & Partial<
+      Record<Exclude<AssetPropertiesBranchName, "wordPressConnector">, never>
+    >)
+  | ({
+      googleAnalyticsConnector: CreateContaineredAsset<GoogleAnalyticsConnector>;
+    } & Partial<
+      Record<Exclude<AssetPropertiesBranchName, "googleAnalyticsConnector">, never>
+    >)
+  | ({
+      pageConfigurationSet: CreateContaineredAsset<PageConfigurationSet>;
+    } & Partial<
+      Record<Exclude<AssetPropertiesBranchName, "pageConfigurationSet">, never>
+    >)
+  | ({
+      pageConfigurationSetContainer: CreateContaineredAsset<PageConfigurationSetContainer>;
+    } & Partial<
+      Record<Exclude<AssetPropertiesBranchName, "pageConfigurationSetContainer">, never>
+    >)
+  | ({
+      dataDefinition: CreateContaineredAsset<DataDefinition>;
+    } & Partial<Record<Exclude<AssetPropertiesBranchName, "dataDefinition">, never>>)
+  | ({
+      dataDefinitionContainer: CreateContaineredAsset<DataDefinitionContainer>;
+    } & Partial<
+      Record<Exclude<AssetPropertiesBranchName, "dataDefinitionContainer">, never>
+    >)
+  | ({
+      sharedField: CreateContaineredAsset<SharedField>;
+    } & Partial<Record<Exclude<AssetPropertiesBranchName, "sharedField">, never>>)
+  | ({
+      sharedFieldContainer: CreateContaineredAsset<SharedFieldContainer>;
+    } & Partial<
+      Record<Exclude<AssetPropertiesBranchName, "sharedFieldContainer">, never>
+    >)
+  | ({
+      metadataSet: CreateContaineredAsset<MetadataSet>;
+    } & Partial<Record<Exclude<AssetPropertiesBranchName, "metadataSet">, never>>)
+  | ({
+      metadataSetContainer: CreateContaineredAsset<MetadataSetContainer>;
+    } & Partial<
+      Record<Exclude<AssetPropertiesBranchName, "metadataSetContainer">, never>
+    >)
+  | ({
+      publishSet: CreateContaineredAsset<PublishSet>;
+    } & Partial<Record<Exclude<AssetPropertiesBranchName, "publishSet">, never>>)
+  | ({
+      publishSetContainer: CreateContaineredAsset<PublishSetContainer>;
+    } & Partial<
+      Record<Exclude<AssetPropertiesBranchName, "publishSetContainer">, never>
+    >)
+  | ({
+      siteDestinationContainer: CreateContaineredAsset<SiteDestinationContainer>;
+    } & Partial<
+      Record<Exclude<AssetPropertiesBranchName, "siteDestinationContainer">, never>
+    >)
+  | ({ destination: CreateAssetWithoutId<Destination> } & Partial<
+      Record<Exclude<AssetPropertiesBranchName, "destination">, never>
+    >)
+  | ({
+      fileSystemTransport: CreateContaineredAsset<FileSystemTransport>;
+    } & Partial<
+      Record<Exclude<AssetPropertiesBranchName, "fileSystemTransport">, never>
+    >)
+  | ({
+      ftpTransport: CreateContaineredAsset<FtpTransport>;
+    } & Partial<Record<Exclude<AssetPropertiesBranchName, "ftpTransport">, never>>)
+  | ({
+      databaseTransport: CreateContaineredAsset<DatabaseTransport>;
+    } & Partial<
+      Record<Exclude<AssetPropertiesBranchName, "databaseTransport">, never>
+    >)
+  | ({
+      cloudTransport: CreateContaineredAsset<CloudTransport>;
+    } & Partial<Record<Exclude<AssetPropertiesBranchName, "cloudTransport">, never>>)
+  | ({
+      transportContainer: CreateContaineredAsset<TransportContainer>;
+    } & Partial<
+      Record<Exclude<AssetPropertiesBranchName, "transportContainer">, never>
+    >)
+  | ({
+      workflowDefinition: CreateContaineredAsset<WorkflowDefinition>;
+    } & Partial<
+      Record<Exclude<AssetPropertiesBranchName, "workflowDefinition">, never>
+    >)
+  | ({
+      workflowDefinitionContainer: CreateContaineredAsset<WorkflowDefinitionContainer>;
+    } & Partial<
+      Record<Exclude<AssetPropertiesBranchName, "workflowDefinitionContainer">, never>
+    >)
+  | ({
+      workflowEmail: CreateContaineredAsset<WorkflowEmail>;
+    } & Partial<Record<Exclude<AssetPropertiesBranchName, "workflowEmail">, never>>)
+  | ({
+      workflowEmailContainer: CreateContaineredAsset<WorkflowEmailContainer>;
+    } & Partial<
+      Record<Exclude<AssetPropertiesBranchName, "workflowEmailContainer">, never>
+    >)
+  | ({
+      twitterFeedBlock: CreateFolderContainedAsset<TwitterFeedBlock>;
+    } & Partial<
+      Record<Exclude<AssetPropertiesBranchName, "twitterFeedBlock">, never>
+    >)
+  | ({ site: CreateAssetWithoutId<Site> } & Partial<
+      Record<Exclude<AssetPropertiesBranchName, "site">, never>
+    >)
+  | ({
+      editorConfiguration: CreateAssetWithoutId<EditorConfiguration>;
+    } & Partial<
+      Record<Exclude<AssetPropertiesBranchName, "editorConfiguration">, never>
+    >);
+export type CreateAssetProperties = RequireExactlyOne<
+  CreateAssetPropertiesBase,
+  | "feedBlock"
+  | "indexBlock"
+  | "textBlock"
+  | "xhtmlDataDefinitionBlock"
+  | "xmlBlock"
+  | "file"
+  | "folder"
+  | "page"
+  | "reference"
+  | "xsltFormat"
+  | "scriptFormat"
+  | "symlink"
+  | "template"
+  | "user"
+  | "group"
+  | "role"
+  | "assetFactory"
+  | "assetFactoryContainer"
+  | "contentType"
+  | "contentTypeContainer"
+  | "connectorContainer"
+  | "facebookConnector"
+  | "wordPressConnector"
+  | "googleAnalyticsConnector"
+  | "pageConfigurationSet"
+  | "pageConfigurationSetContainer"
+  | "dataDefinition"
+  | "dataDefinitionContainer"
+  | "sharedField"
+  | "sharedFieldContainer"
+  | "metadataSet"
+  | "metadataSetContainer"
+  | "publishSet"
+  | "publishSetContainer"
+  | "siteDestinationContainer"
+  | "destination"
+  | "fileSystemTransport"
+  | "ftpTransport"
+  | "databaseTransport"
+  | "cloudTransport"
+  | "transportContainer"
+  | "workflowDefinition"
+  | "workflowDefinitionContainer"
+  | "workflowEmail"
+  | "workflowEmailContainer"
+  | "twitterFeedBlock"
+  | "site"
+  | "editorConfiguration"
+> &
+  CreateAssetPropertiesRequiredRelationship;
+export type CreateAsset = CreateAssetProperties;
 export type Asset = {
   /**
    * - REQUIRED: Asset object container
@@ -3320,7 +3643,12 @@ export type DeleteRequest = RemoveRequest;
 export type DeleteResponse = RemoveResponse;
 export type EditRequest = Asset;
 export type EditResponse = OperationResult;
-export type CreateRequest = Asset;
+export type CreateRequest = {
+  /**
+   * - REQUIRED: Asset object container
+   */
+  asset: CreateAsset;
+};
 export type CreateResponseProperties = {
   /**
    * - The id of the asset created

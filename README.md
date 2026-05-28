@@ -1,6 +1,6 @@
 # Cascade CMS API Library
 
-Version 2.0.1 includes additional REST contract corrections, including type-level breaking changes for target-related surfaces, ACL entry send/read shapes, audited nullability, required alternative fields, and role ability discrimination. See [CHANGELOG.md](CHANGELOG.md) before upgrading from `1.1.0`.
+Version 2 includes REST contract corrections, including type-level breaking changes for target-related surfaces, ACL entry send/read shapes, audited nullability, required alternative fields, and role ability discrimination. See [CHANGELOG.md](CHANGELOG.md) before upgrading from `1.1.0`.
 
 Version 1.1.0 includes type accuracy fixes verified against the WSDL and REST API. Most changes add missing properties or fix incorrect types. Two changes may affect existing code:
 
