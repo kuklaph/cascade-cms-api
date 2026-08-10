@@ -3980,10 +3980,6 @@ export type AuditTypes =
   | "move";
 export type AuditParameters = {
   /**
-   * - NOT REQUIRED: Filter the assets by a certain entity.
-   */
-  identifier?: Identifier;
-  /**
    * - NOT REQUIRED: Filter the audits by a given user name.
    */
   username?: string;
@@ -3996,11 +3992,11 @@ export type AuditParameters = {
    */
   rolename?: string;
   /**
-   * - NOT REQUIRED: Filter the audits by a start time. Only audits for events that happened after this time will be included.
+   * - NOT REQUIRED: Filter audits after this time using Cascade's textual date format, for example `May 12, 2023 12:00:00 AM`.
    */
   startDate?: string;
   /**
-   * - NOT REQUIRED: Filter the audits by an end time. Only audits for events that happened before this time will be included.
+   * - NOT REQUIRED: Filter audits before this time using Cascade's textual date format, for example `Aug 12, 2023 11:59:00 PM`.
    */
   endDate?: string;
   /**
@@ -4008,12 +4004,23 @@ export type AuditParameters = {
    */
   auditType?: AuditTypes;
 };
-export type ReadAuditsRequest = {
+export type NamedAuditParameters = RequireAtLeastOne<
+  AuditParameters,
+  "username" | "groupname" | "rolename"
+>;
+export type ReadAuditsAssetRequest = {
   /**
-   * - REQUIRED: The parameters for the audit.
+   * - REQUIRED: Identifier for the asset whose audits should be returned.
    */
-  auditParameters: AuditParameters;
+  identifier: Identifier;
+  /**
+   * - NOT REQUIRED: Audit filters or an additional user, group, or role target.
+   */
+  auditParameters?: AuditParameters;
 };
+export type ReadAuditsRequest =
+  | ReadAuditsAssetRequest
+  | { auditParameters: NamedAuditParameters };
 export type Audit = {
   /**
    * - REQUIRED: The user that performed the audited action

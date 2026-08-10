@@ -1,7 +1,7 @@
 openapi: 3.1.0
 info:
   title: Cascade CMS API
-  version: 2.0.2
+  version: 2.1.0
   description: OpenAPI 3.1.0 specification for the Cascade CMS REST API. Derived from the WSDL-generated spec with REST-specific patches applied (flat arrays, boolean success, integer[] file data, header auth).
   license:
     name: MIT
@@ -532,9 +532,6 @@ components:
     AuditParameters:
       type: object
       properties:
-        identifier:
-          $ref: "#/components/schemas/Identifier"
-          description: "NOT REQUIRED: Filter the assets by a certain entity."
         username:
           type: string
           description: "NOT REQUIRED: Filter the audits by a given user name."
@@ -546,12 +543,12 @@ components:
           description: "NOT REQUIRED: Filter the audits by a given role."
         startDate:
           type: string
-          format: date-time
-          description: "NOT REQUIRED: Filter the audits by a start time. Only audits for events that happened after this time will be included."
+          description: "NOT REQUIRED: Filter audits after this time using Cascade's textual date format, for example `May 12, 2023 12:00:00 AM`."
+          example: May 12, 2023 12:00:00 AM
         endDate:
           type: string
-          format: date-time
-          description: "NOT REQUIRED: Filter the audits by an end time. Only audits for events that happened before this time will be included."
+          description: "NOT REQUIRED: Filter audits before this time using Cascade's textual date format, for example `Aug 12, 2023 11:59:00 PM`."
+          example: Aug 12, 2023 11:59:00 PM
         auditType:
           $ref: "#/components/schemas/AuditTypes"
           description: "NOT REQUIRED: Filter the audits by an audit type. Only audits of this type will be returned in the response."
@@ -9634,12 +9631,28 @@ components:
     ReadAuditsRequest:
       type: object
       properties:
+        identifier:
+          $ref: "#/components/schemas/Identifier"
+          description: Identifier for the asset whose audits should be returned.
         auditParameters:
           $ref: "#/components/schemas/AuditParameters"
-          description: "REQUIRED: The parameters for the audit."
-      required:
-        - auditParameters
+          description: Audit filters or a user, group, or role target.
       description: Request body for the `readAudits` operation.
+      allOf:
+        - anyOf:
+            - required:
+                - identifier
+            - required:
+                - auditParameters
+              properties:
+                auditParameters:
+                  anyOf:
+                    - required:
+                        - username
+                    - required:
+                        - groupname
+                    - required:
+                        - rolename
     ReadAuditsResponse:
       $ref: "#/components/schemas/ReadAuditsResult"
       description: Response from the `readAudits` operation.
@@ -10273,7 +10286,7 @@ paths:
   /readAudits:
     post:
       operationId: readAudits
-      summary: Read the audit trail for an asset
+      summary: Read audit trails for an asset, user, group, or role
       requestBody:
         required: true
         content:
@@ -10293,7 +10306,7 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/ErrorResponse"
-      description: Use this method to read audits of an asset
+      description: Use this method to read audit trails for an asset, user, group, or role
   /performWorkflowTransition:
     post:
       operationId: performWorkflowTransition

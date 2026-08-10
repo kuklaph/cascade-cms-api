@@ -3028,8 +3028,6 @@
 
 /**
  * @typedef {Object} AuditParameters
- * @property {Identifier} [identifier]
- * - NOT REQUIRED: Filter the assets by a certain entity.
  * @property {string} [username]
  * - NOT REQUIRED: Filter the audits by a given user name.
  * @property {string} [groupname]
@@ -3037,17 +3035,29 @@
  * @property {string} [rolename]
  * - NOT REQUIRED: Filter the audits by a given role.
  * @property {string} [startDate]
- * - NOT REQUIRED: Filter the audits by a start time. Only audits for events that happened after this time will be included.
+ * - NOT REQUIRED: Filter audits after this time using Cascade's textual date format, for example `May 12, 2023 12:00:00 AM`.
  * @property {string} [endDate]
- * - NOT REQUIRED: Filter the audits by an end time. Only audits for events that happened before this time will be included.
+ * - NOT REQUIRED: Filter audits before this time using Cascade's textual date format, for example `Aug 12, 2023 11:59:00 PM`.
  * @property {AuditTypes} [auditType]
  * - NOT REQUIRED: Filter the audits by an audit type. Only audits of this type will be returned in the response.
  */
 
 /**
- * @typedef {Object} ReadAuditsRequest
- * @property {AuditParameters} auditParameters
- * - REQUIRED: The parameters for the audit.
+ * @typedef {AuditParameters &
+ * ({username: string} | {groupname: string} | {rolename: string})} NamedAuditParameters
+ */
+
+/**
+ * @typedef {Object} ReadAuditsAssetRequest
+ * @property {Identifier} identifier
+ * - REQUIRED: Identifier for the asset whose audits should be returned.
+ * @property {AuditParameters} [auditParameters]
+ * - NOT REQUIRED: Audit filters or an additional user, group, or role target.
+ */
+
+/**
+ * @typedef {ReadAuditsAssetRequest |
+ * {auditParameters: NamedAuditParameters}} ReadAuditsRequest
  */
 
 //#endregion

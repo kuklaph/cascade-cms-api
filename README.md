@@ -111,6 +111,26 @@ const read = await cascadeAPI.read({
 
 A built in retry is offered for the Nodejs version. The default allotted timeout time is `30` seconds. You can adjust whether or not to use a retry (the default is `true`) per request method as an optional parameter. If you want to update the timeout time, you can pass in an optional `timeout` parameter when instantiating `CascadeAPI`.
 
+### Read Audits
+
+Asset audit requests use the same top-level `identifier` as other asset operations. Audit dates use Cascade's textual date format rather than ISO 8601.
+
+```js
+const audits = await cascadeAPI.readAudits({
+  identifier: {
+    type: "page",
+    id: "asset-123",
+  },
+  auditParameters: {
+    auditType: "edit",
+    startDate: "May 12, 2023 12:00:00 AM",
+    endDate: "Aug 12, 2023 11:59:00 PM",
+  },
+});
+```
+
+To filter by a user, group, or role instead of an asset, provide `username`, `groupname`, or `rolename` inside `auditParameters`.
+
 ## Other Resources
 
 **Cascade CMS Tools** \

@@ -2,6 +2,17 @@
 
 All notable changes to this project will be documented in this file.
 
+## [2.1.0] - 2026-08-10
+
+### Breaking Changes
+
+- Moved the asset target for `ReadAuditsRequest` from `auditParameters.identifier` to the request's top-level `identifier`, matching the REST endpoint's body-identifier convention.
+
+### Fixed
+
+- Corrected `readAudits` input dates to use Cascade's textual date format instead of RFC 3339 `date-time` values.
+- Synchronized the corrected request contract across TypeScript, JSDoc, Apps Script, and OpenAPI JSON/YAML.
+
 ## [2.0.2] - 2026-05-28
 
 ### Fixed
