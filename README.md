@@ -115,6 +115,8 @@ The Fetch-based client defaults to a `30` second timeout per attempt. To change 
 
 Each operation accepts an optional second argument, `retryOnTimeout`, which defaults to `true` and allows up to three attempts. Pass `false` to make one attempt. Aborting a request does not undo server work; disable retries for writes when repeating the operation would be unsafe.
 
+When timeout attempts are exhausted, the promise rejects with an `Error` whose message is `"Request timed out"`, with `timeout: true` and `success: false`. Catch it with `try/catch` around the awaited operation. Version 3 replaces the previous plain-object timeout rejection with this error instance.
+
 ### Read Audits
 
 Asset audit requests use the same top-level `identifier` as other asset operations. Audit dates use Cascade's textual date format rather than ISO 8601.

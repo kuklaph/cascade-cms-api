@@ -28,7 +28,10 @@ export function CascadeAPI({ apiKey, url }, timeout = 30000) {
 
       const retry = async () => {
         if (triesLeft <= 0) {
-          return reject(lastResult);
+          return reject(Object.assign(new Error(lastResult.message), {
+            success: false,
+            timeout: true,
+          }));
         }
 
         try {

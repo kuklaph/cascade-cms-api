@@ -47,7 +47,7 @@ async function runTimer(delay) {
 }
 
 describe("request timeout", () => {
-  test("aborts Fetch and preserves the timeout rejection when retries are disabled", async () => {
+  test("aborts Fetch and rejects with a timeout Error when retries are disabled", async () => {
     let requestSignal;
     globalThis.fetch = (_url, { signal }) => {
       requestSignal = signal;
@@ -63,7 +63,10 @@ describe("request timeout", () => {
     expect(requestSignal.aborted).toBe(true);
     // Preserve the existing final backoff before timeout rejection.
     await runTimer(1000);
-    expect(await result).toEqual(timeoutResult);
+    const error = await result;
+    expect(error).toBeInstanceOf(Error);
+    expect(error).toMatchObject(timeoutResult);
+    expect(error.stack).toBeString();
     expect(timers.size).toBe(0);
   });
 
@@ -127,7 +130,7 @@ describe("request timeout", () => {
     expect(timers.size).toBe(0);
   });
 
-  test("preserves three default attempts and timeout rejection for a write", async () => {
+  test("preserves three default attempts and rejects with a timeout Error for a write", async () => {
     const signals = [];
     globalThis.fetch = (_url, { signal }) => {
       signals.push(signal);
@@ -142,7 +145,9 @@ describe("request timeout", () => {
       await runTimer(retryDelay);
     }
 
-    expect(await result).toEqual(timeoutResult);
+    const error = await result;
+    expect(error).toBeInstanceOf(Error);
+    expect(error).toMatchObject(timeoutResult);
     expect(signals).toHaveLength(3);
     expect(new Set(signals).size).toBe(3);
     expect(signals.every((signal) => signal.aborted)).toBe(true);
