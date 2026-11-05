@@ -3,7 +3,7 @@
  * @param {Object} config
  * @param {string} config.apiKey - Your generated API key from Cascade
  * @param {string} config.url - Your domain specific Cascade API URL
- * @param {number} [timeout=30000] - Optional. Default is 30000 eg 30 seconds. Make sure to use milliseconds
+ * @param {number} [timeout=30000] - Response-header timeout in milliseconds; excludes response-body reading.
  */
 export function CascadeAPI(
   {

@@ -62,6 +62,8 @@ The `apiKey` is generated in your Cascade dashboard. The `url` is `yourOrg.casca
 
 If you are using this in Google Apps Script the async/await pattern is not used/required. GAS does not follow this pattern.
 
+Apps Script methods return results synchronously and throw on failure. Parsed responses with `timeout: true` allow up to three attempts, waiting one second and then two seconds between attempts. Pass `false` as the operation's second argument to disable retries. Exceptions from `UrlFetchApp.fetch` propagate without retries; verify server state before repeating a failed write.
+
 ```js
 // Apps Script
 // const cascadeAPI = CascadeAPI_({apiKey: "", url: ""})
@@ -109,7 +111,9 @@ const read = await cascadeAPI.read({
 });
 ```
 
-A built in retry is offered for the Nodejs version. The default allotted timeout time is `30` seconds. You can adjust whether or not to use a retry (the default is `true`) per request method as an optional parameter. If you want to update the timeout time, you can pass in an optional `timeout` parameter when instantiating `CascadeAPI`.
+The Fetch-based client defaults to a `30` second timeout per attempt. To change it, pass milliseconds as the second argument to `CascadeAPI(config, timeout)`. The timeout covers waiting for response headers, not reading or parsing the response body. A timed-out attempt aborts its Fetch request, and the timer is cleared when Fetch settles.
+
+Each operation accepts an optional second argument, `retryOnTimeout`, which defaults to `true` and allows up to three attempts. Pass `false` to make one attempt. Aborting a request does not undo server work; disable retries for writes when repeating the operation would be unsafe.
 
 ### Read Audits
 

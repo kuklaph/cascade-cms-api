@@ -3315,40 +3315,25 @@ function CascadeAPI_({ apiKey, url }) {
       factor = 2,
     } = {}
   ) => {
-    let attempt = 1;
     let currentDelay = initialDelay;
     let lastResult;
 
-    const retry = () => {
-      if (triesLeft <= 0) {
+    for (let attempt = 1; attempt <= triesLeft; attempt++) {
+      lastResult = callback(...callbackOpts);
+      if (!lastResult?.timeout || attempt === triesLeft) {
         return lastResult;
       }
 
-      try {
-        lastResult = callback(...callbackOpts);
-        if (lastResult?.timeout) {
-          console.log(
-            `Attempt ${attempt} timeout, retrying in ${currentDelay}ms...`
-          );
-
-          Utilites.sleep(currentDelay);
-          retry();
-
-          if (isExpo) {
-            currentDelay *= factor;
-          }
-
-          triesLeft--;
-          attempt++;
-        } else {
-          return lastResult;
-        }
-      } catch (error) {
-        return error;
+      console.log(
+        `Attempt ${attempt} timeout, retrying in ${currentDelay}ms...`
+      );
+      Utilities.sleep(currentDelay);
+      if (isExpo) {
+        currentDelay *= factor;
       }
-    };
+    }
 
-    return retry();
+    return lastResult;
   };
   const sendRequest = (endPoint, requestParams) => {
     if (!apiKey || !url) {
@@ -3363,22 +3348,18 @@ function CascadeAPI_({ apiKey, url }) {
     return parsed;
   };
   const handleRequest = (endPoint, opts, retryOnTimeout) => {
-    try {
-      const requestParams = {
-        method: "POST",
-        payload: JSON.stringify(opts),
-      };
-      const request = withRetry(sendRequest, {
-        callbackOpts: [endPoint, requestParams],
-        triesLeft: retryOnTimeout ? 3 : 1,
-      });
-      if (!request.success) {
-        throw new Error(`Request Failed. Request Response: ${request.message}`);
-      }
-      return request;
-    } catch (error) {
-      console.error(error);
+    const requestParams = {
+      method: "POST",
+      payload: JSON.stringify(opts),
+    };
+    const request = withRetry(sendRequest, {
+      callbackOpts: [endPoint, requestParams],
+      triesLeft: retryOnTimeout ? 3 : 1,
+    });
+    if (!request.success) {
+      throw new Error(`Request Failed. Request Response: ${request.message}`);
     }
+    return request;
   };
   return {
     /**

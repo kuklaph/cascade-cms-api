@@ -45,6 +45,7 @@ describe("readAudits", () => {
           Authorization: "Bearer test-api-key",
         },
         body: JSON.stringify(request),
+        signal: expect.any(AbortSignal),
       },
     );
   });

@@ -2,6 +2,17 @@
 
 All notable changes to this project will be documented in this file.
 
+## [Unreleased]
+
+### Fixed
+
+- Abort Fetch requests when the response-header timeout expires and clear the timer when Fetch settles. Response-body reading, retry defaults, and timeout error results are unchanged.
+- Correct Apps Script retries to return successful results, respect the attempt limit and `retryOnTimeout = false`, and sleep only between attempts with exponential backoff.
+
+### Breaking Changes
+
+- Apps Script failures now throw synchronously instead of logging an error and returning `undefined`. Transport exceptions propagate unchanged and are not automatically retried.
+
 ## [2.1.0] - 2026-08-10
 
 ### Breaking Changes

@@ -8,7 +8,7 @@ export * as Types from "./types/types.js";
  * @param {Object} config
  * @param {string} config.apiKey - Your generated API key from Cascade
  * @param {string} config.url - Your domain specific Cascade API URL
- * @param {number} [timeout=30000] - Optional. Default is 30000 eg 30 seconds. Make sure to use milliseconds
+ * @param {number} [timeout=30000] - Response-header timeout in milliseconds; excludes response-body reading.
  */
 export function CascadeAPI({ apiKey, url }, timeout = 30000) {
   const withRetry = async (
@@ -61,22 +61,24 @@ export function CascadeAPI({ apiKey, url }, timeout = 30000) {
   const withFetch = async (requestParams) => {
     const { url, data, headers, method } = requestParams;
 
-    const fetchPromise = fetch(url, {
-      method,
-      headers,
-      body: data,
-    });
-
-    // Creating a promise that rejects in <n> milliseconds
-    const timeoutPromise = new Promise((_, reject) => {
-      const id = setTimeout(() => {
-        clearTimeout(id);
-        reject(new Error("Request timed out"));
-      }, timeout);
-    });
+    const controller = new AbortController();
+    const timeoutId = setTimeout(() => {
+      controller.abort(new Error("Request timed out"));
+    }, timeout);
 
     try {
-      const response = await Promise.race([fetchPromise, timeoutPromise]);
+      let response;
+      try {
+        response = await fetch(url, {
+          method,
+          headers,
+          body: data,
+          signal: controller.signal,
+        });
+      } finally {
+        // Preserve the deadline for response headers, excluding body reading.
+        clearTimeout(timeoutId);
+      }
       if (!response.ok) {
         throw new Error(`HTTP error! status: ${response.status}`);
       } else {
@@ -84,6 +86,7 @@ export function CascadeAPI({ apiKey, url }, timeout = 30000) {
       }
     } catch (error) {
       if (
+        controller.signal.aborted ||
         error.message === "Request timed out" ||
         error.message.includes("Unable to connect")
       ) {
