@@ -1,13 +1,15 @@
 # Cascade CMS API Library
 
-Version 2 includes REST contract corrections, including type-level breaking changes for target-related surfaces, ACL entry send/read shapes, audited nullability, required alternative fields, and role ability discrimination. See [CHANGELOG.md](CHANGELOG.md) before upgrading from `1.1.0`.
+A JavaScript client for the Cascade CMS REST API, with a Fetch client and a synchronous Google Apps Script client.
 
-Version 1.1.0 includes type accuracy fixes verified against the WSDL and REST API. Most changes add missing properties or fix incorrect types. Two changes may affect existing code:
+## Upgrading to version 3
 
-- **`OperationResult.success`** changed from `string` to `boolean` — if you compare `result.success === "true"`, update to `result.success === true`
-- **`OperationResult.message`** changed from required to optional — the REST API omits this field on success
+Operation names, request shapes, and successful response shapes are unchanged from `2.1.0`. Review these failure-handling changes before upgrading:
 
-See [CHANGELOG.md](CHANGELOG.md) for the full list of changes.
+- The Fetch client now rejects exhausted timeouts with an `Error` instead of a plain object. It retains `message: "Request timed out"`, `timeout: true`, and `success: false` and adds a stack trace. Use `try/catch` around the awaited operation.
+- Apps Script methods now throw on failure instead of logging an error and returning `undefined`. Catch exceptions where your script needs to recover or continue.
+
+See [CHANGELOG.md](CHANGELOG.md) for the full release history and earlier migration notes.
 
 ## Cascade Documentation
 
@@ -29,13 +31,17 @@ Example: `isSandActuallySandy.cascadecms.com/ws/services/AssetOperationService?w
 
 ## Install
 
-This can be used either via NodeJS or Google Apps Script.
+Install the Fetch client from npm:
 
-Either download/Copy the files and extract the zip or use npm `npm i cascade-cms-api` or `npm ci cascade-cms-api` depending on what you prefer.
+```sh
+npm install cascade-cms-api
+```
+
+For Google Apps Script, follow the [Apps Script setup](#google-apps-script) below.
 
 ## General Usage
 
-### NodeJS
+### Fetch client
 
 In your project file import the Cascade API.
 
@@ -43,13 +49,7 @@ In your project file import the Cascade API.
 import { CascadeAPI, Types } from "cascade-cms-api";
 ```
 
-### Google Apps Script
-
-In order to use this library within a Google Apps Script (GAS) project you will need to copy the `main.js` and paste the contents as a new `.gs` file in your project.
-
-To use the library you will need to instantiate the `CascadeAPI` function and pass it a config object with your apiKey and a Cascade CMS API URL with your custom domain:
-
-`{ apiKey: "", url: "" }`
+Create a client with your API key and Cascade CMS API URL:
 
 ```js
 const cascadeAPI = CascadeAPI({
@@ -58,22 +58,9 @@ const cascadeAPI = CascadeAPI({
 });
 ```
 
-The `apiKey` is generated in your Cascade dashboard. The `url` is `yourOrg.cascadecms.com/api/v1/` (this is the current version as of 1/9/2023).
-
-If you are using this in Google Apps Script the async/await pattern is not used/required. GAS does not follow this pattern.
-
-Apps Script methods return results synchronously and throw on failure. Parsed responses with `timeout: true` allow up to three attempts, waiting one second and then two seconds between attempts. Pass `false` as the operation's second argument to disable retries. Exceptions from `UrlFetchApp.fetch` propagate without retries; verify server state before repeating a failed write.
+Generate the `apiKey` in your Cascade dashboard. Use your tenant's `/api/v1/` URL, including the trailing slash. Fetch client methods return promises:
 
 ```js
-// Apps Script
-// const cascadeAPI = CascadeAPI_({apiKey: "", url: ""})
-
-// Nodejs
-const cascadeAPI = CascadeAPI({
-  apiKey: "",
-  url: "https://isSandActuallySandy.cascadecms.com/api/v1/",
-});
-
 const readFile = async () => {
   const results = await cascadeAPI.read({
     identifier: {
@@ -117,25 +104,25 @@ Each operation accepts an optional second argument, `retryOnTimeout`, which defa
 
 When timeout attempts are exhausted, the promise rejects with an `Error` whose message is `"Request timed out"`, with `timeout: true` and `success: false`. Catch it with `try/catch` around the awaited operation. Version 3 replaces the previous plain-object timeout rejection with this error instance.
 
-### Read Audits
+### Google Apps Script
 
-Asset audit requests use the same top-level `identifier` as other asset operations. Audit dates use Cascade's textual date format rather than ISO 8601.
+Copy [apps-script/main.js](apps-script/main.js) into a `.gs` file in your Apps Script project. Create the client with `CascadeAPI_` and call its methods synchronously:
 
 ```js
-const audits = await cascadeAPI.readAudits({
+const cascadeAPI = CascadeAPI_({
+  apiKey: "",
+  url: "https://your-tenant.cascadecms.com/api/v1/",
+});
+
+const results = cascadeAPI.read({
   identifier: {
     type: "page",
     id: "asset-123",
   },
-  auditParameters: {
-    auditType: "edit",
-    startDate: "May 12, 2023 12:00:00 AM",
-    endDate: "Aug 12, 2023 11:59:00 PM",
-  },
 });
 ```
 
-To filter by a user, group, or role instead of an asset, provide `username`, `groupname`, or `rolename` inside `auditParameters`.
+Apps Script methods throw on failure. Parsed responses with `timeout: true` allow up to three attempts, waiting one second and then two seconds between attempts. Pass `false` as the operation's second argument to disable retries. Exceptions from `UrlFetchApp.fetch` propagate without retries; verify server state before repeating a failed write.
 
 ## Other Resources
 
